@@ -1,9 +1,9 @@
 ---
 version: alpha
-name: Warm Terminal
-description: A domain-agnostic visual language that reads like a well-typeset terminal. Flat, ruled, square, warm near-black by default and cream paper in light mode, mono labels over sans text, one orange accent for the current thing, and six semantic hues. Works for blogs, landing pages, shops, docs, dashboards and tools alike.
+name: Nib
+description: A ruled UI framework, one mark at a time. Flat, ruled, square, warm ink by default and cream paper in light mode, mono labels over sans text, one jade accent for the current thing (drawn as a jade rule or an ink-inverted cursor block), and six semantic hues. Built for docs, dashboards and developer tools; presets dress blogs, landings, shops and portfolios too.
 colors:
-  # Dark theme (default)
+  # Dark theme ("Ink")
   surface: "#141413"
   surface-raised: "#1a1a18"
   surface-panel: "#1e1d1b"
@@ -17,8 +17,10 @@ colors:
   scrim: "#141413b3"
   primary: "#faf9f5"
   on-primary: "#141413"
-  accent: "#d97757"
-  accent-text: "#d97757"
+  accent: "#00967d"
+  accent-text: "#009e84"
+  cursor: "#faf9f5"
+  on-cursor: "#141413"
   blue: "#82aaff"
   cyan: "#89ddff"
   green: "#c3e88d"
@@ -27,11 +29,11 @@ colors:
   red: "#e08f8f"
   error: "#e08f8f"
   on-hue: "#141413"
-  syntax-keyword: "#4d9375"
+  syntax-keyword: "#a98fc0"
   syntax-string: "#c98a7d"
-  syntax-number: "#4c9a91"
+  syntax-number: "#c2a26f"
   syntax-identifier: "#dbd7ca"
-  # Light theme
+  # Light theme ("Paper")
   surface-light: "#faf9f5"
   surface-raised-light: "#f1efe8"
   surface-panel-light: "#ece9e0"
@@ -45,8 +47,10 @@ colors:
   scrim-light: "#14141359"
   primary-light: "#141413"
   on-primary-light: "#faf9f5"
-  accent-light: "#c15f3c"
-  accent-text-light: "#a94e2f"
+  accent-light: "#02806c"
+  accent-text-light: "#007561"
+  cursor-light: "#141413"
+  on-cursor-light: "#faf9f5"
   blue-light: "#2a60d6"
   cyan-light: "#156f93"
   green-light: "#537126"
@@ -55,9 +59,9 @@ colors:
   red-light: "#a04545"
   error-light: "#a04545"
   on-hue-light: "#faf9f5"
-  syntax-keyword-light: "#1e754f"
+  syntax-keyword-light: "#6e4f8a"
   syntax-string-light: "#9a5a4a"
-  syntax-number-light: "#2a6f7f"
+  syntax-number-light: "#7d5f2c"
   syntax-identifier-light: "#393a34"
 typography:
   headline-hero:
@@ -109,14 +113,14 @@ typography:
     fontFamily: JetBrains Mono
     fontSize: 12px
     fontWeight: 500
-    lineHeight: 16px
+    lineHeight: 18px
     letterSpacing: 0.02em
     fontFeature: '"liga" 0, "calt" 0'
   label-sm:
     fontFamily: JetBrains Mono
     fontSize: 11px
     fontWeight: 500
-    lineHeight: 14px
+    lineHeight: 16px
     fontFeature: '"liga" 0, "calt" 0'
   code-md:
     fontFamily: JetBrains Mono
@@ -135,7 +139,7 @@ typography:
     fontSize: 11.5px
     fontWeight: 400
     lineHeight: 16px
-    fontFeature: '"liga" 0, "calt" 0, "tnum" 1'
+    fontFeature: '"liga" 0, "calt" 0'
 rounded:
   none: 0px
 spacing:
@@ -162,6 +166,8 @@ spacing:
   header-height: 48px
   touch-target: 44px
   touch-target-primary: 48px
+  icon-sm: 16px
+  icon-md: 20px
 components:
   pane:
     backgroundColor: "{colors.surface}"
@@ -184,6 +190,9 @@ components:
     typography: "{typography.item-md}"
     padding: 6px 10px
     rounded: "{rounded.none}"
+  list-item-selected:
+    backgroundColor: "{colors.cursor}"
+    textColor: "{colors.on-cursor}"
   button:
     textColor: "{colors.on-surface}"
     typography: "{typography.label-md}"
@@ -252,21 +261,28 @@ components:
     height: 24px
 ---
 
-# Warm Terminal
+# Nib
+
+> Nib — a ruled UI framework, one mark at a time.
 
 ## Overview
 
-A visual language, not a product. It belongs to no domain: the same rules dress a personal
-blog, a product landing page, an online shop, a docs site, a dashboard or an internal tool.
-Whatever the content, the screen reads like a well-typeset terminal: warm near-black in dark mode
-(the default), cream paper in light mode, monospace labels over sans-serif text, square edges,
-hairline rules, one orange accent and six hues that always mean something.
+Nib is a framework-agnostic CSS framework with headless components. It is built first for
+developer-facing products (docs, dashboards, CLI and tool landing pages, technical blogs);
+presets dress blogs, landing pages, shops and portfolios with the same rules.
 
-The mood is calm, precise, honest and a little technical. Nothing decorates; every mark carries
-information. Content (an article, a product, a number) is the hero; the frame around it stays
-quiet.
+Every screen reads like a well-ruled page: warm ink in dark mode, cream paper in light mode,
+monospace labels over sans-serif text, square edges, hairline rules, and exactly one mark of
+accent for *the current thing*: the point where the nib touches the page.
 
-The five laws. A screen that breaks one is not this system, in any domain:
+The mood is precise, calm and devoted. Nothing decorates; every mark carries information.
+Content (an article, a product, a number) is the hero; the frame around it stays quiet.
+
+This file is the **spec**: the source of truth for what the system looks like and why. It is not a
+build input. Tokens are compiled from DTCG JSON in the `tokens` package; when this file and the
+tokens disagree, fix whichever is wrong and keep them in step.
+
+The five laws. A screen that breaks one is not Nib, in any domain:
 
 1. **Flat.** Radius 0 everywhere. No shadows, glow, gradients or blur. Depth is a tone step
    (surface → raised → panel) plus 1px lines.
@@ -275,16 +291,22 @@ The five laws. A screen that breaks one is not this system, in any domain:
 3. **Mono labels, sans text.** Every label, nav item, button word, tag, price, date, id, number
    and code is mono. Headlines, sentences and prose are sans. Only mono text is UPPERCASE;
    headlines are sentence case or lowercase, never Title Case.
-4. **One accent, one meaning.** Orange marks *the current thing*: the active nav item, the
-   selected option, the focused control, the playhead, the item in progress. Never decoration,
-   never a brand wash, never a button fill.
+4. **One accent, one meaning.** Jade marks *the current thing*: the active nav item, the focused
+   control, the progress, the item in progress. A selected or current *block* is shown by ink
+   inversion (the cursor block). Never decoration, never a brand wash, never a button.
 5. **Color means a category, and never alone.** Each hue maps to one concept and always comes
    with a word (`SALE`, `ERR`, `NEW`, `GUIDE`).
 
+These laws are fixed: there is no token, preset or option that changes them. If a product needs
+rounded corners or shadows, Nib is not the framework for it. Tokens that *are* open: the accent
+(within the checks of `nib theme check`), the mapping of the three free hues, the font families
+(as long as a mono + sans pair stays), and density.
+
 ## Colors
 
-Two themes share one set of roles. Dark is the default; light tokens carry the `-light` suffix.
-Lines and hover fills are alpha over ink, so they work on any of the three surfaces.
+Two themes share one set of roles. Token names without a suffix are the dark values; light values
+carry the `-light` suffix. In CSS both resolve through `light-dark()` on one custom property per
+role. Lines and hover fills are alpha over ink, so they work on any of the three surfaces.
 
 ### Surfaces and ink
 
@@ -303,19 +325,33 @@ Lines and hover fills are alpha over ink, so they work on any of the three surfa
 - **Hover** (ink at 4% / 5% alpha): hover fill, pressed fill, highlighted row.
 - **Scrim** (surface at 70% / 35% alpha): behind dialogs, drawers and sheets.
 
-### Primary and accent
+### Primary, accent and cursor
 
-- **Primary** is ink, not a color. The main call to action (`SUBSCRIBE`, `ADD TO CART`,
-  `GET STARTED`, `RUN`) is an ink fill with surface-colored text.
-- **Accent** (#d97757 / #c15f3c): non-text marks for the current thing: active-nav underline,
-  selected-option border, focus ring, progress bar, playhead, text selection.
-- **Accent text** (#d97757 / #a94e2f): the accent as text: link hover, the current step label,
-  a `NOW` / `LIVE` tag. Light mode needs the darker value to pass AA.
+- **Primary** is ink, not a color. The main call to action (`SUBSCRIBE`, `GET STARTED`, `RUN`) is
+  an ink fill with surface-colored text.
+- **Accent** (jade #00967d / #02806c, story name *Verdigris*): non-text marks for the current
+  thing: active-nav underline, focus ring, progress bar, playhead, slider thumb, the current step.
+  ≥ 3:1 on all three surfaces of its theme.
+- **Accent text** (#009e84 / #007561): the accent as text: link hover, the current step label,
+  a `NOW` / `LIVE` tag. ≥ 4.5:1 on all three surfaces of its theme.
+- **Cursor** (ink inversion: on-surface fill with surface-colored text, 17.5:1): the selected or
+  current *block*: the selected list row, the highlighted option in a listbox or command palette,
+  the selected date, the selected table row, the active cell in a grid, text selection. It is the
+  block cursor of the page.
+
+The two forms work together: a jade rule says *where* the current thing is; an ink-inverted block
+says *which* one is chosen. The cursor block keeps working under color-vision deficiency and in
+grayscale, where jade alone can be hard to tell from red or green.
+
+> **Open decision.** The primary button is also an ink fill, so it looks like a cursor block. The
+> rule "ink inversion is never a button" needs a primary-button treatment that is not a plain ink
+> fill. Until an ADR settles it, keep at most one primary button per view and never place it inside
+> a list or grid where cursor blocks appear.
 
 ### Semantic hues
 
-Six terminal hues, each with a `-soft` fill (dark 11% / light 8% alpha) and a `-border` outline
-(dark 36% / light 35% alpha) made by adding an alpha suffix to the hue.
+Six hues, each with a `-soft` fill and a `-border` outline, both derived with `color-mix()` from
+the hue (soft: dark 11% / light 8%; border: dark 36% / light 35%).
 
 | Hue | Dark | Light |
 |---|---|---|
@@ -332,11 +368,12 @@ Fixed meanings in every domain:
 - **green** = success, done, in stock, published, output.
 - **yellow** = warning, low stock, draft, pending, unless the domain claims yellow for a concept;
   then warnings use red too.
-- **orange is not a semantic hue.** It is the accent and means *current*.
+- **jade is not a semantic hue.** It is the accent and means *current*. It sits in the only gap of
+  the hue wheel at least 45° from every semantic hue (OKLCH ≈ 176°, green ≈ 127°, cyan ≈ 226°).
 
 Blue, cyan and magenta are free: give each to one concept of your domain, write the mapping
-down, and never reuse a hue for two concepts. Many screens need only one or two hues; using none
-is fine. See "Domain recipes" for examples.
+down, and never reuse a hue for two concepts. Presets ship a mapping; many screens need only one
+or two hues; using none is fine.
 
 A hue appears only in these forms:
 
@@ -349,19 +386,29 @@ A hue appears only in these forms:
 Never a solid hue behind a whole section. Solid hue fills are allowed only on small marks (a
 filled tag, a chart bar) with **on-hue** text.
 
+In light mode all six hues sit near the same lightness, so they are hard to tell apart under
+color-vision deficiency. That is why law 5 exists: the word carries the meaning, the hue helps.
+
 ### Code
 
-Syntax colors are muted and warm: keyword green-teal, string clay, number teal, identifier warm
-gray, punctuation on-surface 3. Code blocks sit on surface raised with square corners. The
-highlighted line gets the hover fill plus a 2px accent left rule.
+Syntax colors are muted and warm and stay clear of the jade accent: keyword muted mauve, string
+clay, number ochre, identifier warm gray, punctuation on-surface 3. Code blocks sit on surface
+raised with square corners. The highlighted line gets the hover fill plus a 2px accent left rule.
 
 ## Typography
 
 - **Inter** 400 / 500 / 600 for headlines, sentences, prose and values.
 - **JetBrains Mono** 400 / 500 for labels, navigation, buttons, tags, prices, dates, numbers and code.
-- Ligatures **off** everywhere (`=>`, `!==`, `->`, `--` read as typed).
-- Tabular numerals on every number that changes or lines up in a column (prices, totals, counters,
-  clocks, table figures).
+- Font families are tokens (`--nib-font-sans`, `--nib-font-mono`) with system fallbacks; the
+  optional `fonts` package ships both as variable fonts with Latin, Latin Extended and Vietnamese
+  subsets. Nothing loads Google Fonts by default.
+- Ligatures **off** in mono (`=>`, `!==`, `->`, `--` read as typed).
+- Tabular numerals (`tnum`) on every Inter number that changes or lines up (stats, totals,
+  counters, clocks). Mono figures are already fixed-width.
+- UPPERCASE is applied with `text-transform`, never typed: content stays in normal case so screen
+  readers don't spell it out. Scripts without case (CJK and others) turn uppercase and
+  letter-spacing off via `:lang()`.
+- Label line-heights leave room for stacked Vietnamese diacritics on capitals (`Ầ`, `Ỗ`).
 
 | Role | Token | Use | Case | Color |
 |---|---|---|---|---|
@@ -395,7 +442,9 @@ Writing style:
 
 - 4pt grid with half steps: 4, 6, 8, 10, 12, 16, 20, 24, 28, 32. Page sections are separated by
   64px (96px on wide landing pages) and a 1px line.
-- Cell padding 12px (dense tools) to 16–24px (content pages). Row padding 6px 10px.
+- Two densities: `comfortable` (default; story name *Leaded*) and `compact` (*Set solid*). Density
+  changes paddings and control heights, never type sizes or the laws.
+- Cell padding 12px (compact) to 16–24px (comfortable content pages). Row padding 6px 10px.
 - **The ruled grid.** Group siblings in a grid with a 1px gap over a line-colored ground, so the
   gaps draw the rules. Use it for product grids, post lists, feature lists, pricing plans, stats,
   footer columns and app panes alike.
@@ -405,11 +454,15 @@ Writing style:
 - **Page width** up to 1200px for content pages, centered, with the line grid running edge to
   edge inside it. Tools may use full width: fixed-width side columns around one flexible column
   (e.g. 320px | 1fr | 380px).
+- Components size themselves with container queries, not viewport media queries, so the same
+  component works in a sidebar and a main column.
+- Logical properties only (`inline-start`, `block-end`…). Layouts, rules and directional glyphs
+  mirror under `dir="rtl"`.
 - Order regions by the order the reader needs them.
 - Phone (design at 390px, support ≥ 360px): one column, 16px side gutter, header collapses to
   title + `MENU`, grids drop to one or two columns, side panels and filters become bottom sheets,
   primary actions pin to the bottom with 48–52px targets. No horizontal scroll.
-- A side panel *replaces* a column; nothing floats over content except menus and dialogs.
+- A side panel *replaces* a column; nothing floats over content except menus, popovers and dialogs.
 
 ## Elevation & Depth
 
@@ -420,27 +473,32 @@ border and a scrim behind, never a shadow. Sticky headers get a 1px line under t
 Strokes come in exactly two weights:
 
 - **1px hairline** for every border and divider;
-- **2px rule** for emphasis: hue rule, active-nav underline, selected-option border, focus ring,
-  progress bar.
+- **2px rule** for emphasis: hue rule, active-nav underline, focus ring, progress bar.
 
-Draw rules as inset strokes (left, top or bottom edge) so they never shift layout.
+Draw rules as inset strokes (inline-start, block-start or block-end edge) so they never shift layout.
 
 ## Shapes
 
 Every corner is square: radius 0 on cells, buttons, inputs, tags, images, avatars, dialogs, tracks
 and focus rings. Images and video sit flush in their cell or carry a 1px line border; never round
-or mask them into circles. Marks are rectangles: 8×8px squares, 2px rules, 2×24px playhead bars.
-Ghost (placeholder or removed) items use a 1px dashed line border with no fill.
+or mask them into circles. Marks are rectangles: 8×8px squares, 2px rules, 2×24px playhead bars,
+ink-inverted cursor blocks. Ghost (placeholder or removed) items use a 1px dashed line border with
+no fill.
 
 ## Components
+
+Every component follows its WAI-ARIA Authoring Practices pattern and styles its states from ARIA
+attributes: `[aria-current]` → accent, `[aria-selected]` → cursor block, `[aria-pressed]`,
+`[aria-invalid]` → red, `[aria-busy]` → spinner. A component cannot show the accent without the
+markup being accessible. Class names carry the `nib-` prefix (`.nib-button`, `.nib-button--primary`).
 
 ### Header and navigation
 
 48px tall, surface background, 1px line underneath, sticky on long pages. Left: wordmark in mono
 label or a sans title. Center or right: nav links as mono label words, 16px apart. Inactive
-on-surface 2 → hover on-surface → active on-surface + 2px accent underline. Right end: utility words
-(`SEARCH`, `CART 2`, `[T]DARK`, `SIGN IN`) and at most one primary button. On phones: wordmark +
-`MENU`, which opens a full-width sheet of the same words.
+on-surface 2 → hover on-surface → active (`aria-current="page"`) on-surface + 2px accent underline.
+Right end: utility words (`SEARCH`, `CART 2`, `[T]DARK`, `SIGN IN`) and at most one primary button.
+On phones: wordmark + `MENU`, which opens a full-width sheet of the same words.
 
 Breadcrumbs: mono meta, `home / shop / coffee`, the last segment on-surface. Pagination:
 `← PREV · 2 / 9 · NEXT →` in mono label.
@@ -466,84 +524,110 @@ hover; the whole tile is the link.
   price on-surface 3 with a strike) · status tag (`IN STOCK` green, `LOW` yellow, `SOLD OUT` red).
 - **Post:** mono meta (`2026-10-23 · 6 MIN`) · headline-md title · two-line excerpt in body-md ·
   category tag in its hue.
-- **Feature:** 8×8 hue square or glyph · headline-md · one or two sentences.
+- **Feature:** 8×8 hue square or icon · headline-md · one or two sentences.
 - **Plan:** mono plan name · headline-xl price · feature rows with `✓` · primary button. The
-  recommended plan gets a 2px accent top rule and a `RECOMMENDED` accent tag, not a bigger box.
+  recommended plan gets a 2px accent top rule and a `RECOMMENDED` accent-text tag, not a bigger box.
 
 ### Article
 
 Title in headline-xl, lead in headline-lead, mono meta row (author · date · read time), then
 body-lg prose at 68ch. In-article headings are headline-display (h2) and headline-md (h3) with
 32px above. Links: ink text, line-colored underline at 3px offset, accent-text on hover. Lists use
-`·` or numbers in mono. Block quotes: 2px on-surface-3 left rule, body-lg on-surface. Images span
-the reading column with a body-sm caption below. Code blocks on surface raised. Footnotes and table
-of contents in mono meta.
+`·` or numbers in mono. Block quotes: 2px on-surface-3 inline-start rule, body-lg on-surface.
+Images span the reading column with a body-sm caption below. Code blocks on surface raised.
+Footnotes and table of contents in mono meta.
 
 ### List row
 
-Raised fill, 1px line-soft border, optional 2px hue rule on the left, padding 6px 10px. Line 1:
-mono id or name · sans description · meta · spacer · tag. Line 2 (optional): mono detail.
+Raised fill, 1px line-soft border, optional 2px hue rule on the inline-start edge, padding 6px
+10px. Line 1: mono id or name · sans description · meta · spacer · tag. Line 2 (optional): mono
+detail.
 
+- **selected** (`aria-selected`): cursor block (ink inversion).
 - **new**: `-soft` fill + 1px full-hue border + `NEW` tag.
 - **highlighted**: `-soft` fill + `-border` outline.
 - **ghost**: transparent, 1px dashed line border, on-surface 3 text.
 
-### Button: words, not icons
+### Button: words first
 
 Mono label, 28px tall (36px `lg` for page-level CTAs, 44px on touch), 1px transparent border.
 
 - **hover**: hover fill only. Never a lift, scale or shadow.
-- **primary**: ink fill, surface text; hover at 86% opacity. One primary per view or row.
-- **outline**: 1px line border. Pressed toggle: ink border + hover fill.
+- **primary**: see the open decision under *Primary, accent and cursor*. One primary per view.
+- **outline**: 1px line border. Pressed toggle (`aria-pressed="true"`): ink border + hover fill.
 - **destructive**: red border + red text.
 - **disabled**: 45% opacity.
 
-Text is a verb: `ADD TO CART`, `SUBSCRIBE`, `READ MORE →`, `RUN`. When a control has a keyboard
-shortcut, print it before the word: `[⌘↵]RUN`, `[ESC]CANCEL` (on-surface 3, weight 400, no box).
-No pills, no icon-only buttons. Single-character controls (`−` `+` `×`) are allowed only as mono
-glyphs inside a labelled group, such as a quantity stepper, with an accessible name.
+Text is a verb: `ADD TO CART`, `SUBSCRIBE`, `READ MORE →`, `RUN`. An icon may sit before the word;
+the word always stays. When a control has a keyboard shortcut, print it before the word:
+`[⌘↵]RUN`, `[ESC]CANCEL` (on-surface 3, weight 400, no box). No pills. Icon-only controls are
+allowed only for dense controls inside a component (see Iconography) and always carry an
+accessible name and a tooltip.
 
 ### Forms
 
 - **Field:** mono label (on-surface 2) above, input below. Input: raised fill, 1px line border,
   36px tall, mono text, square, 2px accent focus outline. Help text in body-sm on-surface 3.
-- **Error:** red border + red mono message below: `⚠ ENTER A VALID EMAIL`.
-- **Checkbox / radio:** mono `[x]` / `[ ]` and `(•)` / `( )` beside a sans label; whole row
-  clickable.
-- **Option picker** (size, color, plan, quantity): a row of outline buttons; the selected one has
-  a 2px accent border.
-- **Switch:** the word `ON` / `OFF` in mono. No sliding knob.
+- **Error** (`aria-invalid`): red border + red mono message below: `⚠ ENTER A VALID EMAIL`.
+- **Checkbox / radio:** native `<input>` with `appearance: none`; the glyph `[x]` / `[ ]` and
+  `(•)` / `( )` is drawn by CSS beside a sans label; the whole row is clickable. Never a `<span>`
+  posing as a checkbox.
+- **Option picker** (size, color, plan, quantity): a row of outline buttons; the selected one is a
+  cursor block.
+- **Switch:** `<input type="checkbox" role="switch">`; CSS prints `ON` / `OFF` in mono. No sliding knob.
+- **Select:** the native `<select>`, styled within what browsers allow. A fully custom list is the
+  listbox / combobox component.
 - **Search / prompt input:** may start with `❯`.
 
 ### Tag / badge
 
 Text-only mono micro in the hue (`NEW`, `SALE`, `DRAFT`, `×3`). Filled variant for status chips:
-`-soft` fill + 1px `-border`. An orange tag only for current states (`NOW`, `LIVE`, `CURRENT`).
+`-soft` fill + 1px `-border`. An accent-text tag only for current states (`NOW`, `LIVE`, `CURRENT`).
 
 ### Callout
 
-Raised fill, 2px hue rule on the left, padding 10px 12px. Mono uppercase label in the hue, body
-in body-md on-surface 2. Glyph + label set the tone: `※ NOTE` (blue) · `▲ WARNING` (yellow) ·
-`⚠ ERROR` (red, announced as an alert) · `✓ DONE` (green) · `❯ NEXT STEP` (accent). Actions go in a
-row of word buttons below. Use for notices, shipping info, tips in articles, and form summaries.
+Raised fill, 2px hue rule on the inline-start edge, padding 10px 12px. Mono uppercase label in the
+hue, body in body-md on-surface 2. Glyph + label set the tone: `※ NOTE` (blue) · `▲ WARNING`
+(yellow) · `⚠ ERROR` (red, announced as an alert) · `✓ DONE` (green) · `❯ NEXT STEP` (accent).
+Actions go in a row of word buttons below.
 
-### Table
+### Table and data grid
 
 Mono header row in label (on-surface 3), 1px line under it, 1px line-soft between rows, item
 typography in cells, numbers right-aligned and tabular. Hover row gets the hover fill. The selected
-row gets a 2px accent left rule. No zebra stripes, no outer box beyond the grid line.
+row is a cursor block; the focused cell in a data grid gets the 2px accent focus ring. No zebra
+stripes, no outer box beyond the grid line. Sort direction is shown with `↑` / `↓` beside the
+header word; row selection uses `[x]` checkboxes.
+
+Data grid scope for 1.0: sort, row selection, sticky header, column resize, APG grid keyboard,
+pagination, simple cell edit, row virtualisation from about 1,000 rows. Not in 1.0: grouping,
+pivot, column drag, spreadsheet-style range selection.
+
+### Listbox, combobox and command palette
+
+Panel surface, 1px line border, positioned next to its trigger (flip and shift to stay in the
+viewport). The highlighted option is a cursor block; the selected value carries `✓`. Typed
+characters filter; matched characters are on-surface, the rest on-surface 2. The command palette is
+a dialog holding a combobox, opened with `[⌘K]`.
+
+### Date picker
+
+A ruled 7-column grid of mono day numbers. Today: accent-text number with a 2px accent underline.
+Selected day: cursor block. Range: cursor blocks at both ends, hover fill between. Month and day
+names come from `Intl` for the page's locale, including the first day of the week. 1.0 scope:
+single date, range, min / max, disabled dates; no time picking, no lunar calendar.
 
 ### Cart and checkout
 
 Line items are list rows: image thumb (square, 48px) · name · option meta · quantity stepper ·
-mono price. Totals block: mono labels left, tabular prices right, a 1px line above the total, total
-in headline-md. Progress through steps as mono labels `CART · SHIPPING · PAYMENT`, the current one
-on-surface with a 2px accent underline.
+mono price. Totals block: mono labels inline-start, tabular prices inline-end, a 1px line above the
+total, total in headline-md. Progress through steps as mono labels `CART · SHIPPING · PAYMENT`, the
+current one on-surface with a 2px accent underline.
 
 ### Dialog / drawer / sheet
 
-Panel surface, 1px line border, no shadow, scrim behind. Dialogs about 500px wide; drawers 380–420px
-from the side. On phones both become bottom sheets.
+Native `<dialog>`; panel surface, 1px line border, no shadow, scrim behind. Dialogs about 500px
+wide; drawers 380–420px from the inline-end side. On phones both become bottom sheets.
 
 ### Footer
 
@@ -564,8 +648,8 @@ spinner is the only perpetual animation allowed.
 ### Live data (dashboards and tools)
 
 - **Pane:** a ruled cell with a 38px header: 8×8 hue square · mono title · count in meta · state
-  word on the right. When its data changes, it gets a `-soft` fill + 2px top rule and a `CHANGED`
-  label; only the pane that changed is tinted.
+  word on the inline-end side. When its data changes, it gets a `-soft` fill + 2px top rule and a
+  `CHANGED` label; only the pane that changed is tinted.
 - **Stat:** mono label, headline-xl tabular number, meta delta in green or red with `▲` / `▼`.
 - **Chart:** square bars, 1px axes in line, labels in mono meta, series colored by hue with a
   legend of 8×8 squares and words. The current or hovered value uses the accent.
@@ -577,11 +661,23 @@ spinner is the only perpetual animation allowed.
 
 ## Iconography
 
-No icon font, no illustrated icons. Terminal glyphs only, and only where they carry meaning:
-`❯` prompt / next · `※` note · `▲` warning / up · `▼` down · `⚠` error · `✓` done / included ·
-`×` close / repeat count · `→ ←` direction · `↗` external link · `■` category square ·
-`⇧ ⌥ ⌘ ↵ ␣` keys · `·` separator · `✻` loading. Brand logos and product photos are content, not
-icons, and are allowed.
+Nib ships its own icon set (story name *Dingbats*), drawn by the same laws:
+
+- 16×16 grid (20×20 for large controls); strokes 1px, 2px for an emphasised state;
+- square caps, miter joins, only 90° and 45° angles, no curves; aligned to the pixel grid;
+- `currentColor` only, no icon carries its own color;
+- delivered as an SVG sprite, one ES module per icon, and a CSS mask version for no-JS pages;
+- about 60–80 icons in 1.0: the ones the components need, plus a small general set.
+
+Icons accompany words by default. An icon may stand alone only in dense controls inside a
+component (month arrows in the date picker, sort and resize in the data grid, the close button of
+a dialog); it then has an accessible name and a tooltip. Brand logos and product photos are
+content, not icons.
+
+Terminal-style glyphs stay in text where they carry meaning: `❯` prompt / next · `※` note · `▲`
+warning / up · `▼` down · `⚠` error · `✓` done / included · `×` close / repeat count · `→ ←`
+direction · `↑ ↓` sort · `‹ ›` previous / next month · `▾` expand · `↗` external link · `■` category
+square · `⇧ ⌥ ⌘ ↵ ␣` keys · `·` separator · `✻` loading. Directional glyphs mirror under RTL.
 
 ## Imagery
 
@@ -612,64 +708,78 @@ stepped `steps(1, end)`.
 
 ## Accessibility
 
-- Every text color ≥ 4.5:1 on all three surfaces in both themes. Orange text in light mode is
-  #a94e2f. On-surface 4 is never text.
+- Target: WCAG 2.2 AA, and every interactive component follows its WAI-ARIA APG pattern.
+- Every text color ≥ 4.5:1 on all three surfaces in both themes; accent marks ≥ 3:1. On-surface 4
+  is never text.
 - Focus: 2px solid accent outline, 2px offset, square, on every interactive element. Exactly one
   focus indicator per element.
-- Color is never the only signal: words, tags and glyphs travel with every hue.
+- Color is never the only signal: words, tags, glyphs and the cursor block travel with every hue.
 - Status changes (added to cart, form errors, live updates) are announced in a polite live region;
   errors use an alert.
 - Touch targets ≥ 44px; primary touch controls 48–52px.
-- Selection uses the accent fill with surface-colored text.
+- Selection is a cursor block: on-surface fill with surface-colored text.
+- Forced colors (`@media (forced-colors: active)`): backgrounds disappear, so cursor blocks use
+  `Highlight` / `HighlightText`, 2px rules become real borders, and focus uses `CanvasText`.
+- Custom accents and hue mappings are checked by `nib theme check`: contrast on 3 surfaces × 2
+  themes, color-vision-deficiency distance to red / green / yellow, and collisions with the fixed
+  hues.
 
 ## Theming
 
-- Dark is the default. Light swaps every color role to its `-light` value; spacing, type, shape
-  and motion are identical in both. A content-first site may default to light; the rules don't
-  change.
-- Offer a word toggle (`DARK` / `LIGHT`) in the header or footer.
+- With no choice made, the theme follows `prefers-color-scheme`. `data-theme="dark"` or
+  `data-theme="light"` on `<html>` or on any region overrides it; spacing, type, shape and motion
+  are identical in both. Story names: *Ink* (dark) and *Paper* (light).
 - Any region may switch theme on its own (e.g. a dark code sample inside a light article).
-- The page tone sits on the root element, so overscroll and gaps never flash a different color.
+- The page tone sits on the root element with `color-scheme`, so overscroll and gaps never flash a
+  different color.
+- Offer a word toggle (`DARK` / `LIGHT`) in the header or footer.
 
-## Domain recipes
+## Presets
 
-The same system, applied. Each recipe says what the accent marks, how the free hues are mapped,
-and which components carry the screen.
+A preset is a bundle of tokens plus a recipe: default theme, density, the mapping of the three
+free hues, built-in tags and sample pages. Presets never change the laws. Code uses the plain
+names; the story names live in docs and marketing only.
 
-- **Blog / journal.** Header + article as the focal point; post list as ruled rows or tiles.
-  Accent = current nav item, reading-progress bar, link hover. Hues = one per category (e.g. blue
-  `GUIDE`, magenta `ESSAY`, cyan `NOTE`). Default to light if most readers read long-form.
-- **Landing page.** Hero → proof (logos or one stat row) → features grid → how it works (numbered
-  mono steps) → pricing plans → FAQ (ruled rows that expand) → final CTA → footer. One primary
-  CTA wording repeated, ink-filled. Accent = recommended plan rule, active section in a sticky nav.
-  Hues sparingly, for feature categories or none at all.
-- **Shop.** Ruled product grid with filter words above (`ALL · COFFEE · GEAR`) and a sort select;
-  product page = image cell + details cell (name, price, option picker, `ADD TO CART`, shipping
-  callout); cart drawer; checkout steps. Accent = selected option, current checkout step. Hues =
-  stock status (green / yellow / red); `SALE` uses magenta or blue, never orange.
-- **Docs / knowledge base.** Left nav column (mono labels, current page with accent rule), article
-  at reading width, right column for the page outline. Callouts for notes and warnings, code blocks
-  with copy word buttons. Hues = callout types.
-- **Dashboard / tool.** Header + ruled panes in fixed columns + bottom dock of word controls with
-  printed hotkeys. Accent = what's current or running. Hues = one per data series or entity type.
-  Only the pane that changed is tinted.
-- **Portfolio / personal site.** Short lowercase intro sentence as the hero, projects as image
-  tiles in a ruled grid, mono meta for year and role. Accent = current nav item only.
+| Preset (code) | Story name | Default theme | Accent marks | Hues |
+|---|---|---|---|---|
+| `docs` | Galley | follows OS | current page in the nav, current heading in the outline | callout types |
+| `dashboard` | Ledger | dark, compact | what is current or running | one per data series or entity type |
+| `blog` | Broadsheet | light | current nav item, reading progress, link hover | one per category (`GUIDE`, `ESSAY`, `NOTE`) |
+| `landing` | Broadside | follows OS | recommended plan rule, active section in a sticky nav | feature categories, or none |
+| `shop` | Catalogue | light | selected option, current checkout step | stock status; `SALE` in magenta or blue, never jade |
+| `portfolio` | Folio | follows OS | current nav item only | none or one |
+
+- **Galley (docs).** Left nav column (mono labels, current page with an accent rule), article at
+  reading width, right column for the page outline. Callouts for notes and warnings, code blocks
+  with a `COPY` word button.
+- **Ledger (dashboard).** Header + ruled panes in fixed columns + bottom dock of word controls with
+  printed hotkeys. Only the pane that changed is tinted.
+- **Broadsheet (blog).** Header + article as the focal point; post list as ruled rows or tiles.
+- **Broadside (landing).** Hero → proof (logos or one stat row) → features grid → how it works
+  (numbered mono steps) → pricing plans → FAQ (ruled rows that expand) → final CTA → footer. One
+  primary CTA wording, repeated.
+- **Catalogue (shop).** Ruled product grid with filter words above (`ALL · COFFEE · GEAR`) and a
+  sort select; product page = image cell + details cell (name, price, option picker,
+  `ADD TO CART`, shipping callout); cart drawer; checkout steps.
+- **Folio (portfolio).** Short lowercase intro sentence as the hero, projects as image tiles in a
+  ruled grid, mono meta for year and role.
 
 ## Do's and Don'ts
 
-- Do keep exactly one orange thing per view, and make it the current thing.
+- Do keep exactly one jade mark per view, and make it the current thing.
+- Do show the chosen item as a cursor block (ink inversion), not as a jade fill.
 - Do put siblings in a ruled grid; let the 1px gaps draw the structure.
 - Do pair every hue with a word, and keep one hue per concept.
-- Do make every control a word; print the hotkey when one exists.
+- Do lead every control with a word; print the hotkey when one exists.
 - Do use real content in examples, placeholders and empty states.
-- Do check both themes and a 360px-wide phone before shipping a screen.
+- Do check both themes, forced colors, RTL and a 360px-wide phone before shipping a screen.
 - Don't round corners on anything, including images and avatars.
 - Don't add shadows, glow, gradients, glassmorphism or blur.
 - Don't center a hero headline on a gradient or decorative background.
 - Don't float cards on the page; don't box content inside more boxes.
-- Don't use pill buttons, icon-only controls or colored button fills.
-- Don't use orange for brand washes, sale badges, or the primary button.
-- Don't write Title Case headings, uppercase sans text, or enable ligatures.
+- Don't use pill buttons, colored button fills, or icon-only controls outside dense component controls.
+- Don't use jade for brand washes, sale badges, buttons or large fills.
+- Don't use ink inversion for buttons; it means *selected*.
+- Don't write Title Case headings, type uppercase into content, or enable mono ligatures.
 - Don't add hover lifts, scale, parallax, bouncy easing or perpetual animation beyond the spinner.
 - Don't use illustrations, stock 3D art or lorem ipsum.
