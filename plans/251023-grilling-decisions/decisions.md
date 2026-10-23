@@ -103,3 +103,8 @@ Research: `plans/reports/researcher-251023-*.md` · Accent swatches: `plans/visu
 None on design. Remaining items are actions, gated on the owner's final confirmation:
 - Owner: trademark check for "Nib" (USPTO / WIPO, software class 9/42); buy `nib.dev` + `nib.design`; create npm org `nib-ui` and GitHub org `nib-ui` (web only; enable 2FA).
 - Claude (authorised in Q23, after confirmation): transfer the repo to `nib-ui`, merge the `design` repo via `git subtree` into `spec/` + `brand/`, rewrite DESIGN.md / README for Nib + jade/ink-inversion accent, record key decisions as ADRs in `docs/adr/`.
+
+## Follow-ups found while writing the spec (2026-10-24)
+- **Open:** the primary button is an ink fill, which looks like the ink-inverted cursor block that the accent decision reserves for selection. A primary-button treatment that is not a plain ink fill needs its own decision (see `docs/adr/0002-*.md`).
+- Syntax colors retuned off teal: keyword `#a98fc0` / `#6e4f8a` (mauve), number `#c2a26f` / `#7d5f2c` (ochre); ≥ 4.5:1 on surface raised in both themes.
+- Label line-heights raised for Vietnamese diacritics: `label-md` 12/18, `label-sm` 11/16.
