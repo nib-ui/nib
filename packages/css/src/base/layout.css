@@ -8,8 +8,10 @@
     padding-inline: var(--nib-space-lg);
   }
 
-  /* The ruled grid: cells over a line-coloured ground, so the 1px gaps draw the rules, each once
-     (the line colour is translucent; per-cell outlines would paint shared rules twice). */
+  /* The ruled grid: 1px rules between and around the cells, each painted once (the line colour is
+     translucent, so a rule painted twice would show darker). The grid draws the block-start and
+     inline-start edges; every cell its own inline-end and block-end edges. A short last row
+     leaves its empty cells unruled, and forced colours keep every rule (they are borders). */
   .nib-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--nib-grid-min, 16rem)), 1fr));
@@ -34,19 +36,14 @@
 
   .nib-grid,
   .nib-with-side {
-    gap: var(--nib-space-hairline);
-    padding: var(--nib-space-hairline);
-    background: var(--nib-line);
-  }
-
-  /* A short last row: the last cell runs to the row's end, so the ground never shows as a block. */
-  .nib-grid > :last-child {
-    grid-column-end: -1;
+    border-block-start: var(--nib-space-hairline) solid var(--nib-line);
+    border-inline-start: var(--nib-space-hairline) solid var(--nib-line);
   }
 
   :is(.nib-grid, .nib-with-side) > * {
     min-inline-size: 0;
-    background: var(--nib-surface);
+    border-inline-end: var(--nib-space-hairline) solid var(--nib-line);
+    border-block-end: var(--nib-space-hairline) solid var(--nib-line);
   }
 
   /* The label row on top of a pane: PANE NAME on the start, actions on the end. */
@@ -89,7 +86,7 @@
     white-space: nowrap;
   }
 
-  /* Last, so it wins over the ruled cells' forced-colours outline: one square 2px accent ring, 2px away. */
+  /* One square 2px accent ring, 2px away. */
   :focus-visible {
     outline: var(--nib-space-rule) solid var(--nib-accent);
     outline-offset: var(--nib-space-rule);
@@ -98,11 +95,6 @@
   @media (forced-colors: active) {
     :focus-visible {
       outline-color: CanvasText;
-    }
-
-    /* Backgrounds are dropped, and the ground with them: each cell draws its own rule. */
-    :is(.nib-grid, .nib-with-side) > * {
-      outline: var(--nib-space-hairline) solid CanvasText;
     }
 
     .nib-skip {

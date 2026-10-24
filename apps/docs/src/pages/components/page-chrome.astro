@@ -1,0 +1,93 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<header class="nib-header">
+  <div class="nib-header__bar">
+    <a class="nib-header__brand" href="#content">Roastery</a>
+    <ul class="nib-nav" id="chrome-nav" aria-label="Main">
+      <li><a href="#content" aria-current="page">Shop</a></li>
+      <li><a href="#content">Journal</a></li>
+      <li><a href="#content">About</a></li>
+    </ul>
+    <a class="nib-header__word" href="#content">Cart 2</a>
+    <a class="nib-header__word nib-header__menu" href="#chrome-nav">Menu</a>
+  </div>
+</header>
+
+<div class="nib-with-side" style="--nib-side-width: 12rem">
+  <nav class="nib-side-nav" aria-label="Shop">
+    <p class="nib-side-nav__title">Coffee</p>
+    <ul>
+      <li><a href="#content" aria-current="page">Single origin</a></li>
+      <li><a href="#content">Blends</a></li>
+      <li><a href="#content">Decaf</a></li>
+    </ul>
+  </nav>
+  <div class="nib-with-side__main chrome-main">
+    <p class="nib-kicker">Shop · Coffee</p>
+    <h2 class="nib-text-display">Single origin</h2>
+  </div>
+</div>
+
+<footer class="nib-footer">
+  <div class="nib-grid nib-footer__columns">
+    <div class="nib-footer__column">
+      <h2 class="nib-footer__head">Shop</h2>
+      <ul>
+        <li><a href="#content">Coffee</a></li>
+        <li><a href="#content">Gear</a></li>
+      </ul>
+    </div>
+    <div class="nib-footer__column">
+      <h2 class="nib-footer__head">Company</h2>
+      <ul>
+        <li><a href="#content">About</a></li>
+        <li><a href="#content">Journal</a></li>
+      </ul>
+    </div>
+  </div>
+  <p class="nib-footer__meta">
+    <span>© 2026</span><a href="#content">Privacy</a><a href="#content">Terms</a>
+    <span>[T]Dark</span>
+  </p>
+</footer>`;
+---
+
+<ComponentPage
+  title="Page chrome"
+  lead="The header, the side column and the footer: the words around a page, in mono, with one current item."
+  kind="CSS"
+  code={{ html }}
+>
+  <div slot="example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    <code>nib-header</code> is sticky with a 1px line under it. Its <code>nib-nav</code> words are mono labels; the
+    current one carries <code>aria-current="page"</code> and a 2px accent underline. When the header is narrower than
+    30rem the nav folds behind <code>nib-header__menu</code>, a link to the nav's id that opens it below the bar without
+    JavaScript; the full-width sheet arrives with the dialog component.
+  </p>
+  <p>
+    <code>nib-side-nav</code> sits in the base <code>nib-with-side</code> layout beside the main column and wraps above
+    it on narrow pages. <code>nib-footer</code> holds a ruled grid of link columns and a meta row.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      Name each navigation (<code>aria-label</code> on <code>nav</code> or the list) and mark the current page with
+      <code>aria-current="page"</code>; the underline and rule follow it.
+    </li>
+    <li>
+      Put a skip link before the header (<code>nib-skip</code>, from the base).
+    </li>
+    <li>Header words are at least 44px tall, so they work as touch targets.</li>
+    <li>In forced colours the current underline and rule become CanvasText borders.</li>
+  </ul>
+</ComponentPage>
+
+<style>
+  :global(.chrome-main) {
+    padding: var(--nib-space-lg);
+  }
+</style>

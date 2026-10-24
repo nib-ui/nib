@@ -16,3 +16,6 @@
 @import './components/tag.css';
 @import './components/callout.css';
 @import './components/code.css';
+@import './components/header.css';
+@import './components/side-nav.css';
+@import './components/footer.css';

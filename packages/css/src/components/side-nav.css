@@ -1,0 +1,66 @@
+/* Side column navigation: a vertical list of words beside the main column (pair it with the base
+   nib-with-side layout). Section heads are mono labels; links are body text, the current one gets
+   a 2px accent rule on its inline-start edge and on-surface ink. */
+@layer nib.components {
+  .nib-side-nav {
+    padding-block: var(--nib-space-md);
+  }
+
+  .nib-side-nav__title {
+    margin: var(--nib-space-lg) 0 var(--nib-space-xs);
+    padding-inline: var(--nib-space-md);
+    color: var(--nib-on-surface-3);
+    font: var(--nib-label-sm-font-weight) var(--nib-label-sm-font-size) / var(--nib-label-sm-line-height)
+      var(--nib-font-mono);
+    text-transform: var(--nib-caps, uppercase);
+  }
+
+  .nib-side-nav__title:first-child {
+    margin-block-start: 0;
+  }
+
+  .nib-side-nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nib-side-nav a {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--nib-space-control-height);
+    padding-inline: calc(var(--nib-space-md) - var(--nib-space-rule)) var(--nib-space-md);
+    border-inline-start: var(--nib-space-rule) solid transparent;
+    color: var(--nib-on-surface-2);
+    font: var(--nib-body-md-font-weight) var(--nib-body-md-font-size) / var(--nib-body-md-line-height)
+      var(--nib-font-sans);
+    text-decoration: none;
+  }
+
+  .nib-side-nav a:hover {
+    background: var(--nib-hover);
+    color: var(--nib-on-surface);
+  }
+
+  .nib-side-nav a[aria-current='page'],
+  .nib-side-nav a[aria-current='location'] {
+    border-inline-start-color: var(--nib-accent);
+    color: var(--nib-on-surface);
+  }
+
+  @media (pointer: coarse) {
+    .nib-side-nav a {
+      min-block-size: var(--nib-space-touch-target);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .nib-side-nav a {
+      border-inline-start-color: Canvas;
+    }
+
+    .nib-side-nav a:is([aria-current='page'], [aria-current='location']) {
+      border-inline-start-color: CanvasText;
+    }
+  }
+}

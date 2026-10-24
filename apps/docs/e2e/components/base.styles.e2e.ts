@@ -51,25 +51,21 @@ test.describe('base', () => {
     await expect(prose.locator('a')).toHaveCSS('text-underline-offset', '3px');
   });
 
-  test('the ruled grid draws each 1px rule once, over a line-coloured ground', async ({ page }) => {
+  test('the ruled grid paints each 1px rule once and leaves no ground in a short last row', async ({ page }) => {
     const grid = page.locator('.nib-grid').first();
-    await expect(grid).toHaveCSS('column-gap', '1px');
-    await expect(grid).toHaveCSS('padding-top', '1px');
-    const line = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--nib-line'));
-    expect(line.trim()).not.toBe('');
-    await expect(grid).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
-    await expect(grid.locator('> *').first()).toHaveCSS('outline-style', 'none');
-  });
-
-  test('in a short last row the last cell runs to the end, so no ground shows', async ({ page }) => {
-    await page.evaluate(() => {
-      const grid = document.querySelector('.nib-grid');
-      grid?.append(grid.firstElementChild?.cloneNode(true) as Node);
-    });
-    const grid = await page.locator('.nib-grid').first().boundingBox();
-    const last = await page.locator('.nib-grid > :last-child').first().boundingBox();
-    // The ground's 1px padding is all that is left on the end side.
-    expect(Math.round((grid?.x ?? 0) + (grid?.width ?? 0) - ((last?.x ?? 0) + (last?.width ?? 0)))).toBe(1);
+    await expect(grid).toHaveCSS('column-gap', 'normal');
+    await expect(grid).toHaveCSS('border-top-width', '1px');
+    await expect(grid).toHaveCSS('border-left-width', '1px');
+    await expect(grid).toHaveCSS('border-right-width', '0px');
+    await expect(grid).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+    const cell = grid.locator('> *').first();
+    await expect(cell).toHaveCSS('border-right-width', '1px');
+    await expect(cell).toHaveCSS('border-bottom-width', '1px');
+    await expect(cell).toHaveCSS('border-left-width', '0px');
+    // Right to left, the rules move to the mirrored edges.
+    await page.evaluate(() => document.documentElement.setAttribute('dir', 'rtl'));
+    await expect(grid).toHaveCSS('border-right-width', '1px');
+    await expect(cell).toHaveCSS('border-left-width', '1px');
   });
 
   test('the side column sits beside the main column, and wraps above it when space runs out', async ({ page }) => {
@@ -101,15 +97,10 @@ test.describe('base', () => {
     );
   });
 
-  test('forced colours give every ruled cell its own rule and focus a CanvasText ring', async ({
-    page,
-    browserName,
-  }) => {
+  test('forced colours keep the grid rules and give focus a CanvasText ring', async ({ page, browserName }) => {
     test.skip(browserName !== 'chromium', 'Playwright emulates forced colours in Chromium only');
     await page.emulateMedia({ forcedColors: 'active' });
-    const cell = page.locator('.nib-grid > *').first();
-    await expect(cell).toHaveCSS('outline-style', 'solid');
-    await expect(cell).toHaveCSS('outline-width', '1px');
+    await expect(page.locator('.nib-grid > *').first()).toHaveCSS('border-bottom-style', 'solid');
     await page.keyboard.press('Tab');
     const canvasText = await page.evaluate(() => {
       const probe = document.body.appendChild(document.createElement('span'));
