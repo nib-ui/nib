@@ -61,3 +61,15 @@ import '@nib-ui/css/presets/blog.css';
     </article>
   </main>
 </PresetLayout>
+
+<script>
+  // Reading progress: the share of the page scrolled, written where the preset's rule reads it.
+  const bar = document.querySelector<HTMLElement>('.nib-broadsheet__progress');
+  const update = () => {
+    const room = document.documentElement.scrollHeight - innerHeight;
+    bar?.style.setProperty('--nib-progress', String(room > 0 ? Math.min(1, scrollY / room) : 1));
+  };
+  addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', update);
+  update();
+</script>

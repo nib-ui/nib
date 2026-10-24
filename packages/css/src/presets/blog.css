@@ -14,40 +14,23 @@
     text-decoration-color: var(--nib-accent);
   }
 
-  /* Reading progress: a 2px accent rule along the top that grows with the page's scroll, where the
-     browser has scroll-driven animations; elsewhere it is not drawn. */
+  /* Reading progress: a 2px accent rule along the top, as long as the share of the article read.
+     The page sets --nib-progress from 0 to 1 as it scrolls (scroll-driven animations are not in
+     Nib's browser floor, ADR 5). */
   .nib-broadsheet__progress {
-    display: none;
+    position: fixed;
+    z-index: 2;
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: var(--nib-space-rule);
+    background: var(--nib-accent);
+    transform-origin: 0 50%;
+    scale: var(--nib-progress, 0) 1;
+    pointer-events: none;
   }
 
-  @supports (animation-timeline: scroll()) {
-    .nib-broadsheet__progress {
-      position: fixed;
-      z-index: 2;
-      display: block;
-      pointer-events: none;
-      inset-block-start: 0;
-      inset-inline: 0;
-      block-size: var(--nib-space-rule);
-      background: var(--nib-accent);
-      transform-origin: 0 50%;
-      animation: nib-broadsheet-progress linear both;
-      animation-timeline: scroll(root block);
-    }
-
-    .nib-broadsheet__progress:dir(rtl) {
-      transform-origin: 100% 50%;
-    }
-  }
-
-  @keyframes nib-broadsheet-progress {
-    from {
-      scale: 0 1;
-    }
-
-    to {
-      scale: 1 1;
-    }
+  .nib-broadsheet__progress:dir(rtl) {
+    transform-origin: 100% 50%;
   }
 
   .nib-category-guide,
