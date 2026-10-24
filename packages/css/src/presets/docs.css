@@ -1,0 +1,77 @@
+/* Galley, the docs preset: the docs navigation, the article at reading width and the page outline
+   ("On this page") in three columns under the header. The outline marks the heading being read
+   with aria-current="location": a 2px accent rule and on-surface text, from nib-side-nav. Callout
+   types keep their own hues (note, warning, error, done, next). Theme: follows the OS. */
+@layer nib.components {
+  .nib-galley {
+    display: grid;
+    grid-template-areas: 'nav article outline';
+    grid-template-columns: var(--nib-galley-nav-width, 15rem) minmax(0, 1fr) var(--nib-galley-outline-width, 13rem);
+    max-inline-size: var(--nib-space-page-max-width);
+    margin-inline: auto;
+  }
+
+  .nib-galley__nav {
+    grid-area: nav;
+    border-inline-end: var(--nib-space-hairline) solid var(--nib-line);
+  }
+
+  .nib-galley__outline {
+    grid-area: outline;
+    border-inline-start: var(--nib-space-hairline) solid var(--nib-line);
+  }
+
+  /* The side columns run the full height (so their rules do); their lists stick under the header. */
+  .nib-galley__nav > *,
+  .nib-galley__outline > * {
+    position: sticky;
+    inset-block-start: var(--nib-space-header-height);
+    max-block-size: calc(100dvh - var(--nib-space-header-height));
+    overflow-y: auto;
+  }
+
+  .nib-galley__article {
+    grid-area: article;
+    min-inline-size: 0;
+    padding: var(--nib-space-xl) var(--nib-space-lg);
+  }
+
+  .nib-galley__article > * {
+    max-inline-size: var(--nib-space-reading-width);
+  }
+
+  /* Medium: the outline moves under the navigation. */
+  @media (width < 64rem) {
+    .nib-galley {
+      grid-template-areas: 'nav article' 'outline article';
+      grid-template-columns: var(--nib-galley-nav-width, 15rem) minmax(0, 1fr);
+      grid-template-rows: auto 1fr;
+    }
+
+    .nib-galley__outline {
+      border-block-start: var(--nib-space-hairline) solid var(--nib-line);
+      border-inline: 0 var(--nib-space-hairline) solid var(--nib-line);
+    }
+  }
+
+  /* Narrow: one column in reading order, the side lists no longer sticky. */
+  @media (width < 48rem) {
+    .nib-galley {
+      grid-template-areas: 'nav' 'article' 'outline';
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto;
+    }
+
+    .nib-galley__nav,
+    .nib-galley__outline {
+      border-inline: 0;
+      border-block-end: var(--nib-space-hairline) solid var(--nib-line);
+    }
+
+    .nib-galley__nav > *,
+    .nib-galley__outline > * {
+      position: static;
+      max-block-size: none;
+    }
+  }
+}

@@ -1,0 +1,31 @@
+---
+import '@nib-ui/fonts/fonts.css';
+import '@nib-ui/css/nib.css';
+
+// A whole page built with one preset: no docs chrome, so the preset alone lays it out. Each page
+// imports its preset's stylesheet; `html` carries the preset's page defaults (theme, density).
+interface Props {
+  title: string;
+  html?: Record<string, string>;
+}
+
+const { title, html = {} } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" {...html}>
+  <head>
+    <meta charset="utf-8" />
+    <style is:inline>
+      @layer nib.theme, nib.base, nib.components, nib.utilities;
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · Nib presets</title>
+  </head>
+  <body>
+    <a class="nib-skip" href="#content">
+      Skip to content
+    </a>
+    <slot />
+  </body>
+</html>

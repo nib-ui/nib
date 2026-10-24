@@ -1,0 +1,185 @@
+---
+import PresetLayout from '../../layouts/preset-layout.astro';
+// After the layout, so the preset loads after nib.css.
+import '@nib-ui/css/presets/landing.css';
+---
+
+<PresetLayout title="Broadside, the landing preset">
+  <header class="nib-header">
+    <div class="nib-header__bar">
+      <a class="nib-header__brand" href="#content">
+        Kettle
+      </a>
+      <ul class="nib-nav" id="broadside-nav" aria-label="Main">
+        <li>
+          <a href="#features" aria-current="location">
+            Features
+          </a>
+        </li>
+        <li>
+          <a href="#pricing">Pricing</a>
+        </li>
+        <li>
+          <a href="#faq">FAQ</a>
+        </li>
+      </ul>
+      <a class="nib-header__word nib-header__menu" href="#broadside-nav">
+        Menu
+      </a>
+    </div>
+  </header>
+  <main id="content" class="nib-container" tabindex="-1">
+    <div class="nib-hero">
+      <div class="nib-hero__text">
+        <p class="nib-kicker">Brew timer · 1.0</p>
+        <h1 class="nib-text-hero">Every brew, timed to the second</h1>
+        <p class="nib-text-lead">
+          Kettle reads your recipe and calls each pour, so the tenth cup tastes like the first.
+        </p>
+        <div class="nib-hero__actions">
+          <a class="nib-button nib-button--primary" href="#pricing">
+            Start brewing
+          </a>
+          <a class="nib-button nib-button--outline" href="#how">
+            How it works
+          </a>
+        </div>
+      </div>
+    </div>
+    <p class="nib-broadside__proof">
+      <span>Used by</span>
+      <span>Northside</span>
+      <span>Halfmoon</span>
+      <span>Corner Café</span>
+    </p>
+    <section class="nib-section" id="features" aria-labelledby="features-title">
+      <header class="nib-section__header">
+        <p class="nib-kicker">Features</p>
+        <h2 class="nib-text-xl" id="features-title">
+          What it does
+        </h2>
+      </header>
+      <div class="nib-grid" style="--nib-grid-min: 14rem">
+        <div class="nib-tile nib-hue-blue">
+          <h3 class="nib-tile__title">
+            <span class="nib-mark"></span> Recipes
+          </h3>
+          <p class="nib-tile__excerpt">Dose, water and grind in one plain file.</p>
+        </div>
+        <div class="nib-tile nib-hue-cyan">
+          <h3 class="nib-tile__title">
+            <span class="nib-mark"></span> Timing
+          </h3>
+          <p class="nib-tile__excerpt">A call for every pour, on screen and out loud.</p>
+        </div>
+        <div class="nib-tile nib-hue-magenta">
+          <h3 class="nib-tile__title">
+            <span class="nib-mark"></span> Log
+          </h3>
+          <p class="nib-tile__excerpt">Each brew kept, with the notes you add.</p>
+        </div>
+      </div>
+    </section>
+    <section class="nib-section" id="how" aria-labelledby="how-title">
+      <header class="nib-section__header">
+        <p class="nib-kicker">How it works</p>
+        <h2 class="nib-text-xl" id="how-title">
+          Three steps
+        </h2>
+      </header>
+      <ol class="nib-broadside__steps">
+        <li>Write the recipe once.</li>
+        <li>Start the brew; Kettle calls each pour.</li>
+        <li>Taste, note, and brew again.</li>
+      </ol>
+    </section>
+    <section class="nib-section" id="pricing" aria-labelledby="pricing-title">
+      <header class="nib-section__header">
+        <p class="nib-kicker">Pricing</p>
+        <h2 class="nib-text-xl" id="pricing-title">
+          Plans
+        </h2>
+      </header>
+      <div class="nib-grid" style="--nib-grid-min: 14rem">
+        <div class="nib-tile">
+          <h3 class="nib-tile__title">Home</h3>
+          <p class="nib-tile__amount">$0</p>
+          <ul class="nib-tile__checks">
+            <li>Three recipes</li>
+            <li>Timer</li>
+          </ul>
+          <div class="nib-tile__footer">
+            <a class="nib-button nib-button--outline" href="#content">
+              Start brewing
+            </a>
+          </div>
+        </div>
+        <div class="nib-tile nib-tile--recommended">
+          <p class="nib-tag nib-tag--accent">Recommended</p>
+          <h3 class="nib-tile__title">Café</h3>
+          <p class="nib-tile__amount">$9</p>
+          <ul class="nib-tile__checks">
+            <li>Every recipe</li>
+            <li>Brew log</li>
+          </ul>
+          <div class="nib-tile__footer">
+            <a class="nib-button nib-button--primary" href="#content">
+              Start brewing
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="nib-section" id="faq" aria-labelledby="faq-title">
+      <header class="nib-section__header">
+        <p class="nib-kicker">FAQ</p>
+        <h2 class="nib-text-xl" id="faq-title">
+          Questions
+        </h2>
+      </header>
+      <div class="nib-accordion" data-nib="accordion">
+        <div class="nib-accordion__item" data-nib-item="offline" data-open>
+          <h3 class="nib-accordion__heading">
+            <button class="nib-disclosure__trigger" type="button" data-nib-trigger>
+              Does it work offline?
+            </button>
+          </h3>
+          <div class="nib-disclosure__panel" data-nib-panel>
+            Yes. Recipes and the log stay on the device.
+          </div>
+        </div>
+        <div class="nib-accordion__item" data-nib-item="scales">
+          <h3 class="nib-accordion__heading">
+            <button class="nib-disclosure__trigger" type="button" data-nib-trigger>
+              Which scales does it read?
+            </button>
+          </h3>
+          <div class="nib-disclosure__panel" data-nib-panel>
+            Any Bluetooth scale that reports weight.
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="nib-broadside__cta" aria-labelledby="cta-title">
+      <h2 class="nib-text-display" id="cta-title">
+        Time your next brew
+      </h2>
+      <a class="nib-button nib-button--primary nib-button--lg" href="#pricing">
+        Start brewing
+      </a>
+    </section>
+  </main>
+  <footer class="nib-footer">
+    <p class="nib-footer__meta">
+      <span>© 2026 Kettle</span>
+      <a href="#content">Privacy</a>
+      <a href="#content">Terms</a>
+    </p>
+  </footer>
+</PresetLayout>
+
+<script>
+  import '@nib-ui/js/disclosure';
+  import { init } from '@nib-ui/js';
+  init();
+</script>

@@ -1,0 +1,126 @@
+---
+import PresetLayout from '../../layouts/preset-layout.astro';
+// After the layout, so the preset loads after nib.css.
+import '@nib-ui/css/presets/dashboard.css';
+---
+
+<PresetLayout title="Ledger, the dashboard preset" html={{ 'data-theme': 'dark', 'data-density': 'compact' }}>
+  <div class="nib-ledger">
+    <header class="nib-header">
+      <div class="nib-header__bar">
+        <a class="nib-header__brand" href="#content">
+          Roastery ops
+        </a>
+        <ul class="nib-nav" id="ledger-nav" aria-label="Main">
+          <li>
+            <a href="#content" aria-current="page">
+              Today
+            </a>
+          </li>
+          <li>
+            <a href="#content">Orders</a>
+          </li>
+          <li>
+            <a href="#content">Stock</a>
+          </li>
+        </ul>
+        <a class="nib-header__word nib-header__menu" href="#ledger-nav">
+          Menu
+        </a>
+      </div>
+    </header>
+    <main id="content" class="nib-ledger__panes" tabindex="-1" aria-label="Today">
+      <section class="nib-pane nib-series-1" aria-labelledby="p-orders">
+        <div class="nib-pane-header">
+          <span class="nib-pane__title" id="p-orders">
+            <span class="nib-mark"></span>Orders
+          </span>
+          <span class="nib-tag nib-tag--accent">Live</span>
+        </div>
+        <div class="nib-pane__body">
+          <p class="nib-stat">
+            <span class="nib-stat__label">Today</span>
+            <span class="nib-stat__value">128</span>
+            <span class="nib-stat__delta" data-trend="up">
+              +12% vs last week
+            </span>
+          </p>
+        </div>
+      </section>
+      <section class="nib-pane nib-pane--changed nib-series-2" aria-labelledby="p-roasts">
+        <div class="nib-pane-header">
+          <span class="nib-pane__title" id="p-roasts">
+            <span class="nib-mark"></span>Roasts
+          </span>
+          <span>Changed</span>
+        </div>
+        <div class="nib-pane__body">
+          <p class="nib-stat">
+            <span class="nib-stat__label">Batches</span>
+            <span class="nib-stat__value">6</span>
+            <span class="nib-stat__delta" data-trend="up">
+              +1 since noon
+            </span>
+          </p>
+        </div>
+      </section>
+      <section class="nib-pane nib-series-3" aria-labelledby="p-subs">
+        <div class="nib-pane-header">
+          <span class="nib-pane__title" id="p-subs">
+            <span class="nib-mark"></span>Subscriptions
+          </span>
+        </div>
+        <div class="nib-pane__body">
+          <p class="nib-stat">
+            <span class="nib-stat__label">Active</span>
+            <span class="nib-stat__value">412</span>
+            <span class="nib-stat__delta" data-trend="down">
+              −3 this week
+            </span>
+          </p>
+        </div>
+      </section>
+      <section class="nib-pane nib-ledger__wide" aria-labelledby="p-log">
+        <div class="nib-pane-header">
+          <span class="nib-pane__title" id="p-log">
+            Recent orders
+          </span>
+        </div>
+        <div class="nib-pane__body">
+          <div class="nib-row nib-row--ruled nib-series-1">
+            <span class="nib-row__id">#1042</span> Kenya Nyeri ×2 <span class="nib-row__meta">2 min ago</span>
+            <span class="nib-row__end nib-tag nib-series-1">Order</span>
+          </div>
+          <div class="nib-row nib-row--ruled nib-series-3">
+            <span class="nib-row__id">#S-88</span> Weekly plan renewed <span class="nib-row__meta">9 min ago</span>
+            <span class="nib-row__end nib-tag nib-series-3">Subscription</span>
+          </div>
+          <div class="nib-row nib-row--ruled nib-series-2">
+            <span class="nib-row__id">#R-12</span> Batch 6 roasted <span class="nib-row__meta">14 min ago</span>
+            <span class="nib-row__end nib-tag nib-series-2">Roast</span>
+          </div>
+        </div>
+      </section>
+    </main>
+    <nav class="nib-ledger__dock" aria-label="Actions">
+      <button class="nib-button nib-button--ghost" type="button">
+        <span class="nib-button__key" aria-hidden="true">
+          [R]
+        </span>
+        <span class="nib-button__word">Refresh</span>
+      </button>
+      <button class="nib-button nib-button--ghost" type="button">
+        <span class="nib-button__key" aria-hidden="true">
+          [N]
+        </span>
+        <span class="nib-button__word">New order</span>
+      </button>
+      <button class="nib-button nib-button--ghost" type="button">
+        <span class="nib-button__key" aria-hidden="true">
+          [E]
+        </span>
+        <span class="nib-button__word">Export</span>
+      </button>
+    </nav>
+  </div>
+</PresetLayout>

@@ -19,6 +19,7 @@ const GROUPS: NavGroup[] = [
       { slug: 'base', title: 'Base', lead: 'Reset, type roles, the ruled grid, focus, themes and density.' },
       { slug: 'icons', title: 'Icons', lead: 'Pixel-grid marks that accompany words.' },
       { slug: 'utilities', title: 'Utilities', lead: 'Opt-in single-purpose classes from the tokens.' },
+      { slug: 'presets', title: 'Presets', lead: 'Docs, dashboard, blog and landing recipes.' },
     ],
   },
   {

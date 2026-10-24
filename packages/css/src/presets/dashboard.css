@@ -1,0 +1,80 @@
+/* Ledger, the dashboard preset: the header, ruled panes in fixed columns and a bottom dock of word
+   controls with printed hotkeys. Only the pane that changed is tinted (nib-pane--changed). Each
+   data series or entity type takes one free hue: series 1 blue, 2 cyan, 3 magenta. Theme: dark and
+   compact (data-theme="dark" data-density="compact" on <html>). */
+/* A role class also beats .nib-tag's own default hue on the same element, in any load order. */
+@layer nib.components {
+  .nib-ledger {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-block-size: 100dvh;
+  }
+
+  /* Panes in --nib-ledger-columns equal columns (default 3), each ruled once like nib-grid. */
+  .nib-ledger__panes {
+    display: grid;
+    grid-template-columns: repeat(var(--nib-ledger-columns, 3), minmax(0, 1fr));
+    align-content: start;
+    border-inline-start: var(--nib-space-hairline) solid var(--nib-line);
+  }
+
+  .nib-ledger__panes > * {
+    min-inline-size: 0;
+    border-inline-end: var(--nib-space-hairline) solid var(--nib-line);
+    border-block-end: var(--nib-space-hairline) solid var(--nib-line);
+  }
+
+  /* A pane that spans the row: a table, a log. */
+  .nib-ledger__panes > .nib-ledger__wide {
+    grid-column: 1 / -1;
+  }
+
+  @media (width < 48rem) {
+    .nib-ledger__panes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* The dock: word controls, each with its key printed after it (nib-hotkey). */
+  .nib-ledger__dock {
+    position: sticky;
+    inset-block-end: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--nib-space-xs) var(--nib-space-md);
+    padding: var(--nib-space-xs) var(--nib-space-md);
+    border-block-start: var(--nib-space-hairline) solid var(--nib-line);
+    background: var(--nib-surface);
+  }
+
+  .nib-series-1,
+  .nib-tag.nib-series-1 {
+    --nib-hue: var(--nib-blue);
+    --nib-hue-soft: var(--nib-blue-soft);
+    --nib-hue-border: var(--nib-blue-border);
+    --nib-tag-hue: var(--nib-blue);
+    --nib-tag-soft: var(--nib-blue-soft);
+    --nib-tag-border: var(--nib-blue-border);
+  }
+
+  .nib-series-2,
+  .nib-tag.nib-series-2 {
+    --nib-hue: var(--nib-cyan);
+    --nib-hue-soft: var(--nib-cyan-soft);
+    --nib-hue-border: var(--nib-cyan-border);
+    --nib-tag-hue: var(--nib-cyan);
+    --nib-tag-soft: var(--nib-cyan-soft);
+    --nib-tag-border: var(--nib-cyan-border);
+  }
+
+  .nib-series-3,
+  .nib-tag.nib-series-3 {
+    --nib-hue: var(--nib-magenta);
+    --nib-hue-soft: var(--nib-magenta-soft);
+    --nib-hue-border: var(--nib-magenta-border);
+    --nib-tag-hue: var(--nib-magenta);
+    --nib-tag-soft: var(--nib-magenta-soft);
+    --nib-tag-border: var(--nib-magenta-border);
+  }
+}

@@ -1,0 +1,62 @@
+/* Broadside, the landing preset: hero, proof (logos or one stat row), features grid, how it works
+   (numbered mono steps), pricing plans (the recommended plan carries the accent rule, from
+   nib-tile--recommended), FAQ (nib-accordion), the final call to action and the footer. One
+   primary call-to-action wording, repeated. Feature categories may take the free hues
+   (nib-hue-blue, -cyan, -magenta). Theme: follows the OS. */
+@layer nib.components {
+  /* Proof: a row of logos or stats, quiet, on one ruled line. */
+  .nib-broadside__proof {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--nib-space-md) var(--nib-space-xl);
+    padding-block: var(--nib-space-lg);
+    border-block: var(--nib-space-hairline) solid var(--nib-line);
+    color: var(--nib-on-surface-3);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    text-transform: var(--nib-caps, uppercase);
+  }
+
+  /* How it works: each step numbered 01, 02, … in mono before its text. */
+  .nib-broadside__steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    gap: var(--nib-space-lg);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: nib-step;
+  }
+
+  .nib-broadside__steps > li {
+    padding-block-start: var(--nib-space-sm);
+    border-block-start: var(--nib-space-rule) solid var(--nib-on-surface);
+    counter-increment: nib-step;
+  }
+
+  .nib-broadside__steps > li::before {
+    display: block;
+    margin-block-end: var(--nib-space-xs);
+    color: var(--nib-on-surface-3);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    content: counter(nib-step, decimal-leading-zero);
+  }
+
+  /* The last call to action: the headline and the one primary button, centred. */
+  .nib-broadside__cta {
+    display: grid;
+    justify-items: center;
+    gap: var(--nib-space-md);
+    padding-block: var(--nib-space-2xl);
+    text-align: center;
+  }
+
+  @media (forced-colors: active) {
+    .nib-broadside__steps > li {
+      border-block-start-color: CanvasText;
+    }
+  }
+}

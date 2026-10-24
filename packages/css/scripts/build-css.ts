@@ -26,16 +26,19 @@ const bundle = async (filename: string) => {
 
 /**
  * Bundles `nib.css` and everything it imports (package imports such as the tokens included) into
- * one minified `nib.css` in `outDir`, and each file of `components/` on its own into
- * `outDir/components/`.
+ * one minified `nib.css` in `outDir`, and each file of `components/` and `presets/` on its own
+ * into `outDir/components/` and `outDir/presets/`.
  */
 export async function buildCss(outDir: string, srcDir = SRC): Promise<void> {
-  mkdirSync(`${outDir}/components`, { recursive: true });
+  mkdirSync(outDir, { recursive: true });
   writeFileSync(`${outDir}/nib.css`, LAYER_ORDER + (await bundle(`${srcDir}/nib.css`)));
-  const components = existsSync(`${srcDir}/components`) ? readdirSync(`${srcDir}/components`) : [];
-  for (const file of components.filter((f) => f.endsWith('.css'))) {
-    // Each file declares the order too: whichever Nib stylesheet loads first fixes it for the page.
-    writeFileSync(`${outDir}/components/${file}`, LAYER_ORDER + (await bundle(`${srcDir}/components/${file}`)));
+  for (const folder of ['components', 'presets']) {
+    mkdirSync(`${outDir}/${folder}`, { recursive: true });
+    const files = existsSync(`${srcDir}/${folder}`) ? readdirSync(`${srcDir}/${folder}`) : [];
+    for (const file of files.filter((f) => f.endsWith('.css'))) {
+      // Each file declares the order too: whichever Nib stylesheet loads first fixes it for the page.
+      writeFileSync(`${outDir}/${folder}/${file}`, LAYER_ORDER + (await bundle(`${srcDir}/${folder}/${file}`)));
+    }
   }
 }
 

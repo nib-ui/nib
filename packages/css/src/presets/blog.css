@@ -1,0 +1,81 @@
+/* Broadsheet, the blog preset: the header and the article as the focal point, posts as ruled rows
+   or tiles. Accent marks: the current nav item, reading progress and link hover. One free hue per
+   category: guide blue, essay cyan, note magenta (set on a tag or a row). Theme: light
+   (data-theme="light" on <html>). */
+/* A role class also beats .nib-tag's own default hue on the same element, in any load order. */
+@layer nib.components {
+  .nib-broadsheet__article {
+    max-inline-size: var(--nib-space-reading-width);
+    margin-inline: auto;
+    padding: var(--nib-space-xl) var(--nib-space-lg);
+  }
+
+  .nib-broadsheet__article a:hover {
+    text-decoration-color: var(--nib-accent);
+  }
+
+  /* Reading progress: a 2px accent rule along the top that grows with the page's scroll, where the
+     browser has scroll-driven animations; elsewhere it is not drawn. */
+  .nib-broadsheet__progress {
+    display: none;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .nib-broadsheet__progress {
+      position: fixed;
+      z-index: 2;
+      display: block;
+      inset-block-start: 0;
+      inset-inline: 0;
+      block-size: var(--nib-space-rule);
+      background: var(--nib-accent);
+      transform-origin: 0 50%;
+      animation: nib-broadsheet-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+
+    .nib-broadsheet__progress:dir(rtl) {
+      transform-origin: 100% 50%;
+    }
+  }
+
+  @keyframes nib-broadsheet-progress {
+    from {
+      scale: 0 1;
+    }
+
+    to {
+      scale: 1 1;
+    }
+  }
+
+  .nib-category-guide,
+  .nib-tag.nib-category-guide {
+    --nib-hue: var(--nib-blue);
+    --nib-tag-hue: var(--nib-blue);
+    --nib-tag-soft: var(--nib-blue-soft);
+    --nib-tag-border: var(--nib-blue-border);
+  }
+
+  .nib-category-essay,
+  .nib-tag.nib-category-essay {
+    --nib-hue: var(--nib-cyan);
+    --nib-tag-hue: var(--nib-cyan);
+    --nib-tag-soft: var(--nib-cyan-soft);
+    --nib-tag-border: var(--nib-cyan-border);
+  }
+
+  .nib-category-note,
+  .nib-tag.nib-category-note {
+    --nib-hue: var(--nib-magenta);
+    --nib-tag-hue: var(--nib-magenta);
+    --nib-tag-soft: var(--nib-magenta-soft);
+    --nib-tag-border: var(--nib-magenta-border);
+  }
+
+  @media (forced-colors: active) {
+    .nib-broadsheet__progress {
+      background: Highlight;
+    }
+  }
+}

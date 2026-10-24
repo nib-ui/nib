@@ -1,0 +1,111 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const presets = [
+  {
+    slug: 'docs',
+    story: 'Galley',
+    theme: 'follows the OS',
+    classes: 'nib-galley with __nav, __article and __outline',
+    hues: 'callout types (note, warning, error, done, next)',
+  },
+  {
+    slug: 'dashboard',
+    story: 'Ledger',
+    theme: 'dark, compact',
+    classes: 'nib-ledger with __panes (--nib-ledger-columns), __wide and __dock',
+    hues: 'nib-series-1, -2, -3: blue, cyan, magenta',
+  },
+  {
+    slug: 'blog',
+    story: 'Broadsheet',
+    theme: 'light',
+    classes: 'nib-broadsheet__article and __progress',
+    hues: 'nib-category-guide, -essay, -note: blue, cyan, magenta',
+  },
+  {
+    slug: 'landing',
+    story: 'Broadside',
+    theme: 'follows the OS',
+    classes: 'nib-broadside__proof, __steps and __cta, with nib-hero, nib-tile--recommended and nib-accordion',
+    hues: 'feature categories through nib-hue-blue, -cyan, -magenta, or none',
+  },
+];
+
+const html = `/* app.css: the preset after Nib, for its layout recipes and hue roles. */
+@import '@nib-ui/css/nib.css';
+@import '@nib-ui/css/presets/dashboard.css';
+
+<!-- index.html: the preset's page defaults. -->
+<html data-theme="dark" data-density="compact">`;
+---
+
+<ComponentPage
+  title="Presets"
+  lead="A token bundle and a recipe per kind of site: page defaults, layout, and the mapping of the three free hues. Presets never change the laws."
+  kind="CSS"
+  code={{ html }}
+>
+  <div slot="example">
+    <ul class="nib-grid" style="--nib-grid-min: 14rem" role="list">
+      {presets.map((p) => (
+        <li class="nib-tile">
+          <p class="nib-tile__meta">{p.story}</p>
+          <h3 class="nib-tile__title">
+            <a href={`/presets/${p.slug}/`}>{p.slug}</a>
+          </h3>
+          <p class="nib-tile__excerpt">{p.theme}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <h2>Usage</h2>
+  <p>
+    <code>nib init --preset &lt;name&gt;</code> wires a preset: it imports{' '}
+    <code>@nib-ui/css/presets/&lt;name&gt;.css</code>
+    after <code>nib.css</code> and prints the attributes the preset sets on <code>&lt;html&gt;</code>. Each preset only
+    adds layout recipes and hue roles; every component works the same under all four.
+  </p>
+  <div class="nib-table-scroll" role="region" aria-label="Presets" tabindex="0">
+    <table class="nib-table">
+      <thead>
+        <tr>
+          <th scope="col">Preset</th>
+          <th scope="col">Page</th>
+          <th scope="col">Classes</th>
+          <th scope="col">Hues</th>
+        </tr>
+      </thead>
+      <tbody>
+        {presets.map((p) => (
+          <tr>
+            <td>
+              <a href={`/presets/${p.slug}/`}>{p.slug}</a>
+            </td>
+            <td>{p.theme}</td>
+            <td>{p.classes}</td>
+            <td>{p.hues}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p>
+    The story names (Galley, Ledger, Broadsheet, Broadside) live in the docs only; code and the CLI use the plain names.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      Galley marks the heading being read with <code>aria-current="location"</code> in the outline, and the current page
+      with <code>aria-current="page"</code> in the navigation.
+    </li>
+    <li>
+      Ledger's dock is a named <code>nav</code>; each control prints its key and says its word.
+    </li>
+    <li>
+      Broadsheet's reading progress is decorative (<code>aria-hidden</code>); categories pair a hue with a word.
+    </li>
+    <li>Broadside repeats one call-to-action wording, so every primary button leads to the same place.</li>
+  </ul>
+</ComponentPage>
