@@ -39,6 +39,11 @@
     background: var(--nib-line);
   }
 
+  /* A short last row: the last cell runs to the row's end, so the ground never shows as a block. */
+  .nib-grid > :last-child {
+    grid-column-end: -1;
+  }
+
   :is(.nib-grid, .nib-with-side) > * {
     min-inline-size: 0;
     background: var(--nib-surface);

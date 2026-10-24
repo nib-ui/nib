@@ -1,0 +1,90 @@
+---
+import '@nib-ui/icons/icons.css';
+import ComponentPage from '../../layouts/component-page.astro';
+
+const names = [
+  'chevron-up',
+  'chevron-down',
+  'chevron-left',
+  'chevron-right',
+  'arrow-prev',
+  'arrow-next',
+  'close',
+  'check',
+  'plus',
+  'minus',
+  'search',
+  'calendar',
+  'copy',
+  'external',
+  'menu',
+  'warning',
+  'info',
+];
+
+const html = `<!-- CSS mask: @nib-ui/icons/icons.css -->
+<button class="nib-button"><span class="nib-icon nib-icon-copy" aria-hidden="true"></span>Copy</button>
+
+<!-- Sprite: serve @nib-ui/icons/sprite.svg from your own origin -->
+<svg width="16" height="16" aria-hidden="true"><use href="/sprite.svg#nib-icon-copy" /></svg>`;
+
+const react = `import { copy } from '@nib-ui/icons';
+
+<button className="nib-button">
+  <span aria-hidden="true" dangerouslySetInnerHTML={{ __html: copy }} />
+  Copy
+</button>`;
+---
+
+<ComponentPage
+  title="Icons"
+  lead="Seventeen marks drawn on the pixel grid in straight 1px strokes, for the components that need them. Words come first."
+  kind="CSS"
+  code={{ html, react }}
+>
+  <div slot="example">
+    <ul class="nib-grid icons-grid" role="list" style="--nib-grid-min: 9rem">
+      {names.map((name) => (
+        <li class="icons-cell">
+          <span class={`nib-icon nib-icon-${name}`} aria-hidden="true" />
+          <span class="nib-text-meta">{name}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <h2>Usage</h2>
+  <p>
+    Three deliveries of the same drawings: <code>icons.css</code> (a <code>nib-icon nib-icon-&lt;name&gt;</code> mask in
+    the text colour, no JavaScript), <code>sprite.svg</code> (symbols <code>nib-icon-&lt;name&gt;</code>) and one ES
+    module per icon (<code>import copy from '@nib-ui/icons/copy'</code>, the SVG markup as a string). Every icon is
+    16×16, square-capped, in <code>currentColor</code>. <code>arrow-prev</code> and <code>arrow-next</code> point the
+    reading way and flip under <code>dir="rtl"</code>; chevrons point where they say.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      Icons accompany words. Next to a word, hide the icon (<code>aria-hidden="true"</code>).
+    </li>
+    <li>
+      An icon on its own is for dense controls inside a component only (month arrows, sort, dialog close). The control
+      then needs an accessible name (<code>aria-label</code>) and a visible tooltip with the same words.
+    </li>
+    <li>
+      In forced colours an icon is painted in the system text colour (<code>CanvasText</code>).
+    </li>
+  </ul>
+</ComponentPage>
+
+<style>
+  .icons-grid {
+    margin: 0;
+  }
+
+  .icons-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--nib-space-sm);
+    padding: var(--nib-space-md);
+  }
+</style>

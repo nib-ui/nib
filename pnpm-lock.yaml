@@ -304,6 +304,9 @@ importers:
       '@nib-ui/fonts':
         specifier: workspace:*
         version: link:../../packages/fonts
+      '@nib-ui/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
       '@nib-ui/js':
         specifier: workspace:*
         version: link:../../packages/js

@@ -17,6 +17,44 @@
     "tags": [
       "type:asset",
       "scope:public"
-    ]
-  }
+    ],
+    "targets": {
+      "build": {
+        "command": "node scripts/build-icons.ts",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "cache": true,
+        "inputs": [
+          "{projectRoot}/src/**/*.svg",
+          "{projectRoot}/scripts/build-icons.ts",
+          "{projectRoot}/scripts/check-icon.ts"
+        ],
+        "outputs": [
+          "{projectRoot}/dist"
+        ]
+      }
+    }
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./sprite.svg": "./dist/sprite.svg",
+    "./icons.css": "./dist/icons.css",
+    ".": {
+      "types": "./dist/esm/index.d.ts",
+      "default": "./dist/esm/index.js"
+    },
+    "./*": {
+      "types": "./dist/esm/*.d.ts",
+      "default": "./dist/esm/*.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts"
 }
