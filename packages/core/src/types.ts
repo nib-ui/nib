@@ -20,6 +20,8 @@ export interface NibEvent {
   isComposing?: boolean;
   /** Text of an input or composition event. */
   data?: string;
+  /** The state a popover or details element moves to, on `toggle` and `beforetoggle`. */
+  newState?: 'open' | 'closed';
   /** Core calls it when it handled the event, e.g. an arrow key it moved on. */
   preventDefault(): void;
 }

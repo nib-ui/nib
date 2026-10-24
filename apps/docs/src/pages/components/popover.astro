@@ -1,0 +1,96 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<div data-nib="popover">
+  <button type="button" class="nib-button nib-button--outline" data-nib-trigger>Roast level</button>
+  <div class="nib-popover" data-nib-content role="dialog" aria-label="Roast level">
+    <fieldset class="nib-fieldset">
+      <legend class="nib-field__label">Roast</legend>
+      <label class="nib-choice"><input type="radio" name="roast" checked /> Light</label>
+      <label class="nib-choice"><input type="radio" name="roast" /> Medium</label>
+      <label class="nib-choice"><input type="radio" name="roast" /> Dark</label>
+    </fieldset>
+  </div>
+</div>`;
+
+const code = {
+  html: `${html}
+
+<script type="module">
+  import '@nib-ui/js/popover';
+  import { init } from '@nib-ui/js';
+  init();
+</script>`,
+  react: `import { usePopover } from '@nib-ui/react/popover';
+
+function RoastLevel() {
+  const popover = usePopover({ side: 'bottom', align: 'start' });
+  return (
+    <>
+      <button type="button" className="nib-button nib-button--outline" {...popover.part('trigger')}>Roast level</button>
+      <div className="nib-popover" role="dialog" aria-label="Roast level" {...popover.part('content')}>…</div>
+    </>
+  );
+}`,
+  vue: `<script setup>
+import { usePopover } from '@nib-ui/vue/popover';
+
+const popover = usePopover({ side: 'bottom', align: 'start' });
+</script>
+
+<template>
+  <button type="button" class="nib-button nib-button--outline" v-bind="popover.part('trigger')">Roast level</button>
+  <div class="nib-popover" role="dialog" aria-label="Roast level" v-bind="popover.part('content')">…</div>
+</template>`,
+  svelte: `<script>
+  import { createPopoverStore } from '@nib-ui/svelte/popover';
+
+  const popover = createPopoverStore({ id: $props.id(), side: 'bottom', align: 'start' });
+</script>
+
+<button type="button" class="nib-button nib-button--outline" {...$popover.part('trigger')}>Roast level</button>
+<div class="nib-popover" role="dialog" aria-label="Roast level" {...$popover.part('content')}>…</div>`,
+};
+---
+
+<ComponentPage
+  title="Popover"
+  lead="A box of content that opens beside its trigger, on the overlay surface, and closes with Escape or a click outside."
+  kind="INTERACTIVE"
+  code={code}
+>
+  <div slot="example" class="popover-example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    <code>createPopover</code> renders a <code>trigger</code> and a <code>content</code> part. The content is a native
+    popover: the browser puts it in the top layer and closes it on Escape or a click outside, and focus goes back to the
+    trigger. The controller places it with <code>place()</code> (<code>side</code>, <code>align</code>,
+    <code>offset</code>; flipping and shifting to stay on screen) and follows the trigger while the page scrolls.
+  </p>
+  <p>
+    <code>place()</code> is exported from <code>@nib-ui/core/place</code> for other floating parts. The content's
+    <code>style</code> attribute belongs to the controller; style it with a class.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      The trigger is a native button with <code>aria-expanded</code> and <code>aria-controls</code>; give the content a
+      role that fits it (<code>dialog</code> with a name for a small form, as here).
+    </li>
+    <li>Escape closes it and focus returns to the trigger; Tab moves into it after the trigger.</li>
+    <li>For a list of actions use the menu instead; for a short hint, the tooltip.</li>
+  </ul>
+</ComponentPage>
+
+<script>
+  import '@nib-ui/js/popover';
+  import { init } from '@nib-ui/js';
+  init();
+</script>
+
+<style>
+  .popover-example {
+    min-block-size: 12rem;
+  }
+</style>
