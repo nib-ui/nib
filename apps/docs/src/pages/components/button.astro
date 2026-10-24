@@ -1,0 +1,110 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<!-- In the region's content: a pressed toggle is a cursor block -->
+<div role="group" aria-label="View">
+  <button type="button" class="nib-button nib-button--outline" aria-pressed="true">GRID</button>
+  <button type="button" class="nib-button nib-button--outline" aria-pressed="false">LIST</button>
+</div>
+
+<!-- The action row: inline-end, one primary -->
+<div class="nib-action-row">
+  <button type="button" class="nib-button nib-button--ghost" aria-keyshortcuts="Escape">
+    <span class="nib-button__key" aria-hidden="true">[ESC]</span><span class="nib-button__word">CANCEL</span>
+  </button>
+  <button type="button" class="nib-button nib-button--ghost">DISCARD</button>
+  <button type="button" class="nib-button nib-button--outline" disabled>ARCHIVE</button>
+  <button type="button" class="nib-button nib-button--destructive">DELETE</button>
+  <button type="button" class="nib-button nib-button--outline">PREVIEW</button>
+  <button type="submit" class="nib-button nib-button--primary">SAVE</button>
+</div>`;
+
+const code = {
+  html,
+  react: `<button type="button" className="nib-button nib-button--ghost" aria-keyshortcuts="Escape">
+  <span className="nib-button__key" aria-hidden="true">[ESC]</span>
+  <span className="nib-button__word">CANCEL</span>
+</button>
+<button type="submit" className="nib-button nib-button--primary">SAVE</button>`,
+  vue: `<button type="button" class="nib-button nib-button--ghost" aria-keyshortcuts="Escape">
+  <span class="nib-button__key" aria-hidden="true">[ESC]</span>
+  <span class="nib-button__word">CANCEL</span>
+</button>
+<button type="submit" class="nib-button nib-button--primary">SAVE</button>`,
+  svelte: `<button type="button" class="nib-button nib-button--ghost" aria-keyshortcuts="Escape">
+  <span class="nib-button__key" aria-hidden="true">[ESC]</span>
+  <span class="nib-button__word">CANCEL</span>
+</button>
+<button type="submit" class="nib-button nib-button--primary">SAVE</button>`,
+};
+---
+
+<ComponentPage
+  title="Button"
+  lead="Words first: a mono verb, and hierarchy by stroke weight. Primary 2px, outline 1px, ghost none."
+  kind="CSS"
+  code={code}
+>
+  <div slot="example" class="docs-stack" set:html={html} />
+  <h2>Usage</h2>
+  <ul>
+    <li>
+      <code>nib-button--primary</code>: 2px ink frame, transparent ground. <strong>One per view</strong>: it is the only
+      2px frame on screen.
+    </li>
+    <li>
+      <code>nib-button--outline</code>: 1px line border. <code>aria-pressed="true"</code> makes it a cursor block.
+    </li>
+    <li>
+      <code>nib-button--ghost</code>: no visible border, hover fill only; for low-priority actions in dense rows.
+    </li>
+    <li>
+      <code>nib-button--destructive</code>: red text and a 1px red border.
+    </li>
+    <li>
+      <code>nib-button--destructive nib-button--primary</code>: the confirm button of a destructive dialog (
+      <code>DELETE PROJECT</code>). It takes the primary's place, so the view still has one 2px frame.
+    </li>
+    <li>
+      <code>nib-button--lg</code>: 36px, for page-level calls to action. On touch screens every button is at least 44px
+      and the primary 48px.
+    </li>
+  </ul>
+  <p>
+    <strong>Placement.</strong> The primary sits in its region's action row (<code>nib-action-row</code>): the footer of
+    a form, dialog, sheet or pane, at the inline end, or next to the headline in a hero. Pressed toggles and option
+    pickers live in the header or content; a primary never shares a row with a cursor block.
+  </p>
+  <p>
+    Text is a verb (<code>SAVE</code>, <code>ADD TO CART</code>). An icon may sit before the word; the word stays. Print
+    a keyboard shortcut before the word in <code>nib-button__key</code>, and declare it with
+    <code>aria-keyshortcuts</code>.
+  </p>
+  <ul slot="accessibility">
+    <li>
+      A native <code>&lt;button&gt;</code> (or <code>&lt;a&gt;</code> for navigation): Enter and Space work, and the
+      word is the accessible name.
+    </li>
+    <li>
+      Toggles use <code>aria-pressed</code>; screen readers announce "pressed". The cursor block is drawn from that
+      attribute, so it cannot show without it.
+    </li>
+    <li>
+      The printed shortcut is <code>aria-hidden</code>; <code>aria-keyshortcuts</code> carries it to assistive
+      technology. Write it per platform (<code>[⌘↵]</code> / <code>Meta+Enter</code> on macOS,
+      <code>[CTRL↵]</code> / <code>Control+Enter</code> elsewhere). A single printable character needs a modifier, or it
+      fires on speech input (WCAG 2.1.4); keys such as Escape are fine alone.
+    </li>
+    <li>
+      Prefer <code>disabled</code> on native buttons; use <code>aria-disabled="true"</code> to keep it focusable.
+    </li>
+    <li>Focus is a 2px accent outline, 2px off the border; in forced colours it uses the system colours.</li>
+  </ul>
+</ComponentPage>
+
+<style>
+  .docs-stack {
+    display: grid;
+    gap: var(--nib-space-lg);
+  }
+</style>
