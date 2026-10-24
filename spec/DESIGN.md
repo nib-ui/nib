@@ -4,61 +4,61 @@ name: Nib
 description: A ruled UI framework, one mark at a time. Flat, ruled, square, warm ink by default and cream paper in light mode, mono labels over sans text, one jade accent for the current thing (drawn as a jade rule or an ink-inverted cursor block), and six semantic hues. Built for docs, dashboards and developer tools; presets dress blogs, landings, shops and portfolios too.
 colors:
   # Dark theme ("Ink")
-  surface: "#141413"
-  surface-raised: "#1a1a18"
-  surface-overlay: "#1e1d1b"
-  on-surface: "#faf9f5"
-  on-surface-2: "#b0aea5"
-  on-surface-3: "#87867f"
-  on-surface-4: "#5e5d59"
-  line: "#faf9f529"
-  line-soft: "#faf9f517"
-  hover: "#faf9f50b"
-  scrim: "#141413b3"
-  accent: "#00967d"
-  accent-text: "#009e84"
-  cursor: "#faf9f5"
-  on-cursor: "#141413"
-  blue: "#82aaff"
-  cyan: "#89ddff"
-  green: "#c3e88d"
-  magenta: "#c792ea"
-  yellow: "#e5c07b"
-  red: "#e08f8f"
-  error: "#e08f8f"
-  on-hue: "#141413"
-  syntax-keyword: "#a98fc0"
-  syntax-string: "#c98a7d"
-  syntax-number: "#c2a26f"
-  syntax-identifier: "#dbd7ca"
+  surface: '#141413'
+  surface-raised: '#1a1a18'
+  surface-overlay: '#1e1d1b'
+  on-surface: '#faf9f5'
+  on-surface-2: '#b0aea5'
+  on-surface-3: '#87867f'
+  on-surface-4: '#5e5d59'
+  line: '#faf9f529'
+  line-soft: '#faf9f517'
+  hover: '#faf9f50b'
+  scrim: '#141413b3'
+  accent: '#00967d'
+  accent-text: '#009e84'
+  cursor: '#faf9f5'
+  on-cursor: '#141413'
+  blue: '#82aaff'
+  cyan: '#89ddff'
+  green: '#c3e88d'
+  magenta: '#c792ea'
+  yellow: '#e5c07b'
+  red: '#e08f8f'
+  error: '#e08f8f'
+  on-hue: '#141413'
+  syntax-keyword: '#a98fc0'
+  syntax-string: '#c98a7d'
+  syntax-number: '#c2a26f'
+  syntax-identifier: '#dbd7ca'
   # Light theme ("Paper")
-  surface-light: "#faf9f5"
-  surface-raised-light: "#f1efe8"
-  surface-overlay-light: "#ece9e0"
-  on-surface-light: "#141413"
-  on-surface-2-light: "#4c4b45"
-  on-surface-3-light: "#65645e"
-  on-surface-4-light: "#a8a69d"
-  line-light: "#14141338"
-  line-soft-light: "#1414131c"
-  hover-light: "#1414130d"
-  scrim-light: "#14141359"
-  accent-light: "#02806c"
-  accent-text-light: "#007561"
-  cursor-light: "#141413"
-  on-cursor-light: "#faf9f5"
-  blue-light: "#255ad0"
-  cyan-light: "#09698d"
-  green-light: "#4e6b20"
-  magenta-light: "#8741b6"
-  yellow-light: "#7a5d00"
-  red-light: "#a04545"
-  error-light: "#a04545"
-  on-hue-light: "#faf9f5"
-  syntax-keyword-light: "#6e4f8a"
-  syntax-string-light: "#9a5a4a"
-  syntax-number-light: "#7d5f2c"
-  syntax-identifier-light: "#393a34"
+  surface-light: '#faf9f5'
+  surface-raised-light: '#f1efe8'
+  surface-overlay-light: '#ece9e0'
+  on-surface-light: '#141413'
+  on-surface-2-light: '#4c4b45'
+  on-surface-3-light: '#65645e'
+  on-surface-4-light: '#a8a69d'
+  line-light: '#14141338'
+  line-soft-light: '#1414131c'
+  hover-light: '#1414130d'
+  scrim-light: '#14141359'
+  accent-light: '#02806c'
+  accent-text-light: '#007561'
+  cursor-light: '#141413'
+  on-cursor-light: '#faf9f5'
+  blue-light: '#255ad0'
+  cyan-light: '#09698d'
+  green-light: '#4e6b20'
+  magenta-light: '#8741b6'
+  yellow-light: '#7a5d00'
+  red-light: '#a04545'
+  error-light: '#a04545'
+  on-hue-light: '#faf9f5'
+  syntax-keyword-light: '#6e4f8a'
+  syntax-string-light: '#9a5a4a'
+  syntax-number-light: '#7d5f2c'
+  syntax-identifier-light: '#393a34'
 typography:
   headline-hero:
     fontFamily: Inter
@@ -166,45 +166,45 @@ spacing:
   icon-md: 20px
 components:
   pane:
-    backgroundColor: "{colors.surface}"
+    backgroundColor: '{colors.surface}'
     padding: 12px
-    rounded: "{rounded.none}"
+    rounded: '{rounded.none}'
   pane-header:
-    typography: "{typography.label-md}"
-    textColor: "{colors.on-surface}"
+    typography: '{typography.label-md}'
+    textColor: '{colors.on-surface}'
     height: 38px
   tile:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.on-surface}"
+    backgroundColor: '{colors.surface}'
+    textColor: '{colors.on-surface}'
     padding: 16px
-    rounded: "{rounded.none}"
+    rounded: '{rounded.none}'
   tile-hover:
-    backgroundColor: "{colors.hover}"
+    backgroundColor: '{colors.hover}'
   list-item:
-    backgroundColor: "{colors.surface-raised}"
-    textColor: "{colors.on-surface}"
-    typography: "{typography.item-md}"
+    backgroundColor: '{colors.surface-raised}'
+    textColor: '{colors.on-surface}'
+    typography: '{typography.item-md}'
     padding: 6px 10px
-    rounded: "{rounded.none}"
+    rounded: '{rounded.none}'
   list-item-selected:
-    backgroundColor: "{colors.cursor}"
-    textColor: "{colors.on-cursor}"
+    backgroundColor: '{colors.cursor}'
+    textColor: '{colors.on-cursor}'
   button:
-    textColor: "{colors.on-surface}"
-    typography: "{typography.label-md}"
+    textColor: '{colors.on-surface}'
+    typography: '{typography.label-md}'
     height: 28px
     padding: 0 8px
-    rounded: "{rounded.none}"
+    rounded: '{rounded.none}'
   button-hover:
-    backgroundColor: "{colors.hover}"
+    backgroundColor: '{colors.hover}'
   button-primary:
-    borderColor: "{colors.on-surface}"
+    borderColor: '{colors.on-surface}'
     borderWidth: 2px
-    textColor: "{colors.on-surface}"
-    typography: "{typography.label-md}"
+    textColor: '{colors.on-surface}'
+    typography: '{typography.label-md}'
     height: 28px
     padding: 0 8px
-    rounded: "{rounded.none}"
+    rounded: '{rounded.none}'
   button-lg:
     height: 36px
     padding: 0 14px
@@ -213,47 +213,47 @@ components:
     width: 44px
     padding: 0 14px
   nav-link:
-    textColor: "{colors.on-surface-2}"
-    typography: "{typography.label-md}"
+    textColor: '{colors.on-surface-2}'
+    typography: '{typography.label-md}'
     height: 28px
   nav-link-active:
-    textColor: "{colors.on-surface}"
+    textColor: '{colors.on-surface}'
   tag:
-    typography: "{typography.label-sm}"
-    textColor: "{colors.on-surface-3}"
+    typography: '{typography.label-sm}'
+    textColor: '{colors.on-surface-3}'
   admonition:
-    backgroundColor: "{colors.surface-raised}"
+    backgroundColor: '{colors.surface-raised}'
     padding: 10px 12px
-    rounded: "{rounded.none}"
+    rounded: '{rounded.none}'
   input:
-    backgroundColor: "{colors.surface-raised}"
-    textColor: "{colors.on-surface}"
-    typography: "{typography.item-md}"
+    backgroundColor: '{colors.surface-raised}'
+    textColor: '{colors.on-surface}'
+    typography: '{typography.item-md}'
     height: 36px
-    rounded: "{rounded.none}"
+    rounded: '{rounded.none}'
   field-label:
-    typography: "{typography.label-md}"
-    textColor: "{colors.on-surface-2}"
+    typography: '{typography.label-md}'
+    textColor: '{colors.on-surface-2}'
   dialog:
-    backgroundColor: "{colors.surface-overlay}"
-    textColor: "{colors.on-surface}"
+    backgroundColor: '{colors.surface-overlay}'
+    textColor: '{colors.on-surface}'
     width: 500px
-    rounded: "{rounded.none}"
+    rounded: '{rounded.none}'
   article-body:
-    typography: "{typography.body-lg}"
-    textColor: "{colors.on-surface-2}"
+    typography: '{typography.body-lg}'
+    textColor: '{colors.on-surface-2}'
     width: 68ch
   price:
-    typography: "{typography.label-md}"
-    textColor: "{colors.on-surface}"
+    typography: '{typography.label-md}'
+    textColor: '{colors.on-surface}'
   hotkey:
-    textColor: "{colors.on-surface-3}"
-    typography: "{typography.label-md}"
+    textColor: '{colors.on-surface-3}'
+    typography: '{typography.label-md}'
   slider-track:
-    backgroundColor: "{colors.surface-raised}"
+    backgroundColor: '{colors.surface-raised}'
     height: 4px
   slider-thumb:
-    backgroundColor: "{colors.accent}"
+    backgroundColor: '{colors.accent}'
     width: 2px
     height: 24px
 ---
@@ -270,7 +270,7 @@ presets dress blogs, landing pages, shops and portfolios with the same rules.
 
 Every screen reads like a well-ruled page: warm ink in dark mode, cream paper in light mode,
 monospace labels over sans-serif text, square edges, hairline rules, and exactly one mark of
-accent for *the current thing*: the point where the nib touches the page.
+accent for _the current thing_: the point where the nib touches the page.
 
 The mood is precise, calm and devoted. Nothing decorates; every mark carries information.
 Content (an article, a product, a number) is the hero; the frame around it stays quiet.
@@ -288,14 +288,14 @@ The five laws. A screen that breaks one is not Nib, in any domain:
 3. **Mono labels, sans text.** Every label, nav item, button word, tag, price, date, id, number
    and code is mono. Headlines, sentences and prose are sans. Only mono text is UPPERCASE;
    headlines are sentence case or lowercase, never Title Case.
-4. **One accent, one meaning.** Jade marks *the current thing*: the active nav item, the focused
-   control, the progress, the item in progress. A selected or current *block* is shown by ink
+4. **One accent, one meaning.** Jade marks _the current thing_: the active nav item, the focused
+   control, the progress, the item in progress. A selected or current _block_ is shown by ink
    inversion (the cursor block). Never decoration, never a brand wash, never a button.
 5. **Color means a category, and never alone.** Each hue maps to one concept and always comes
    with a word (`SALE`, `ERR`, `NEW`, `GUIDE`).
 
 These laws are fixed: there is no token, preset or option that changes them. If a product needs
-rounded corners or shadows, Nib is not the framework for it. Tokens that *are* open: the accent
+rounded corners or shadows, Nib is not the framework for it. Tokens that _are_ open: the accent
 (within the checks of `nib theme check`), the mapping of the three free hues, the font families
 (as long as a mono + sans pair stays), and density.
 
@@ -327,21 +327,21 @@ role. Lines and hover fills are alpha over ink, so they work on any of the three
 - **Primary** is ink, not a color, and it is a stroke, not a fill. The main call to action
   (`SUBSCRIBE`, `GET STARTED`, `RUN`) is a 2px ink border on a transparent ground with on-surface
   text: the one 2px ink frame in the view.
-- **Accent** (jade #00967d / #02806c, story name *Verdigris*): non-text marks for the current
+- **Accent** (jade #00967d / #02806c, story name _Verdigris_): non-text marks for the current
   thing: active-nav underline, focus ring, progress bar, playhead, slider thumb, the current step.
   ≥ 3:1 on all three surfaces of its theme.
 - **Accent text** (#009e84 / #007561): the accent as text: link hover, the current step label,
   a `NOW` / `LIVE` tag. ≥ 4.5:1 on all three surfaces of its theme.
-- **Cursor** (ink inversion: on-surface fill with surface-colored text, 17.5:1): a *chosen value*:
+- **Cursor** (ink inversion: on-surface fill with surface-colored text, 17.5:1): a _chosen value_:
   the single selected row of a list or table, the selected option in a listbox or select, the selected
   date, the selected table row, the selected option in an option picker, a toggle that is on
   (`aria-pressed="true"`), text selection. It is the block cursor of the page.
 
-The two forms work together: a jade rule says *where* the current thing is; an ink-inverted block
-says *which* value is chosen. The cursor block keeps working under color-vision deficiency and in
+The two forms work together: a jade rule says _where_ the current thing is; an ink-inverted block
+says _which_ value is chosen. The cursor block keeps working under color-vision deficiency and in
 grayscale, where jade alone can be hard to tell from red or green.
 
-Ink inversion means *chosen*. It is never used to make an action stand out: emphasis on an action
+Ink inversion means _chosen_. It is never used to make an action stand out: emphasis on an action
 is a 2px stroke, so a primary button can never be mistaken for a selected item.
 
 ### Semantic hues
@@ -349,14 +349,14 @@ is a 2px stroke, so a primary button can never be mistaken for a selected item.
 Six hues, each with a `-soft` fill and a `-border` outline, both derived with `color-mix()` from
 the hue (soft: dark 11% / light 8%; border: dark 36% / light 35%).
 
-| Hue | Dark | Light |
-|---|---|---|
-| blue | #82aaff | #255ad0 |
-| cyan | #89ddff | #09698d |
-| green | #c3e88d | #4e6b20 |
+| Hue     | Dark    | Light   |
+| ------- | ------- | ------- |
+| blue    | #82aaff | #255ad0 |
+| cyan    | #89ddff | #09698d |
+| green   | #c3e88d | #4e6b20 |
 | magenta | #c792ea | #8741b6 |
-| yellow | #e5c07b | #7a5d00 |
-| red | #e08f8f | #a04545 |
+| yellow  | #e5c07b | #7a5d00 |
+| red     | #e08f8f | #a04545 |
 
 Fixed meanings in every domain:
 
@@ -364,7 +364,7 @@ Fixed meanings in every domain:
 - **green** = success, done, in stock, published, output.
 - **yellow** = warning, low stock, draft, pending, unless the domain claims yellow for a concept;
   then warnings use red too.
-- **jade is not a semantic hue.** It is the accent and means *current*. It sits in the only gap of
+- **jade is not a semantic hue.** It is the accent and means _current_. It sits in the only gap of
   the hue wheel at least 45° from every semantic hue (OKLCH ≈ 176°, green ≈ 127°, cyan ≈ 226°).
 
 Blue, cyan and magenta are free: give each to one concept of your domain, write the mapping
@@ -407,21 +407,21 @@ plus a 2px accent rule on its inline-start edge.
   letter-spacing off via `:lang()`.
 - Label line-heights leave room for stacked Vietnamese diacritics on capitals (`Ầ`, `Ỗ`).
 
-| Role | Token | Use | Case | Color |
-|---|---|---|---|---|
-| hero | headline-hero | one landing-page or campaign headline (32px on phones) | sentence | on-surface |
-| xl | headline-xl | page title, article title, section opener | sentence | on-surface |
-| display | headline-display | screen title in apps, sub-section title | lowercase or sentence | on-surface |
-| lead | headline-lead | standfirst under a title, the one summary sentence | sentence | on-surface |
-| heading | headline-md | card / dialog / in-article h3 | sentence | on-surface |
-| reading | body-lg | long-form prose: articles, product descriptions | sentence | on-surface 2 |
-| body | body-md | interface prose, short descriptions | sentence | on-surface 2 |
-| small | body-sm | captions, subtitles, empty states, fine print | sentence | on-surface 2 / 3 |
-| label | label-md | nav, buttons, field labels, section kickers, prices | UPPERCASE | on-surface / hue |
-| code | code-md | code blocks and inline code | as typed | syntax |
-| item | item-md | list rows, log lines, table cells with data | as typed | on-surface |
-| meta | meta-sm | dates, authors, counts, ids, read time | as typed | on-surface 3 |
-| micro | label-sm | tags, badges, hints | UPPERCASE | on-surface 3 / hue |
+| Role    | Token            | Use                                                    | Case                  | Color              |
+| ------- | ---------------- | ------------------------------------------------------ | --------------------- | ------------------ |
+| hero    | headline-hero    | one landing-page or campaign headline (32px on phones) | sentence              | on-surface         |
+| xl      | headline-xl      | page title, article title, section opener              | sentence              | on-surface         |
+| display | headline-display | screen title in apps, sub-section title                | lowercase or sentence | on-surface         |
+| lead    | headline-lead    | standfirst under a title, the one summary sentence     | sentence              | on-surface         |
+| heading | headline-md      | card / dialog / in-article h3                          | sentence              | on-surface         |
+| reading | body-lg          | long-form prose: articles, product descriptions        | sentence              | on-surface 2       |
+| body    | body-md          | interface prose, short descriptions                    | sentence              | on-surface 2       |
+| small   | body-sm          | captions, subtitles, empty states, fine print          | sentence              | on-surface 2 / 3   |
+| label   | label-md         | nav, buttons, field labels, section kickers, prices    | UPPERCASE             | on-surface / hue   |
+| code    | code-md          | code blocks and inline code                            | as typed              | syntax             |
+| item    | item-md          | list rows, log lines, table cells with data            | as typed              | on-surface         |
+| meta    | meta-sm          | dates, authors, counts, ids, read time                 | as typed              | on-surface 3       |
+| micro   | label-sm         | tags, badges, hints                                    | UPPERCASE             | on-surface 3 / hue |
 
 Headline weight is 500; reserve 600 for a word of emphasis inside prose. Never bold a whole
 paragraph. Never set sans text in uppercase.
@@ -430,7 +430,7 @@ Writing style:
 
 - Headlines are plain sentences, no Title Case: `Coffee roasted the week you order it`.
 - A mono kicker may sit above a headline: `JOURNAL · 6 MIN READ`, `NEW · SPRING 2026`.
-- Labels are short nouns or verbs in caps, joined with ` · `: `ADD TO CART`, `READ MORE`,
+- Labels are short nouns or verbs in caps, joined with `·`: `ADD TO CART`, `READ MORE`,
   `STEP 2 / 4 · SHIPPING`.
 - Pick domain words once and never rename them across screens.
 - Text never truncates mid-word; let subtitles wrap (translations run 20–30% longer).
@@ -439,7 +439,7 @@ Writing style:
 
 - 4pt grid with half steps: 4, 6, 8, 10, 12, 16, 20, 24, 28, 32. Page sections are separated by
   64px (96px on wide landing pages) and a 1px line.
-- Two densities: `comfortable` (default; story name *Leaded*) and `compact` (*Set solid*). Density
+- Two densities: `comfortable` (default; story name _Leaded_) and `compact` (_Set solid_). Density
   changes paddings and control heights, never type sizes or the laws.
 - Cell padding 12px (compact) to 16–24px (comfortable content pages). Row padding 6px 10px.
 - **The ruled grid.** Group siblings in a grid with a 1px gap over a line-colored ground, so the
@@ -459,7 +459,7 @@ Writing style:
 - Phone (design at 390px, support ≥ 360px): one column, 16px side gutter, header collapses to
   title + `MENU`, grids drop to one or two columns, side columns and filters become bottom sheets,
   primary actions pin to the bottom with 48–52px targets. No horizontal scroll.
-- A side column *replaces* a main column; nothing floats over content except menus, popovers and dialogs.
+- A side column _replaces_ a main column; nothing floats over content except menus, popovers and dialogs.
 
 ## Elevation & Depth
 
@@ -635,7 +635,7 @@ pivot, column drag, spreadsheet-style range selection.
 ### Listbox, combobox and command palette
 
 Overlay surface, 1px line border, positioned next to its trigger (flip and shift to stay in the
-viewport). The option under the keyboard or pointer is *current*: a 2px accent rule on its
+viewport). The option under the keyboard or pointer is _current_: a 2px accent rule on its
 inline-start edge plus the hover fill. The selected value is a cursor block with `✓`; when it is
 also current, the accent rule sits on the block (≥ 3:1 against ink in both themes). A command
 palette has no selected value, so only the accent rule moves. Typed characters filter; matched characters are on-surface, the rest on-surface 2. The command palette is
@@ -704,7 +704,7 @@ spinner is the only perpetual animation allowed.
 
 ## Iconography
 
-Nib ships its own icon set (story name *Dingbats*), drawn by the same laws:
+Nib ships its own icon set (story name _Dingbats_), drawn by the same laws:
 
 - 16×16 grid (20×20 for large controls); strokes 1px, 2px for an emphasised state;
 - square caps, miter joins, only 90° and 45° angles, no curves; aligned to the pixel grid;
@@ -731,15 +731,15 @@ Placeholder = raised surface at the right aspect ratio with a mono meta label (`
 
 ## Motion
 
-Motion says *what changed*. Only opacity and transform animate.
+Motion says _what changed_. Only opacity and transform animate.
 
-| Duration | Easing | Use |
-|---|---|---|
-| 90ms | ease-out | a "current" marker (active row, underline) following the pointer or cursor |
-| 120ms | ease-out | hover color steps. Focus ring appears instantly. |
-| 180ms | ease-out | reveal: opacity 0→1 + 4px rise; leave: fade + 4px up; menu, sheet and dialog in/out |
-| 280ms | ease-swift | an item moving between places (into a cart, between lists) |
-| 110ms frames | stepped | terminal spinner |
+| Duration     | Easing     | Use                                                                                 |
+| ------------ | ---------- | ----------------------------------------------------------------------------------- |
+| 90ms         | ease-out   | a "current" marker (active row, underline) following the pointer or cursor          |
+| 120ms        | ease-out   | hover color steps. Focus ring appears instantly.                                    |
+| 180ms        | ease-out   | reveal: opacity 0→1 + 4px rise; leave: fade + 4px up; menu, sheet and dialog in/out |
+| 280ms        | ease-swift | an item moving between places (into a cart, between lists)                          |
+| 110ms frames | stepped    | terminal spinner                                                                    |
 
 Easings: ease-out `cubic-bezier(.19, 1, .22, 1)` · ease-swift `cubic-bezier(.55, 0, .1, 1)` ·
 stepped `steps(1, end)`.
@@ -774,7 +774,7 @@ stepped `steps(1, end)`.
 
 - With no choice made, the theme follows `prefers-color-scheme`. `data-theme="dark"` or
   `data-theme="light"` on `<html>` or on any region overrides it; spacing, type, shape and motion
-  are identical in both. Story names: *Ink* (dark) and *Paper* (light).
+  are identical in both. Story names: _Ink_ (dark) and _Paper_ (light).
 - Any region may switch theme on its own (e.g. a dark code sample inside a light article).
 - The page tone sits on the root element with `color-scheme`, so overscroll and gaps never flash a
   different color.
@@ -786,14 +786,14 @@ A preset is a bundle of tokens plus a recipe: default theme, density, the mappin
 free hues, built-in tags and sample pages. Presets never change the laws. Code uses the plain
 names; the story names live in docs and marketing only.
 
-| Preset (code) | Story name | Default theme | Accent marks | Hues |
-|---|---|---|---|---|
-| `docs` | Galley | follows OS | current page in the nav, current heading in the outline | callout types |
-| `dashboard` | Ledger | dark, compact | what is current or running | one per data series or entity type |
-| `blog` | Broadsheet | light | current nav item, reading progress, link hover | one per category (`GUIDE`, `ESSAY`, `NOTE`) |
-| `landing` | Broadside | follows OS | recommended plan rule, active section in a sticky nav | feature categories, or none |
-| `shop` | Catalogue | light | selected option, current checkout step | stock status; `SALE` in magenta or blue, never jade |
-| `portfolio` | Folio | follows OS | current nav item only | none or one |
+| Preset (code) | Story name | Default theme | Accent marks                                            | Hues                                                |
+| ------------- | ---------- | ------------- | ------------------------------------------------------- | --------------------------------------------------- |
+| `docs`        | Galley     | follows OS    | current page in the nav, current heading in the outline | callout types                                       |
+| `dashboard`   | Ledger     | dark, compact | what is current or running                              | one per data series or entity type                  |
+| `blog`        | Broadsheet | light         | current nav item, reading progress, link hover          | one per category (`GUIDE`, `ESSAY`, `NOTE`)         |
+| `landing`     | Broadside  | follows OS    | recommended plan rule, active section in a sticky nav   | feature categories, or none                         |
+| `shop`        | Catalogue  | light         | selected option, current checkout step                  | stock status; `SALE` in magenta or blue, never jade |
+| `portfolio`   | Folio      | follows OS    | current nav item only                                   | none or one                                         |
 
 - **Galley (docs).** Left nav column (mono labels, current page with an accent rule), article at
   reading width, right column for the page outline ("On this page"), where the heading being
@@ -827,7 +827,7 @@ names; the story names live in docs and marketing only.
 - Don't float cards on the page; don't box content inside more boxes.
 - Don't use pill buttons, colored button fills, or icon-only controls outside dense component controls.
 - Don't use jade for brand washes, sale badges, buttons or large fills.
-- Don't use ink inversion to make an action stand out; it means *chosen*. Primary buttons are a
+- Don't use ink inversion to make an action stand out; it means _chosen_. Primary buttons are a
   2px ink stroke, never a fill.
 - Don't write Title Case headings, type uppercase into content, or enable mono ligatures.
 - Don't add hover lifts, scale, parallax, bouncy easing or perpetual animation beyond the spinner.

@@ -7,8 +7,7 @@ const frames = async (n = 2) => {
 };
 
 const scroller = () => {
-  document.body.innerHTML =
-    '<div id="s" style="height:50px;overflow:auto"><div style="height:500px"></div></div>';
+  document.body.innerHTML = '<div id="s" style="height:50px;overflow:auto"><div style="height:500px"></div></div>';
   return document.getElementById('s') as HTMLElement;
 };
 

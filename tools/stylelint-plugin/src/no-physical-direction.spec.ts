@@ -14,7 +14,9 @@ describe('nib/no-physical-direction', () => {
   });
 
   it('rejects left/right properties and values', async () => {
-    expect(await lint('a { margin-left: 4px; right: 0; border-right-width: 1px; text-align: left; clear: right; }')).toEqual([
+    expect(
+      await lint('a { margin-left: 4px; right: 0; border-right-width: 1px; text-align: left; clear: right; }'),
+    ).toEqual([
       `nib/no-physical-direction: Unexpected margin-left "4px": ${REASON}`,
       `nib/no-physical-direction: Unexpected right "0": ${REASON}`,
       `nib/no-physical-direction: Unexpected border-right-width "1px": ${REASON}`,

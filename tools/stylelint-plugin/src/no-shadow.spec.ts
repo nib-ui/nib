@@ -10,7 +10,9 @@ describe('nib/no-shadow', () => {
 
   it('rejects box, text and drop shadows', async () => {
     expect(
-      await lint('a { box-shadow: 0 1px 2px var(--x); text-shadow: 0 0 1px var(--x); filter: drop-shadow(0 0 2px var(--x)); }'),
+      await lint(
+        'a { box-shadow: 0 1px 2px var(--x); text-shadow: 0 0 1px var(--x); filter: drop-shadow(0 0 2px var(--x)); }',
+      ),
     ).toEqual([
       'nib/no-shadow: Unexpected box-shadow "0 1px 2px var(--x)": depth comes from surfaces and lines, not shadows (nib/no-shadow)',
       'nib/no-shadow: Unexpected text-shadow "0 0 1px var(--x)": depth comes from surfaces and lines, not shadows (nib/no-shadow)',

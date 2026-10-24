@@ -2,21 +2,12 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./out-tsc/vitest",
-    "lib": [
-      "es2024"
-    ],
-    "types": [
-      "node",
-      "vitest/importMeta"
-    ],
+    "lib": ["es2024"],
+    "types": ["node", "vitest/importMeta"],
     "rewriteRelativeImportExtensions": false,
     "allowImportingTsExtensions": true
   },
-  "include": [
-    "vitest.config.mts",
-    "test/**/*.ts",
-    "src/**/*.spec.ts"
-  ],
+  "include": ["vitest.config.mts", "test/**/*.ts", "src/**/*.spec.ts"],
   "references": [
     {
       "path": "./tsconfig.lib.json"

@@ -10,14 +10,14 @@ functions, no DOM, no dependencies.
 
 ## Rules
 
-| Rule | Severity |
-|---|---|
-| on-surface 1–3, accent-text and the six hues ≥ 4.5:1 on all three surfaces | error |
-| each hue ≥ 4.5:1 on its own `-soft` fill mixed over all three surfaces (tags) | error |
-| syntax colours ≥ 4.5:1 on surface raised; on-cursor on cursor and on-hue on each hue ≥ 4.5:1 | error |
-| accent ≥ 3:1 on all three surfaces and on the cursor block | error |
-| accent and any hue under ΔE 8 for normal vision | error |
-| accent and red, green or yellow under ΔE 10 for protanopia, deuteranopia or tritanopia | warning |
+| Rule                                                                                         | Severity |
+| -------------------------------------------------------------------------------------------- | -------- |
+| on-surface 1–3, accent-text and the six hues ≥ 4.5:1 on all three surfaces                   | error    |
+| each hue ≥ 4.5:1 on its own `-soft` fill mixed over all three surfaces (tags)                | error    |
+| syntax colours ≥ 4.5:1 on surface raised; on-cursor on cursor and on-hue on each hue ≥ 4.5:1 | error    |
+| accent ≥ 3:1 on all three surfaces and on the cursor block                                   | error    |
+| accent and any hue under ΔE 8 for normal vision                                              | error    |
+| accent and red, green or yellow under ΔE 10 for protanopia, deuteranopia or tritanopia       | warning  |
 
 Every colour a rule reads must be opaque; `checkTheme` throws otherwise.
 

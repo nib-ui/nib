@@ -1,16 +1,16 @@
 # @nib-ui/tokens
 
-Nib's design tokens (story name: *Sorts*). The source is DTCG JSON in `source/`, transcribed from
+Nib's design tokens (story name: _Sorts_). The source is DTCG JSON in `source/`, transcribed from
 the front matter of `spec/DESIGN.md`; a test fails if the two drift apart.
 
 ## Files
 
-| Import | Contents |
-|---|---|
-| `@nib-ui/tokens/tokens.css` | Custom properties in `@layer nib.theme`: colours as `light-dark()`, fonts, type roles, spacing, motion, density |
-| `@nib-ui/tokens/tailwind.css` | Tailwind v4 `@theme inline` aliases (`bg-nib-surface`, `text-nib-label-md`, …), with the radius and shadow namespaces reset. Load `tokens.css` too. |
-| `@nib-ui/tokens/tokens.json` | Colours resolved to hex per theme, every custom property, and each density's values. The derived `-soft` and `-border` hue variants appear only under `vars` (as `color-mix()`), since their final colour depends on the surface underneath. |
-| `@nib-ui/tokens` | `buildTokens(source)`, the pure function that produces the three files |
+| Import                        | Contents                                                                                                                                                                                                                                     |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@nib-ui/tokens/tokens.css`   | Custom properties in `@layer nib.theme`: colours as `light-dark()`, fonts, type roles, spacing, motion, density                                                                                                                              |
+| `@nib-ui/tokens/tailwind.css` | Tailwind v4 `@theme inline` aliases (`bg-nib-surface`, `text-nib-label-md`, …), with the radius and shadow namespaces reset. Load `tokens.css` too.                                                                                          |
+| `@nib-ui/tokens/tokens.json`  | Colours resolved to hex per theme, every custom property, and each density's values. The derived `-soft` and `-border` hue variants appear only under `vars` (as `color-mix()`), since their final colour depends on the surface underneath. |
+| `@nib-ui/tokens`              | `buildTokens(source)`, the pure function that produces the three files                                                                                                                                                                       |
 
 ## Themes and density
 

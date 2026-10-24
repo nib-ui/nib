@@ -73,7 +73,9 @@ describe('checkTheme', () => {
     expect(marks.length).toBeGreaterThan(0);
     expect(marks.every((m) => m.severity === 'warning')).toBe(true);
     expect(marks.map((m) => m.message)).toContainEqual(
-      expect.stringMatching(/^Proof mark: accent and red are \d+\.\d apart for (protanopia|deuteranopia|tritanopia) \(paper\), under 10\. Pair every use with a word\.$/),
+      expect.stringMatching(
+        /^Proof mark: accent and red are \d+\.\d apart for (protanopia|deuteranopia|tritanopia) \(paper\), under 10\. Pair every use with a word\.$/,
+      ),
     );
   });
 
@@ -106,4 +108,3 @@ describe('checkTheme', () => {
     );
   });
 });
-

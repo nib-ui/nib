@@ -19,15 +19,15 @@ Visual regression tests run in the Playwright Docker image, so Docker is needed 
 
 The workspace runs on [Nx](https://nx.dev). Every check runs per project and is cached.
 
-| Task | Command |
-|---|---|
-| Lint, typecheck, test, build everything | `pnpm nx run-many -t lint typecheck test build` |
-| Only what your branch touches | `pnpm nx affected -t lint typecheck test build size-limit` |
-| One project | `pnpm nx test @nib-ui/core` |
-| Size budgets | `pnpm nx run-many -t size-limit` |
-| Visual regression (Docker) | `pnpm e2e` |
-| Refresh screenshot baselines (Docker) | `pnpm update-snapshots` |
-| Project graph | `pnpm nx graph` |
+| Task                                    | Command                                                    |
+| --------------------------------------- | ---------------------------------------------------------- |
+| Lint, typecheck, test, build everything | `pnpm nx run-many -t lint typecheck test build`            |
+| Only what your branch touches           | `pnpm nx affected -t lint typecheck test build size-limit` |
+| One project                             | `pnpm nx test @nib-ui/core`                                |
+| Size budgets                            | `pnpm nx run-many -t size-limit`                           |
+| Visual regression (Docker)              | `pnpm e2e`                                                 |
+| Refresh screenshot baselines (Docker)   | `pnpm update-snapshots`                                    |
+| Project graph                           | `pnpm nx graph`                                            |
 
 ## Version plans
 

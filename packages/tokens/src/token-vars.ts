@@ -33,7 +33,10 @@ const lightDark = (light: string, dark: string) => `light-dark(${light}, ${dark}
 const mix = (name: string, pct: number) => `color-mix(in srgb, var(--nib-${name}) ${pct}%, transparent)`;
 
 function assertSameNames(dark: Map<string, unknown>, light: Map<string, unknown>) {
-  for (const [a, b, aName, bName] of [[dark, light, 'dark', 'light'], [light, dark, 'light', 'dark']] as const) {
+  for (const [a, b, aName, bName] of [
+    [dark, light, 'dark', 'light'],
+    [light, dark, 'light', 'dark'],
+  ] as const) {
     for (const name of a.keys()) {
       if (!b.has(name)) throw new Error(`Colour "${name}" is defined for ${aName} but not for ${bName}`);
     }

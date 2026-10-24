@@ -67,7 +67,10 @@ describe('typeahead', () => {
   it('matches decomposed (NFD) Vietnamese labels and input', () => {
     const clock = fakeClock();
     const ta = createTypeahead({ clock, locale: 'vi' });
-    const langs = [{ key: 'vi', label: 'Tiếng Việt'.normalize('NFD') }, { key: 'e', label: 'ê' }];
+    const langs = [
+      { key: 'vi', label: 'Tiếng Việt'.normalize('NFD') },
+      { key: 'e', label: 'ê' },
+    ];
     let found: string | null = null;
     for (const ch of 'tie') found = ta.type(ch, langs, found);
     expect(found).toBe('vi');

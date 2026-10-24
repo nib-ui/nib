@@ -5,7 +5,14 @@ const DIRECTION_VALUE_PROPS = new Set(['text-align', 'text-align-last', 'float',
 const RADIUS = /-radius$/i;
 // Box shorthands whose fourth value is the left side and second the right.
 const BOX_SHORTHANDS = new Set([
-  'margin', 'padding', 'inset', 'border-width', 'border-style', 'border-color', 'scroll-margin', 'scroll-padding',
+  'margin',
+  'padding',
+  'inset',
+  'border-width',
+  'border-style',
+  'border-color',
+  'scroll-margin',
+  'scroll-padding',
 ]);
 
 export default declarationRule({
@@ -16,7 +23,10 @@ export default declarationRule({
     // Corners belong to nib/no-radius: any radius but 0 is already banned, and 0 is symmetric.
     if (p.startsWith('--') || RADIUS.test(p)) return undefined;
     if (PHYSICAL_PROP.test(p)) return value.trim();
-    const v = value.trim().toLowerCase().replace(/^-[a-z]+-/, '');
+    const v = value
+      .trim()
+      .toLowerCase()
+      .replace(/^-[a-z]+-/, '');
     if (DIRECTION_VALUE_PROPS.has(p) && (v === 'left' || v === 'right')) return value.trim();
     if (BOX_SHORTHANDS.has(p)) {
       const sides = value.trim().split(/\s+/);

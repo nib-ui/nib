@@ -5,7 +5,7 @@ for both themes, type scale, spacing and component defaults; the body explains t
 how each part is used. It follows the [DESIGN.md format](https://stitch.withgoogle.com/docs/design-md/overview/)
 so design and coding agents can read it.
 
-It is the source of truth for *intent*, not a build input. Shipped tokens are compiled from DTCG
+It is the source of truth for _intent_, not a build input. Shipped tokens are compiled from DTCG
 JSON in the `tokens` package; keep the two in step.
 
 ## How to use it
@@ -20,14 +20,14 @@ JSON in the `tokens` package; keep the two in step.
 
 ## Quick reference
 
-| Role | Dark (Ink) | Light (Paper) |
-|---|---|---|
+| Role                       | Dark (Ink)                        | Light (Paper)                     |
+| -------------------------- | --------------------------------- | --------------------------------- |
 | surface · raised · overlay | `#141413` · `#1a1a18` · `#1e1d1b` | `#faf9f5` · `#f1efe8` · `#ece9e0` |
-| ink | `#faf9f5` | `#141413` |
-| accent (jade) | `#00967d` (text `#009e84`) | `#02806c` (text `#007561`) |
-| cursor block | ink fill, surface text | ink fill, surface text |
-| red · green · yellow | `#e08f8f` · `#c3e88d` · `#e5c07b` | `#a04545` · `#537126` · `#7a5d00` |
-| blue · cyan · magenta | `#82aaff` · `#89ddff` · `#c792ea` | `#2a60d6` · `#156f93` · `#8c46bb` |
+| ink                        | `#faf9f5`                         | `#141413`                         |
+| accent (jade)              | `#00967d` (text `#009e84`)        | `#02806c` (text `#007561`)        |
+| cursor block               | ink fill, surface text            | ink fill, surface text            |
+| red · green · yellow       | `#e08f8f` · `#c3e88d` · `#e5c07b` | `#a04545` · `#537126` · `#7a5d00` |
+| blue · cyan · magenta      | `#82aaff` · `#89ddff` · `#c792ea` | `#2a60d6` · `#156f93` · `#8c46bb` |
 
 Type: Inter 400/500/600 for headlines and prose · JetBrains Mono 400/500 for labels, prices, dates
 and code · mono ligatures off. Spacing: 4pt grid with half steps. Strokes: 1px hairline, 2px rule.

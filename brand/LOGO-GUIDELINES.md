@@ -20,26 +20,26 @@ system's laws drawn as a sign: flat, square, ruled, one accent for the current t
 
 ## Files
 
-| File | Use |
-|---|---|
-| `nib-mark.svg` · `-dark.svg` | Symbol on light / dark surfaces |
-| `nib-mark-small.svg` · `-dark.svg` | Symbol at 16–32px |
-| `nib-horizontal.svg` · `-dark.svg` | Default lockup: headers, README, docs |
-| `nib-stacked.svg` · `-dark.svg` | Square-ish spaces: covers, social cards |
-| `nib-wordmark.svg` · `-dark.svg` | Where the symbol already appears nearby |
-| `nib-banner.svg` | Dark lockup on a `#141413` tile with a 1px line: always-white pages such as a GitHub README |
-| `variants/` | One-colour black and white (SVG + PNG), square avatar master |
-| `web/` | `favicon.ico`, `favicon.svg`, PNG icons, maskable icon, `site.webmanifest`, `head-snippet.html` |
-| `source/build-nib-logo.py` | Regenerates every file above, PNG and ICO included; edit geometry and colour here, not in the SVGs |
-| `archive/warm-terminal/` | Concept board and slides from the earlier "Warm Terminal" identity, kept for history only |
+| File                               | Use                                                                                                |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `nib-mark.svg` · `-dark.svg`       | Symbol on light / dark surfaces                                                                    |
+| `nib-mark-small.svg` · `-dark.svg` | Symbol at 16–32px                                                                                  |
+| `nib-horizontal.svg` · `-dark.svg` | Default lockup: headers, README, docs                                                              |
+| `nib-stacked.svg` · `-dark.svg`    | Square-ish spaces: covers, social cards                                                            |
+| `nib-wordmark.svg` · `-dark.svg`   | Where the symbol already appears nearby                                                            |
+| `nib-banner.svg`                   | Dark lockup on a `#141413` tile with a 1px line: always-white pages such as a GitHub README        |
+| `variants/`                        | One-colour black and white (SVG + PNG), square avatar master                                       |
+| `web/`                             | `favicon.ico`, `favicon.svg`, PNG icons, maskable icon, `site.webmanifest`, `head-snippet.html`    |
+| `source/build-nib-logo.py`         | Regenerates every file above, PNG and ICO included; edit geometry and colour here, not in the SVGs |
+| `archive/warm-terminal/`           | Concept board and slides from the earlier "Warm Terminal" identity, kept for history only          |
 
 ## Colour
 
-| Role | Light surface | Dark surface |
-|---|---|---|
-| Cells and wordmark | ink `#141413` | ink `#faf9f5` |
-| Cursor cell | jade `#02806c` | jade `#00967d` |
-| Background | `#faf9f5` · `#f1efe8` · `#ece9e0` | `#141413` · `#1a1a18` · `#1e1d1b` |
+| Role               | Light surface                     | Dark surface                      |
+| ------------------ | --------------------------------- | --------------------------------- |
+| Cells and wordmark | ink `#141413`                     | ink `#faf9f5`                     |
+| Cursor cell        | jade `#02806c`                    | jade `#00967d`                    |
+| Background         | `#faf9f5` · `#f1efe8` · `#ece9e0` | `#141413` · `#1a1a18` · `#1e1d1b` |
 
 The jade is the system accent (story name: Verdigris). Print values, Pantone and CMYK are not set
 yet; they need a print proof. For ink use a rich black (e.g. C60 M50 Y50 K100), not 0/0/4/92.
@@ -62,7 +62,7 @@ photos or busy content, place the symbol on a square `#141413` tile, as the app 
 ## Don't
 
 - Round the cells or the tile, add a shadow, glow, gradient or outline.
-- Colour the cursor any hue but the jade accent, or colour other cells jade. Jade means *current*;
+- Colour the cursor any hue but the jade accent, or colour other cells jade. Jade means _current_;
   an all-jade logo is a brand wash, which the system forbids.
 - Fill the empty cell, move the cursor, add or remove cells, or change the gaps.
 - Stretch, rotate, or set the wordmark in a font instead of the drawn letters.

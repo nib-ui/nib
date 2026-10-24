@@ -19,7 +19,11 @@ export default declarationRule({
     if (literal) return literal;
     if (!COLOR_PROP.test(prop)) return undefined;
     // Variable names and color-mix() colour spaces are not colour words; a var() fallback is.
-    const words = text.replace(/var\(\s*--[\w-]+/gi, '').replace(/\bin\s+[a-z-]+/gi, '').match(/[a-z]+/gi) ?? [];
+    const words =
+      text
+        .replace(/var\(\s*--[\w-]+/gi, '')
+        .replace(/\bin\s+[a-z-]+/gi, '')
+        .match(/[a-z]+/gi) ?? [];
     return words.find((w: string) => NAMED_COLORS.has(w.toLowerCase()));
   },
 });

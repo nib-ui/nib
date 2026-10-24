@@ -5,6 +5,7 @@ Date: 2026-10-24. Source: Mobbin MCP, platform `web`, 14 `search_screens` querie
 Verdict key: CONFIRMS (market agrees with Nib), CHALLENGES (market does the opposite; spec change proposed), GAP (Nib silent). Per CLAUDE rule 3, every CHALLENGES touching ADR 2 or ADR 9 is input for the owner, not an applied change.
 
 **Limits of this evidence.**
+
 - Screenshots are static desktop captures. They show visual signals only: focus rings, contrast impressions, glyph + word redundancy.
 - They cannot verify roles, ARIA, keyboard order, live regions, skip links (hidden until focus), forced-colors behavior, touch target size, or sticky-header behavior.
 - Contrast notes below are visual estimates, not measurements.
@@ -12,23 +13,24 @@ Verdict key: CONFIRMS (market agrees with Nib), CHALLENGES (market does the oppo
 
 ## Summary table
 
-| # | Topic | Verdict | One-line finding |
-|---|-------|---------|------------------|
-| 1 | Current vs selected in menus | CONFIRMS + GAP | Market separates the two signals; Nib's weights are inverted (selected is heavier than current) and rule-on-block contrast is untested |
-| 2 | Selected toggles beside a primary | Recommend (a) | Every product keeps the CTA dominant by fill and by placement; Nib has no fill, so placement must carry it |
-| 3 | Outline-only primary | CHALLENGES | 0 of about 25 products use an outline-only primary; outlines are always the secondary |
-| 4 | Data tables | CHALLENGES + GAP | Multi-row selection is a light tint + checkbox, never an inverted row; bulk-action bar and flagged-row rule missing |
-| 5 | Date picker | CONFIRMS + GAP | Dark endpoints + light range is the norm; disabled-date treatment is under-specified |
-| 6 | Docs | CONFIRMS + GAP | Current-page marker and callouts fine; code-copy feedback and outline current state unspecified |
-| 7 | Forms | CONFIRMS + GAP | Glyph + red text inline is universal; no error summary, no required-marker rule |
-| 8 | Destructive confirm | GAP | Type-to-confirm with disabled button until match is the standard |
-| 9 | Empty and loading | CONFIRMS | Matches; ruled skeleton and "spinner + words" have precedent |
-| 10 | Flat / mono aesthetics | GAP (thin evidence) | Mono uppercase section labels and kbd chips appear; true radius-0 is rare |
-| 11 | Visible a11y signals | Mixed | Glyph + word status is common; 2px focus rings are stronger than the market norm; muted text often looks light |
+| #   | Topic                             | Verdict             | One-line finding                                                                                                                       |
+| --- | --------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Current vs selected in menus      | CONFIRMS + GAP      | Market separates the two signals; Nib's weights are inverted (selected is heavier than current) and rule-on-block contrast is untested |
+| 2   | Selected toggles beside a primary | Recommend (a)       | Every product keeps the CTA dominant by fill and by placement; Nib has no fill, so placement must carry it                             |
+| 3   | Outline-only primary              | CHALLENGES          | 0 of about 25 products use an outline-only primary; outlines are always the secondary                                                  |
+| 4   | Data tables                       | CHALLENGES + GAP    | Multi-row selection is a light tint + checkbox, never an inverted row; bulk-action bar and flagged-row rule missing                    |
+| 5   | Date picker                       | CONFIRMS + GAP      | Dark endpoints + light range is the norm; disabled-date treatment is under-specified                                                   |
+| 6   | Docs                              | CONFIRMS + GAP      | Current-page marker and callouts fine; code-copy feedback and outline current state unspecified                                        |
+| 7   | Forms                             | CONFIRMS + GAP      | Glyph + red text inline is universal; no error summary, no required-marker rule                                                        |
+| 8   | Destructive confirm               | GAP                 | Type-to-confirm with disabled button until match is the standard                                                                       |
+| 9   | Empty and loading                 | CONFIRMS            | Matches; ruled skeleton and "spinner + words" have precedent                                                                           |
+| 10  | Flat / mono aesthetics            | GAP (thin evidence) | Mono uppercase section labels and kbd chips appear; true radius-0 is rare                                                              |
+| 11  | Visible a11y signals              | Mixed               | Glyph + word status is common; 2px focus rings are stronger than the market norm; muted text often looks light                         |
 
 ## Q1. Command palette / listbox / menu: current vs selected
 
 Representative screens:
+
 - [Linear comment menu: "Edit" row has a grey fill](https://mobbin.com/screens/73891735-c12b-4ed3-bd7f-fc6bc3c52228)
 - [Linear "Move to" submenu: ✓ at the trailing edge marks the selected item](https://mobbin.com/screens/f1e8745b-81b7-4a78-85e1-a325f4843f42)
 - [Vercel find dialog: first result has a full-row grey fill](https://mobbin.com/screens/018ade73-2149-4941-8b2e-1086c81857f3)
@@ -40,6 +42,7 @@ Common pattern: keyboard-current is a soft full-row fill. A selected value is a 
 Outliers: Cloudflare is the only product seen using a leading-edge rule, there for "active", not "keyboard-current". Hex ([screen](https://mobbin.com/screens/a54348d3-f754-4cda-a42c-939d4969ea09)) tints the current option's text purple on grey.
 
 Verdict vs Nib: CONFIRMS the split between two signals. Two concerns:
+
 1. Weight inversion. Market: current is the stronger mark (fill), selected is a light ✓. Nib: selected is a full ink block (heaviest), current is a thin 2px rule. In a long list the keyboard position can be easy to miss.
 2. Untested overlap. When the current row is also the selected one, a jade rule sits on an ink block. Spec does not state the rule's contrast on the ink fill.
 
@@ -48,6 +51,7 @@ Recommended spec change (Listbox section): keep the rule, and add the hover fill
 ## Q2. OPEN QUESTION: selected toggle state next to a primary CTA
 
 Representative screens (toggle or option group and a primary action in the same view):
+
 - [WorkOS: selected segment is a white raised pill on a grey track; filled Continue below](https://mobbin.com/screens/b85447f3-590a-4470-ba1d-1d90c5fa7d45)
 - [Family: same pattern, Private Key segment white on grey, full-width filled Done below](https://mobbin.com/screens/2f033b35-f60f-4123-b725-d7a36175a042)
 - [Figma onboarding: selected chip is a light-blue tint with blue outline; solid blue Continue far from the chips, bottom right](https://mobbin.com/screens/73f92eb7-2729-4dbc-8a30-500172da42d5)
@@ -59,16 +63,19 @@ Representative screens (toggle or option group and a primary action in the same 
 - [Mindtrip date dialog: Dates/Flexible segmented pill at the top; black filled Update at the bottom-right footer](https://mobbin.com/screens/6aeccdb5-3875-4dab-b2ee-a60be3880099)
 
 What the evidence shows:
+
 - Selected state is almost always a light form: tint + outline (Figma, Navan, Stripe), raised white on grey (WorkOS, Family), or soft grey (Hex). Only Modal is strongly filled.
 - Linktree and Stripe use an outline as "selected", the opposite of Nib, where the outline-weight mark is the primary action.
 - The CTA is nearly always a solid fill that no toggle matches, and it is spatially separated: header or top for toggles, footer or bottom-right for the CTA. No screen puts the toggle group and the CTA in the same row.
 
 Options assessed:
+
 - (a) Separate placement. Strong support: universal in the sample, costs nothing, keeps ADR 2 (block = chosen) and ADR 9 (primary = 2px stroke) intact.
 - (b) Lighter selected form for toggles. Strong market support, but it breaks ADR 2's single "chosen" mark and the date/row/option consistency that makes Nib legible in grayscale and CVD. Would be a reversal of a decided ADR.
 - (c) Accept as is. Not evidenced: no product relies on a stroke-only primary next to a strong selected block; the evidence cannot say whether it works, only that nobody tries it.
 
 **Recommendation: (a), with (c) as the explicit fallback, and no (b).**
+
 - Add a layout rule to Button and Forms: the primary lives in the region's footer/action row at inline-end; pressed toggles, option pickers and segmented controls live in the region's header or content area; they never share a row. Dialog and drawer footers hold the primary and its cancel only.
 - Where a toggle must sit beside the CTA (a one-row toolbar), keep the toggle block and rely on position, size (`lg`), and the 2px frame; add a prototype check to the existing token-check page with the worst case (block + 2px primary adjacent, both themes, grayscale).
 - Rationale for the risk being modest: the block is the user's own choice, not an action; users look for the action at the end of the region (matches every screen above).
@@ -77,6 +84,7 @@ Options assessed:
 ## Q3. Primary button styles in flat / monochrome products
 
 Representative screens:
+
 - [Twenty: mono uppercase GET STARTED is a solid black fill; TALK TO US is the 1px outline secondary](https://mobbin.com/screens/76dbb92a-30b1-4910-b6e0-1b5f618860e6) (closest visual relative to Nib)
 - [Relume: Get started is solid black; Learn more is a 1px black outline](https://mobbin.com/screens/8135e384-1c3e-4c72-bad3-b5afaba9ea8e)
 - [LangChain: light solid Start building / Try LangSmith; Get a demo is a 1px outline; mono labels](https://mobbin.com/screens/b59685a4-716e-40e4-96ce-b5ce02c8841b)
@@ -94,6 +102,7 @@ Recommended spec addition (not a reversal): in the Button section add one senten
 ## Q4. Data tables
 
 Representative screens:
+
 - [LangChain datasets: "1 selected" + red-outline Delete appears above the header; checked row, sort glyph per header](https://mobbin.com/screens/d42cdf50-f8b0-4d4f-b6e9-2aa5283ed1df)
 - [Shopify orders: "2 selected" bulk toolbar with word buttons + overflow; selected rows grey tint; cancelled row struck through](https://mobbin.com/screens/306b7c73-6f54-4991-872e-ee8b899889a1)
 - [ClickUp: floating dark bar "3 Tasks selected" with icon + word actions](https://mobbin.com/screens/e9639493-e0a6-46c9-93d1-d3189cbdc3c7)
@@ -105,16 +114,19 @@ Representative screens:
 - [Supabase invocations: red `500` chip + mono log text](https://mobbin.com/screens/b5dc05f0-1a81-475b-ac38-9b852445ef52)
 
 Common pattern:
+
 - Multi-row selection = checkbox + soft tint on the row. No product inverts the row. A bulk-action bar appears with a count ("N selected") and word-labelled actions, above the table or floating at the bottom, with a "deselect all".
 - Flagged/warning rows are not tinted: status is a cell with a coloured mark plus a word or glyph (Vercel, GitLab, Sentry). Shopify strikes through cancelled rows.
 - Sort: a small glyph beside the header word, often always visible (LangChain, Meetup, Zendesk).
 - Sticky header: not verifiable from static captures.
 
 Verdict vs Nib:
+
 - CHALLENGES: "selected table row is a cursor block". With multi-select (checkbox rows) a full ink slab per row gets heavy; every comparable uses a tint. Single-select master/detail lists are a different case and the block is fine there.
 - GAP: bulk-action bar; flagged-row rule; "N selected" announcement.
 
 Recommended spec changes (Table and data grid):
+
 1. Split selection: single-selection rows (one chosen row) keep the cursor block. Multi-selection rows (with `[x]`) get the checked glyph plus the hover-fill, not the block; the `[x]` glyph carries "chosen". Flag to owner: ADR 2 lists "selected table row" under the cursor block, so this narrows it.
 2. Add a bulk-action bar: mono `3 SELECTED`, word buttons (destructive uses the 1px red form), `CLEAR` ghost; it is a polite live-region update.
 3. Flagged rows: no row tint; status cell = glyph + word (`✖ FAILED`, `▲ WARN`), consistent with law 5.
@@ -122,6 +134,7 @@ Recommended spec changes (Table and data grid):
 ## Q5. Date picker
 
 Representative screens:
+
 - [Airbnb: selected endpoints are solid black circles, range is a light grey band, unavailable dates are grey + strikethrough](https://mobbin.com/screens/54761527-353f-47f1-bcf7-c59d267b0e15)
 - [Tripadvisor: black endpoints, grey range, past days light grey](https://mobbin.com/screens/b6e40730-e914-4ae1-8813-1b44d4cb0b4d)
 - [Mindtrip: same black endpoints/grey range, past days very light grey](https://mobbin.com/screens/6aeccdb5-3875-4dab-b2ee-a60be3880099)
@@ -140,6 +153,7 @@ Recommended spec change (Date picker): disabled days use strikethrough (or a `·
 ## Q6. Docs sites
 
 Representative screens:
+
 - [Mintlify: left nav current page is a green-tinted pill; "On this page" current heading in green, others grey; callout is a neutral raised box with an ⓘ icon](https://mobbin.com/screens/731c0653-266e-4c03-aae6-df4d07631ebd)
 - [Neon: tabs of filenames above a code block with an underline on the current tab, "Copy snippet" with icon + words, numbered steps](https://mobbin.com/screens/94fb6fc0-0fb0-4358-b6da-534a1f5addb9)
 - [Exa: code block header shows "Copied ✓" after a copy](https://mobbin.com/screens/95c9d4c9-4004-4b9a-8c45-896b81b59de6)
@@ -152,6 +166,7 @@ Representative screens:
 Common pattern: left nav current = tint fill (Mintlify) or leading rule (Cloudflare); "On this page" current heading = colour change only; callouts = tinted box, sometimes with icon; copy = icon, with or without word; confirmation = label swap to "Copied ✓" (Exa).
 
 Verdict vs Nib: CONFIRMS the leading-rule idea (Cloudflare) and Nib's callout (glyph + label + hue rule) is more redundant than the market, which is good. GAPs:
+
 - "On this page" current heading: market uses colour alone (Mintlify); Nib needs a non-colour signal. Recommend: current heading gets the 2px accent rule on the inline-start edge of the outline plus accent text.
 - Code block copy: spec has no copy affordance. Recommend `[COPY]` word button (icon optional, word stays), swapping to `COPIED ✓` for about 2s with a polite live-region message. Icon-only copy (Vercel, Customer.io) violates Nib's words-first rule for non-dense contexts.
 - Tabbed code blocks (Neon): current tab = accent underline, per Nib's navigation rule; no change.
@@ -159,6 +174,7 @@ Verdict vs Nib: CONFIRMS the leading-rule idea (Cloudflare) and Nib's callout (g
 ## Q7. Forms
 
 Representative screens:
+
 - [Hashnode: red border + red ● glyph + message "Title is required."](https://mobbin.com/screens/b7a1bb30-1f89-4b6c-9c1e-ad6349c62827)
 - [Mintlify settings: red border, ⓘ glyph, message, Save disabled](https://mobbin.com/screens/31a78b73-f62f-4129-8d80-df093e8b7021)
 - [Quo: red ● glyph + "Wrong email or password"; "Password*" required star in the label](https://mobbin.com/screens/89fe766d-c4d6-4529-a14b-f0c30ecb8ecc)
@@ -173,12 +189,14 @@ Representative screens:
 - [Brilliant: switch rows with a ✓ toast "Notification preference updated"](https://mobbin.com/screens/97f59a09-7b04-4e98-9971-9210e0e79ba1)
 
 Common pattern:
+
 - Inline error = red border + glyph + sentence, below the field. Nib's `⚠ ENTER A VALID EMAIL` matches (CONFIRMS). A few products show red border only (PayPal) or red border with a message that is hue-only; those are the failures law 5 prevents.
 - Error summary: two models. Banner/toast at the top or bottom (Patreon, Square). None is a focusable list of links.
 - Required: star after label (Quo, Unify) or "(optional)" word (Square's "Apt, Suite, etc. (Optional)"). Mixed.
 - Switch vs checkbox: switches for immediate-effect preferences (Linear, GetYourGuide, Brilliant); checkboxes for consent and multi-select permissions in a submitted form (Oyster). Every switch has a sliding knob; GetYourGuide adds On/Off words, which supports Nib's ON/OFF text.
 
 Verdict vs Nib: CONFIRMS inline errors and ON/OFF words. GAPs:
+
 1. Form-level error summary. Recommend: on failed submit, an alert callout (`⚠ 2 ERRORS`) at the top listing links to each invalid field, focus moved to it. Square and Patreon are the visible precedent, but their pattern is a toast/banner without links (weaker).
 2. Required marker rule. Recommend: label suffix `*` plus the word `REQUIRED` in help text only where it is not the default; or mark `(OPTIONAL)` in the label when most fields are required. Pick one convention in the spec.
 3. Switch vs checkbox usage rule: switch = applies immediately, checkbox = part of a submitted set or consent. Add one sentence.
@@ -187,6 +205,7 @@ Verdict vs Nib: CONFIRMS inline errors and ON/OFF words. GAPs:
 ## Q8. Destructive confirmation dialogs
 
 Representative screens:
+
 - [Relevance AI: "Please type UX Intelligence Lab to confirm deletion", red filled Delete Project](https://mobbin.com/screens/552cef13-e0e1-41d4-8715-9b5b7d65cb43)
 - [AirOps: lists the items to be deleted, input "Type Delete to confirm", confirm button disabled until it matches](https://mobbin.com/screens/f4e2bee1-3cf3-4c30-b20a-95a192688ed1)
 - [HubSpot: red header band "Delete 2 records?", type the record count to confirm](https://mobbin.com/screens/df4fa955-be93-4c8a-9bc3-db54924b7151)
@@ -201,6 +220,7 @@ Common pattern: title with the object name, a plain consequence sentence ("canno
 Verdict vs Nib: GAP. Nib defines the destructive primary (2px red border) but not the type-to-confirm flow. The 2px red border form fits; disabled-until-match is universal.
 
 Recommended spec additions (Dialog):
+
 - Destructive dialog anatomy: `▲ CANNOT BE UNDONE` callout; consequence list; label `TYPE <name> TO CONFIRM` with the string in mono and a copy chip; input; `[ESC]CANCEL` and 2px red `DELETE <OBJECT>`.
 - Disabled-until-match uses `aria-disabled="true"` (so it stays focusable and can explain why via `aria-describedby`), not the 45% opacity alone, because a 45% red 2px stroke is a weak "disabled" cue on dark theme. Pair with a visible `0 / 12 MATCHED` style hint or just the helper text.
 - Focus starts on the input, not on the destructive button.
@@ -208,6 +228,7 @@ Recommended spec additions (Dialog):
 ## Q9. Empty and loading states
 
 Empty - representative screens:
+
 - [Render: headline, one sentence, then link-cards for each way to start, no illustration](https://mobbin.com/screens/63958e19-2913-4d0e-85d9-39c9654e106b)
 - [Cloudflare VPC: icon, headline, sentence, one primary](https://mobbin.com/screens/cdd97707-d189-4bcf-82a8-5a80ec1fbafe)
 - [Modal: icon, "No live apps", example cards offering starting points](https://mobbin.com/screens/655fc3a7-4f0e-4dce-b2a9-0c2263dbc1cf)
@@ -217,6 +238,7 @@ Empty - representative screens:
 - [Microsoft Copilot: one line of text and one button, nothing else](https://mobbin.com/screens/5c465bd2-580a-450d-b921-6b6a19fd1f06)
 
 Loading - representative screens:
+
 - [Neon: ruled table skeleton, grey bars in 1px-ruled rows (closest to Nib's ghost rows)](https://mobbin.com/screens/9b5b1374-c015-495b-abcb-9cce659c741b)
 - [Coda: skeleton + spinner + words "Setting up your first doc..."](https://mobbin.com/screens/55171e3f-c462-477b-b92c-843a8fd8c9b2)
 - [Fresha](https://mobbin.com/screens/f87f38b8-1d1e-4102-aae3-5ac5ab07f350) and [Sentry](https://mobbin.com/screens/c331abde-5e53-4dfe-bd6e-024f07f5feb1): bare spinners with no text (the weak pattern)
@@ -231,6 +253,7 @@ Small gaps: (a) long-running load (Causal): add a rule for waits over a few seco
 ## Q10. Flat / square / monospace-heavy aesthetics
 
 Representative screens:
+
 - [Supabase palette: mono uppercase section labels (SHORTCUTS, QUERIES, ACTIONS) and bracket-like kbd chips](https://mobbin.com/screens/9b4725f5-e038-4fc7-98ad-64a59f74b4d7)
 - [Twenty hero: mono uppercase nav + CTAs, thin ruled app frame](https://mobbin.com/screens/76dbb92a-30b1-4910-b6e0-1b5f618860e6)
 - [LangChain hero: mono nav, mono labels in outlined pills, 1px ruled frame](https://mobbin.com/screens/b59685a4-716e-40e4-96ce-b5ce02c8841b)
@@ -248,16 +271,16 @@ Recommendation: no spec change; record in the roadmap that radius 0 and flat sel
 
 State again: screenshots show visual signals only. Roles, ARIA, keyboard behaviour, skip links (hidden until focus), live regions and forced colors cannot be verified from these images.
 
-| Signal | What the screens show | Nib implication |
-|--------|----------------------|-----------------|
-| Focus ring | Most captured inputs show only a 1px border colour change. Stronger examples: [Brilliant](https://mobbin.com/screens/71aafe51-7837-4233-be6b-8551d19b0f09) (heavy dark 2px outline), [Google Gemini](https://mobbin.com/screens/b6a63c32-daac-4420-b9be-4115653fa372) (2px blue frame with floating label) | Nib's 2px solid accent + 2px offset on every interactive element is stronger than the norm. CONFIRMS. Check the jade ring against ink block backgrounds (see Q1) |
-| Colour-only status | Redundant (dot + word) in [Vercel](https://mobbin.com/screens/b9d9cc23-34a1-434c-a4ed-52a2a4f49bb7), [GitLab](https://mobbin.com/screens/5c384c13-e9f9-45be-8cef-f08bc517ff7f), [Browserbase filter](https://mobbin.com/screens/f2788484-2372-4307-9621-8e7037c0c633), [Supabase chart legend with words](https://mobbin.com/screens/b5dc05f0-1a81-475b-ac38-9b852445ef52). Colour-only: [KAYAK price tiers](https://mobbin.com/screens/cc893e37-8460-4521-a192-d32a1c15501d), ClickUp's coloured status dots next to words are fine but the priority flags rely on hue | Law 5 is consistent with best practice; KAYAK is the anti-example |
-| Muted text contrast | Pale-grey helper text and placeholders are common, e.g. [AirOps param descriptions](https://mobbin.com/screens/a160611c-6fec-46bc-88c1-4aff9898cd36), faint past days in [Tripadvisor](https://mobbin.com/screens/b6e40730-e914-4ae1-8813-1b44d4cb0b4d). These look under 4.5:1 (visual estimate only) | Nib's on-surface 3 >= 4.5:1 and "on-surface 4 is never text" is stricter than the market; keep and enforce for disabled dates/rows |
-| Disabled | Pale fills and 45%-style fades ([Okta Workflows](https://mobbin.com/screens/7d74714a-0e1c-476a-89bc-1426fe545a87), [Resend Add with empty field](https://mobbin.com/screens/bdfe29cf-a69a-4d75-bc3c-ddd6e6e0e3c3)) | Disabled is intentionally exempt from contrast, but add a non-opacity cue for dates (Q5) |
-| Status feedback | Visible toast with a ✓ ([Brilliant](https://mobbin.com/screens/97f59a09-7b04-4e98-9971-9210e0e79ba1)), "Copied ✓" ([Exa](https://mobbin.com/screens/95c9d4c9-4004-4b9a-8c45-896b81b59de6)) | Nib's polite live region is the semantic layer; the visual is a mono glyph + word message |
-| Touch targets | Desktop captures only; dense rows and icon buttons about 24-28px high ([Linear](https://mobbin.com/screens/332e33ea-6a11-476e-9442-06d1ec5a49bb) nav, Vercel nav) | Cannot verify touch; Nib's 28px desktop / 44px touch split is plausible, and 28px clears the WCAG 2.5.8 AA 24px minimum |
-| Skip links | Not visible in static captures (normally hidden until focus) | Cannot verify; spec should still require one (see below) |
-| Icon-only controls | Frequent (copy buttons in [Vercel](https://mobbin.com/screens/8f10d056-15b3-4469-a3d1-7bd371906584) and [Customer.io](https://mobbin.com/screens/8d8c4bd1-ddf9-4fb3-b4a7-2bdb39bb3376) docs, header icons everywhere) | Nib's "words first, icon-only only in dense components with accessible name + tooltip" is the right restriction |
+| Signal              | What the screens show                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Nib implication                                                                                                                                                  |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Focus ring          | Most captured inputs show only a 1px border colour change. Stronger examples: [Brilliant](https://mobbin.com/screens/71aafe51-7837-4233-be6b-8551d19b0f09) (heavy dark 2px outline), [Google Gemini](https://mobbin.com/screens/b6a63c32-daac-4420-b9be-4115653fa372) (2px blue frame with floating label)                                                                                                                                                                                                                                                              | Nib's 2px solid accent + 2px offset on every interactive element is stronger than the norm. CONFIRMS. Check the jade ring against ink block backgrounds (see Q1) |
+| Colour-only status  | Redundant (dot + word) in [Vercel](https://mobbin.com/screens/b9d9cc23-34a1-434c-a4ed-52a2a4f49bb7), [GitLab](https://mobbin.com/screens/5c384c13-e9f9-45be-8cef-f08bc517ff7f), [Browserbase filter](https://mobbin.com/screens/f2788484-2372-4307-9621-8e7037c0c633), [Supabase chart legend with words](https://mobbin.com/screens/b5dc05f0-1a81-475b-ac38-9b852445ef52). Colour-only: [KAYAK price tiers](https://mobbin.com/screens/cc893e37-8460-4521-a192-d32a1c15501d), ClickUp's coloured status dots next to words are fine but the priority flags rely on hue | Law 5 is consistent with best practice; KAYAK is the anti-example                                                                                                |
+| Muted text contrast | Pale-grey helper text and placeholders are common, e.g. [AirOps param descriptions](https://mobbin.com/screens/a160611c-6fec-46bc-88c1-4aff9898cd36), faint past days in [Tripadvisor](https://mobbin.com/screens/b6e40730-e914-4ae1-8813-1b44d4cb0b4d). These look under 4.5:1 (visual estimate only)                                                                                                                                                                                                                                                                  | Nib's on-surface 3 >= 4.5:1 and "on-surface 4 is never text" is stricter than the market; keep and enforce for disabled dates/rows                               |
+| Disabled            | Pale fills and 45%-style fades ([Okta Workflows](https://mobbin.com/screens/7d74714a-0e1c-476a-89bc-1426fe545a87), [Resend Add with empty field](https://mobbin.com/screens/bdfe29cf-a69a-4d75-bc3c-ddd6e6e0e3c3))                                                                                                                                                                                                                                                                                                                                                      | Disabled is intentionally exempt from contrast, but add a non-opacity cue for dates (Q5)                                                                         |
+| Status feedback     | Visible toast with a ✓ ([Brilliant](https://mobbin.com/screens/97f59a09-7b04-4e98-9971-9210e0e79ba1)), "Copied ✓" ([Exa](https://mobbin.com/screens/95c9d4c9-4004-4b9a-8c45-896b81b59de6))                                                                                                                                                                                                                                                                                                                                                                              | Nib's polite live region is the semantic layer; the visual is a mono glyph + word message                                                                        |
+| Touch targets       | Desktop captures only; dense rows and icon buttons about 24-28px high ([Linear](https://mobbin.com/screens/332e33ea-6a11-476e-9442-06d1ec5a49bb) nav, Vercel nav)                                                                                                                                                                                                                                                                                                                                                                                                       | Cannot verify touch; Nib's 28px desktop / 44px touch split is plausible, and 28px clears the WCAG 2.5.8 AA 24px minimum                                          |
+| Skip links          | Not visible in static captures (normally hidden until focus)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Cannot verify; spec should still require one (see below)                                                                                                         |
+| Icon-only controls  | Frequent (copy buttons in [Vercel](https://mobbin.com/screens/8f10d056-15b3-4469-a3d1-7bd371906584) and [Customer.io](https://mobbin.com/screens/8d8c4bd1-ddf9-4fb3-b4a7-2bdb39bb3376) docs, header icons everywhere)                                                                                                                                                                                                                                                                                                                                                   | Nib's "words first, icon-only only in dense components with accessible name + tooltip" is the right restriction                                                  |
 
 GAP to close in the Accessibility section: "skip link" is not listed. Recommend: `SKIP TO CONTENT` as the first focusable element of every shell, visually revealed on focus with the same 2px accent ring; and a landmark rule for the docs shell (nav, main, "on this page" aside).
 

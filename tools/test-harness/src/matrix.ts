@@ -32,7 +32,15 @@ export function matrix(): Cell[] {
       for (const density of DENSITIES) {
         for (const lang of LANGS) {
           const dir = lang === 'ar' ? 'rtl' : 'ltr';
-          cells.push({ name: `${theme}-${density}-${lang}-${size}`, theme, density, lang, dir, viewport, forcedColors: false });
+          cells.push({
+            name: `${theme}-${density}-${lang}-${size}`,
+            theme,
+            density,
+            lang,
+            dir,
+            viewport,
+            forcedColors: false,
+          });
         }
       }
     }

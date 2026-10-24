@@ -38,4 +38,3 @@ Date: 2026-10-24 · Status: accepted (amended 2026-10-24: visual regression plat
 - Forced colors are emulated in Chromium only (a Playwright limit); Firefox and WebKit run the 24
   ordinary cells.
 - Pull requests run the full matrix for affected projects; `nightly.yml` runs everything on `main`.
-

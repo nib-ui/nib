@@ -1,98 +1,58 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": "Dependency updates for Nib. Nx moves only through the monthly `nx migrate` PR (ADR 11).",
-  "extends": [
-    "config:recommended",
-    ":semanticCommitTypeAll(chore)",
-    "helpers:pinGitHubActionDigests"
-  ],
+  "extends": ["config:recommended", ":semanticCommitTypeAll(chore)", "helpers:pinGitHubActionDigests"],
   "rangeStrategy": "pin",
-  "schedule": [
-    "before 6am on monday"
-  ],
+  "schedule": ["before 6am on monday"],
   "timezone": "UTC",
   "prConcurrentLimit": 5,
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": [
-      "before 6am on monday"
-    ]
+    "schedule": ["before 6am on monday"]
   },
   "packageRules": [
     {
       "groupName": "github actions",
-      "matchManagers": [
-        "github-actions"
-      ]
+      "matchManagers": ["github-actions"]
     },
     {
       "description": "Nx and its plugins change only through `nx migrate`, which also rewrites config.",
-      "matchPackageNames": [
-        "nx",
-        "@nx/**"
-      ],
+      "matchPackageNames": ["nx", "@nx/**"],
       "enabled": false
     },
     {
       "description": "Peer ranges of the bindings are part of the public contract; widen them by hand.",
-      "matchDepTypes": [
-        "peerDependencies"
-      ],
+      "matchDepTypes": ["peerDependencies"],
       "enabled": false
     },
     {
       "groupName": "eslint",
-      "matchPackageNames": [
-        "eslint",
-        "@eslint/**",
-        "typescript-eslint",
-        "@typescript-eslint/**",
-        "jsonc-eslint-parser"
-      ]
+      "matchPackageNames": ["eslint", "@eslint/**", "typescript-eslint", "@typescript-eslint/**", "jsonc-eslint-parser"]
     },
     {
       "groupName": "vitest",
-      "matchPackageNames": [
-        "vitest",
-        "@vitest/**",
-        "vite"
-      ]
+      "matchPackageNames": ["vitest", "@vitest/**", "vite"]
     },
     {
       "description": "Playwright npm packages and the Docker image move together (ADR 7); listed after the actions group so the CI container image joins this group.",
       "groupName": "playwright",
-      "matchPackageNames": [
-        "playwright",
-        "@playwright/test",
-        "mcr.microsoft.com/playwright",
-        "@axe-core/playwright"
-      ]
+      "matchPackageNames": ["playwright", "@playwright/test", "mcr.microsoft.com/playwright", "@axe-core/playwright"]
     },
     {
       "groupName": "size-limit",
-      "matchPackageNames": [
-        "size-limit",
-        "@size-limit/**"
-      ]
+      "matchPackageNames": ["size-limit", "@size-limit/**"]
     },
     {
       "groupName": "stylelint",
-      "matchPackageNames": [
-        "stylelint",
-        "postcss"
-      ]
+      "matchPackageNames": ["stylelint", "postcss"]
     }
   ],
   "customManagers": [
     {
       "description": "The Playwright image tag in the Docker script.",
       "customType": "regex",
-      "managerFilePatterns": [
-        "/^scripts/playwright-docker\\.sh$/"
-      ],
-      "matchStrings": [
-        "(?<depName>mcr\\.microsoft\\.com/playwright):(?<currentValue>v[0-9.]+-noble)"
-      ],
+      "managerFilePatterns": ["/^scripts/playwright-docker\\.sh$/"],
+      "matchStrings": ["(?<depName>mcr\\.microsoft\\.com/playwright):(?<currentValue>v[0-9.]+-noble)"],
       "datasourceTemplate": "docker"
     }
   ]

@@ -6,9 +6,7 @@
     "emitDeclarationOnly": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "lib": [
-      "es2024"
-    ],
+    "lib": ["es2024"],
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "target": "es2024",
@@ -21,9 +19,7 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "customConditions": [
-      "@nib-ui/source"
-    ],
+    "customConditions": ["@nib-ui/source"],
     "types": [],
     "rewriteRelativeImportExtensions": true
   }

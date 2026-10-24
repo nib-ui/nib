@@ -6,7 +6,10 @@ describe('matrix', () => {
 
   it('crosses 2 themes × 2 densities × 3 languages × 2 viewports, plus forced colours per viewport', () => {
     expect(cells.filter((c) => !c.forcedColors)).toHaveLength(24);
-    expect(cells.filter((c) => c.forcedColors).map((c) => c.name)).toEqual(['forced-colors-360', 'forced-colors-desktop']);
+    expect(cells.filter((c) => c.forcedColors).map((c) => c.name)).toEqual([
+      'forced-colors-360',
+      'forced-colors-desktop',
+    ]);
   });
 
   it('gives every cell a unique, stable name', () => {
@@ -21,7 +24,9 @@ describe('matrix', () => {
   });
 
   it('uses the 360px phone floor and a desktop width', () => {
-    expect(new Set(cells.map((c) => `${c.viewport.width}x${c.viewport.height}`))).toEqual(new Set(['360x780', '1280x800']));
+    expect(new Set(cells.map((c) => `${c.viewport.width}x${c.viewport.height}`))).toEqual(
+      new Set(['360x780', '1280x800']),
+    );
   });
 });
 

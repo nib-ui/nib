@@ -2,8 +2,7 @@ import type { DtcgGroup, DtcgToken } from './dtcg.ts';
 
 const ALIAS = /^\{([^}]+)\}$/;
 
-const isToken = (node: unknown): node is DtcgToken =>
-  typeof node === 'object' && node !== null && '$value' in node;
+const isToken = (node: unknown): node is DtcgToken => typeof node === 'object' && node !== null && '$value' in node;
 
 /**
  * Flattens a group to `[name, token, path]`: the name joins nested keys with `-` (for CSS), the

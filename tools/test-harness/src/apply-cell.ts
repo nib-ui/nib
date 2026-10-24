@@ -13,7 +13,11 @@ export interface ApplyCellOptions {
   reducedMotion?: 'reduce' | 'no-preference';
 }
 
-export async function applyCell(page: Page, cell: Cell, { reducedMotion = 'reduce' }: ApplyCellOptions = {}): Promise<void> {
+export async function applyCell(
+  page: Page,
+  cell: Cell,
+  { reducedMotion = 'reduce' }: ApplyCellOptions = {},
+): Promise<void> {
   await page.setViewportSize(cell.viewport);
   await page.emulateMedia({
     colorScheme: cell.theme,
@@ -27,6 +31,10 @@ export async function applyCell(page: Page, cell: Cell, { reducedMotion = 'reduc
     const set = () => Object.entries(a).forEach(([k, v]) => document.documentElement.setAttribute(k, v));
     // Init scripts can run before the parser creates <html>; set the attributes once it exists.
     if (document.documentElement) set();
-    else new MutationObserver((_, observer) => document.documentElement && (set(), observer.disconnect())).observe(document, { childList: true });
+    else
+      new MutationObserver((_, observer) => document.documentElement && (set(), observer.disconnect())).observe(
+        document,
+        { childList: true },
+      );
   }, attrs);
 }

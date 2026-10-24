@@ -17,8 +17,7 @@ interface ContrastRule {
 
 // Every pair the spec promises (Accessibility: text ≥ 4.5:1 on all three surfaces, accent marks
 // ≥ 3:1). Exempt: on-surface-4 (decorative glyphs only) and line (decorative hairlines).
-const onSurfaces = (names: string[], min: number) =>
-  names.flatMap((fg) => SURFACES.map((bg) => ({ fg, bg, min })));
+const onSurfaces = (names: string[], min: number) => names.flatMap((fg) => SURFACES.map((bg) => ({ fg, bg, min })));
 const CONTRAST_RULES: ContrastRule[] = [
   ...onSurfaces(['on-surface', 'on-surface-2', 'on-surface-3', 'accent-text', ...HUES], TEXT),
   ...SYNTAX.map((fg) => ({ fg, bg: 'surface-raised', min: TEXT })),
@@ -49,7 +48,9 @@ function contrastMarks(colors: Record<string, string>, theme: Theme): ProofMark[
  */
 function softTagMarks(colors: Record<string, string>, theme: Theme): ProofMark[] {
   const percent = HUE_MIX.soft[theme === 'light' ? 0 : 1];
-  const alpha = Math.round((percent / 100) * 255).toString(16).padStart(2, '0');
+  const alpha = Math.round((percent / 100) * 255)
+    .toString(16)
+    .padStart(2, '0');
   return HUES.flatMap((hue) =>
     SURFACES.flatMap((surface) => {
       const hex = colour(colors, hue);

@@ -27,10 +27,11 @@ export function domGeometry(doc: Document = document): Geometry {
       // Scrolling fires many events per frame; layout is read at most once per frame.
       let frame = 0;
       const schedule = () => {
-        if (!frame) frame = view.requestAnimationFrame(() => {
-          frame = 0;
-          fn();
-        });
+        if (!frame)
+          frame = view.requestAnimationFrame(() => {
+            frame = 0;
+            fn();
+          });
       };
       // Scroll does not bubble; capturing on the document hears every scroll container.
       // Content that grows or shrinks moves everything below it. Its first call comes one frame in.
