@@ -25,11 +25,11 @@ to expose and where DOM-touching code lives.
   that take a structural event object, never a DOM node.
 - **Controlled vs uncontrolled** is decided in core: a defined `value` makes the instance
   controlled; changes are reported through `onValueChange` and committed when the caller passes the
-  new value back. The keyboard position (*current*) always commits immediately so a slow re-render
+  new value back. The keyboard position (_current_) always commits immediately so a slow re-render
   never drops a keystroke.
-- Domain rules live in the types and attributes: *current* is `data-current` on the option plus
-  `aria-activedescendant` on its container; a *chosen value* is `aria-selected` and admits a single
-  key; a *checked row* is `data-checked` with `aria-checked` on its checkbox and is never
+- Domain rules live in the types and attributes: _current_ is `data-current` on the option plus
+  `aria-activedescendant` on its container; a _chosen value_ is `aria-selected` and admits a single
+  key; a _checked row_ is `data-checked` with `aria-checked` on its checkbox and is never
   `aria-selected`, so it can never render as a cursor block.
 - Programmer errors throw a `NibError` with a stable code; events that make no sense in the current
   state are ignored.
@@ -39,7 +39,7 @@ to expose and where DOM-touching code lives.
 - Only two real seams, each with a production adapter and a test fake:
   - **clock** (`now`, `after` → cancel): system clock / `fakeClock`;
   - **geometry** (measure rects, viewport, observe): DOM adapter / `fakeGeometry`.
-  The server render uses null adapters; `connect(host)` runs only on the client.
+    The server render uses null adapters; `connect(host)` runs only on the client.
 - Side effects — move focus, announce to a live region, scroll into view — are **returned as
   intents** (data), not ports. Bindings run them after their framework has committed the render.
 - No ports for things with a single adapter (Intl, ids, storage, the host framework).

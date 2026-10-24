@@ -10,7 +10,9 @@ describe('nib/no-gradient', () => {
 
   it('rejects every gradient function in any property', async () => {
     expect(
-      await lint('a { background-image: linear-gradient(red, blue); mask-image: repeating-conic-gradient(var(--a) 0 1%); }'),
+      await lint(
+        'a { background-image: linear-gradient(red, blue); mask-image: repeating-conic-gradient(var(--a) 0 1%); }',
+      ),
     ).toEqual([
       'nib/no-gradient: Unexpected background-image "linear-gradient(": Nib is flat: no gradients (nib/no-gradient)',
       'nib/no-gradient: Unexpected mask-image "repeating-conic-gradient(": Nib is flat: no gradients (nib/no-gradient)',

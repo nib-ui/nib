@@ -8,7 +8,9 @@ afterEach(() => {
 
 describe('domAttrs', () => {
   it('drops undefined and writes every other value as its string, false included', () => {
-    expect(domAttrs({ id: 'a', 'aria-selected': false, 'data-current': true, tabindex: -1, hidden: undefined })).toEqual({
+    expect(
+      domAttrs({ id: 'a', 'aria-selected': false, 'data-current': true, tabindex: -1, hidden: undefined }),
+    ).toEqual({
       id: 'a',
       'aria-selected': 'false',
       'data-current': 'true',

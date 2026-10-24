@@ -3,8 +3,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { announce, runIntents } from './index.ts';
 
 const regions = () => [...document.querySelectorAll<HTMLElement>('[data-nib-live]')];
-const region = (politeness: string) =>
-  document.querySelector<HTMLElement>(`[data-nib-live="${politeness}"]`);
+const region = (politeness: string) => document.querySelector<HTMLElement>(`[data-nib-live="${politeness}"]`);
 
 afterEach(() => {
   for (const r of regions()) r.remove();

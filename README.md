@@ -20,14 +20,14 @@ Framework-agnostic CSS and headless components for docs, dashboards and develope
 
 ## What's here
 
-| Path | Contents |
-|---|---|
-| [`spec/DESIGN.md`](spec/DESIGN.md) | The design spec: tokens for both themes, the five laws, components, presets |
-| [`brand/`](brand/) | Logo masters, variants, web icons and [`LOGO-GUIDELINES.md`](brand/LOGO-GUIDELINES.md) |
-| [`GLOSSARY.md`](GLOSSARY.md) | The names of the system's concepts, and the words to avoid |
-| [`docs/adr/`](docs/adr/) | Architecture decision records |
-| [`plans/`](plans/) | Decision log and research reports behind the ADRs |
-| `packages/` · `apps/` · `tools/` | The Nx workspace: public packages, private apps (docs, playground), private build tools |
+| Path                               | Contents                                                                                |
+| ---------------------------------- | --------------------------------------------------------------------------------------- |
+| [`spec/DESIGN.md`](spec/DESIGN.md) | The design spec: tokens for both themes, the five laws, components, presets             |
+| [`brand/`](brand/)                 | Logo masters, variants, web icons and [`LOGO-GUIDELINES.md`](brand/LOGO-GUIDELINES.md)  |
+| [`GLOSSARY.md`](GLOSSARY.md)       | The names of the system's concepts, and the words to avoid                              |
+| [`docs/adr/`](docs/adr/)           | Architecture decision records                                                           |
+| [`plans/`](plans/)                 | Decision log and research reports behind the ADRs                                       |
+| `packages/` · `apps/` · `tools/`   | The Nx workspace: public packages, private apps (docs, playground), private build tools |
 
 ## Planned packages
 

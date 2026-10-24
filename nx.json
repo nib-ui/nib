@@ -1,10 +1,7 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
       "!{projectRoot}/eslint.config.mjs",
@@ -12,10 +9,7 @@
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/vitest.config.mts"
     ],
-    "sharedGlobals": [
-      "{workspaceRoot}/tsconfig.base.json",
-      "{workspaceRoot}/.nvmrc"
-    ]
+    "sharedGlobals": ["{workspaceRoot}/tsconfig.base.json", "{workspaceRoot}/.nvmrc"]
   },
   "plugins": [
     {
@@ -47,17 +41,13 @@
   ],
   "targetDefaults": {
     "test": {
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     }
   },
   "release": {
     "groups": {
       "nib": {
-        "projects": [
-          "tag:scope:public"
-        ],
+        "projects": ["tag:scope:public"],
         "projectsRelationship": "fixed"
       }
     },

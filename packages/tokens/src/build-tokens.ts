@@ -26,8 +26,7 @@ export interface TokenOutputs {
 
 const LAYERS = '@layer nib.theme, nib.base, nib.components, nib.utilities;';
 
-const rule = (selector: string, decls: string[]) =>
-  `  ${selector} {\n${decls.map((d) => `    ${d}`).join('\n')}\n  }`;
+const rule = (selector: string, decls: string[]) => `  ${selector} {\n${decls.map((d) => `    ${d}`).join('\n')}\n  }`;
 const indent = (text: string) => text.replace(/^/gm, '  ');
 const decl = (v: TokenVar) => `${v.cssName}: ${v.value};`;
 

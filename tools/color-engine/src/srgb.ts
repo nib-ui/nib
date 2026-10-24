@@ -10,7 +10,13 @@ export function parseHex(hex: string): { rgb: [number, number, number]; alpha: n
 }
 
 export const toHex = (rgb: [number, number, number]) =>
-  `#${rgb.map((c) => Math.round(Math.min(255, Math.max(0, c))).toString(16).padStart(2, '0')).join('')}`;
+  `#${rgb
+    .map((c) =>
+      Math.round(Math.min(255, Math.max(0, c)))
+        .toString(16)
+        .padStart(2, '0'),
+    )
+    .join('')}`;
 
 /** Blends a possibly translucent colour over an opaque background, in sRGB as browsers do. */
 export function composite(fg: string, bg: string): string {

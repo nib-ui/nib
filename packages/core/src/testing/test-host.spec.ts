@@ -36,7 +36,9 @@ describe('createTestHost.fire', () => {
 
   it('sends a structural event to the part and logs the intents it returns', () => {
     const t = createTestHost();
-    expect(t.fire(part, 'keydown', { key: 'ArrowDown' })).toEqual([{ type: 'scroll-into-view', ref: 'x', block: 'nearest' }]);
+    expect(t.fire(part, 'keydown', { key: 'ArrowDown' })).toEqual([
+      { type: 'scroll-into-view', ref: 'x', block: 'nearest' },
+    ]);
     expect(t.intents).toEqual([{ type: 'scroll-into-view', ref: 'x', block: 'nearest' }]);
     expect(t.prevented).toBe(true);
     t.fire(part, 'keydown', { key: 'a' });

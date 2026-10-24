@@ -211,7 +211,10 @@ describe('buildTokens: source checks', () => {
   it('rejects a density that lacks a value the others define', () => {
     const source: TokenSource = {
       ...minimal(),
-      density: { comfortable: { 'cell-padding': px(16), 'control-height': px(36) }, compact: { 'cell-padding': px(12) } },
+      density: {
+        comfortable: { 'cell-padding': px(16), 'control-height': px(36) },
+        compact: { 'cell-padding': px(12) },
+      },
     };
     expect(() => buildTokens(source)).toThrow('Density "compact" lacks "control-height"');
   });

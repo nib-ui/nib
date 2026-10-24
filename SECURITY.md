@@ -5,10 +5,10 @@
 Security fixes go into the latest minor release of every `@nib-ui/*` package. Older minors and
 prereleases (`alpha`, `beta`, `rc`) are not patched: upgrade to the latest minor to get a fix.
 
-| Version | Supported |
-|---|---|
-| Latest minor | Yes |
-| Anything older | No |
+| Version        | Supported |
+| -------------- | --------- |
+| Latest minor   | Yes       |
+| Anything older | No        |
 
 ## Reporting a vulnerability
 

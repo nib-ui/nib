@@ -2,22 +2,11 @@
   "font": {
     "sans": {
       "$type": "fontFamily",
-      "$value": [
-        "Inter",
-        "ui-sans-serif",
-        "system-ui",
-        "sans-serif"
-      ]
+      "$value": ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
     },
     "mono": {
       "$type": "fontFamily",
-      "$value": [
-        "JetBrains Mono",
-        "ui-monospace",
-        "SFMono-Regular",
-        "Menlo",
-        "monospace"
-      ]
+      "$value": ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"]
     }
   }
 }

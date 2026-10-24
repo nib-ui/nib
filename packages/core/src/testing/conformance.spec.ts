@@ -32,7 +32,9 @@ const create = (options: Record<string, unknown>, host: Parameters<typeof create
 
 describe('runConformance', () => {
   it('passes a case whose attributes and intents match', () => {
-    expect(runConformance(table, create)).toEqual([{ name: 'ArrowDown twice skips the disabled option', failures: [] }]);
+    expect(runConformance(table, create)).toEqual([
+      { name: 'ArrowDown twice skips the disabled option', failures: [] },
+    ]);
   });
 
   it('reports each attribute and intent that differs', () => {
@@ -66,12 +68,18 @@ describe('runConformance', () => {
   });
 
   it('compares intents regardless of key order', () => {
-    const t = one({ keys: ['ArrowDown'], expect: { intents: [{ block: 'nearest', ref: 'l-item-a', type: 'scroll-into-view' } as never] } });
+    const t = one({
+      keys: ['ArrowDown'],
+      expect: { intents: [{ block: 'nearest', ref: 'l-item-a', type: 'scroll-into-view' } as never] },
+    });
     expect(runConformance(t, create)[0]?.failures).toEqual([]);
   });
 
   it('compares attributes as the DOM would, so "true" equals true', () => {
-    const t = one({ keys: ['ArrowDown'], expect: { attrs: [{ part: 'item', key: 'a', attrs: { 'data-current': 'true' } }] } });
+    const t = one({
+      keys: ['ArrowDown'],
+      expect: { attrs: [{ part: 'item', key: 'a', attrs: { 'data-current': 'true' } }] },
+    });
     expect(runConformance(t, create)[0]?.failures).toEqual([]);
   });
 
@@ -79,7 +87,13 @@ describe('runConformance', () => {
     const t: ConformanceTable = {
       pattern: 'list (fixture)',
       cases: [
-        { name: 'bad', options: { id: 'l', items }, target: { part: 'item', key: 'a' }, keys: ['ArrowDown'], expect: {} },
+        {
+          name: 'bad',
+          options: { id: 'l', items },
+          target: { part: 'item', key: 'a' },
+          keys: ['ArrowDown'],
+          expect: {},
+        },
         { name: 'good', options: { id: 'l', items }, target: { part: 'list' }, keys: ['End'], expect: {} },
       ],
     };
@@ -91,7 +105,10 @@ describe('runConformance', () => {
 
   it('accepts keys with modifiers and a wait before them', () => {
     const t = one({
-      keys: [{ key: 'End', shiftKey: true }, { key: 'Home', wait: 600 }],
+      keys: [
+        { key: 'End', shiftKey: true },
+        { key: 'Home', wait: 600 },
+      ],
       expect: { attrs: [{ part: 'item', key: 'a', attrs: { 'data-current': true } }] },
     });
     expect(runConformance(t, create)[0]?.failures).toEqual([]);

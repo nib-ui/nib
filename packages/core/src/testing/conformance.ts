@@ -12,8 +12,7 @@ export interface ExpectedPart {
 
 /** A key press; `wait` advances the clock (ms) before it, e.g. past the typeahead reset. */
 export type ConformanceKey =
-  | string
-  | { key: string; shiftKey?: boolean; ctrlKey?: boolean; altKey?: boolean; metaKey?: boolean; wait?: number };
+  string | { key: string; shiftKey?: boolean; ctrlKey?: boolean; altKey?: boolean; metaKey?: boolean; wait?: number };
 
 /**
  * One APG behaviour: press `keys` on `target`, then check attributes and every intent returned.

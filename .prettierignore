@@ -1,0 +1,12 @@
+# Build output and generated files
+dist
+out-tsc
+coverage
+.nx
+pnpm-lock.yaml
+CHANGELOG.md
+**/__screenshots__
+# Server markup that a hydration test compares byte for byte
+**/__snapshots__
+# Adopted verbatim from the Contributor Covenant
+CODE_OF_CONDUCT.md

@@ -15,6 +15,7 @@ module boundaries and self-hosted caching (Oct 2026); Nx 23 was released 2026-06
 ## Decision
 
 **Workspace**
+
 - Package-based Nx on pnpm workspaces with TypeScript project references; every project keeps its
   own `package.json`. Official Nx plugins only where they exist (`@nx/js`, `@nx/vite`,
   `@nx/eslint`, `@nx/playwright`); Astro and Svelte run through `package.json` scripts. The repo
@@ -34,6 +35,7 @@ module boundaries and self-hosted caching (Oct 2026); Nx 23 was released 2026-06
   library, so a stray `document` fails the build, not only the lint.
 
 **Release** (replaces Changesets)
+
 - Nx Release with one **fixed** release group `nib` containing every public package; git tag
   `v{version}`; one workspace `CHANGELOG.md`.
 - Bumps come from **version plans** (`.nx/version-plans/*.md`) committed with each PR, not from
@@ -45,17 +47,17 @@ module boundaries and self-hosted caching (Oct 2026); Nx 23 was released 2026-06
 
 **Module boundaries** (`@nx/enforce-module-boundaries`, ESLint flat config)
 
-| Project | Tags | May import |
-|---|---|---|
-| tokens | `type:tokens`, `scope:public` | nothing (build may use `type:tool`) |
-| css | `type:css`, `scope:public` | tokens, tool |
-| core | `type:core`, `scope:public` | nothing |
-| dom | `type:dom`, `scope:public` | core (added by ADR 12) |
-| js, react, vue, svelte | `type:binding`, `scope:public` | core, dom, asset |
-| fonts, icons | `type:asset`, `scope:public` | nothing (build may use tool) |
-| cli | `type:cli`, `scope:public` | tokens, tool |
-| color-engine, stylelint-plugin, nx-plugin | `type:tool`, `scope:private` | tool, tokens |
-| docs, playground | `type:app`, `scope:private` | anything |
+| Project                                   | Tags                           | May import                          |
+| ----------------------------------------- | ------------------------------ | ----------------------------------- |
+| tokens                                    | `type:tokens`, `scope:public`  | nothing (build may use `type:tool`) |
+| css                                       | `type:css`, `scope:public`     | tokens, tool                        |
+| core                                      | `type:core`, `scope:public`    | nothing                             |
+| dom                                       | `type:dom`, `scope:public`     | core (added by ADR 12)              |
+| js, react, vue, svelte                    | `type:binding`, `scope:public` | core, dom, asset                    |
+| fonts, icons                              | `type:asset`, `scope:public`   | nothing (build may use tool)        |
+| cli                                       | `type:cli`, `scope:public`     | tokens, tool                        |
+| color-engine, stylelint-plugin, nx-plugin | `type:tool`, `scope:private`   | tool, tokens                        |
+| docs, playground                          | `type:app`, `scope:private`    | anything                            |
 
 - `bannedExternalImports` on `type:core`, `type:dom` and `type:binding`: no third-party runtime imports; only
   the framework itself (`react`, `vue`, `svelte`) as a peer dependency.
@@ -63,6 +65,7 @@ module boundaries and self-hosted caching (Oct 2026); Nx 23 was released 2026-06
   `cli`, which bundles `color-engine` at build time.
 
 **Generator** — `nx g nib:component <name> --kind=css|interactive` in `tools/nx-plugin`:
+
 - both kinds: a CSS file in `packages/css` starting with the `@layer` statement, a docs page with an
   Accessibility section, axe and visual-regression specs over theme × density × language, a
   size-limit entry;
@@ -70,6 +73,7 @@ module boundaries and self-hosted caching (Oct 2026); Nx 23 was released 2026-06
   bindings in `js`, `react`, `vue`, `svelte`, and a Playwright keyboard spec; package exports wired.
 
 **Nx Cloud and CI**
+
 - Nx Cloud is used for **remote cache only**. No Nx Agents. Self-healing CI may suggest fixes but
   never commits them.
 - `nxCloudId` lives in `nx.json` (not a secret). The read-write token exists only for workflows on
