@@ -18,7 +18,7 @@ export interface CommandPaletteOptions {
   /** BCP 47 language tag for matching; bindings default it to the page's `lang`. */
   locale?: string;
   commands: readonly Command[];
-  /** Called with the command's key as the palette closes. */
+  /** Called with the command's key once the palette has been asked to close (on the next task). */
   onRun?: (key: Key) => void;
   onOpenChange?: (open: boolean) => void;
   /** The keys that open it from anywhere on the page; `mod` is ⌘ on Apple platforms, Ctrl elsewhere. */
@@ -108,7 +108,7 @@ export function createCommandPalette(
           state.current !== null && lookup.isShown(visible, state.current) ? state.current : first(o, visible);
         return { ...state, visible, current };
       },
-      reduce: ({ state, options: o, id }, event) => {
+      reduce: ({ state, options: o, id, host: h }, event) => {
         const own = ids(id);
         switch (event.type) {
           case 'shortcut':
@@ -150,10 +150,10 @@ export function createCommandPalette(
           case 'run': {
             const command = lookup.item(o.commands, event.key ?? state.current);
             if (!command || command.disabled) return { state };
-            // Closed first: a command that opens another dialog finds this one gone.
-            const intents: Intent[] = [modal(own.dialog, false)];
-            o.onRun?.(command.key);
-            return { state, intents };
+            // Run on the next task, after the binding has closed the dialog: a command that opens
+            // another dialog or moves focus is not undone by this one closing.
+            h.clock.after(0, () => o.onRun?.(command.key));
+            return { state, intents: [modal(own.dialog, false)] };
           }
         }
       },
@@ -181,7 +181,11 @@ export function createCommandPalette(
           case 'input':
             return renderPaletteInput(state, own, label, send);
           case 'listbox':
-            return { attrs: { id: own.listbox, role: 'listbox', 'aria-label': label }, on: {} };
+            return {
+              attrs: { id: own.listbox, role: 'listbox', 'aria-label': label },
+              // A press on the list (padding, scrollbar) keeps focus in the field, where typing goes.
+              on: { mousedown: (e) => (e.preventDefault(), []) },
+            };
           default: {
             const disabled = lookup.item(o.commands, key)?.disabled;
             return {

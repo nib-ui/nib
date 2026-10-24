@@ -11,6 +11,11 @@
     unicode-bidi: isolate;
   }
 
+  /* Nothing printed yet (no keys): no empty brackets either. */
+  .nib-hotkey:empty {
+    display: none;
+  }
+
   /* The brackets are decoration: a screen reader reads the keys alone. */
   .nib-hotkey::before {
     content: '[' / '';

@@ -7,7 +7,7 @@ import {
   type CommandPaletteState,
 } from '@nib-ui/core/command-palette';
 import { applePlatform, listenShortcut } from '@nib-ui/dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useController } from './use-controller.ts';
 
 /**
@@ -16,14 +16,19 @@ import { useController } from './use-controller.ts';
  * (default ⌘K / Ctrl+K) opens it from anywhere on the page while the component is mounted.
  */
 export function useCommandPalette(options: CommandPaletteOptions) {
-  // The platform is known on the client only; the server prints Ctrl.
-  const [apple] = useState(() => typeof document !== 'undefined' && applePlatform());
+  // The platform is known on the client only: the first render matches the server's (Ctrl, or the
+  // caller's `apple`), then the client switches to ⌘ after mounting.
+  const [detected, setDetected] = useState(false);
+  useEffect(() => setDetected(applePlatform()), []);
+  const apple = options.apple ?? detected;
   const shortcut = options.shortcut ?? 'mod+k';
   const palette = useController<CommandPaletteState, CommandPalettePart, CommandPaletteOptions, CommandPaletteEvent>(
     createCommandPalette,
     { apple, ...options },
   );
-  const { send } = palette;
-  useEffect(() => listenShortcut(shortcut, () => send({ type: 'shortcut' })), [shortcut, send]);
+  // The latest send, so the listener is added once per shortcut, not on every render.
+  const send = useRef(palette.send);
+  send.current = palette.send;
+  useEffect(() => listenShortcut(shortcut, () => send.current({ type: 'shortcut' })), [shortcut]);
   return { ...palette, shortcut: printShortcut(shortcut, apple), print: (keys: string) => printShortcut(keys, apple) };
 }

@@ -35,12 +35,13 @@ export function runIntents(intents: readonly Intent[], options: RunIntentsOption
       }
       case 'modal': {
         const el = doc.getElementById(intent.ref);
-        if (!(el instanceof HTMLDialogElement)) missing.push(intent);
-        else if (el.open !== intent.open) {
+        // By name, not instanceof: a dialog in an iframe has that window's constructors.
+        if (el?.localName !== 'dialog') missing.push(intent);
+        else if ((el as HTMLDialogElement).open !== intent.open) {
           // A dialog that is not connected, or already open non-modally, throws on showModal().
           try {
-            if (intent.open) el.showModal();
-            else el.close();
+            if (intent.open) (el as HTMLDialogElement).showModal();
+            else (el as HTMLDialogElement).close();
           } catch {
             missing.push(intent);
           }

@@ -61,6 +61,9 @@ describe('createCommandPalette', () => {
     expect(t.fire(cp.part('input'), 'keydown', { key: 'Enter' })).toEqual([
       { type: 'modal', ref: 'cp-dialog', open: false },
     ]);
+    // Not yet: the binding closes the dialog first.
+    expect(onRun).not.toHaveBeenCalled();
+    t.clock.advance(0);
     expect(onRun).toHaveBeenCalledWith('new');
   });
 
@@ -85,6 +88,7 @@ describe('createCommandPalette', () => {
     const { t, cp } = setup({ onRun });
     expect(t.fire(cp.part('option', 'open'), 'click')).toEqual([]);
     t.fire(cp.part('option', 'save'), 'click');
+    t.clock.advance(0);
     expect(onRun).toHaveBeenCalledWith('save');
   });
 
@@ -119,9 +123,18 @@ describe('createCommandPalette', () => {
 describe('shortcuts', () => {
   it('matches mod as ⌘ on Apple platforms and Ctrl elsewhere, every modifier exactly', () => {
     expect(matchShortcut({ key: 'k', metaKey: true }, 'mod+k', true)).toBe(true);
+    expect(matchShortcut({ key: 'P', metaKey: true, shiftKey: true }, 'shift+mod+p', true)).toBe(true);
+    expect(matchShortcut({ key: 'k', ctrlKey: true, altKey: true }, 'mod+k', false)).toBe(false);
     expect(matchShortcut({ key: 'K', ctrlKey: true }, 'mod+k', false)).toBe(true);
     expect(matchShortcut({ key: 'k', ctrlKey: true }, 'mod+k', true)).toBe(false);
     expect(matchShortcut({ key: 'k', metaKey: true, shiftKey: true }, 'mod+k', true)).toBe(false);
+  });
+
+  it('matches the physical key on a layout whose letters are not Latin, but not on AZERTY', () => {
+    expect(matchShortcut({ key: 'ك', code: 'KeyK', ctrlKey: true }, 'mod+k', false)).toBe(true);
+    expect(matchShortcut({ key: 'л', code: 'KeyK', metaKey: true }, 'mod+k', true)).toBe(true);
+    // AZERTY: the key in the Q position types "a"; it is A, not Q.
+    expect(matchShortcut({ key: 'a', code: 'KeyQ', ctrlKey: true }, 'mod+q', false)).toBe(false);
   });
 
   it('prints and names a shortcut for the platform', () => {

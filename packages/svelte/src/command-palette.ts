@@ -12,14 +12,15 @@ import { controller } from './controller.ts';
 /**
  * Command palette for Svelte: a store of its state and spreadable attributes for its parts, the
  * printed `shortcut`, and `print()` for a command's hotkey. The shortcut (default ⌘K / Ctrl+K)
- * opens it from anywhere on the page while the store has a subscriber.
+ * opens it from anywhere on the page while the store has a subscriber. With server rendering, pass
+ * `apple` (from the request) so the printed ⌘ / Ctrl the server writes is the one the client keeps.
  */
 export function createCommandPaletteStore(options: CommandPaletteOptions) {
-  const apple = typeof document !== 'undefined' && applePlatform();
+  const apple = options.apple ?? (typeof document !== 'undefined' && applePlatform());
   const shortcut = options.shortcut ?? 'mod+k';
   const palette = controller<CommandPaletteState, CommandPalettePart, CommandPaletteOptions, CommandPaletteEvent>(
     createCommandPalette,
-    { apple, ...options },
+    { ...options, apple },
   );
   // Listening follows the store's life: from its first subscriber to its last.
   let subscribers = 0;

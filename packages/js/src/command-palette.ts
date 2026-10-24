@@ -43,7 +43,10 @@ define('command-palette', (root, { id, locale, host }) => {
     const kbd = el.querySelector<HTMLElement>('.nib-hotkey');
     if (kbd && keys && !kbd.textContent?.trim()) kbd.textContent = printShortcut(keys, apple);
   };
-  for (const el of options()) printed(el, el.dataset['hotkey']);
+  const printAll = () => {
+    for (const el of options()) printed(el, el.dataset['hotkey']);
+  };
+  printAll();
   for (const el of own('[data-nib-shortcut]'))
     if (!el.textContent?.trim()) el.textContent = printShortcut(shortcut, apple);
 
@@ -82,14 +85,17 @@ define('command-palette', (root, { id, locale, host }) => {
   );
   // Commands may be added, removed or (un)disabled.
   const observer = new MutationObserver(() => {
+    printAll();
     instance.update({ commands: commands() });
     unbind.refresh();
   });
   for (const list of own('[data-nib-listbox]')) {
-    observer.observe(list, { childList: true, attributeFilter: ['data-disabled'], subtree: true });
+    observer.observe(list, { childList: true, characterData: true, attributeFilter: ['data-disabled'], subtree: true });
   }
   return () => {
     stopShortcut();
+    // Taken down while open: close it, or the page behind stays inert.
+    for (const el of own('[data-nib-dialog]')) if (el instanceof HTMLDialogElement && el.open) el.close();
     observer.disconnect();
     unsubscribe();
     unbind();

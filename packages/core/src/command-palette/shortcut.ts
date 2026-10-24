@@ -1,6 +1,8 @@
 /** The modifier and key fields of a keydown, from a DOM KeyboardEvent or a NibEvent. */
 export interface ShortcutKeys {
   key?: string;
+  /** The physical key (`KeyK`), for layouts whose letters are not Latin. */
+  code?: string;
   metaKey?: boolean;
   ctrlKey?: boolean;
   altKey?: boolean;
@@ -9,14 +11,19 @@ export interface ShortcutKeys {
 
 /**
  * Whether a keydown is `shortcut`, written like `mod+k` or `shift+mod+p`: `mod` is ⌘ on Apple
- * platforms and Ctrl elsewhere. Every modifier must match exactly, so ⌘⇧K is not ⌘K.
+ * platforms and Ctrl elsewhere. Every modifier must match exactly, so ⌘⇧K is not ⌘K. On a layout
+ * whose key is not Latin (Arabic, Russian: Ctrl+ك), the physical key counts instead; Latin layouts
+ * such as AZERTY or Dvorak match by the letter they type.
  */
 export function matchShortcut(e: ShortcutKeys, shortcut: string, apple: boolean): boolean {
   const parts = shortcut.toLowerCase().split('+');
   const key = parts.pop();
   const want = new Set(parts.map((p) => (p === 'mod' ? (apple ? 'meta' : 'ctrl') : p)));
+  const typed = e.key?.toLowerCase();
+  const physical = key && /^[a-z0-9]$/.test(key) ? `${/\d/.test(key) ? 'Digit' : 'Key'}${key.toUpperCase()}` : null;
+  const sameKey = typed === key || (!!typed && !/^[\x20-\x7e]$/.test(typed) && e.code === physical);
   return (
-    e.key?.toLowerCase() === key &&
+    sameKey &&
     !!e.metaKey === want.has('meta') &&
     !!e.ctrlKey === want.has('ctrl') &&
     !!e.altKey === want.has('alt') &&
