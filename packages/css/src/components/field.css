@@ -47,7 +47,8 @@
 
   .nib-field__error::before,
   .nib-error-summary__title::before {
-    content: '⚠ ' / '';
+    /* Text presentation: never the colour emoji. */
+    content: '⚠\FE0E  ' / '';
   }
 
   /* A group of checkboxes, radios or switches under one legend. */

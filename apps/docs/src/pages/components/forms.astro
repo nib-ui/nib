@@ -43,7 +43,9 @@ const html = `<form class="forms-example" novalidate>
     <legend class="nib-field__label">Updates</legend>
     <label class="nib-choice"><input type="checkbox" checked /> Order status</label>
     <label class="nib-choice"><input type="checkbox" /> New roasts</label>
-    <label class="nib-choice"><input type="checkbox" id="f-terms" required aria-invalid="true" /> I accept the terms</label>
+    <label class="nib-choice"><input type="checkbox" id="f-terms" required aria-invalid="true"
+      aria-describedby="f-terms-error" /> I accept the terms</label>
+    <p class="nib-field__error" id="f-terms-error">Accept the terms to continue</p>
   </fieldset>
 
   <label class="nib-switch"><input type="checkbox" role="switch" checked /> Dark roast only</label>

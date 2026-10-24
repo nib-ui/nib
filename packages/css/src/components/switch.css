@@ -17,6 +17,7 @@
 
   .nib-switch > input {
     position: absolute;
+    z-index: 0;
     inset: 0;
     inline-size: 100%;
     block-size: 100%;
@@ -47,6 +48,11 @@
     cursor: not-allowed;
   }
 
+  .nib-switch a {
+    position: relative;
+    z-index: 1;
+  }
+
   .nib-switch > input:focus-visible {
     outline: var(--nib-space-rule) solid var(--nib-accent);
     outline-offset: var(--nib-space-rule);
@@ -59,6 +65,11 @@
   }
 
   @media (forced-colors: active) {
+    .nib-switch a {
+      position: relative;
+      z-index: 1;
+    }
+
     .nib-switch > input:focus-visible {
       outline-color: CanvasText;
     }

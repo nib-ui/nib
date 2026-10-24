@@ -4,6 +4,9 @@ import { expect, test, type Locator } from '@playwright/test';
 const PAGE = '/components/forms/';
 const pseudo = (el: Locator, which: '::before' | '::after', prop: string) =>
   el.evaluate((node, [w, p]) => getComputedStyle(node, w).getPropertyValue(p ?? ''), [which, prop]);
+// The glyph itself, whatever way an engine serialises `content: "x" / ""`.
+const glyph = async (el: Locator, which: '::before' | '::after' = '::before') =>
+  /^"([^"]*)"/.exec(await pseudo(el, which, 'content'))?.[1];
 
 test.describe('forms', () => {
   test.beforeEach(async ({ page }) => {
@@ -26,7 +29,7 @@ test.describe('forms', () => {
     await expect(email).toHaveAccessibleDescription('Enter a valid email');
     const error = page.locator('#f-email-error');
     await expect(error).toHaveCSS('text-transform', 'uppercase');
-    expect(await pseudo(error, '::before', 'content')).toBe('"⚠ " / ""');
+    expect(await glyph(error)).toMatch(/^⚠/);
   });
 
   test('labels are mono caps; only optional fields are marked', async ({ page }) => {
@@ -39,23 +42,61 @@ test.describe('forms', () => {
   test('checkboxes and radios print [x] and (•) with empty alt text; the whole row toggles', async ({ page }) => {
     const row = page.locator('.nib-choice', { hasText: 'New roasts' });
     const box = page.getByRole('checkbox', { name: 'New roasts' });
-    expect(await pseudo(row, '::before', 'content')).toBe('"[ ]" / ""');
+    expect(await glyph(row)).toBe('[ ]');
     await row.getByText('New roasts').click();
     await expect(box).toBeChecked();
-    expect(await pseudo(row, '::before', 'content')).toBe('"[x]" / ""');
+    expect(await glyph(row)).toBe('[x]');
+    await page.keyboard.press('Space');
+    await expect(box).not.toBeChecked();
     const radio = page.locator('.nib-choice', { hasText: 'Standard' });
-    expect(await pseudo(radio, '::before', 'content')).toBe('"(•)" / ""');
+    expect(await glyph(radio)).toBe('(•)');
+    // The glyphs stay out of the accessible name.
+    await expect(box).toHaveAccessibleName('New roasts');
   });
 
   test('a switch prints ON in weight 500 and OFF in weight 400, and reads as a switch', async ({ page }) => {
     const sw = page.getByRole('switch', { name: 'Dark roast only' });
     const row = page.locator('.nib-switch');
-    expect(await pseudo(row, '::after', 'content')).toBe('"ON" / ""');
+    expect(await glyph(row, '::after')).toBe('ON');
     expect(await pseudo(row, '::after', 'font-weight')).toBe('500');
     await sw.click();
     await expect(sw).not.toBeChecked();
-    expect(await pseudo(row, '::after', 'content')).toBe('"OFF" / ""');
+    expect(await glyph(row, '::after')).toBe('OFF');
     expect(await pseudo(row, '::after', 'font-weight')).toBe('400');
+  });
+
+  test('focus rings the whole row of a choice or switch: 2px accent, 2px away', async ({ page }) => {
+    const box = page.getByRole('checkbox', { name: 'Order status' });
+    await box.focus();
+    await page.keyboard.press('Shift+Tab');
+    await page.keyboard.press('Tab');
+    await expect(box).toBeFocused();
+    await expect(box).toHaveCSS('outline-width', '2px');
+    await expect(box).toHaveCSS('outline-offset', '2px');
+    const [input, row] = [
+      await box.boundingBox(),
+      await page.locator('.nib-choice', { hasText: 'Order status' }).boundingBox(),
+    ];
+    expect(input?.width).toBe(row?.width);
+  });
+
+  test('a link in a choice label opens the link instead of toggling', async ({ page }) => {
+    const terms = page.getByRole('checkbox', { name: /I accept the terms/ });
+    await page.evaluate(() => {
+      const row = document.querySelector('#f-terms')?.parentElement;
+      row?.append(' (', Object.assign(document.createElement('a'), { href: '#terms', textContent: 'read them' }), ')');
+    });
+    await page.getByRole('link', { name: 'read them' }).click();
+    await expect(page).toHaveURL(/#terms$/);
+    await expect(terms).not.toBeChecked();
+  });
+
+  test('a radio group with nothing chosen shows every option the same way', async ({ page }) => {
+    await page.evaluate(() => {
+      for (const r of document.querySelectorAll<HTMLInputElement>('input[name="delivery"]')) r.checked = false;
+    });
+    const [a, b] = ['Standard', 'Express'].map((t) => page.locator('.nib-choice', { hasText: t }));
+    expect(await pseudo(a!, '::before', 'color')).toBe(await pseudo(b!, '::before', 'color'));
   });
 
   test('the error summary is an alert linking to each field', async ({ page }) => {

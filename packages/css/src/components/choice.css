@@ -17,6 +17,7 @@
 
   .nib-choice > input {
     position: absolute;
+    z-index: 0;
     inset: 0;
     inline-size: 100%;
     block-size: 100%;
@@ -41,7 +42,7 @@
     color: var(--nib-on-surface);
   }
 
-  .nib-choice:has(> input:indeterminate)::before {
+  .nib-choice:has(> input[type='checkbox']:indeterminate)::before {
     content: '[-]' / '';
     color: var(--nib-on-surface);
   }
@@ -67,6 +68,12 @@
     color: var(--nib-on-surface-3);
   }
 
+  /* A link in the label ("I accept the terms") stays clickable above the input. */
+  .nib-choice a {
+    position: relative;
+    z-index: 1;
+  }
+
   .nib-choice > input:focus-visible {
     outline: var(--nib-space-rule) solid var(--nib-accent);
     outline-offset: var(--nib-space-rule);
@@ -79,6 +86,12 @@
   }
 
   @media (forced-colors: active) {
+    /* A link in the label ("I accept the terms") stays clickable above the input. */
+    .nib-choice a {
+      position: relative;
+      z-index: 1;
+    }
+
     .nib-choice > input:focus-visible {
       outline-color: CanvasText;
     }

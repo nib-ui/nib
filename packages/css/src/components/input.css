@@ -18,7 +18,7 @@
   }
 
   /* Addresses and numbers read left to right in every script. */
-  .nib-input:is([type='email'], [type='url'], [type='tel']) {
+  .nib-input:is([type='email'], [type='url'], [type='tel'], [type='number']) {
     direction: ltr;
   }
 
