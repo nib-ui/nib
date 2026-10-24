@@ -99,7 +99,7 @@ const tabs = useTabs({ items });
     <code>panel</code> per key. Activation is automatic (arrows select) unless you choose <code>manual</code> (arrows
     move focus, Enter or Space selects); use manual when a panel is slow to show. Vertical tabs use Up and Down. Pass
     <code>dir: 'rtl'</code> in right-to-left text so Left and Right follow it; the vanilla binding reads it from the
-    page.
+    page at every key press.
   </p>
 
   <ul slot="accessibility">
@@ -110,7 +110,10 @@ const tabs = useTabs({ items });
     <li>
       Name the tab list with <code>aria-label</code> or <code>aria-labelledby</code>.
     </li>
-    <li>Tabs are native buttons, so Enter and Space work without extra code.</li>
+    <li>
+      Tabs are native buttons, so Enter and Space work without extra code; give them <code>type="button"</code> inside a
+      form.
+    </li>
     <li>In forced colours the selected tab keeps its underline as a CanvasText border.</li>
   </ul>
 </ComponentPage>

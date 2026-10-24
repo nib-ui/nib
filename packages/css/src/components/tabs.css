@@ -34,6 +34,11 @@
     cursor: pointer;
   }
 
+  /* Inside the tab: the list scrolls, which would clip a ring drawn outside it. */
+  .nib-tabs__tab:focus-visible {
+    outline-offset: calc(-1 * var(--nib-space-rule));
+  }
+
   .nib-tabs__tab:hover:not([aria-disabled='true']) {
     color: var(--nib-on-surface);
   }
@@ -68,6 +73,15 @@
   }
 
   @media (forced-colors: active) {
+    /* Forced colours paint transparent borders: unselected tabs get Canvas, so only one rule shows. */
+    .nib-tabs__tab {
+      border-block-color: Canvas;
+    }
+
+    .nib-tabs__list[aria-orientation='vertical'] > .nib-tabs__tab {
+      border-inline-start-color: Canvas;
+    }
+
     .nib-tabs__tab[aria-selected='true'] {
       border-block-end-color: CanvasText;
     }

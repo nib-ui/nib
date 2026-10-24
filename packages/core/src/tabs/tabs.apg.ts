@@ -50,7 +50,11 @@ export const tabsApg: ConformanceTable = {
       'html',
       ['ArrowRight'],
       'react',
-      [selected('html'), { part: 'tab', key: 'react', attrs: { 'aria-selected': 'false' } }],
+      [
+        selected('html'),
+        shows('html'),
+        { part: 'tab', key: 'react', attrs: { 'aria-selected': 'false', tabindex: '-1' } },
+      ],
       { activation: 'manual' },
     ),
     row('vertical: ArrowDown moves to the next tab', 'html', ['ArrowDown'], 'react', [selected('react')], {

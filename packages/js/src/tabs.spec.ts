@@ -31,10 +31,10 @@ describe('tabs (vanilla)', () => {
     expect(tab('b').tabIndex).toBe(-1);
   });
 
-  it('follows the writing direction of the page', async () => {
-    document.documentElement.dir = 'rtl';
+  it('follows the writing direction of the page, also when it changes after setup', async () => {
     document.body.innerHTML = MARKUP;
     init();
+    document.documentElement.dir = 'rtl';
     tab('b').focus();
     await userEvent.keyboard('{ArrowLeft}');
     expect(document.activeElement).toBe(tab('c'));

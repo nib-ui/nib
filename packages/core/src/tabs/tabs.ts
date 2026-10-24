@@ -47,7 +47,8 @@ export function createTabs(
   const firstEnabled = (o: TabsOptions) => move(o.items, null, 'first');
   let internal: Key | null = options.value ?? options.defaultValue ?? firstEnabled(options);
   const tabId = (id: string, key: Key) => `${id}-tab-${key}`;
-  // A value that names no enabled tab falls back to the first one, so a panel always shows.
+  // A value that names no enabled tab falls back to the first one, so a panel always shows. The
+  // value itself is kept (like listbox), so a tab that comes back is selected again.
   const shown = (value: Key | null, o: TabsOptions) =>
     o.items.some((i) => i.key === value && !i.disabled) ? value : firstEnabled(o);
 
