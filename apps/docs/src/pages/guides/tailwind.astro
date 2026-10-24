@@ -1,0 +1,44 @@
+---
+import CodeBlock from '../../components/code-block.astro';
+import GuidePage from '../../layouts/guide-page.astro';
+---
+
+<GuidePage
+  title="Tailwind"
+  lead="Tailwind v4 with Nib's tokens as its theme: nib-* colours, type and spacing, and no radius or shadow scale."
+>
+  <h2 id="entry">The entry stylesheet</h2>
+  <p>
+    Name the layers first: Tailwind's theme and preflight, then Nib, then Tailwind's components and utilities. Nib's
+    reset follows preflight, and a utility class still wins over a Nib component.
+  </p>
+  <CodeBlock
+    label="app.css"
+    code={`@layer theme, base, nib, components, utilities;
+@import 'tailwindcss';
+@import '@nib-ui/tokens/tailwind.css';
+@import '@nib-ui/css/nib.css';`}
+  />
+  <p>
+    <code>nib init --css tailwind</code> writes this file, followed by imports of the preset's stylesheet and your theme
+    file.
+  </p>
+
+  <h2 id="classes">Classes</h2>
+  <p>
+    Colours are <code>bg-nib-surface</code>, <code>text-nib-on-surface-2</code>, <code>border-nib-line</code>,
+    <code>text-nib-red</code> and so on; type roles are <code>text-nib-label-md</code> and their siblings. The radius
+    and shadow scales are reset, so <code>rounded-lg</code> and <code>shadow-md</code> draw nothing.
+  </p>
+  <p>
+    Arbitrary values bypass the tokens (<code>rounded-[8px]</code>, <code>bg-[#f00]</code>) and Tailwind's own palette
+    is still there (<code>text-red-500</code>). <code>nib lint</code> finds both in your markup.
+  </p>
+  <CodeBlock
+    label="card.html"
+    code={`<article class="nib-tile">
+  <h3 class="nib-tile__title">Kenya Nyeri</h3>
+  <p class="text-nib-on-surface-2">Bright, blackcurrant, 1.5 kg left.</p>
+</article>`}
+  />
+</GuidePage>

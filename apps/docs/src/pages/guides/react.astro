@@ -1,0 +1,62 @@
+---
+import CodeBlock from '../../components/code-block.astro';
+import GuidePage from '../../layouts/guide-page.astro';
+---
+
+<GuidePage
+  title="React"
+  lead="One hook per component; spread the props it hands out for each part onto your own elements."
+>
+  <h2 id="install">Install</h2>
+  <CodeBlock label="shell" code="pnpm add @nib-ui/react @nib-ui/css @nib-ui/tokens" />
+  <p>
+    React 19. Load the CSS as in <a href="/guides/css/">plain CSS</a> or <a href="/guides/tailwind/">Tailwind</a>.
+  </p>
+
+  <h2 id="use">Use a component</h2>
+  <CodeBlock
+    label="language.tsx"
+    code={`import { useState } from 'react';
+import { useListbox } from '@nib-ui/react/listbox';
+
+const items = [
+  { key: 'en', label: 'English' },
+  { key: 'vi', label: 'Tiếng Việt' },
+];
+
+export function Language() {
+  const [value, setValue] = useState('vi');
+  const listbox = useListbox({ items, value, onValueChange: setValue });
+  return (
+    <ul className="nib-listbox" aria-label="Language" {...listbox.part('list')}>
+      {items.map((item) => (
+        <li key={item.key} className="nib-listbox__option" {...listbox.part('option', item.key)}>
+          {item.label}
+        </li>
+      ))}
+    </ul>
+  );
+}`}
+  />
+  <p>
+    Every hook (<code>useListbox</code>, <code>useDialog</code>, <code>useDataGrid</code>, …) returns the component's
+    <code>state</code>, <code>part(name, key?)</code> for the props of each element, and <code>send(event)</code>. You
+    own the markup; the hook owns ARIA, keys and focus.
+  </p>
+
+  <h2 id="options">Options</h2>
+  <ul>
+    <li>
+      Pass <code>value</code> with <code>onValueChange</code> to control a value, or <code>defaultValue</code> to let
+      the component keep it.
+    </li>
+    <li>
+      Options are compared key by key on every render: keep arrays and objects the same between renders unless they
+      changed (define them outside the component, or with <code>useMemo</code>).
+    </li>
+    <li>
+      Ids come from <code>useId</code>, so server and client render the same markup. <code>locale</code> defaults to the
+      page's <code>lang</code> on the client; pass it when rendering on the server.
+    </li>
+  </ul>
+</GuidePage>

@@ -8,6 +8,7 @@ export const ui = {
     themeBefore: 'Switch to',
     themeAfter: 'theme',
     home: 'Nib',
+    guides: 'Guides',
     components: 'Components',
     play: 'Proof press',
     siteNav: 'Site',

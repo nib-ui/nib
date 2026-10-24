@@ -1,0 +1,50 @@
+---
+import CodeBlock from '../../components/code-block.astro';
+import GuidePage from '../../layouts/guide-page.astro';
+---
+
+<GuidePage
+  title="Plain CSS"
+  lead="One stylesheet, cascade layers and ARIA attributes: Nib needs no build step and no class soup."
+>
+  <h2 id="load">Load it</h2>
+  <p>
+    Declare Nib's layer order first, so your own unlayered styles always win over Nib's, then load the fonts and
+    <code>nib.css</code>.
+  </p>
+  <CodeBlock
+    label="app.css"
+    code={`@layer nib.theme, nib.base, nib.components, nib.utilities;
+@import '@nib-ui/fonts/fonts.css';
+@import '@nib-ui/css/nib.css';
+/* Opt in: single-purpose classes from the tokens. */
+@import '@nib-ui/css/utilities.css';`}
+  />
+  <p>
+    A page that uses a few components can load <code>@nib-ui/tokens/tokens.css</code> and only the files it needs from
+    <code>@nib-ui/css/components/</code>.
+  </p>
+
+  <h2 id="states">States come from attributes</h2>
+  <p>
+    Components read ARIA and HTML state, not modifier classes: <code>aria-current="page"</code> draws the accent rule,
+    <code>aria-selected="true"</code> the cursor block, <code>disabled</code> and <code>aria-invalid</code> what you
+    expect. Markup that is accessible is styled; markup that is not, shows.
+  </p>
+  <CodeBlock
+    label="index.html"
+    code={`<nav class="nib-side-nav" aria-label="Guides">
+  <ul>
+    <li><a href="/install/" aria-current="page">Install</a></li>
+    <li><a href="/theming/">Theming</a></li>
+  </ul>
+</nav>`}
+  />
+
+  <h2 id="override">Your styles</h2>
+  <p>
+    Anything outside a layer beats every Nib layer, whatever the selector. Change Nib through its tokens (
+    <a href="/guides/theming/">Theming</a>), not by fighting its rules; the laws (square corners, no shadows, 1px and
+    2px strokes) are not options.
+  </p>
+</GuidePage>

@@ -40,4 +40,10 @@ describe('proof press', () => {
     expect(css).toContain('--nib-accent: light-dark(#123456, #abcdef);');
     expect(css.startsWith('@layer nib.theme {')).toBe(true);
   });
+
+  it("notes the preset's stylesheet at the top of the export", () => {
+    expect(exportCss(defaults(colors), 'blog')).toMatch(
+      /^\/\* Preset blog: load @nib-ui\/css\/presets\/blog\.css after nib\.css\. \*\/\n@layer nib\.theme \{/,
+    );
+  });
 });

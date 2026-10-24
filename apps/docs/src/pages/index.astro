@@ -1,15 +1,40 @@
 ---
 import BaseLayout from '../layouts/base-layout.astro';
+import { href, navigation } from '../data/nav.ts';
+
+const guides = navigation('guides')[0]?.pages ?? [];
 ---
 
 <BaseLayout title="Nib" description="A ruled UI framework, one mark at a time.">
-  <p class="nib-kicker">Pre-alpha</p>
+  <p class="nib-kicker">1.0 beta</p>
   <h1>A ruled UI framework, one mark at a time.</h1>
-  <p>
-    Framework-agnostic CSS and headless components for docs, dashboards and developer tools. Flat, ruled, mono labels
-    and sans text, one accent for the current thing.
+  <p class="nib-text-lead">
+    Framework-agnostic CSS and headless components for docs, dashboards and developer tools. Flat, ruled, square; mono
+    labels over sans text; one jade accent for the current thing.
   </p>
-  <p>
-    <a href="/guides/component-page/">How a component page is laid out</a>
-  </p>
+  <div class="nib-action-row">
+    <a class="nib-button nib-button--primary" href="/guides/install/">
+      Get started
+    </a>
+    <a class="nib-button nib-button--outline" href="/components/">
+      Components
+    </a>
+  </div>
+
+  <h2 id="what">What is in the box</h2>
+  <ul>
+    <li>One stylesheet in cascade layers: tokens, base, 30 components and opt-in utilities.</li>
+    <li>Twelve interactive components on a hand-written headless core, for vanilla JS, React, Vue and Svelte.</li>
+    <li>Two themes (Ink and Paper), two densities, four presets and eighty icons.</li>
+    <li>WCAG 2.2 AA, keyboard patterns from the APG, forced colours and right-to-left throughout.</li>
+  </ul>
+
+  <h2 id="guides">Guides</h2>
+  <ul>
+    {guides.map((page) => (
+      <li>
+        <a href={href('guides', page.slug)}>{page.title}</a>: {page.lead}
+      </li>
+    ))}
+  </ul>
 </BaseLayout>

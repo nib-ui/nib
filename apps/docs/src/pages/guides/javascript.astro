@@ -1,0 +1,50 @@
+---
+import CodeBlock from '../../components/code-block.astro';
+import GuidePage from '../../layouts/guide-page.astro';
+---
+
+<GuidePage
+  title="Vanilla JS"
+  lead="Write the markup, mark it with data-nib, import the components you use, and call init()."
+>
+  <h2 id="setup">Set up</h2>
+  <CodeBlock
+    label="index.html"
+    code={`<ul class="nib-listbox" data-nib="listbox" aria-label="Language" data-value="vi">
+  <li class="nib-listbox__option" data-nib-option="en">English</li>
+  <li class="nib-listbox__option" data-nib-option="vi">Tiếng Việt</li>
+</ul>
+
+<script type="module">
+  import '@nib-ui/js/listbox';
+  import { init } from '@nib-ui/js';
+  init();
+</script>`}
+  />
+  <p>
+    Each import registers one component (<code>@nib-ui/js/listbox</code>, <code>/dialog</code>, <code>/data-grid</code>,
+    …). <code>init(root)</code> sets up every marked element inside <code>root</code> that is not set up yet, so call it
+    again after rendering new markup; <code>destroy(root)</code> tears them down and restores the markup.
+  </p>
+  <p>
+    <code>import '@nib-ui/js/auto'</code> calls <code>init()</code> for you once the page is parsed.
+  </p>
+
+  <h2 id="events">Events</h2>
+  <p>
+    Components report what the user did as bubbling <code>nib:</code> events on their root, such as
+    <code>nib:change</code> on a listbox or <code>nib:edit</code> on a data grid; each page lists its own.
+  </p>
+  <CodeBlock
+    label="app.js"
+    code={`document.addEventListener('nib:change', (event) => {
+  console.log(event.target.id, event.detail);
+});`}
+  />
+
+  <h2 id="language">Language and direction</h2>
+  <p>
+    Components read <code>lang</code> and <code>dir</code> from the page: sorting, matching and dates follow the
+    language, arrow keys follow the reading direction.
+  </p>
+</GuidePage>

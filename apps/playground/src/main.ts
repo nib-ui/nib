@@ -2,11 +2,26 @@
 // the stylesheet to export. All the colour logic is in proof-press.ts.
 import '@nib-ui/fonts/fonts.css';
 import '@nib-ui/css/nib.css';
+import '@nib-ui/css/presets/docs.css';
+import '@nib-ui/css/presets/dashboard.css';
+import '@nib-ui/css/presets/blog.css';
+import '@nib-ui/css/presets/landing.css';
 import './press.css';
 import '@nib-ui/js/copy';
 import { init } from '@nib-ui/js';
 import tokens from '@nib-ui/tokens/tokens.json';
-import { customProperties, defaults, exportCss, HUES, proofMarks, type Choices, type Hue } from './proof-press.ts';
+import {
+  customProperties,
+  defaults,
+  exportCss,
+  HUES,
+  PRESET_PAGE,
+  PRESETS,
+  proofMarks,
+  type Choices,
+  type Hue,
+  type Preset,
+} from './proof-press.ts';
 
 const colors = tokens.color;
 const form = document.querySelector<HTMLFormElement>('.press__controls');
@@ -38,10 +53,37 @@ function read(): Choices {
   };
 }
 
+const presetOf = (value: unknown) => PRESETS.find((p) => p === value);
+
+/**
+ * A preset sets its page defaults on the theme and density controls, which stay free to change;
+ * the controls go back to their own defaults first, so a preset that sets nothing sets nothing.
+ */
+function choosePreset() {
+  const preset = presetOf(form?.querySelector<HTMLSelectElement>('select[name="preset"]')?.value);
+  for (const radio of form?.querySelectorAll<HTMLInputElement>('input[name="theme"], input[name="density"]') ?? []) {
+    radio.checked = radio.defaultChecked;
+  }
+  const page = preset ? PRESET_PAGE[preset] : {};
+  for (const [name, value] of Object.entries(page)) {
+    const radio = form?.querySelector<HTMLInputElement>(`input[name="${name}"][value="${value}"]`);
+    if (radio) radio.checked = true;
+  }
+}
+
 function render() {
   if (!form || !preview) return;
   const choices = read();
   const data = new FormData(form);
+  const preset: Preset | undefined = presetOf(data.get('preset'));
+  for (const strip of preview.querySelectorAll<HTMLElement>('.press__preset')) {
+    strip.hidden = strip.dataset['preset'] !== preset;
+  }
+  const link = form.querySelector<HTMLElement>('.press__preset-link');
+  if (link) {
+    link.hidden = !preset;
+    link.querySelector('a')?.setAttribute('href', `/presets/${preset ?? ''}/`);
+  }
   preview.dataset['theme'] = String(data.get('theme'));
   preview.dataset['density'] = String(data.get('density'));
   for (const [name, value] of Object.entries(customProperties(choices))) preview.style.setProperty(name, value);
@@ -65,11 +107,14 @@ function render() {
       return li;
     }),
   );
-  if (css) css.textContent = exportCss(choices);
+  if (css) css.textContent = exportCss(choices, preset);
 }
 
 fill();
-form?.addEventListener('input', render);
+form?.addEventListener('input', (event) => {
+  if ((event.target as HTMLElement).matches('select[name="preset"]')) choosePreset();
+  render();
+});
 form?.addEventListener('reset', () => setTimeout(() => (fill(), render())));
 render();
 init();
