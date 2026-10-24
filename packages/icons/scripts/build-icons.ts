@@ -7,7 +7,17 @@ const SRC = fileURLToPath(new URL('../src/svg', import.meta.url));
 const LAYER_ORDER = '@layer nib.theme, nib.base, nib.components, nib.utilities;';
 // Directional icons that point the reading way: they flip under dir="rtl". Each is drawn
 // symmetric about x = 8, the axis the flip turns on, so the pair lines up in either direction.
-const MIRRORED = new Set(['arrow-prev', 'arrow-next', 'log-in', 'log-out', 'undo', 'redo', 'sidebar', 'list']);
+export const MIRRORED = new Set([
+  'arrow-prev',
+  'arrow-next',
+  'log-in',
+  'log-out',
+  'undo',
+  'redo',
+  'sidebar',
+  'list',
+  'message',
+]);
 // Names that cannot be an exported binding in the ES module index.
 const RESERVED = new Set(
   'break case catch class const continue debugger default delete do else enum export extends false finally for function if import in instanceof new null return super switch this throw true try typeof var void while with yield let static await'.split(

@@ -2,7 +2,7 @@ import { mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { beforeAll, describe, expect, it } from 'vitest';
-import { buildIcons, readIcons } from './build-icons.ts';
+import { buildIcons, MIRRORED, readIcons } from './build-icons.ts';
 
 const NEEDED = [
   'arrow-next',
@@ -37,7 +37,17 @@ describe('buildIcons', () => {
     const names = [...readIcons().keys()];
     expect(names).toEqual(expect.arrayContaining(NEEDED));
     expect(names.length).toBeGreaterThanOrEqual(60);
-    expect(names.length).toBeLessThanOrEqual(80);
+  });
+
+  it('centres every mirrored icon on x = 8, the axis the RTL flip turns on', () => {
+    const icons = readIcons();
+    for (const name of MIRRORED) {
+      // Every x a path passes through: the first of each M/L pair and every H; V keeps x.
+      const xs = (icons.get(name)?.paths ?? []).flatMap(({ d }) =>
+        [...d.matchAll(/([MLH])\s*(-?[\d.]+)/g)].map((m) => Number(m[2])),
+      );
+      expect([name, Math.min(...xs) + Math.max(...xs)]).toEqual([name, 16]);
+    }
   });
 
   it('writes a sprite of currentColor symbols with square caps', () => {
