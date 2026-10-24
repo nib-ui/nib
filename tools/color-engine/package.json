@@ -1,0 +1,22 @@
+{
+  "name": "@nib-ui/color-engine",
+  "version": "0.0.0",
+  "description": "Contrast and colour-vision checks shared by the CLI, CI and docs",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@nib-ui/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "nx": {
+    "tags": [
+      "type:tool",
+      "scope:private"
+    ]
+  }
+}

@@ -27,11 +27,32 @@ Framework-agnostic CSS and headless components for docs, dashboards and develope
 | [`GLOSSARY.md`](GLOSSARY.md) | The names of the system's concepts, and the words to avoid |
 | [`docs/adr/`](docs/adr/) | Architecture decision records |
 | [`plans/`](plans/) | Decision log and research reports behind the ADRs |
+| `packages/` · `apps/` · `tools/` | The Nx workspace: public packages, private apps (docs, playground), private build tools |
 
 ## Planned packages
 
 `@nib-ui/tokens` · `@nib-ui/css` · `@nib-ui/core` · `@nib-ui/dom` · `@nib-ui/js` · `@nib-ui/react` · `@nib-ui/vue` ·
 `@nib-ui/svelte` · `@nib-ui/cli` · `@nib-ui/fonts` · `@nib-ui/icons`
+
+## Develop
+
+Node 24 (see `.nvmrc`) and pnpm. The workspace runs on Nx; see
+[ADR 11](docs/adr/0011-nx-workspace-release-and-module-boundaries.md) and
+[ADR 12](docs/adr/0012-headless-core-interface-and-dom-package.md).
+
+```bash
+pnpm install
+```
+
+```bash
+pnpm nx run-many -t lint typecheck test build
+```
+
+```bash
+pnpm nx graph
+```
+
+A pull request that changes a public package carries a version plan: `pnpm nx release plan`.
 
 ## License
 

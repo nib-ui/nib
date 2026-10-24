@@ -1,0 +1,27 @@
+packages:
+  - 'packages/*'
+  - 'apps/*'
+  - 'tools/*'
+minimumReleaseAgeExclude:
+  - '@nx/devkit@24.0.1'
+  - '@nx/eslint-plugin@24.0.1'
+  - '@nx/eslint@24.0.1'
+  - '@nx/js@24.0.1'
+  - '@nx/nx-darwin-arm64@24.0.1'
+  - '@nx/nx-darwin-x64@24.0.1'
+  - '@nx/nx-freebsd-x64@24.0.1'
+  - '@nx/nx-linux-arm-gnueabihf@24.0.1'
+  - '@nx/nx-linux-arm64-gnu@24.0.1'
+  - '@nx/nx-linux-arm64-musl@24.0.1'
+  - '@nx/nx-linux-x64-gnu@24.0.1'
+  - '@nx/nx-linux-x64-musl@24.0.1'
+  - '@nx/nx-win32-arm64-msvc@24.0.1'
+  - '@nx/nx-win32-x64-msvc@24.0.1'
+  - '@nx/vitest@24.0.1'
+  - '@nx/workspace@24.0.1'
+  - nx@24.0.1
+
+# Only these dependencies may run install scripts (native binaries).
+allowBuilds:
+  '@swc/core': true
+  nx: true

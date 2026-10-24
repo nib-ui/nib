@@ -1,0 +1,22 @@
+{
+  "name": "@nib-ui/nx-plugin",
+  "version": "0.0.0",
+  "description": "Nx generators for Nib components",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@nib-ui/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "nx": {
+    "tags": [
+      "type:tool",
+      "scope:private"
+    ]
+  }
+}

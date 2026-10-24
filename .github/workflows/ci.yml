@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Read-write cache only for pushes to main. Pull requests (forks included) fall back to the
+  # read-only access that `nxCloudId` grants.
+  NX_CLOUD_ACCESS_TOKEN: ${{ github.event_name == 'push' && secrets.NX_CLOUD_ACCESS_TOKEN || '' }}
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: nrwl/nx-set-shas@v5
+      - name: Workspace in sync (TS project references)
+        run: pnpm nx sync:check
+      - name: Version plan for every touched public package
+        if: github.event_name == 'pull_request'
+        run: pnpm nx release plan:check --base=$NX_BASE --head=$NX_HEAD
+      - run: pnpm nx affected -t lint typecheck test build size-limit e2e

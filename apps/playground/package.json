@@ -1,0 +1,14 @@
+{
+  "name": "@nib-ui/playground",
+  "version": "0.0.0",
+  "description": "Nib proof press: a playground for components and tokens",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "nx": {
+    "tags": [
+      "type:app",
+      "scope:private"
+    ]
+  }
+}
