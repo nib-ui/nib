@@ -1,0 +1,190 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const items = [
+  'Kenya Nyeri',
+  'Decaf',
+  'Ethiopia Guji',
+  'Colombia Huila',
+  'Đà Lạt Arabica',
+  'Sumatra',
+  'Brazil Cerrado',
+];
+const rows = Array.from({ length: 24 }, (_, i) => ({
+  key: String(1042 - i),
+  item: items[i % items.length],
+  qty: (i % 3) + 1,
+  total: (((i * 37) % 90) + 12).toFixed(2),
+}));
+const html = `<div data-nib="data-grid" data-label="Orders" data-selectable data-page-size="8">
+  <div class="nib-bulk-bar" data-nib-bulk hidden><span><span data-nib-count>0</span> selected</span>
+    <button type="button" class="nib-button">Archive</button></div>
+  <div class="nib-data-grid" data-nib-scroller>
+  <table class="nib-table">
+    <thead><tr>
+      <th data-column="order" data-sortable data-width="110">Order</th>
+      <th data-column="item" data-sortable data-editable>Item</th>
+      <th data-column="qty" data-numeric data-width="80">Qty</th>
+      <th data-column="total" data-numeric data-sortable data-width="110">Total</th>
+    </tr></thead>
+    <tbody>
+${rows.map((r) => `      <tr data-row="${r.key}"><td>#${r.key}</td><td>${r.item}</td><td>${r.qty}</td><td>${r.total}</td></tr>`).join('\n')}
+    </tbody>
+  </table>
+  </div>
+  <div class="nib-data-grid__pager">
+    <button type="button" class="nib-button" data-nib-prev-page>‹</button>
+    <span class="nib-data-grid__page" data-nib-page>1 / 3</span>
+    <button type="button" class="nib-button" data-nib-next-page>›</button>
+  </div>
+</div>`;
+
+const code = {
+  html: `${html}
+
+<script type="module">
+  import '@nib-ui/js/data-grid';
+  import { init } from '@nib-ui/js';
+  init();
+  document.addEventListener('nib:edit', (e) => save(e.detail));
+</script>`,
+  react: `import { useDataGrid } from '@nib-ui/react/data-grid';
+
+function Orders({ columns, rows, onEdit }) {
+  const dg = useDataGrid({ label: 'Orders', columns, rows, selectable: true, pageSize: 50, onEdit });
+  const { start, end } = dg.state.window ?? { start: 0, end: dg.state.rows.length };
+  return (
+    <div className="nib-data-grid" {...dg.part('scroller')}>
+      <table className="nib-table" {...dg.part('grid')}>
+        <thead>
+          <tr>
+            <th {...dg.part('select-all')} />
+            {columns.map((c) => (
+              <th key={c.key} {...dg.part('header', c.key)}>
+                {c.label}<span className="nib-data-grid__resizer" {...dg.part('resizer', c.key)} />
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr {...dg.part('spacer', 'before')} />
+          {dg.state.rows.slice(start, end).map((row) => (
+            <tr key={row.key} {...dg.part('row', row.key)}>
+              <td {...dg.part('select', row.key)} />
+              {columns.map((c) => (
+                <td key={c.key} {...dg.part('cell', \`\${row.key}::\${c.key}\`)}>
+                  {dg.state.editing?.row === row.key && dg.state.editing.column === c.key
+                    ? <input className="nib-data-grid__editor" {...dg.part('editor')} />
+                    : row[c.key]}
+                </td>
+              ))}
+            </tr>
+          ))}
+          <tr {...dg.part('spacer', 'after')} />
+        </tbody>
+      </table>
+    </div>
+  );
+}`,
+  vue: `<script setup>
+import { useDataGrid } from '@nib-ui/vue/data-grid';
+
+const props = defineProps(['columns', 'rows']);
+const dg = useDataGrid(() => ({ label: 'Orders', columns: props.columns, rows: props.rows, selectable: true }));
+</script>
+
+<template>
+  <div class="nib-data-grid" v-bind="dg.part('scroller')">
+    <table class="nib-table" v-bind="dg.part('grid')">
+      <thead>
+        <tr>
+          <th v-bind="dg.part('select-all')"></th>
+          <th v-for="c in columns" :key="c.key" v-bind="dg.part('header', c.key)">{{ c.label }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="row in dg.state.rows" :key="row.key" v-bind="dg.part('row', row.key)">
+          <td v-bind="dg.part('select', row.key)"></td>
+          <td v-for="c in columns" :key="c.key" v-bind="dg.part('cell', \`\${row.key}::\${c.key}\`)">{{ row[c.key] }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>`,
+  svelte: `<script>
+  import { createDataGridStore } from '@nib-ui/svelte/data-grid';
+
+  let { columns, rows } = $props();
+  const dg = createDataGridStore({ id: $props.id(), label: 'Orders', columns, rows, selectable: true });
+</script>
+
+<div class="nib-data-grid" {...$dg.part('scroller')}>
+  <table class="nib-table" {...$dg.part('grid')}>
+    <thead>
+      <tr>
+        <th {...$dg.part('select-all')}></th>
+        {#each columns as c (c.key)}<th {...$dg.part('header', c.key)}>{c.label}</th>{/each}
+      </tr>
+    </thead>
+    <tbody>
+      {#each $dg.state.rows as row (row.key)}
+        <tr {...$dg.part('row', row.key)}>
+          <td {...$dg.part('select', row.key)}></td>
+          {#each columns as c (c.key)}<td {...$dg.part('cell', \`\${row.key}::\${c.key}\`)}>{row[c.key]}</td>{/each}
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+</div>`,
+};
+---
+
+<ComponentPage
+  title="Data grid"
+  lead="A table you can work in: sort by a column, check rows for a bulk action, edit a cell, page through thousands of records."
+  kind="INTERACTIVE"
+  code={code}
+>
+  <div slot="example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    <code>createDataGrid</code> takes <code>columns</code> (<code>sortable</code>, <code>editable</code>,
+    <code>numeric</code>, <code>width</code>) and <code>rows</code> (a <code>key</code> and a value per column), and
+    gives the page's sorted <code>rows</code>. Sorting is stable and follows the page's language (numbers in text by
+    value); with <code>manualSort</code> a server sorts. <code>pageSize</code> pages the rows. From 1,000 rows on a
+    page, only the rows in view are rendered (<code>window</code>, with spacer rows keeping the scroll height); give
+    every row the same height (<code>rowHeight</code>). The vanilla binding measures its scroller; in React, Vue and
+    Svelte pass <code>viewportHeight</code> for a grid taller than 20 rows. Keep <code>rows</code> the same array
+    between renders unless the data changed, or the grid sorts again each time.
+  </p>
+  <p>
+    <code>selectable</code> adds a select column: checked rows take the hover fill, never the cursor block, and the
+    <code>bulk</code> action bar shows the count. An <code>editable</code> cell opens a field on Enter, F2 or a double
+    click; Enter or leaving the field saves through <code>onEdit</code>, Escape drops the change. Not in 1.0: grouping,
+    pivoting, dragging columns, spreadsheet-style ranges.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      Follows the APG data grid: a <code>role="grid"</code> table with one cell in the tab order. Arrows move by a cell,
+      Home and End to the ends of the row, Ctrl+Home and Ctrl+End to the first and last cell, Page Up and Page Down by a
+      screenful; left and right follow the reading direction.
+    </li>
+    <li>
+      Enter on a header sorts it (<code>aria-sort</code>, ↑ / ↓); Space checks a row (<code>aria-selected</code> in an
+      <code>aria-multiselectable</code> grid) and the new count is announced.
+    </li>
+    <li>
+      Columns resize by dragging their edge or with Alt+Left and Alt+Right on the header. A virtualised grid keeps
+      <code>aria-rowcount</code> and each row's <code>aria-rowindex</code>, so screen readers count every row.
+    </li>
+    <li>Keys typed into a cell's field stay with the field.</li>
+  </ul>
+</ComponentPage>
+
+<script>
+  import '@nib-ui/js/data-grid';
+  import { init } from '@nib-ui/js';
+  init();
+</script>

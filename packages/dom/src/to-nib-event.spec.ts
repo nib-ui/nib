@@ -99,4 +99,17 @@ describe('toNibEvent', () => {
     expect(seen).toMatchObject({ type: 'input', value: 'tiếng', data: 'g' });
     input.remove();
   });
+
+  it('reads where a pointer is and how far an element is scrolled, from the element given', () => {
+    expect(toNibEvent(new PointerEvent('pointermove', { pointerType: 'mouse', clientX: 120 }))).toMatchObject({
+      clientX: 120,
+    });
+    const box = document.body.appendChild(document.createElement('div'));
+    box.style.cssText = 'height: 50px; overflow: auto';
+    box.innerHTML = '<div style="height: 500px"></div>';
+    box.scrollTop = 100;
+    // As React delegates: the native event's currentTarget is not the element, so it is passed.
+    expect(toNibEvent(new Event('scroll'), box)).toMatchObject({ scrollTop: 100, clientHeight: 50 });
+    box.remove();
+  });
 });

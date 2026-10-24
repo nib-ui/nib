@@ -20,6 +20,8 @@ export interface NibEvent {
   ctrlKey?: boolean;
   metaKey?: boolean;
   altKey?: boolean;
+  /** Key events: pressed in a text field, select or editable text, where keys belong to typing. */
+  inField?: boolean;
   /** True between compositionstart and compositionend (IME input such as Telex). */
   isComposing?: boolean;
   /** Text of an input or composition event. */
@@ -30,6 +32,13 @@ export interface NibEvent {
   newState?: 'open' | 'closed';
   /** Pointer events: the kind of pointer, so hover-only behaviour can skip touch. */
   pointerType?: string;
+  /** Pointer events: the horizontal position in the viewport, for dragging (a column's edge). */
+  clientX?: number;
+  /** Pointer events: keeps the pointer's next events on this element until it is released. */
+  capturePointer?(): void;
+  /** Scroll events: how far the element is scrolled and how tall its visible box is. */
+  scrollTop?: number;
+  clientHeight?: number;
   /** Focus events: whether the browser shows a focus ring (keyboard focus, not a click). */
   focusVisible?: boolean;
   /** Core calls it when it handled the event, e.g. an arrow key it moved on. */

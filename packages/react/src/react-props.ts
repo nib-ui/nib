@@ -97,7 +97,8 @@ export function reactProps(part: Part, queue: (intents: readonly Intent[]) => vo
     // which it fires on every input anyway.
     const prop = type === 'input' && 'value' in part.attrs ? 'onChange' : EVENTS[type];
     if (!prop) throw new Error(`[nib] @nib-ui/react has no prop for the "${type}" event`);
-    props[prop] = (event: { nativeEvent: Event }) => queue(handler(toNibEvent(event.nativeEvent)));
+    props[prop] = (event: { nativeEvent: Event; currentTarget: Element }) =>
+      queue(handler(toNibEvent(event.nativeEvent, event.currentTarget)));
   }
   return props;
 }

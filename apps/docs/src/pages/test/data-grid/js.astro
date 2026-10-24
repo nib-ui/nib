@@ -1,0 +1,38 @@
+---
+import FixtureLayout from '../../../layouts/fixture-layout.astro';
+---
+
+<FixtureLayout title="Data grid · vanilla fixture">
+  <div id="mount"></div>
+</FixtureLayout>
+
+<script>
+  import { dataGridApg } from '@nib-ui/core/data-grid/apg';
+  import type { DataGridOptions } from '@nib-ui/core/data-grid';
+  import '@nib-ui/js/data-grid';
+  import { init } from '@nib-ui/js';
+  import { caseOptions } from '../../../fixtures/apg-case.ts';
+
+  // The vanilla binding reads its options from markup, so the row is written out as markup.
+  const o = caseOptions(dataGridApg) as unknown as DataGridOptions & { id: string };
+  const root = Object.assign(document.createElement('div'), {
+    id: o.id,
+    className: 'nib-data-grid',
+    lang: o.locale ?? '',
+  });
+  root.dataset['nib'] = 'data-grid';
+  if (o.selectable) root.dataset['selectable'] = '';
+  if (o.label) root.dataset['label'] = o.label;
+  const flags = (c: DataGridOptions['columns'][number]) =>
+    ['sortable', 'editable', 'numeric']
+      .filter((f) => c[f as 'sortable'])
+      .map((f) => ` data-${f}`)
+      .join('');
+  root.innerHTML = `<table class="nib-table"><thead><tr>${o.columns
+    .map((c) => `<th data-column="${c.key}"${flags(c)}>${c.label}</th>`)
+    .join('')}</tr></thead><tbody>${o.rows
+    .map((r) => `<tr data-row="${r.key}">${o.columns.map((c) => `<td>${String(r[c.key])}</td>`).join('')}</tr>`)
+    .join('')}</tbody></table>`;
+  document.getElementById('mount')?.append(root);
+  init();
+</script>
