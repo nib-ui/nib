@@ -30,3 +30,7 @@ Thumbs.db
 # local agent settings
 .claude/settings.local.json
 .claude/worktrees
+
+# Playwright
+test-results
+playwright-report

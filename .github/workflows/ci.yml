@@ -30,10 +30,35 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # Vitest browser-mode tests run in headless Chromium.
+      - run: pnpm exec playwright install --with-deps chromium
       - uses: nrwl/nx-set-shas@v5
       - name: Workspace in sync (TS project references)
         run: pnpm nx sync:check
       - name: Version plan for every touched public package
         if: github.event_name == 'pull_request'
         run: pnpm nx release plan:check --base=$NX_BASE --head=$NX_HEAD
-      - run: pnpm nx affected -t lint typecheck test build size-limit e2e
+      - run: pnpm nx affected -t lint typecheck test build size-limit
+
+  # Screenshots are compared against baselines made in the same image on linux/arm64
+  # (scripts/playwright-docker.sh); see ADR 7.
+  e2e:
+    runs-on: ubuntu-24.04-arm
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - uses: pnpm/action-setup@v6
+      - run: pnpm install --frozen-lockfile
+      - uses: nrwl/nx-set-shas@v5
+      - run: pnpm nx affected -t e2e
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report
+          path: '**/playwright-report/'
+          retention-days: 14

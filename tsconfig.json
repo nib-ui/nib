@@ -35,6 +35,9 @@
     },
     {
       "path": "./packages/js"
+    },
+    {
+      "path": "./tools/test-harness"
     }
   ]
 }
