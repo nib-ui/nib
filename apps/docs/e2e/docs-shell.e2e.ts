@@ -61,6 +61,20 @@ test.describe('docs shell', () => {
     await expect(page.getByRole('heading', { name: 'Accessibility', level: 2 })).toBeVisible();
   });
 
+  test('renders in the self-hosted Inter and JetBrains Mono, with Vietnamese, never from Google Fonts', async ({
+    page,
+  }) => {
+    const hosts = new Set<string>();
+    page.on('request', (request) => hosts.add(new URL(request.url()).host));
+    await page.goto('/components/base/');
+    const loaded = await page.evaluate(async () => {
+      await document.fonts.ready;
+      return ['500 16px Inter', '400 16px "JetBrains Mono"'].map((font) => document.fonts.check(font, 'Tiếng Việt'));
+    });
+    expect(loaded).toEqual([true, true]);
+    expect([...hosts].filter((h) => /google/.test(h))).toEqual([]);
+  });
+
   test('declares the layer order before any other style', async ({ page }) => {
     await page.goto('/');
     const first = await page.evaluate(() => document.styleSheets[0]?.cssRules[0]?.cssText);

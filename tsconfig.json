@@ -41,6 +41,9 @@
     },
     {
       "path": "./packages/css"
+    },
+    {
+      "path": "./packages/fonts"
     }
   ]
 }

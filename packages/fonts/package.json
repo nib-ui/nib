@@ -1,8 +1,8 @@
 {
   "name": "@nib-ui/fonts",
   "version": "0.0.0",
-  "description": "Nib fonts: JetBrains Mono and Inter, self-hosted",
-  "license": "MIT",
+  "description": "Nib fonts: Inter and JetBrains Mono, variable, self-hosted",
+  "license": "MIT AND OFL-1.1",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nib-ui/nib.git",
@@ -17,6 +17,37 @@
     "tags": [
       "type:asset",
       "scope:public"
-    ]
-  }
+    ],
+    "targets": {
+      "build": {
+        "command": "node scripts/build-fonts.ts",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "cache": true,
+        "inputs": [
+          "{projectRoot}/scripts/build-fonts.ts",
+          "{projectRoot}/package.json"
+        ],
+        "outputs": [
+          "{projectRoot}/dist"
+        ]
+      }
+    }
+  },
+  "devDependencies": {
+    "@fontsource-variable/inter": "5.3.0",
+    "@fontsource-variable/jetbrains-mono": "5.3.0"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./fonts.css": "./dist/fonts.css",
+    "./files/*": "./dist/files/*"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "*.css"
+  ]
 }

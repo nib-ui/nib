@@ -17,13 +17,16 @@
       "path": "../../packages/js"
     },
     {
+      "path": "../../packages/fonts"
+    },
+    {
       "path": "../../packages/css"
     },
     {
-      "path": "../../packages/core"
+      "path": "../../tools/test-harness"
     },
     {
-      "path": "../../tools/test-harness"
+      "path": "../../packages/core"
     },
     {
       "path": "./tsconfig.astro.json"
