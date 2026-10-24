@@ -10,5 +10,5 @@ const { label, code } = Astro.props;
 
 <figure class="nib-code">
   <figcaption class="nib-code__header">{label}</figcaption>
-  <pre tabindex="0"><code>{code}</code></pre>
+  <pre tabindex="0" aria-label={label}><code>{code}</code></pre>
 </figure>

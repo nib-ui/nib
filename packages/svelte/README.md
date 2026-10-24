@@ -1,6 +1,6 @@
 # @nib-ui/svelte
 
-Nib's interactive components for Svelte 5: one store per component (`createListboxStore`,
+Nib's interactive components for Svelte 5 (`$props.id()` needs 5.20 or later): one store per component (`createListboxStore`,
 `createDialogStore`, `createDataGridStore`, …). Spread `$store.part(name, key?)`; call
 `update(options)` when options change and `send(event)` to act from code.
 

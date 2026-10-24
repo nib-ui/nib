@@ -55,9 +55,15 @@ function read(): Choices {
 
 const presetOf = (value: unknown) => PRESETS.find((p) => p === value);
 
-/** A preset sets its page defaults on the theme and density controls, which stay free to change. */
+/**
+ * A preset sets its page defaults on the theme and density controls, which stay free to change;
+ * the controls go back to their own defaults first, so a preset that sets nothing sets nothing.
+ */
 function choosePreset() {
   const preset = presetOf(form?.querySelector<HTMLSelectElement>('select[name="preset"]')?.value);
+  for (const radio of form?.querySelectorAll<HTMLInputElement>('input[name="theme"], input[name="density"]') ?? []) {
+    radio.checked = radio.defaultChecked;
+  }
   const page = preset ? PRESET_PAGE[preset] : {};
   for (const [name, value] of Object.entries(page)) {
     const radio = form?.querySelector<HTMLInputElement>(`input[name="${name}"][value="${value}"]`);

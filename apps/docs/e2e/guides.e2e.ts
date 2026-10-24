@@ -19,7 +19,7 @@ test.describe('guides', () => {
   }
 
   test('every guide is in the side navigation, and the header marks the Guides section', async ({ page }) => {
-    await page.goto(GUIDES[0] ?? '/');
+    await page.goto('/guides/install/');
     const side = page.getByRole('navigation', { name: 'Docs' });
     for (const path of GUIDES) await expect(side.locator(`a[href="${path}"]`)).toHaveCount(1);
     const guides = page.getByRole('navigation', { name: 'Site' }).getByRole('link', { name: 'Guides' });
