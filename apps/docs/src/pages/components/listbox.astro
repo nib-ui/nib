@@ -1,7 +1,7 @@
 ---
 import ComponentPage from '../../layouts/component-page.astro';
 
-const html = `<span id="lang-label" class="docs-kicker">LANGUAGE</span>
+const html = `<span id="lang-label" class="nib-kicker">Language</span>
 <ul class="nib-listbox" data-nib="listbox" aria-labelledby="lang-label" data-value="vi">
   <li class="nib-listbox__option" data-nib-option="en">English</li>
   <li class="nib-listbox__option" data-nib-option="fr" data-disabled>Français</li>
@@ -79,8 +79,8 @@ const listbox = useListbox(() => ({ items, value: value.value, onValueChange: (v
   code={code}
 >
   <div slot="example" class="docs-listbox-demo">
-    <span id="lang-label" class="docs-kicker">
-      LANGUAGE
+    <span id="lang-label" class="nib-kicker">
+      Language
     </span>
     <ul class="nib-listbox" data-nib="listbox" aria-labelledby="lang-label" data-value="vi">
       <li class="nib-listbox__option" data-nib-option="en">
@@ -96,8 +96,8 @@ const listbox = useListbox(() => ({ items, value: value.value, onValueChange: (v
         العربية
       </li>
     </ul>
-    <span id="topics-label" class="docs-kicker">
-      TOPICS
+    <span id="topics-label" class="nib-kicker">
+      Topics
     </span>
     <ul class="nib-listbox" data-nib="listbox" data-multiple aria-labelledby="topics-label">
       <li class="nib-listbox__option" data-nib-option="css">

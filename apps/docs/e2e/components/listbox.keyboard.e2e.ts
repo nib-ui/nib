@@ -16,7 +16,7 @@ for (const binding of ['js', 'react', 'vue', 'svelte']) {
 
 test('the docs example announces a change of value with nib:change', async ({ page }) => {
   await page.goto('/components/listbox/');
-  const list = page.getByRole('listbox', { name: 'LANGUAGE' });
+  const list = page.getByRole('listbox', { name: 'Language' });
   // Listen before any key, then read what arrived.
   await list.evaluate((el) =>
     el.addEventListener(

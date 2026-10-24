@@ -1,0 +1,77 @@
+/* Article prose: body-lg at the 68ch reading width, in-article headings with 32px above, ink links
+   with a line-coloured underline, mono list markers, ruled block quotes and raised code blocks. */
+@layer nib.base {
+  .nib-prose {
+    max-inline-size: var(--nib-space-reading-width);
+    color: var(--nib-on-surface-2);
+    font: var(--nib-body-lg-font-weight) var(--nib-body-lg-font-size) / var(--nib-body-lg-line-height)
+      var(--nib-font-sans);
+  }
+
+  .nib-prose > * + * {
+    margin-block-start: var(--nib-space-lg);
+  }
+
+  .nib-prose :is(h2, h3) {
+    color: var(--nib-on-surface);
+  }
+
+  .nib-prose > :is(h2, h3) {
+    margin-block-start: var(--nib-space-4xl);
+  }
+
+  .nib-prose strong {
+    color: var(--nib-on-surface);
+    font-weight: 600;
+  }
+
+  .nib-prose a {
+    color: var(--nib-on-surface);
+    text-decoration-color: var(--nib-line);
+    text-underline-offset: 3px;
+  }
+
+  .nib-prose a:hover {
+    color: var(--nib-accent-text);
+  }
+
+  .nib-prose :is(ul, ol) {
+    padding-inline-start: var(--nib-space-2xl);
+  }
+
+  .nib-prose ul {
+    list-style: '·  ';
+  }
+
+  .nib-prose li::marker {
+    color: var(--nib-on-surface-3);
+    font-family: var(--nib-font-mono);
+  }
+
+  .nib-prose blockquote {
+    padding-inline-start: var(--nib-space-lg);
+    border-inline-start: var(--nib-space-rule) solid var(--nib-on-surface-3);
+    color: var(--nib-on-surface);
+  }
+
+  .nib-prose pre {
+    padding: var(--nib-space-lg);
+    overflow-x: auto;
+    background: var(--nib-surface-raised);
+    color: var(--nib-on-surface);
+    line-height: var(--nib-code-md-line-height);
+  }
+
+  .nib-prose figcaption {
+    margin-block-start: var(--nib-space-sm);
+    font: var(--nib-body-sm-font-weight) var(--nib-body-sm-font-size) / var(--nib-body-sm-line-height)
+      var(--nib-font-sans);
+  }
+
+  @media (forced-colors: active) {
+    /* The raised fill is dropped, so a code block keeps a border to stand apart. */
+    .nib-prose pre {
+      border: var(--nib-space-hairline) solid CanvasText;
+    }
+  }
+}

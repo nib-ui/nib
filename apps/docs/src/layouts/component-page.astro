@@ -19,7 +19,7 @@ const t = strings(Astro.currentLocale);
 ---
 
 <BaseLayout title={title} description={lead}>
-  <p class="docs-kicker">{`COMPONENT · ${kind}`}</p>
+  <p class="nib-kicker">{`Component · ${kind === 'CSS' ? 'CSS' : 'interactive'}`}</p>
   <h1>{title}</h1>
   <p>{lead}</p>
   <section class="docs-example" aria-label={t.example}>

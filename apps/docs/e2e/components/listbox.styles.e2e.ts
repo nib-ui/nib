@@ -13,7 +13,7 @@ test.describe('listbox', () => {
   });
 
   test('sits on the overlay surface with a 1px line border, options as item text', async ({ page }) => {
-    const list = page.getByRole('listbox', { name: 'LANGUAGE' });
+    const list = page.getByRole('listbox', { name: 'Language' });
     expect(await style(list, 'background-color')).toBe('rgb(236, 233, 224)');
     expect(await style(list, 'border-top-width')).toBe('1px');
     expect(await style(list, 'border-top-left-radius')).toBe('0px');
@@ -30,7 +30,7 @@ test.describe('listbox', () => {
   });
 
   test('the current option gets a 2px accent rule on its inline-start edge and the hover fill', async ({ page }) => {
-    await page.getByRole('listbox', { name: 'LANGUAGE' }).focus();
+    await page.getByRole('listbox', { name: 'Language' }).focus();
     await page.keyboard.press('Home');
     const current = page.getByRole('option', { name: 'English' });
     await expect(current).toHaveAttribute('data-current', 'true');
@@ -53,7 +53,7 @@ test.describe('listbox', () => {
 
   test('disabled options are quieter; checked rows are [x], never a block', async ({ page }) => {
     expect(await style(page.getByRole('option', { name: 'Français' }), 'color')).toBe('rgb(101, 100, 94)');
-    const list = page.getByRole('listbox', { name: 'TOPICS' });
+    const list = page.getByRole('listbox', { name: 'Topics' });
     await list.focus();
     await page.keyboard.press(' ');
     const checked = page.getByRole('option', { name: /CSS/ });
@@ -69,7 +69,7 @@ test.describe('listbox', () => {
 
   test('mirrors in right-to-left: the rule moves to the right edge', async ({ page }) => {
     await page.evaluate(() => document.documentElement.setAttribute('dir', 'rtl'));
-    await page.getByRole('listbox', { name: 'LANGUAGE' }).focus();
+    await page.getByRole('listbox', { name: 'Language' }).focus();
     await page.keyboard.press('Home');
     const current = page.getByRole('option', { name: 'English' });
     expect(await style(current, 'border-right-width')).toBe('2px');
@@ -82,7 +82,7 @@ test.describe('listbox', () => {
     expect(await style(page.getByRole('option', { name: 'Tiếng Việt' }), 'forced-color-adjust')).toBe('none');
     // Forced colours paint transparent borders, so only the current option may show the rule.
     const plain = page.getByRole('option', { name: 'English' });
-    const canvas = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+    const canvas = await page.evaluate(() => getComputedStyle(document.documentElement).backgroundColor);
     expect(await style(plain, 'border-left-color')).toBe(canvas);
   });
 });
