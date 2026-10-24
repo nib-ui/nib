@@ -1,4 +1,4 @@
-import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -48,6 +48,8 @@ const face = (family: string, f: Face) => `@font-face {
  * use: "Inter", "JetBrains Mono"), the woff2 files it points to, and each font's OFL licence.
  */
 export async function buildFonts(outDir: string): Promise<void> {
+  // From scratch: a renamed upstream file must not linger and get published.
+  rmSync(outDir, { recursive: true, force: true });
   mkdirSync(join(outDir, 'files'), { recursive: true });
   let css = '/* Inter and JetBrains Mono, variable, Latin + Latin Extended + Vietnamese. SIL OFL 1.1. */\n';
   for (const { family, pkg, licence } of FAMILIES) {

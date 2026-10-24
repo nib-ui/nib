@@ -18,11 +18,14 @@ const faces = () => css.match(/@font-face\s*{[^}]*}/g) ?? [];
 describe('buildFonts', () => {
   it('writes one variable face per family and subset: Latin, Latin Extended, Vietnamese', () => {
     expect(faces()).toHaveLength(6);
-    for (const family of ['Inter', 'JetBrains Mono']) {
+    for (const [family, weights] of [
+      ['Inter', '100 900'],
+      ['JetBrains Mono', '100 800'],
+    ] as const) {
       const own = faces().filter((f) => f.includes(`font-family: '${family}'`));
       expect(own).toHaveLength(3);
       for (const f of own) {
-        expect(f).toMatch(/font-weight: 100 900|font-weight: 100 800/);
+        expect(f).toContain(`font-weight: ${weights};`);
         expect(f).toContain('font-display: swap');
         expect(f).toMatch(/unicode-range: U\+/);
       }

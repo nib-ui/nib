@@ -67,11 +67,16 @@ test.describe('docs shell', () => {
     const hosts = new Set<string>();
     page.on('request', (request) => hosts.add(new URL(request.url()).host));
     await page.goto('/components/base/');
+    // Faces that actually loaded: document.fonts.check() is true when no face is declared at all.
     const loaded = await page.evaluate(async () => {
-      await document.fonts.ready;
-      return ['500 16px Inter', '400 16px "JetBrains Mono"'].map((font) => document.fonts.check(font, 'Tiếng Việt'));
+      await document.fonts.load('500 16px Inter', 'Tiếng Việt');
+      await document.fonts.load('400 16px "JetBrains Mono"', 'Tiếng Việt');
+      return ['Inter', 'JetBrains Mono'].map(
+        (family) =>
+          [...document.fonts].filter((f) => f.family.replace(/["']/g, '') === family && f.status === 'loaded').length,
+      );
     });
-    expect(loaded).toEqual([true, true]);
+    expect(loaded.every((n) => n >= 2)).toBe(true);
     expect([...hosts].filter((h) => /google/.test(h))).toEqual([]);
   });
 
