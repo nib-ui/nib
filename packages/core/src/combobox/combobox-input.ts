@@ -5,17 +5,18 @@ import type { ComboboxState } from './combobox.ts';
 export type ComboboxEvent =
   | { type: 'input'; value: string; composing: boolean }
   | { type: 'compose'; on: boolean; value?: string }
-  | { type: 'move'; to: 'next' | 'prev' }
+  | { type: 'move'; to: 'next' | 'prev' | 'stay' }
   | { type: 'go'; key: Key }
   | { type: 'choose'; key?: Key }
-  | { type: 'close'; clear?: boolean }
+  | { type: 'close'; clear?: boolean; leave?: boolean }
   | { type: 'toggled'; open: boolean }
   | { type: 'place' };
 
 /**
  * The combobox's text field: `role="combobox"` with list autocomplete, the current option as its
  * `aria-activedescendant`. Keys do nothing while an IME composes. Up and Down open the list or move
- * in it, Enter chooses, Escape closes (or, closed, clears), Tab and blur close.
+ * in it (Alt+Down opens, Alt+Up closes), Enter chooses, Escape closes (or, closed, clears), Tab and
+ * blur close and put back the chosen label.
  */
 export function renderComboboxInput(
   state: ComboboxState,
@@ -30,6 +31,8 @@ export function renderComboboxInput(
       case 'ArrowDown':
       case 'ArrowUp':
         e.preventDefault();
+        // Alt+Down opens without moving; Alt+Up closes (APG).
+        if (e.altKey) return e.key === 'ArrowDown' ? send({ type: 'move', to: 'stay' }) : send({ type: 'close' });
         return send({ type: 'move', to: e.key === 'ArrowDown' ? 'next' : 'prev' });
       case 'Enter':
         if (!state.open || state.current === null) return [];
@@ -39,7 +42,7 @@ export function renderComboboxInput(
         if (state.open || state.query) e.preventDefault();
         return send({ type: 'close', clear: true });
       case 'Tab':
-        return send({ type: 'close' });
+        return send({ type: 'close', leave: true });
       default:
         return [];
     }
@@ -60,7 +63,7 @@ export function renderComboboxInput(
       compositionstart: () => send({ type: 'compose', on: true }),
       compositionend: (e) => send({ type: 'compose', on: false, value: e.value }),
       keydown,
-      blur: () => send({ type: 'close' }),
+      blur: () => send({ type: 'close', leave: true }),
     },
   };
 }

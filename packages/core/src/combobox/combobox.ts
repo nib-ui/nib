@@ -6,6 +6,7 @@ import { measurePlacement, samePlacement } from '../place/follow.ts';
 import type { Align, Placement, Side } from '../place/place.ts';
 import type { Intent, Part } from '../types.ts';
 import { renderComboboxInput, type ComboboxEvent } from './combobox-input.ts';
+import { createLookup, renderComboboxListbox, renderComboboxOption } from './combobox-list.ts';
 import { createMatcher, type FilterMode, type Matchable } from './match.ts';
 
 export interface ComboboxOptions extends SelectionOptions {
@@ -55,10 +56,13 @@ export function createCombobox(
   const matcher = createMatcher(options.locale ?? 'en-US');
   let stop = () => undefined as void;
   const ref = (id: string, part: string, key?: Key) => `${id}-${part}${key === undefined ? '' : `-${key}`}`;
-  const label = (o: ComboboxOptions, key: Key | null) => o.items.find((i) => i.key === key)?.label ?? '';
+  const lookup = createLookup();
+  const item = (o: ComboboxOptions, key: Key | null | undefined) => lookup.item(o.items, key);
+  const isShown = lookup.isShown;
+  const label = (o: ComboboxOptions, key: Key | null) => item(o, key)?.label ?? '';
   const visibleOf = (o: ComboboxOptions, query: string) =>
     matcher.filter(o.items, query, o.filter ?? 'contains').map((i) => i.key);
-  const items = (o: ComboboxOptions, visible: readonly Key[]) => o.items.filter((i) => visible.includes(i.key));
+  const items = (o: ComboboxOptions, visible: readonly Key[]) => visible.map((k) => item(o, k)!);
   const popover = (id: string, open: boolean): Intent => ({ type: 'popover', ref: ref(id, 'listbox'), open });
   const scroll = (id: string, key: Key | null): Intent[] =>
     key === null ? [] : [{ type: 'scroll-into-view', ref: ref(id, 'option', key), block: 'nearest' }];
@@ -98,10 +102,13 @@ export function createCombobox(
       sync: ({ state, options: o }) => {
         selection.sync(o);
         const visible = state.composing ? state.visible : visibleOf(o, state.query);
-        const current = state.current !== null && visible.includes(state.current) ? state.current : null;
-        const same =
-          visible.join() === state.visible.join() && current === state.current && selection.value === state.value;
-        return same ? state : { ...state, visible, current, value: selection.value };
+        const current = state.current !== null && isShown(visible, state.current) ? state.current : null;
+        // A value set from outside writes its label into the field.
+        const query = selection.value === state.value ? state.query : label(o, selection.value);
+        const same = visible.join() === state.visible.join() && current === state.current && query === state.query;
+        return same && selection.value === state.value
+          ? state
+          : { ...state, visible, current, query, value: selection.value };
       },
       reduce: ({ state, options: o, id, host: h }, event) => {
         const first = (visible: readonly Key[]) => move(items(o, visible), null, 'first');
@@ -112,16 +119,29 @@ export function createCombobox(
             return typed(state, o, id, event.value ?? state.query);
           case 'input':
             if (event.composing) return { state: { ...state, query: event.value, composing: true } };
+            // Safari follows compositionend with an input of the same text: it was handled already.
+            if (event.value === state.query) return { state };
             return typed(state, o, id, event.value);
           case 'move': {
             if (!state.open) {
-              const visible = visibleOf(o, state.query);
-              const current = event.to === 'next' ? first(visible) : move(items(o, visible), null, 'last');
+              // The field shows the chosen value: open on every option, the chosen one current.
+              const chosen = state.value !== null && state.query === label(o, state.value);
+              const visible = chosen ? o.items.map((i) => i.key) : visibleOf(o, state.query);
+              if (visible.length === 0) return { state };
+              const current =
+                event.to === 'stay'
+                  ? null
+                  : chosen
+                    ? state.value
+                    : event.to === 'next'
+                      ? first(visible)
+                      : move(items(o, visible), null, 'last');
               return {
                 state: { ...state, open: true, visible, current },
                 intents: [popover(id, true), ...scroll(id, current)],
               };
             }
+            if (event.to === 'stay') return { state };
             const current = move(items(o, state.visible), state.current, event.to, { loop: true });
             return { state: { ...state, current }, intents: scroll(id, current) };
           }
@@ -129,18 +149,33 @@ export function createCombobox(
             return { state: state.current === event.key ? state : { ...state, current: event.key } };
           case 'choose': {
             const key = event.key ?? state.current;
-            const item = o.items.find((i) => i.key === key);
-            if (!item || item.disabled) return { state };
-            selection.choose(item.key);
+            const chosen = item(o, key);
+            if (!chosen || chosen.disabled) return { state };
+            selection.choose(chosen.key);
             return {
-              state: { ...state, open: false, value: selection.value, query: item.label, current: null },
+              state: { ...state, open: false, value: selection.value, query: chosen.label, current: null },
               intents: [popover(id, false)],
             };
           }
           case 'close': {
-            // Escape on a closed list clears the field (APG); a blur only closes it.
-            if (!state.open && event.clear) return typed(state, o, id, '', false);
-            return { state: { ...state, open: false, current: null }, intents: state.open ? [popover(id, false)] : [] };
+            // Escape on a closed list clears the field and the value (APG).
+            if (!state.open && event.clear) {
+              if (!state.query && state.value === null) return { state };
+              selection.choose(null);
+              return typed({ ...state, value: selection.value }, o, id, '', false);
+            }
+            // Leaving the field: text that is not the chosen label goes back to it; an emptied
+            // field clears the value.
+            let { query, value } = state;
+            if (event.leave && query !== label(o, value)) {
+              if (!query) selection.choose(null);
+              value = selection.value;
+              query = label(o, value);
+            }
+            return {
+              state: { ...state, open: false, current: null, query, value },
+              intents: state.open ? [popover(id, false)] : [],
+            };
           }
           case 'toggled': {
             // `open` changes when the controller asks; the popover's toggle starts or stops placing.
@@ -160,39 +195,15 @@ export function createCombobox(
       render: ({ state, options: o, id }, name, key = '', send): Part => {
         if (name === 'input')
           return renderComboboxInput(state, ref(id, 'input'), ref(id, 'listbox'), ref(id, 'option'), send);
-        if (name === 'listbox') {
-          const p = state.placement;
-          return {
-            attrs: {
-              id: ref(id, 'listbox'),
-              role: 'listbox',
-              popover: 'manual',
-              'data-nib-popover': true,
-              'data-placed': state.open || undefined,
-              style: p
-                ? `--nib-x: ${p.x}px; --nib-y: ${p.y}px; --nib-max-width: ${p.maxWidth}px; --nib-max-height: ${p.maxHeight}px`
-                : undefined,
-            },
-            on: { toggle: (e) => (e.newState ? send({ type: 'toggled', open: e.newState === 'open' }) : []) },
-          };
-        }
-        const item = o.items.find((i) => i.key === key);
-        return {
-          attrs: {
-            id: ref(id, 'option', key),
-            role: 'option',
-            'aria-selected': state.value === key,
-            'aria-disabled': item?.disabled || undefined,
-            'data-current': state.current === key || undefined,
-            hidden: state.visible.includes(key) ? undefined : true,
-          },
-          on: {
-            // Keeps focus in the field: the click chooses, the field stays where the user types.
-            pointerdown: (e) => (e.preventDefault(), []),
-            click: () => send({ type: 'choose', key }),
-            pointermove: () => (item?.disabled ? [] : send({ type: 'go', key })),
-          },
-        };
+        if (name === 'listbox') return renderComboboxListbox(state, ref(id, 'listbox'), send);
+        const shown = isShown(state.visible, key);
+        return renderComboboxOption(
+          state,
+          ref(id, 'option', key),
+          key,
+          { disabled: item(o, key)?.disabled, shown },
+          send,
+        );
       },
       dispose: () => stop(),
     },

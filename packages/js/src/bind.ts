@@ -63,6 +63,8 @@ export function bind<P extends string>(
     for (const [name, value] of entry.original) {
       if (value === null) el.removeAttribute(name);
       else el.setAttribute(name, value);
+      // The property shows, not the attribute: put the field's own text back too.
+      if (name === 'value' && 'value' in el) (el as HTMLInputElement).value = value ?? '';
     }
     bound.delete(el);
   };

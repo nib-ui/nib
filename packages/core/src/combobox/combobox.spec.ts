@@ -62,15 +62,74 @@ describe('createCombobox', () => {
     expect(t.fire(cb.part('option', 'dn'), 'click')).toEqual([{ type: 'popover', ref: 'cb-listbox', open: false }]);
     expect(onValueChange).toHaveBeenCalledWith('dn');
     expect(cb.part('input').attrs['value']).toBe('Đà Nẵng');
-    t.fire(cb.part('option', 'dn'), 'pointerdown');
+    t.fire(cb.part('listbox'), 'mousedown');
     expect(t.prevented).toBe(true);
   });
 
-  it('clears the field with Escape when the list is already closed', () => {
+  it('opens on every option with the chosen one current when the field shows the chosen value', () => {
+    const { t, cb, type } = setup();
+    type('da');
+    t.fire(cb.part('option', 'dn'), 'click');
+    t.fire(cb.part('input'), 'keydown', { key: 'ArrowDown' });
+    expect(cb.state).toMatchObject({ open: true, visible: ['hn', 'hcm', 'dn'], current: 'dn' });
+  });
+
+  it('does not open an empty list, and Alt+Down opens without moving while Alt+Up closes', () => {
     const { t, cb, type } = setup();
     type('xyz');
+    expect(t.fire(cb.part('input'), 'keydown', { key: 'ArrowDown' })).toEqual([]);
+    expect(cb.state.open).toBe(false);
+    type('h');
+    t.fire(cb.part('input'), 'keydown', { key: 'ArrowUp', altKey: true });
+    expect(cb.state.open).toBe(false);
+    t.fire(cb.part('input'), 'keydown', { key: 'ArrowDown', altKey: true });
+    expect(cb.state).toMatchObject({ open: true, current: null });
+  });
+
+  it('holds keys while the controller is still composing, even when the key event says it is not', () => {
+    const { t, cb } = setup();
+    t.fire(cb.part('input'), 'compositionstart');
+    expect(t.fire(cb.part('input'), 'keydown', { key: 'ArrowDown', isComposing: false })).toEqual([]);
+    expect(cb.state.open).toBe(false);
+  });
+
+  it('reports the query once when Safari sends an input after compositionend', () => {
+    const onQueryChange = vi.fn();
+    const { t, cb, type } = setup({ onQueryChange });
+    t.fire(cb.part('input'), 'compositionstart');
+    type('tiế', { isComposing: true });
+    t.fire(cb.part('input'), 'compositionend', { value: 'tiếng' });
+    type('tiếng');
+    expect(onQueryChange.mock.calls).toEqual([['tiếng']]);
+  });
+
+  it('puts back the chosen label on blur, and an emptied field clears the value', () => {
+    const onValueChange = vi.fn();
+    const { t, cb, type } = setup({ defaultValue: 'hn', onValueChange });
+    type('xyz');
+    t.fire(cb.part('input'), 'blur');
+    expect(cb.state).toMatchObject({ query: 'Hà Nội', value: 'hn' });
+    type('');
+    t.fire(cb.part('input'), 'blur');
+    expect(cb.state).toMatchObject({ query: '', value: null });
+    expect(onValueChange).toHaveBeenLastCalledWith(null);
+  });
+
+  it('writes the label of a value set from outside into the field', () => {
+    const { cb } = setup({ value: 'hn' });
+    cb.update({ id: 'cb', locale: 'vi', items: ITEMS, value: 'dn' });
+    expect(cb.state).toMatchObject({ value: 'dn', query: 'Đà Nẵng' });
+  });
+
+  it('clears the field and the value with Escape when the list is already closed, once', () => {
+    const onQueryChange = vi.fn();
+    const onValueChange = vi.fn();
+    const { t, cb } = setup({ defaultValue: 'hn', onQueryChange, onValueChange });
     t.fire(cb.part('input'), 'keydown', { key: 'Escape' });
-    expect(cb.state.query).toBe('');
+    expect(cb.state).toMatchObject({ query: '', value: null });
+    expect(onValueChange).toHaveBeenCalledWith(null);
+    t.fire(cb.part('input'), 'keydown', { key: 'Escape' });
+    expect(onQueryChange).toHaveBeenCalledTimes(1);
   });
 
   it('places the open list below the field and stops following it when it closes', () => {

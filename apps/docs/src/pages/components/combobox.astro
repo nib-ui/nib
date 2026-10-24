@@ -76,8 +76,10 @@ const combobox = useCombobox(() => ({ items: props.cities, locale: 'vi' }));
     field) and an <code>option</code> per key. Typing narrows the options with <code>Intl.Collator</code> in the page's
     language, ignoring case and diacritics (<code>filter: 'contains'</code>, <code>'startsWith'</code>, or
     <code>'none'</code> when you search on a server from <code>onQueryChange</code>). While an input method composes,
-    nothing filters and no key acts, so Vietnamese Telex and Japanese IMEs work. Choosing writes the label into the
-    field.
+    nothing filters and no key acts, so Vietnamese Telex and Japanese IMEs work; Android keyboards that compose a whole
+    word narrow the list when the word ends. Choosing writes the label into the field; leaving the field puts the chosen
+    label back, and emptying it clears the value. Matching folds each label once, so a few thousand options filter
+    within a frame; past that, filter on a server with <code>'none'</code>.
   </p>
 
   <ul slot="accessibility">
@@ -86,8 +88,8 @@ const combobox = useCombobox(() => ({ items: props.cities, locale: 'vi' }));
       <code>aria-controls</code> and the current option as <code>aria-activedescendant</code>; focus stays in the field.
     </li>
     <li>
-      Up and Down open the list and move; Enter chooses; Escape closes the list or, when closed, clears the field; Tab
-      leaves.
+      Up and Down open the list and move (on the chosen option when the field shows it); Alt+Down opens without moving,
+      Alt+Up closes; Enter chooses; Escape closes the list or, when closed, clears the field and the value; Tab leaves.
     </li>
     <li>Give the field a visible label.</li>
   </ul>

@@ -29,4 +29,22 @@ describe('createMatcher', () => {
         .map((i) => i.key),
     ).toEqual(['dn']);
   });
+
+  it('keeps a letter that is its own letter in the language apart: Swedish å is not a', () => {
+    expect(createMatcher('sv').filter([{ key: 'a', label: 'Åre' }], 'are', 'contains')).toEqual([]);
+    expect(createMatcher('en').filter([{ key: 'a', label: 'Åre' }], 'are', 'contains')).toHaveLength(1);
+  });
+
+  it('matches a label written with combining marks (NFD) in its own positions', () => {
+    expect(createMatcher('vi').range('Ha\u0300 No\u0323\u0302i', 'noi', 'contains')).toEqual({ start: 3, end: 6 });
+  });
+
+  it('filters ten thousand labels in well under a frame per keystroke once folded', () => {
+    const m = createMatcher('vi');
+    const many = Array.from({ length: 10_000 }, (_, i) => ({ key: String(i), label: `Phường ${i} Quận Hoàn Kiếm` }));
+    m.filter(many, 'x', 'contains');
+    const t0 = performance.now();
+    for (const q of ['p', 'ph', 'phu', 'phuo', 'phuong 99']) m.filter(many, q, 'contains');
+    expect((performance.now() - t0) / 5).toBeLessThan(50);
+  });
 });

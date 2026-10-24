@@ -25,5 +25,21 @@ for (const binding of ['js', 'react', 'vue', 'svelte']) {
       await expect(list).toBeHidden();
       await expect(field).toBeFocused();
     });
+
+    test('a click on an option chooses it and keeps focus in the field', async ({ page }) => {
+      await page.goto(`/test/combobox/${binding}/?case=0`);
+      const field = page.getByRole('combobox', { name: 'City' });
+      await field.pressSequentially('n');
+      const list = page.getByRole('listbox');
+      await expect(list).toBeVisible();
+      await list.getByRole('option', { name: 'Đà Nẵng' }).click();
+      await expect(field).toHaveValue('Đà Nẵng');
+      await expect(list).toBeHidden();
+      await expect(field).toBeFocused();
+      // The field shows the choice: Down opens every option, the chosen one current.
+      await page.keyboard.press('ArrowDown');
+      await expect(list.getByRole('option')).toHaveCount(3);
+      await expect(field).toHaveAttribute('aria-activedescendant', /dn$/);
+    });
   });
 }
