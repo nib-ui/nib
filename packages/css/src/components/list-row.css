@@ -1,0 +1,104 @@
+/* List row: raised fill, 1px line-soft border, padding 6px 10px. Line 1: mono id · description ·
+   meta · tag on the end; line 2 (optional): mono detail. States from attributes: chosen
+   (aria-selected="true", single select) is the cursor block; checked (a checked [x] inside, multi
+   select) gets the hover fill. Modifiers with a hue class: --ruled (2px inline-start rule), --new
+   (soft fill, full-hue border, plus a NEW tag), --flagged (soft fill, -border outline, plus a word);
+   --ghost is a dashed placeholder. */
+@layer nib.components {
+  .nib-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--nib-space-xs) var(--nib-space-sm);
+    padding: var(--nib-space-xs-plus) var(--nib-space-sm-plus);
+    border: var(--nib-space-hairline) solid var(--nib-line-soft);
+    background: var(--nib-surface-raised);
+    color: var(--nib-on-surface);
+    font: var(--nib-body-md-font-weight) var(--nib-body-md-font-size) / var(--nib-body-md-line-height)
+      var(--nib-font-sans);
+  }
+
+  .nib-row + .nib-row {
+    margin-block-start: calc(-1 * var(--nib-space-hairline));
+  }
+
+  .nib-row__id,
+  .nib-row__detail {
+    font: var(--nib-item-md-font-weight) var(--nib-item-md-font-size) / var(--nib-item-md-line-height)
+      var(--nib-font-mono);
+  }
+
+  .nib-row__meta {
+    color: var(--nib-on-surface-3);
+    font: var(--nib-meta-sm-font-weight) var(--nib-meta-sm-font-size) / var(--nib-meta-sm-line-height)
+      var(--nib-font-mono);
+  }
+
+  .nib-row__end {
+    margin-inline-start: auto;
+  }
+
+  .nib-row__detail {
+    flex-basis: 100%;
+    color: var(--nib-on-surface-2);
+  }
+
+  /* Checked (multi select) at zero extra weight, so a modifier's tint and the chosen block win. */
+  .nib-row:where(:has(input[type='checkbox']:checked), [aria-checked='true']) {
+    background: var(--nib-hover);
+  }
+
+  .nib-row--ghost {
+    border: var(--nib-space-hairline) dashed var(--nib-line);
+    background: transparent;
+    color: var(--nib-on-surface-3);
+  }
+
+  .nib-row--new {
+    border-color: var(--nib-hue, var(--nib-accent));
+    background: var(--nib-hue-soft, var(--nib-hover));
+  }
+
+  .nib-row--flagged {
+    border-color: var(--nib-hue-border, var(--nib-line));
+    background: var(--nib-hue-soft, var(--nib-hover));
+  }
+
+  /* On a tint, on-surface 3 drops under 4.5:1: secondary words go a step up. */
+  :is(.nib-row--new, .nib-row--flagged) .nib-row__meta {
+    color: var(--nib-on-surface-2);
+  }
+
+  /* Last of the modifiers, so a ruled row that is also new or flagged keeps its full-hue rule. */
+  .nib-row--ruled {
+    padding-inline-start: calc(var(--nib-space-sm-plus) - var(--nib-space-hairline));
+    border-inline-start: var(--nib-space-rule) solid var(--nib-hue, var(--nib-on-surface-3));
+  }
+
+  /* Chosen: the cursor block; every part takes the inverted ink. */
+  .nib-row[aria-selected='true'] {
+    border-color: var(--nib-cursor);
+    background: var(--nib-cursor);
+    color: var(--nib-on-cursor);
+  }
+
+  .nib-row[aria-selected='true'] :is(.nib-row__meta, .nib-row__detail, .nib-tag, .nib-choice),
+  .nib-row[aria-selected='true'] .nib-choice::before {
+    --nib-tag-hue: currentColor;
+
+    color: inherit;
+  }
+
+  @media (forced-colors: active) {
+    .nib-row[aria-selected='true'] {
+      forced-color-adjust: none;
+      border-color: Highlight;
+      background: Highlight;
+      color: HighlightText;
+    }
+
+    .nib-row--ruled {
+      border-inline-start-color: CanvasText;
+    }
+  }
+}

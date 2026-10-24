@@ -6,6 +6,7 @@
 @import './base/typography.css';
 @import './base/prose.css';
 @import './base/layout.css';
+@import './components/hue.css';
 @import './components/button.css';
 @import './components/listbox.css';
 @import './components/input.css';
@@ -16,6 +17,11 @@
 @import './components/tag.css';
 @import './components/callout.css';
 @import './components/code.css';
+@import './components/section.css';
+@import './components/tile.css';
+@import './components/list-row.css';
+@import './components/pane.css';
+@import './components/table.css';
 @import './components/header.css';
 @import './components/side-nav.css';
 @import './components/footer.css';

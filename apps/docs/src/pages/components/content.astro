@@ -1,0 +1,166 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const hero = `<div class="nib-hero">
+  <div class="nib-hero__text">
+    <p class="nib-kicker">New · Spring 2026</p>
+    <h2 class="nib-text-hero">Coffee roasted the week you order it</h2>
+    <p class="nib-text-lead">Small batches from six farms, shipped the day after roasting.</p>
+    <div class="nib-hero__actions">
+      <a class="nib-button nib-button--primary" href="#content">Shop coffee</a>
+      <a class="nib-button nib-button--outline" href="#content">How we roast</a>
+    </div>
+  </div>
+  <figure class="nib-hero__visual"><span class="content-photo" role="img" aria-label="Roaster at work"></span></figure>
+</div>`;
+
+const tiles = `<section class="nib-section" aria-labelledby="c-shop">
+  <header class="nib-section__header">
+    <p class="nib-kicker">Shop</p>
+    <h2 class="nib-text-xl" id="c-shop">This week's roasts</h2>
+  </header>
+  <div class="nib-grid" style="--nib-grid-min: 11rem">
+    <a class="nib-tile" href="#content">
+      <span class="nib-tile__media" role="img" aria-label="Bag of Kenya beans"></span>
+      <h3 class="nib-tile__title">Kenya Nyeri</h3>
+      <p class="nib-tile__price">$24.00 <del>$28.00</del></p>
+      <span class="nib-tag nib-tag--green">In stock</span>
+    </a>
+    <a class="nib-tile" href="#content">
+      <p class="nib-tile__meta">2026-10-23 · 6 min</p>
+      <h3 class="nib-tile__title">Why we roast on Mondays</h3>
+      <p class="nib-tile__excerpt">Fresh beans need a few days to rest before they taste their best, so Monday roasts reach you at their peak.</p>
+      <span class="nib-tag nib-tag--blue">Journal</span>
+    </a>
+    <div class="nib-tile nib-tile--recommended">
+      <p class="nib-tag nib-tag--accent">Recommended</p>
+      <h3 class="nib-tile__title">Weekly</h3>
+      <p class="nib-tile__amount">$18</p>
+      <ul class="nib-tile__checks"><li>One bag a week</li><li>Free shipping</li></ul>
+      <div class="nib-tile__footer"><a class="nib-button nib-button--primary" href="#content">Subscribe</a></div>
+    </div>
+  </div>
+</section>`;
+
+const rows = `<p class="nib-kicker" id="c-orders">Orders</p>
+<div data-nib="listbox" aria-labelledby="c-orders" data-value="1042">
+  <div class="nib-row" data-nib-option="1042">
+    <span class="nib-row__id">#1042</span> Kenya Nyeri ×2 <span class="nib-row__meta">2 min ago</span>
+    <span class="nib-row__end nib-tag">Paid</span>
+  </div>
+  <div class="nib-row nib-row--new nib-hue-green" data-nib-option="1043">
+    <span class="nib-row__id">#1043</span> Decaf ×1 <span class="nib-row__end nib-tag nib-tag--green">New</span>
+  </div>
+  <div class="nib-row nib-row--flagged nib-hue-yellow" data-nib-option="0991">
+    <span class="nib-row__id">#0991</span> Ethiopia ×3 <span class="nib-row__end nib-tag nib-tag--yellow">▲ Stale</span>
+    <span class="nib-row__detail">unpaid for 14 days</span>
+  </div>
+</div>
+<div class="nib-row nib-row--ghost">Your next order appears here</div>`;
+
+const dashboard = `<div class="nib-grid" style="--nib-grid-min: 12rem">
+  <div class="nib-pane nib-hue-blue">
+    <div class="nib-pane-header">
+      <span class="nib-pane__title"><span class="nib-mark"></span>Orders <span class="nib-pane__count">128</span></span>
+      <span>Live</span>
+    </div>
+    <div class="nib-pane__body">
+      <p class="nib-stat"><span class="nib-stat__label">Orders</span><span class="nib-stat__value">128</span>
+      <span class="nib-stat__delta" data-trend="up">+12% vs last week</span></p>
+    </div>
+  </div>
+  <div class="nib-pane nib-pane--changed nib-hue-yellow">
+    <div class="nib-pane-header">
+      <span class="nib-pane__title"><span class="nib-mark"></span>Stock <span class="nib-pane__count">41</span></span>
+      <span>Changed</span>
+    </div>
+    <div class="nib-pane__body">
+      <p class="nib-stat"><span class="nib-stat__label">Bags left</span><span class="nib-stat__value">41</span>
+      <span class="nib-stat__delta" data-trend="down">−9 since noon</span></p>
+    </div>
+  </div>
+</div>`;
+
+const table = `<div class="nib-bulk-bar" role="status">1 selected · <button class="nib-button" type="button">Archive</button></div>
+<div class="nib-table-scroll" role="region" aria-label="Orders table" tabindex="0">
+  <table class="nib-table">
+    <thead>
+      <tr><th scope="col" aria-label="Select"></th><th scope="col" aria-sort="descending">Order</th><th scope="col">Item</th><th scope="col" data-type="number">Total</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><label class="nib-choice"><input type="checkbox" checked aria-label="Select #1042" /></label></td><td>#1042</td><td>Kenya Nyeri ×2</td><td data-type="number">48.00</td></tr>
+      <tr><td><label class="nib-choice"><input type="checkbox" aria-label="Select #1041" /></label></td><td>#1041</td><td>Decaf ×1</td><td data-type="number">16.00</td></tr>
+    </tbody>
+  </table>
+</div>`;
+
+const html = [hero, tiles, rows, dashboard, table].join('\n\n');
+---
+
+<ComponentPage
+  title="Content"
+  lead="The cells of the ruled grid: sections, tiles, list rows, panes and stats, and the static table."
+  kind="CSS"
+  code={{ html }}
+>
+  <div slot="example" class="content-example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    A <code>nib-section</code> has a line on top, a kicker and a headline, then a <code>nib-grid</code> of
+    <code>nib-tile</code> cells; <code>--raised</code> uses the raised surface instead of the line. The
+    <code>nib-hero</code> is left-aligned: <code>__text</code> (kicker, <code>nib-text-hero</code>, lead,
+    <code>__actions</code> with one primary and one outline button) and <code>__visual</code> in a ruled cell.
+  </p>
+  <p>
+    Hue comes from a <code>nib-hue-&lt;hue&gt;</code> class on the row, pane or tile. A <code>nib-row</code> is chosen
+    with <code>aria-selected="true"</code> (single select, cursor block) and checked with a checked checkbox inside
+    (multi select, hover fill); <code>--new</code>, <code>--flagged</code>, <code>--ruled</code> and
+    <code>--ghost</code> set the other states. Tables mark numbers with <code>data-type="number"</code> and sorting with{' '}
+    <code>aria-sort</code>.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      A tint or hue never stands alone: new and flagged rows and changed panes carry a word (NEW, ▲ STALE, CHANGED).
+    </li>
+    <li>
+      Chosen rows use <code>aria-selected</code> inside a listbox or grid; checked rows use a real checkbox with a name.
+      The bulk action bar is a polite live region, so the count is announced.
+    </li>
+    <li>
+      Wide tables scroll in a focusable region with a name; sort direction comes from <code>aria-sort</code>.
+    </li>
+    <li>
+      A tile that is a link reads all its text as one name; keep it short, and keep buttons and other links out of link
+      tiles.
+    </li>
+  </ul>
+</ComponentPage>
+
+<script>
+  import '@nib-ui/js/listbox';
+  import { init } from '@nib-ui/js';
+  init();
+</script>
+
+<style>
+  .content-example > :global(* + *) {
+    margin-block-start: var(--nib-space-2xl);
+  }
+
+  .content-example :global(.nib-hero),
+  .content-example :global(.nib-section) {
+    padding-block: var(--nib-space-2xl);
+  }
+
+  .content-example :global(.content-photo) {
+    display: block;
+    aspect-ratio: 4 / 3;
+    background: var(--nib-surface-raised);
+  }
+
+  .content-example :global(.nib-tile__media) {
+    block-size: auto;
+  }
+</style>

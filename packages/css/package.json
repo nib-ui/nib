@@ -46,14 +46,19 @@
         "inputs": [
           "{projectRoot}/src/**/*.css",
           "{projectRoot}/scripts/*.ts",
-          "^production"
+          "^production",
+          {
+            "externalDependencies": [
+              "lightningcss"
+            ]
+          }
         ],
         "outputs": [
           "{projectRoot}/dist"
         ]
       },
       "size-limit": {
-        "command": "node ../../scripts/css-size.ts css=dist/nib.css utilities=dist/utilities.css $(for f in dist/components/*.css; do [ -e \"$f\" ] && printf \" module=%s\" \"$f\"; done)",
+        "command": "node ../../scripts/css-size.ts css=dist/nib.css utilities=dist/utilities.css $(for f in dist/components/*.css; do [ -e \"$f\" ] && printf \" cssModule=%s\" \"$f\"; done)",
         "options": {
           "cwd": "{projectRoot}"
         },
@@ -62,8 +67,9 @@
         ],
         "cache": true,
         "inputs": [
-          "{projectRoot}/dist/nib.css",
-          "{projectRoot}/dist/utilities.css",
+          "{projectRoot}/src/**/*.css",
+          "{projectRoot}/scripts/*.ts",
+          "^production",
           "{workspaceRoot}/size-budgets.json",
           "{workspaceRoot}/scripts/css-size.ts"
         ]

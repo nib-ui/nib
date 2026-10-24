@@ -1,0 +1,49 @@
+/* Hue roles: one class sets the hue a block draws with (its rule, tint, outline and mark) through
+   --nib-hue, --nib-hue-soft and --nib-hue-border. Rows, panes and tiles read these variables. */
+@layer nib.components {
+  .nib-hue-blue {
+    --nib-hue: var(--nib-blue);
+    --nib-hue-soft: var(--nib-blue-soft);
+    --nib-hue-border: var(--nib-blue-border);
+  }
+
+  .nib-hue-cyan {
+    --nib-hue: var(--nib-cyan);
+    --nib-hue-soft: var(--nib-cyan-soft);
+    --nib-hue-border: var(--nib-cyan-border);
+  }
+
+  .nib-hue-green {
+    --nib-hue: var(--nib-green);
+    --nib-hue-soft: var(--nib-green-soft);
+    --nib-hue-border: var(--nib-green-border);
+  }
+
+  .nib-hue-magenta {
+    --nib-hue: var(--nib-magenta);
+    --nib-hue-soft: var(--nib-magenta-soft);
+    --nib-hue-border: var(--nib-magenta-border);
+  }
+
+  .nib-hue-yellow {
+    --nib-hue: var(--nib-yellow);
+    --nib-hue-soft: var(--nib-yellow-soft);
+    --nib-hue-border: var(--nib-yellow-border);
+  }
+
+  .nib-hue-red {
+    --nib-hue: var(--nib-red);
+    --nib-hue-soft: var(--nib-red-soft);
+    --nib-hue-border: var(--nib-red-border);
+  }
+
+  /* An 8×8 square in the hue: a series key, a pane's colour, a feature's mark. */
+  .nib-mark {
+    display: inline-block;
+    flex: none;
+    inline-size: 8px;
+    block-size: 8px;
+    background: var(--nib-hue, var(--nib-on-surface-3));
+    forced-color-adjust: none;
+  }
+}

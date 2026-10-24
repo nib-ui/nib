@@ -1,0 +1,107 @@
+/* Tile: a cell of the ruled grid, not a floating card. 16px padding, hover fill, the whole tile is
+   the link. Product: flush square image, name, mono price (old price struck), status tag. Post:
+   meta, title, two-line excerpt, category tag. Feature: 8×8 mark, title, a sentence. Plan: mono
+   name, headline-xl price, ✓ rows, a button; `--recommended` adds a 2px accent top rule. */
+@layer nib.components {
+  .nib-tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--nib-space-sm);
+    padding: var(--nib-space-lg);
+    color: var(--nib-on-surface);
+    text-decoration: none;
+    transition: background-color var(--nib-duration-hover) var(--nib-ease-out);
+  }
+
+  a.nib-tile:hover,
+  .nib-tile:has(a:hover) {
+    background: var(--nib-hover);
+  }
+
+  /* Inside the cell, so the ring never covers the neighbours' rules. */
+  a.nib-tile:focus-visible {
+    outline-offset: calc(-1 * var(--nib-space-rule));
+  }
+
+  .nib-tile__media {
+    display: block;
+    inline-size: calc(100% + 2 * var(--nib-space-lg));
+    max-inline-size: none;
+    margin: calc(-1 * var(--nib-space-lg)) calc(-1 * var(--nib-space-lg)) var(--nib-space-xs);
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: var(--nib-surface-raised);
+  }
+
+  .nib-tile__title {
+    margin: 0;
+    font: var(--nib-headline-md-font-weight) var(--nib-headline-md-font-size) / var(--nib-headline-md-line-height)
+      var(--nib-font-sans);
+    letter-spacing: var(--nib-headline-md-letter-spacing);
+  }
+
+  .nib-tile__price {
+    margin: 0;
+    font: var(--nib-item-md-font-weight) var(--nib-item-md-font-size) / var(--nib-item-md-line-height)
+      var(--nib-font-mono);
+  }
+
+  .nib-tile__price del {
+    margin-inline-start: var(--nib-space-xs);
+    color: var(--nib-on-surface-3);
+  }
+
+  .nib-tile__meta {
+    margin: 0;
+    color: var(--nib-on-surface-3);
+    font: var(--nib-meta-sm-font-weight) var(--nib-meta-sm-font-size) / var(--nib-meta-sm-line-height)
+      var(--nib-font-mono);
+  }
+
+  .nib-tile__excerpt {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: var(--nib-on-surface-2);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .nib-tile__amount {
+    margin: 0;
+    font: var(--nib-headline-xl-font-weight) var(--nib-headline-xl-font-size) / var(--nib-headline-xl-line-height)
+      var(--nib-font-sans);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .nib-tile__checks {
+    margin: 0;
+    padding: 0;
+    color: var(--nib-on-surface-2);
+    list-style: none;
+  }
+
+  .nib-tile__checks li::before {
+    margin-inline-end: var(--nib-space-sm);
+    color: var(--nib-green);
+    content: '✓' / '';
+    font-family: var(--nib-font-mono);
+  }
+
+  .nib-tile__footer {
+    margin-block-start: auto;
+    padding-block-start: var(--nib-space-sm);
+  }
+
+  .nib-tile--recommended {
+    padding-block-start: calc(var(--nib-space-lg) - var(--nib-space-rule));
+    border-block-start: var(--nib-space-rule) solid var(--nib-accent);
+  }
+
+  @media (forced-colors: active) {
+    .nib-tile--recommended {
+      border-block-start-color: CanvasText;
+    }
+  }
+}

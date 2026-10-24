@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { bundleAsync } from 'lightningcss';
@@ -41,6 +41,8 @@ export async function buildCss(outDir: string, srcDir = SRC): Promise<void> {
 
 if (import.meta.main) {
   const dist = fileURLToPath(new URL('../dist/', import.meta.url));
+  // From scratch: a removed component must not linger and get published.
+  rmSync(dist, { recursive: true, force: true });
   await buildCss(dist);
   buildUtilities(dist);
 }

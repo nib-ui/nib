@@ -1,0 +1,56 @@
+/* Section and hero. A section has a 1px line on top, a mono kicker and a headline, then a ruled
+   grid; `--raised` sits on the raised surface instead of the line. The hero is left-aligned: kicker,
+   headline, lead, one primary and one outline button, and its visual in a ruled cell beside or
+   below (it wraps when the text column would get narrower than 24rem). */
+@layer nib.components {
+  .nib-section {
+    padding-block: var(--nib-space-section);
+    border-block-start: var(--nib-space-hairline) solid var(--nib-line);
+  }
+
+  .nib-section--raised {
+    border-block-start-color: transparent;
+    background: var(--nib-surface-raised);
+  }
+
+  .nib-section__header {
+    margin-block-end: var(--nib-space-2xl);
+  }
+
+  .nib-hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--nib-space-4xl);
+    padding-block: var(--nib-space-section);
+  }
+
+  .nib-hero__text {
+    display: flex;
+    flex: 1 1 24rem;
+    flex-direction: column;
+    gap: var(--nib-space-md);
+    max-inline-size: var(--nib-space-reading-width);
+  }
+
+  .nib-hero__text > .nib-text-lead {
+    color: var(--nib-on-surface-2);
+  }
+
+  .nib-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--nib-space-sm);
+    margin-block-start: var(--nib-space-md);
+  }
+
+  .nib-hero__visual {
+    flex: 1 1 20rem;
+    margin: 0;
+    border: var(--nib-space-hairline) solid var(--nib-line);
+  }
+
+  .nib-hero__visual > :is(img, video, picture) {
+    inline-size: 100%;
+  }
+}
