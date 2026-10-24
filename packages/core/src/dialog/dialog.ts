@@ -7,8 +7,10 @@ export interface DialogOptions {
   id?: string;
   /** BCP 47 language tag; unused here, accepted like every controller's. */
   locale?: string;
-  /** A modal dialog makes the rest of the page inert; a non-modal one does not. */
+  /** A modal dialog makes the rest of the page inert; a non-modal one does not (and has no Escape). */
   modal?: boolean;
+  /** Whether a `description` part names what the dialog is about; default true. */
+  described?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
@@ -47,7 +49,8 @@ export function createDialog(
           case 'trigger':
             return {
               attrs: {
-                id: `${id}-trigger`,
+                // Several buttons may open it: each takes a key for its own id.
+                id: `${id}-trigger${key === undefined ? '' : `-${key}`}`,
                 commandfor: dialog,
                 command: o.modal === false ? 'show' : 'show-modal',
                 'aria-haspopup': 'dialog',
@@ -69,7 +72,7 @@ export function createDialog(
               attrs: {
                 id: dialog,
                 'aria-labelledby': `${id}-title`,
-                'aria-describedby': `${id}-description`,
+                'aria-describedby': o.described === false ? undefined : `${id}-description`,
               },
               // `toggle` fires on <dialog> when it opens or closes, however that happened.
               on: { toggle: (e) => (e.newState ? send({ type: 'toggled', open: e.newState === 'open' }) : []) },

@@ -19,6 +19,11 @@
     animation: nib-reveal var(--nib-duration-reveal) var(--nib-ease-out);
   }
 
+  /* The page behind a modal dialog is inert; it does not scroll either. */
+  html:has(.nib-dialog:modal) {
+    overflow: hidden;
+  }
+
   .nib-dialog::backdrop {
     background: var(--nib-scrim);
   }
@@ -38,6 +43,7 @@
     flex: 1;
     padding: var(--nib-space-md) var(--nib-space-lg);
     overflow: auto;
+    overscroll-behavior: contain;
     color: var(--nib-on-surface-2);
   }
 
@@ -70,12 +76,9 @@
       border-block-end: 0;
       border-block-start: var(--nib-space-hairline) solid var(--nib-line);
     }
-  }
 
-  @keyframes nib-reveal {
-    from {
-      opacity: 0;
-      transform: translateY(4px);
+    .nib-dialog__footer {
+      padding-block-end: max(var(--nib-space-lg), env(safe-area-inset-bottom));
     }
   }
 

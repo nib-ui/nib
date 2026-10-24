@@ -22,19 +22,23 @@ define('dialog', (root, { id, host }) => {
     {
       id,
       modal: root.dataset['modal'] !== 'false',
+      described: own('[data-nib-description]').length > 0,
       onOpenChange: (open) =>
         queueMicrotask(() => root.dispatchEvent(new CustomEvent('nib:change', { detail: { open }, bubbles: true }))),
     },
     host,
   );
   const unbind = bind(instance, () => [
-    ...own('[data-nib-trigger]').map((el) => ({ el, part: 'trigger' as const })),
+    ...own('[data-nib-trigger]').map((el, i) => ({ el, part: 'trigger' as const, key: i ? String(i) : undefined })),
     ...own('[data-nib-dialog]').map((el) => ({ el, part: 'dialog' as const })),
     ...own('[data-nib-title]').map((el) => ({ el, part: 'title' as const })),
     ...own('[data-nib-description]').map((el) => ({ el, part: 'description' as const })),
     // Every close button carries the close part's attributes but its own id.
     ...own('[data-nib-close]').map((el, i) => ({ el, part: 'close' as const, key: String(i) })),
   ]);
+  // Opened before this script ran (a click before it loaded, or <dialog open>): catch up.
+  if (own('[data-nib-dialog]').some((el) => (el as HTMLDialogElement).open))
+    instance.send({ type: 'toggled', open: true });
   return () => {
     unbind();
     instance.destroy();

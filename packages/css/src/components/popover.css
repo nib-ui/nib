@@ -34,11 +34,4 @@
   .nib-popover[data-nib-popover]:popover-open:not([data-placed]) {
     visibility: hidden;
   }
-
-  @keyframes nib-reveal {
-    from {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-  }
 }

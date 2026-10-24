@@ -20,6 +20,12 @@ describe('createDialog', () => {
     expect(d.part('title').attrs['id']).toBe('dl-title');
   });
 
+  it('leaves out the description when there is none, and keys extra buttons', () => {
+    const d = createDialog({ id: 'dl', described: false });
+    expect(d.part('dialog').attrs['aria-describedby']).toBeUndefined();
+    expect(d.part('trigger', 'more').attrs['id']).toBe('dl-trigger-more');
+  });
+
   it('opens a non-modal dialog with show', () => {
     expect(createDialog({ id: 'dl', modal: false }).part('trigger').attrs['command']).toBe('show');
   });

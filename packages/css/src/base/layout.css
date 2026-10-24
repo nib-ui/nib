@@ -86,6 +86,15 @@
     white-space: nowrap;
   }
 
+  /* The one reveal every opening part shares: opacity 0 → 1 and a 4px rise (180ms by token, 0 under
+     reduced motion). */
+  @keyframes nib-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+  }
+
   /* One square 2px accent ring, 2px away. */
   :focus-visible {
     outline: var(--nib-space-rule) solid var(--nib-accent);

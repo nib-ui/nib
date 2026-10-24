@@ -3,13 +3,6 @@
    An accordion stacks its sections between 1px lines. A panel rises 4px into place when it
    appears (the reveal duration, which reduced motion makes 0), including on first paint. */
 @layer nib.components {
-  @keyframes nib-reveal {
-    from {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-  }
-
   .nib-disclosure__trigger {
     display: flex;
     align-items: center;

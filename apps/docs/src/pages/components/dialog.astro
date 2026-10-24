@@ -17,14 +17,14 @@ const html = `<div data-nib="dialog">
   <button type="button" class="nib-button nib-button--outline" data-nib-trigger>Filters</button>
   <dialog class="nib-dialog nib-dialog--drawer" data-nib-dialog>
     <div class="nib-dialog__header"><h2 class="nib-dialog__title" data-nib-title>Filters</h2></div>
-    <div class="nib-dialog__body" data-nib-description>Roast, origin and price.</div>
+    <div class="nib-dialog__body">Roast, origin and price.</div>
     <div class="nib-dialog__footer nib-action-row">
       <button type="button" class="nib-button nib-button--primary" data-nib-close>Show 24 coffees</button>
     </div>
   </dialog>
 </div>`;
 
-const confirm = `<div data-nib="dialog">
+const confirm = `<div data-nib="dialog" data-confirm-dialog>
   <button type="button" class="nib-button nib-button--destructive" data-nib-trigger>Delete project</button>
   <dialog class="nib-dialog" data-nib-dialog>
     <div class="nib-dialog__header"><h2 class="nib-dialog__title" data-nib-title>Delete beans-prod?</h2></div>
@@ -149,12 +149,21 @@ const dialog = useDialog();
   import '@nib-ui/js/dialog';
   import { init } from '@nib-ui/js';
   init();
-  // Type-to-confirm: the destructive button stays disabled until the name matches.
+  // Type-to-confirm: the destructive button does nothing until the name matches, and every opening
+  // starts from an empty field.
   for (const input of document.querySelectorAll<HTMLInputElement>('[data-confirm]')) {
-    const button = input.closest('dialog')?.querySelector<HTMLButtonElement>('.nib-button--destructive');
-    input.addEventListener('input', () =>
-      button?.setAttribute('aria-disabled', String(input.value !== input.dataset['confirm'])),
-    );
+    const dialog = input.closest('dialog');
+    const button = dialog?.querySelector<HTMLButtonElement>('.nib-button--destructive');
+    const arm = () => button?.setAttribute('aria-disabled', String(input.value !== input.dataset['confirm']));
+    input.addEventListener('input', arm);
+    dialog?.addEventListener('close', () => {
+      input.value = '';
+      arm();
+    });
+    button?.addEventListener('click', () => {
+      if (button.getAttribute('aria-disabled') === 'true') return;
+      dialog?.close();
+    });
   }
 </script>
 
