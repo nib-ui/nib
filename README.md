@@ -54,6 +54,12 @@ pnpm nx graph
 
 A pull request that changes a public package carries a version plan: `pnpm nx release plan`.
 
+## Community
+
+- [Contributing](CONTRIBUTING.md): setup, commands, version plans, the five laws, commit style
+- [Code of Conduct](CODE_OF_CONDUCT.md): Contributor Covenant 2.1
+- [Security policy](SECURITY.md): report vulnerabilities privately through GitHub
+
 ## License
 
 MIT (core). Fonts in `@nib-ui/fonts` are under the SIL Open Font License 1.1.
