@@ -27,9 +27,10 @@ Nib's own palette.
 }
 ```
 
-Write each colour as hex, or as `light-dark(<light>, <dark>)` of two hex colours, the form
-`@nib-ui/tokens` uses; any other value is an error, since it cannot be proofed. Selectors are not
-weighed: a later declaration wins, as if every rule applied to the whole page.
+Write each colour as hex, as `light-dark(<light>, <dark>)` of two hex colours (the form
+`@nib-ui/tokens` uses), or as `var(--nib-<role>)` to reuse another role. Any other value stops the
+check with an error, since it cannot be proofed. Selectors are not weighed: a later declaration
+wins, as if every rule applied to the whole page.
 
 Errors read as proof marks and exit with 1:
 

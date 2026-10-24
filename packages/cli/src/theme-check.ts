@@ -17,7 +17,7 @@ export async function themeCheck(files: readonly string[], io: Io): Promise<numb
   const base = nibPalette();
   const roles = Object.keys(base.dark);
   let colors = base;
-  let errors = 0;
+  const unreadable: string[] = [];
   io.out(sources.length ? `Pulling a proof of ${sources.join(', ')}…` : "Pulling a proof of Nib's own palette…");
   for (const file of sources) {
     const css = await readText(io, file);
@@ -26,11 +26,15 @@ export async function themeCheck(files: readonly string[], io: Io): Promise<numb
       return 1;
     }
     const theme = readThemeCss(css, roles);
-    for (const line of theme.unreadable) {
-      io.err(`error    ${file}: cannot proof ${line}; write it as hex, or light-dark() of two hex colours.`);
-      errors++;
-    }
-    colors = mergeTheme(colors, theme.colors);
+    unreadable.push(...theme.unreadable.map((line) => `${file}: cannot proof ${line}`));
+    colors = mergeTheme(colors, theme);
+  }
+  // Proofing around a colour that was not read would judge Nib's colour in its place.
+  if (unreadable.length) {
+    for (const line of unreadable)
+      io.err(`error    ${line}; write it as hex, light-dark() of two hex colours, or var(--nib-…).`);
+    io.out(`Not locked up: ${unreadable.length} unreadable colour${unreadable.length === 1 ? '' : 's'}.`);
+    return 1;
   }
   let marks;
   try {
@@ -40,7 +44,7 @@ export async function themeCheck(files: readonly string[], io: Io): Promise<numb
     return 1;
   }
   for (const mark of marks) io[mark.severity === 'error' ? 'err' : 'out'](`${mark.severity.padEnd(8)} ${mark.message}`);
-  errors += marks.filter((m) => m.severity === 'error').length;
+  const errors = marks.filter((m) => m.severity === 'error').length;
   const warnings = marks.filter((m) => m.severity === 'warning').length;
   const count = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
   const tally = `${count(errors, 'error')}, ${count(warnings, 'warning')}`;

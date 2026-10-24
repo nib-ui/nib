@@ -14,13 +14,16 @@ export const processIo = (): Io => ({
   err: (line) => process.stderr.write(`${line}\n`),
 });
 
-/** A file's text, or null when it is not there. */
+/** A file's text, or null when it is not there; any other failure names the file. */
 export async function readText(io: Io, path: string): Promise<string | null> {
   try {
     return await readFile(resolve(io.cwd, path), 'utf8');
   } catch (e) {
-    if ((e as NodeJS.ErrnoException).code === 'ENOENT') return null;
-    throw e;
+    const code = (e as NodeJS.ErrnoException).code;
+    if (code === 'ENOENT') return null;
+    throw new Error(`Cannot read ${path} (${code === 'EISDIR' ? 'a folder' : (code ?? (e as Error).message)}).`, {
+      cause: e,
+    });
   }
 }
 
@@ -36,11 +39,16 @@ export const CONFIG_FILE = 'nib.config.json';
 export async function readConfig(io: Io): Promise<NibConfig> {
   const text = await readText(io, CONFIG_FILE);
   if (text === null) return {};
+  let config: unknown;
   try {
-    const config = JSON.parse(text) as unknown;
-    if (config && typeof config === 'object' && !Array.isArray(config)) return config as NibConfig;
+    config = JSON.parse(text);
   } catch {
     // Reported below with the file's name.
   }
-  throw new Error(`${CONFIG_FILE} is not a JSON object.`);
+  if (!config || typeof config !== 'object' || Array.isArray(config))
+    throw new Error(`${CONFIG_FILE} is not a JSON object.`);
+  const { theme } = config as Record<string, unknown>;
+  if (theme !== undefined && typeof theme !== 'string')
+    throw new Error(`"theme" in ${CONFIG_FILE} must be the path of a stylesheet.`);
+  return config as NibConfig;
 }
