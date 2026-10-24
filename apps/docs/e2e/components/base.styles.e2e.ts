@@ -75,8 +75,10 @@ test.describe('base', () => {
     const [s, m] = [await side.boundingBox(), await main.boundingBox()];
     expect(s?.y).toBe(m?.y);
     await page.setViewportSize({ width: 360, height: 800 });
-    const [s2, m2] = [await side.boundingBox(), await main.boundingBox()];
-    expect((s2?.y ?? 0) < (m2?.y ?? 0)).toBe(true);
+    // The resize lays out on the next frame: wait for the wrap rather than reading it once.
+    await expect
+      .poll(async () => ((await side.boundingBox())?.y ?? 0) < ((await main.boundingBox())?.y ?? 0))
+      .toBe(true);
   });
 
   test('focus is one square 2px accent ring, 2px away', async ({ page }) => {
