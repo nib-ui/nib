@@ -1,0 +1,23 @@
+---
+import FixtureLayout from '../../../layouts/fixture-layout.astro';
+---
+
+<FixtureLayout title="Date picker · vanilla fixture">
+  <div id="mount"></div>
+</FixtureLayout>
+
+<script>
+  import { datePickerApg } from '@nib-ui/core/date-picker/apg';
+  import '@nib-ui/js/date-picker';
+  import { init } from '@nib-ui/js';
+  import { caseOptions } from '../../../fixtures/apg-case.ts';
+
+  // The vanilla binding reads its options from markup, so the row is written out as markup.
+  const o = caseOptions(datePickerApg) as Record<string, string>;
+  const root = Object.assign(document.createElement('div'), { id: o['id'], lang: o['locale'] ?? '' });
+  root.className = 'nib-calendar';
+  root.dataset['nib'] = 'date-picker';
+  for (const name of ['today', 'min', 'max', 'mode'] as const) if (o[name]) root.dataset[name] = o[name];
+  document.getElementById('mount')?.append(root);
+  init();
+</script>

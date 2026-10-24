@@ -35,6 +35,7 @@ const GROUPS: NavGroup[] = [
       { slug: 'menu', title: 'Menu', lead: 'A list of actions behind a button.' },
       { slug: 'dialog', title: 'Dialog, drawer and sheet', lead: 'A native dialog with a scrim behind.' },
       { slug: 'toaster', title: 'Toast', lead: 'A short message that says what just happened.' },
+      { slug: 'date-picker', title: 'Date picker', lead: 'A month of days to choose one date or a range.' },
       { slug: 'text', title: 'Text', lead: 'Links, tags, callouts and code with COPY.' },
       { slug: 'content', title: 'Content', lead: 'Sections, tiles, list rows, panes and tables.' },
       { slug: 'empty-loading', title: 'Empty state and loading', lead: 'Ghosts, the stepping ✻ and progress.' },

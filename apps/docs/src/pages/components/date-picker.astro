@@ -1,0 +1,157 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<div class="date-picker-example">
+  <div data-nib="date-picker" class="nib-calendar" data-name="delivery" data-value="2026-10-27"
+    data-min="2026-10-05" data-disabled-dates="2026-10-11,2026-10-18,2026-10-25"
+    data-prev-label="Previous month" data-next-label="Next month"></div>
+  <div data-nib="date-picker" class="nib-calendar" data-mode="range" data-value="2026-10-12/2026-10-16"></div>
+</div>`;
+
+const code = {
+  html: `${html}
+
+<script type="module">
+  import '@nib-ui/js/date-picker';
+  import { init } from '@nib-ui/js';
+  init();
+</script>`,
+  react: `import { useDatePicker } from '@nib-ui/react/date-picker';
+
+function Delivery() {
+  const dp = useDatePicker({ min: '2026-10-05', isDisabled: (d) => closed.has(d) });
+  return (
+    <div className="nib-calendar">
+      <div className="nib-calendar__header">
+        <button className="nib-button" {...dp.part('prev')}>‹</button>
+        <h2 className="nib-calendar__title" {...dp.part('title')}>{dp.state.title}</h2>
+        <button className="nib-button" {...dp.part('next')}>›</button>
+      </div>
+      <table className="nib-calendar__grid" {...dp.part('grid')}>
+        <thead>
+          <tr>{dp.state.weekdays.map((w, i) => <th key={i} scope="col" {...dp.part('weekday', String(i))}>{w.short}</th>)}</tr>
+        </thead>
+        <tbody>
+          {dp.state.weeks.map((week, w) => (
+            <tr key={w}>
+              {week.map((c, i) => (c ? <td key={c.date} {...dp.part('day', c.date)}>{c.text}</td> : <td key={i} />))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}`,
+  vue: `<script setup>
+import { useDatePicker } from '@nib-ui/vue/date-picker';
+
+const dp = useDatePicker({ mode: 'range' });
+</script>
+
+<template>
+  <div class="nib-calendar">
+    <div class="nib-calendar__header">
+      <button class="nib-button" v-bind="dp.part('prev')">‹</button>
+      <h2 class="nib-calendar__title" v-bind="dp.part('title')">{{ dp.state.title }}</h2>
+      <button class="nib-button" v-bind="dp.part('next')">›</button>
+    </div>
+    <table class="nib-calendar__grid" v-bind="dp.part('grid')">
+      <thead>
+        <tr><th v-for="(w, i) in dp.state.weekdays" :key="i" scope="col" v-bind="dp.part('weekday', String(i))">{{ w.short }}</th></tr>
+      </thead>
+      <tbody>
+        <tr v-for="(week, w) in dp.state.weeks" :key="w">
+          <template v-for="(c, i) in week" :key="c?.date ?? i">
+            <td v-if="c" v-bind="dp.part('day', c.date)">{{ c.text }}</td>
+            <td v-else></td>
+          </template>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>`,
+  svelte: `<script>
+  import { createDatePickerStore } from '@nib-ui/svelte/date-picker';
+
+  const dp = createDatePickerStore({ id: $props.id() });
+</script>
+
+<div class="nib-calendar">
+  <div class="nib-calendar__header">
+    <button class="nib-button" {...$dp.part('prev')}>‹</button>
+    <h2 class="nib-calendar__title" {...$dp.part('title')}>{$dp.state.title}</h2>
+    <button class="nib-button" {...$dp.part('next')}>›</button>
+  </div>
+  <table class="nib-calendar__grid" {...$dp.part('grid')}>
+    <thead>
+      <tr>{#each $dp.state.weekdays as w, i (i)}<th scope="col" {...$dp.part('weekday', String(i))}>{w.short}</th>{/each}</tr>
+    </thead>
+    <tbody>
+      {#each $dp.state.weeks as week, w (w)}
+        <tr>
+          {#each week as c, i (c?.date ?? i)}
+            {#if c}<td {...$dp.part('day', c.date)}>{c.text}</td>{:else}<td></td>{/if}
+          {/each}
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+</div>`,
+};
+---
+
+<ComponentPage
+  title="Date picker"
+  lead="A ruled month of mono day numbers: today underlined, the chosen day a cursor block, closed days struck through."
+  kind="INTERACTIVE"
+  code={code}
+>
+  <div slot="example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    <code>createDatePicker</code> keeps the month shown and the focused day, and gives its <code>weeks</code> (days of
+    other months are empty cells), <code>weekdays</code> and <code>title</code> in the page's language through
+    <code>Intl</code>: month and day names, digits and the first day of the week (Sunday in the US and Japan, Monday in
+    Vietnam). Dates are ISO strings such as <code>2026-10-24</code>, with no time and no time zone.
+  </p>
+  <p>
+    <code>mode: 'range'</code> takes two presses, in either order; the pointer previews the range between them.
+    <code>min</code>, <code>max</code> and <code>isDisabled</code> keep dates from being chosen as a date or a range
+    end; a range may still span a closed day, so check the days between in <code>onValueChange</code> when it must not.
+    There is no time picking and no lunar calendar. For a field that opens a calendar, put it in a popover next to the
+    field.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      Follows the APG date picker grid: a <code>role="grid"</code> table named by the month heading, one day in the tab
+      order, each day named by its full date and the chosen ones <code>aria-selected</code>; today is
+      <code>aria-current="date"</code>.
+    </li>
+    <li>
+      Arrows move by a day and a week (left and right follow the reading direction), Home and End to the ends of the
+      week, Page Up and Page Down by a month, with Shift by a year; Enter or Space chooses. In a range, Escape drops an
+      unfinished first press.
+    </li>
+    <li>
+      Closed days and days outside <code>min</code> / <code>max</code> stay focusable but are
+      <code>aria-disabled</code> and struck through, not only fainter. The month heading is a polite live region, so
+      paging through months is announced.
+    </li>
+  </ul>
+</ComponentPage>
+
+<script>
+  import '@nib-ui/js/date-picker';
+  import { init } from '@nib-ui/js';
+  init();
+</script>
+
+<style>
+  .date-picker-example {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--nib-space-2xl);
+  }
+</style>
