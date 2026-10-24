@@ -26,6 +26,9 @@
       "path": "../../packages/css"
     },
     {
+      "path": "../playground"
+    },
+    {
       "path": "../../tools/test-harness"
     },
     {

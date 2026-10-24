@@ -17,6 +17,7 @@ const theme = (): ThemeColors['dark'] => ({
   'on-cursor': '#000000',
   'on-hue': '#000000',
   red: '#ff6b6b',
+  error: '#ff6b6b',
   green: '#7dff7d',
   yellow: '#ffe14d',
   blue: '#8fa8ff',
@@ -32,6 +33,12 @@ const colors = (): ThemeColors => ({ dark: theme(), light: theme() });
 describe('checkTheme', () => {
   it('returns no proof marks for a palette that passes every rule', () => {
     expect(checkTheme(colors())).toEqual([]);
+  });
+
+  it('checks the error role as text, whichever hue plays it', () => {
+    const c = colors();
+    c.dark.error = '#300000';
+    expect(checkTheme(c).map((m) => m.message)).toContain('Proof mark: error on ink is 1.1:1, needs 4.5:1.');
   });
 
   it('fails a mark under 3:1 with a proof mark naming the pair', () => {

@@ -332,6 +332,9 @@ importers:
       '@astrojs/vue':
         specifier: 7.1.2
         version: 7.1.2(@types/node@24.19.2)(astro@7.4.2(@types/node@24.19.2)(esbuild@0.28.2)(yaml@2.9.1))(esbuild@0.28.2)(supports-color@10.2.2)(vue@3.5.44(typescript@6.0.3))(yaml@2.9.1)
+      '@nib-ui/playground':
+        specifier: workspace:*
+        version: link:../playground
       '@nib-ui/test-harness':
         specifier: workspace:*
         version: link:../../tools/test-harness
@@ -339,7 +342,23 @@ importers:
         specifier: 1.64.1
         version: 1.64.1
 
-  apps/playground: {}
+  apps/playground:
+    dependencies:
+      '@nib-ui/color-engine':
+        specifier: workspace:*
+        version: link:../../tools/color-engine
+      '@nib-ui/css':
+        specifier: workspace:*
+        version: link:../../packages/css
+      '@nib-ui/fonts':
+        specifier: workspace:*
+        version: link:../../packages/fonts
+      '@nib-ui/js':
+        specifier: workspace:*
+        version: link:../../packages/js
+      '@nib-ui/tokens':
+        specifier: workspace:*
+        version: link:../../packages/tokens
 
   packages/cli: {}
 

@@ -56,7 +56,7 @@
   }
 
   .nib-choice:has(> input[aria-invalid='true'])::before {
-    color: var(--nib-red);
+    color: var(--nib-error);
   }
 
   .nib-choice:has(> input:disabled) {

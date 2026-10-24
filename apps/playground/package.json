@@ -9,6 +9,32 @@
     "tags": [
       "type:app",
       "scope:private"
-    ]
+    ],
+    "targets": {
+      "build": {
+        "command": "vite build",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "^build"
+        ],
+        "cache": true,
+        "inputs": [
+          "default",
+          "^production"
+        ],
+        "outputs": [
+          "{projectRoot}/dist"
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "@nib-ui/color-engine": "workspace:*",
+    "@nib-ui/css": "workspace:*",
+    "@nib-ui/fonts": "workspace:*",
+    "@nib-ui/js": "workspace:*",
+    "@nib-ui/tokens": "workspace:*"
   }
 }

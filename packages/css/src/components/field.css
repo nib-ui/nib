@@ -38,7 +38,7 @@
   .nib-field__error,
   .nib-error-summary__title {
     margin: 0;
-    color: var(--nib-red);
+    color: var(--nib-error);
     font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
       var(--nib-font-mono);
     letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1));
@@ -69,7 +69,7 @@
 
   .nib-error-summary {
     padding: var(--nib-space-sm-plus) var(--nib-space-md);
-    border-inline-start: var(--nib-space-rule) solid var(--nib-red);
+    border-inline-start: var(--nib-space-rule) solid var(--nib-error);
     background: var(--nib-surface-raised);
   }
 
@@ -83,7 +83,7 @@
     color: var(--nib-on-surface);
     font: var(--nib-body-md-font-weight) var(--nib-body-md-font-size) / var(--nib-body-md-line-height)
       var(--nib-font-sans);
-    text-decoration-color: var(--nib-red);
+    text-decoration-color: var(--nib-error);
     text-underline-offset: 3px;
   }
 }

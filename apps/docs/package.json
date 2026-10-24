@@ -12,7 +12,7 @@
     ],
     "targets": {
       "build": {
-        "command": "astro build",
+        "command": "astro build && node scripts/copy-playground.ts",
         "options": {
           "cwd": "{projectRoot}"
         },
@@ -80,7 +80,10 @@
           "{projectRoot}/playwright-report"
         ]
       }
-    }
+    },
+    "implicitDependencies": [
+      "@nib-ui/playground"
+    ]
   },
   "scripts": {
     "dev": "astro dev",
@@ -102,6 +105,7 @@
     "@astrojs/react": "7.1.1",
     "@astrojs/svelte": "9.1.1",
     "@astrojs/vue": "7.1.2",
+    "@nib-ui/playground": "workspace:*",
     "@nib-ui/test-harness": "workspace:*",
     "@playwright/test": "1.64.1"
   }

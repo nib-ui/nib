@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @layer nib.theme, nib.base, nib.components, nib.utilities;
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Proof press · Nib</title>
+    <meta
+      name="description"
+      content="Try an accent, a theme, a density and a hue mapping on Nib components, with contrast proof marks."
+    />
+  </head>
+  <body>
+    <a class="nib-skip" href="#content">Skip to content</a>
+    <header class="nib-header">
+      <div class="nib-header__bar">
+        <a class="nib-header__brand" href="/">Nib</a>
+        <ul class="nib-nav" aria-label="Site">
+          <li><a href="/components/">Components</a></li>
+          <li><a href="/play/" aria-current="page">Proof press</a></li>
+        </ul>
+      </div>
+    </header>
+    <main id="content" tabindex="-1" class="press">
+      <div class="press__intro">
+        <p class="nib-kicker">Playground</p>
+        <h1>Proof press</h1>
+        <p class="nib-text-lead">
+          Set the accent, the theme, the density and the error hue; every component below follows, and the press marks
+          any pair that fails.
+        </p>
+      </div>
+
+      <form class="press__controls" aria-label="Tokens" autocomplete="off">
+        <fieldset class="nib-fieldset">
+          <legend class="nib-field__label">Theme</legend>
+          <label class="nib-choice"><input type="radio" name="theme" value="light" checked /> Light (Paper)</label>
+          <label class="nib-choice"><input type="radio" name="theme" value="dark" /> Dark (Ink)</label>
+        </fieldset>
+        <fieldset class="nib-fieldset">
+          <legend class="nib-field__label">Density</legend>
+          <label class="nib-choice"
+            ><input type="radio" name="density" value="comfortable" checked /> Comfortable</label
+          >
+          <label class="nib-choice"><input type="radio" name="density" value="compact" /> Compact</label>
+        </fieldset>
+        <div class="press__colours">
+          <label class="nib-field"
+            ><span class="nib-field__label">Accent · light</span
+            ><input class="press__colour" type="color" name="accent-light"
+          /></label>
+          <label class="nib-field"
+            ><span class="nib-field__label">Accent text · light</span
+            ><input class="press__colour" type="color" name="accentText-light"
+          /></label>
+          <label class="nib-field"
+            ><span class="nib-field__label">Accent · dark</span
+            ><input class="press__colour" type="color" name="accent-dark"
+          /></label>
+          <label class="nib-field"
+            ><span class="nib-field__label">Accent text · dark</span
+            ><input class="press__colour" type="color" name="accentText-dark"
+          /></label>
+        </div>
+        <div class="nib-field">
+          <label class="nib-field__label" for="error-hue">Error hue</label>
+          <select class="nib-input" id="error-hue" name="errorHue"></select>
+        </div>
+        <button class="nib-button nib-button--outline" type="reset">Reset</button>
+      </form>
+
+      <section class="press__proof" aria-labelledby="proof-title">
+        <h2 class="nib-text-label" id="proof-title">Proof marks</h2>
+        <p class="press__summary" role="status"></p>
+        <ul class="press__marks"></ul>
+      </section>
+
+      <section class="press__preview" id="preview" aria-label="Preview">
+        <div class="nib-hero__actions">
+          <button class="nib-button nib-button--primary" type="button">Add to cart</button>
+          <button class="nib-button nib-button--outline" type="button">Save</button>
+          <button class="nib-button" type="button" aria-pressed="true">Grid</button>
+        </div>
+        <p>Beans ship the day after roasting. <a class="nib-link" href="#preview">Read the schedule</a>.</p>
+        <p>
+          <span class="nib-tag nib-tag--accent">Live</span>
+          <span class="nib-tag nib-tag--green">In stock</span>
+          <span class="nib-tag nib-tag--red">Sale</span>
+        </p>
+        <div class="nib-callout nib-callout--error">
+          <p class="nib-callout__label">Error</p>
+          <p>The card was declined. Nothing was charged.</p>
+        </div>
+        <div class="nib-field">
+          <label class="nib-field__label" for="p-email">Email</label>
+          <input class="nib-input" id="p-email" value="ana@" aria-invalid="true" aria-describedby="p-email-error" />
+          <p class="nib-field__error" id="p-email-error">Enter a valid email</p>
+        </div>
+        <div class="nib-row nib-row--ruled nib-hue-blue">
+          <span class="nib-row__id">#1042</span> Kenya Nyeri ×2
+          <span class="nib-row__end nib-tag nib-tag--accent">Now</span>
+        </div>
+        <p class="nib-loading"><span class="nib-spinner" aria-hidden="true"></span>Roasting…</p>
+      </section>
+
+      <section class="press__export" aria-labelledby="export-title">
+        <h2 class="nib-text-label" id="export-title">Export</h2>
+        <figure class="nib-code">
+          <figcaption class="nib-code__header">
+            nib-theme.css
+            <button class="nib-button nib-button--ghost" data-nib="copy" type="button">Copy</button>
+          </figcaption>
+          <pre tabindex="0" aria-label="nib-theme.css"><code class="press__css"></code></pre>
+        </figure>
+      </section>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
