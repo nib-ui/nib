@@ -1,0 +1,66 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<nav class="nib-breadcrumb" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="#content">home</a></li>
+    <li><a href="#content">shop</a></li>
+    <li><a href="#content" aria-current="page">coffee</a></li>
+  </ol>
+</nav>
+
+<nav class="nib-pagination" aria-label="Pagination">
+  <a class="nib-pagination__prev" href="#content" rel="prev">Prev</a>
+  <span class="nib-pagination__status">
+    <span aria-hidden="true">2 / 9</span><span class="nib-pagination__label">Page 2 of 9</span>
+  </span>
+  <a class="nib-pagination__next" href="#content" rel="next">Next</a>
+</nav>
+
+<nav class="nib-pagination" aria-label="Pagination, first page">
+  <span class="nib-pagination__prev" aria-disabled="true">Prev</span>
+  <span class="nib-pagination__status">
+    <span aria-hidden="true">1 / 9</span><span class="nib-pagination__label">Page 1 of 9</span>
+  </span>
+  <a class="nib-pagination__next" href="#content" rel="next">Next</a>
+</nav>`;
+---
+
+<ComponentPage
+  title="Breadcrumb and pagination"
+  lead="Where a page sits and how to step through a list: a mono trail of ancestors, and PREV · 2 / 9 · NEXT."
+  kind="CSS"
+  code={{ html }}
+>
+  <div slot="example" class="bp-example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    <code>nib-breadcrumb</code> wraps an ordered list of links; the last one is the current page. Segments are written
+    as they appear in the address, lowercase, and are not uppercased.
+  </p>
+  <p>
+    <code>nib-pagination</code> holds a <code>__prev</code> link, a <code>__status</code> and a <code>__next</code>
+    link. On the first or last page render the missing step as a <code>span</code> with
+    <code>aria-disabled="true"</code>, so the row keeps its shape.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      Each is a <code>nav</code> with its own <code>aria-label</code>; the current page carries
+      <code>aria-current="page"</code>.
+    </li>
+    <li>Slashes, dots and arrows are drawn by CSS with empty alternative text, so they are not read.</li>
+    <li>
+      The short status (<code>2 / 9</code>) is hidden from screen readers and <code>nib-pagination__label</code> says it
+      in words.
+    </li>
+    <li>Prev and next are at least 44px tall; the arrows swap under right-to-left.</li>
+  </ul>
+</ComponentPage>
+
+<style>
+  .bp-example > :global(* + *) {
+    margin-block-start: var(--nib-space-lg);
+  }
+</style>

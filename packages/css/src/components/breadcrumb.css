@@ -1,0 +1,35 @@
+/* Breadcrumb: `home / shop / coffee` in mono meta, as typed. Ancestors are on-surface 3 links; the
+   last segment, `aria-current="page"`, is on-surface. The slashes are decoration (empty alt text). */
+@layer nib.components {
+  .nib-breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    color: var(--nib-on-surface-3);
+    font: var(--nib-meta-sm-font-weight) var(--nib-meta-sm-font-size) / var(--nib-meta-sm-line-height)
+      var(--nib-font-mono);
+    list-style: none;
+  }
+
+  .nib-breadcrumb li + li::before {
+    padding-inline: var(--nib-space-xs-plus);
+    content: '/' / '';
+  }
+
+  .nib-breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .nib-breadcrumb a:hover {
+    color: var(--nib-on-surface);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .nib-breadcrumb [aria-current='page'] {
+    color: var(--nib-on-surface);
+  }
+}

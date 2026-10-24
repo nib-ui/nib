@@ -19,3 +19,5 @@
 @import './components/header.css';
 @import './components/side-nav.css';
 @import './components/footer.css';
+@import './components/breadcrumb.css';
+@import './components/pagination.css';
