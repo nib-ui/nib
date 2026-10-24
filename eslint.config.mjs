@@ -67,4 +67,22 @@ export default [
       ],
     },
   },
+  {
+    // The CLI bundles the private colour engine at build time (ADR 11), so it is a devDependency.
+    files: ['packages/cli/package.json'],
+    languageOptions: { parser: jsoncParser },
+    rules: {
+      '@nx/dependency-checks': [
+        'error',
+        {
+          ignoredFiles: [
+            '{projectRoot}/vitest.config.mts',
+            '{projectRoot}/vite.config.mts',
+            '{projectRoot}/**/*.spec.ts',
+          ],
+          ignoredDependencies: ['@nib-ui/color-engine'],
+        },
+      ],
+    },
+  },
 ];
