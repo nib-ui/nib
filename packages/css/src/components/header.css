@@ -1,0 +1,111 @@
+/* Header: 48px, surface, a 1px line underneath, sticky. Wordmark on the start; nav words (mono
+   labels 16px apart, the current one with a 2px accent underline) and utility words on the end.
+   When the header is narrower than 30rem the nav folds behind a MENU link to the nav's id; the
+   link opens it below the header without JavaScript (:target). The sheet comes with dialog. */
+@layer nib.components {
+  .nib-header {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 1;
+    container: nib-header / inline-size;
+    border-block-end: var(--nib-space-hairline) solid var(--nib-line);
+    background: var(--nib-surface);
+  }
+
+  .nib-header__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--nib-space-lg);
+    block-size: var(--nib-space-header-height);
+    padding-inline: var(--nib-space-lg);
+  }
+
+  .nib-header__brand {
+    margin-inline-end: auto;
+    color: var(--nib-on-surface);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1));
+    text-decoration: none;
+    text-transform: var(--nib-caps, uppercase);
+  }
+
+  .nib-nav {
+    display: flex;
+    align-items: stretch;
+    gap: var(--nib-space-lg);
+    block-size: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nib-nav a,
+  .nib-header__word {
+    display: inline-flex;
+    align-items: center;
+    block-size: 100%;
+    min-block-size: var(--nib-space-touch-target);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--nib-on-surface-2);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1));
+    text-decoration: none;
+    text-transform: var(--nib-caps, uppercase);
+    cursor: pointer;
+  }
+
+  /* The underline is an inset rule on the block-end edge, so it never shifts the words. */
+  .nib-nav a {
+    border-block: var(--nib-space-rule) solid transparent;
+  }
+
+  .nib-nav a:hover,
+  .nib-header__word:hover {
+    color: var(--nib-on-surface);
+  }
+
+  .nib-nav a[aria-current='page'] {
+    border-block-end-color: var(--nib-accent);
+    color: var(--nib-on-surface);
+  }
+
+  .nib-header__menu {
+    display: none;
+  }
+
+  @container nib-header (width < 30rem) {
+    .nib-header__menu {
+      display: inline-flex;
+    }
+
+    .nib-header__bar > .nib-nav {
+      display: none;
+    }
+  }
+
+  /* No-JS fallback: MENU links to the nav's id, which then opens below the bar as a list. */
+  @container nib-header (width < 30rem) {
+    .nib-header__bar > .nib-nav:target {
+      position: absolute;
+      inset-block-start: 100%;
+      inset-inline: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      block-size: auto;
+      padding: var(--nib-space-sm) var(--nib-space-lg);
+      border-block-end: var(--nib-space-hairline) solid var(--nib-line);
+      background: var(--nib-surface);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .nib-nav a[aria-current='page'] {
+      border-block-end-color: CanvasText;
+    }
+  }
+}

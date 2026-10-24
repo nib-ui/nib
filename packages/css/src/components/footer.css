@@ -1,0 +1,63 @@
+/* Footer: a ruled grid of link columns, whose top rule is the footer's line above (mono label
+   heads, body links in on-surface 2), then a row of mono meta (© 2026 · PRIVACY · TERMS) with the
+   theme toggle. */
+@layer nib.components {
+  .nib-footer__columns {
+    --nib-grid-min: 10rem;
+  }
+
+  .nib-footer__column {
+    padding: var(--nib-space-lg);
+  }
+
+  .nib-footer__head {
+    margin: 0 0 var(--nib-space-sm);
+    color: var(--nib-on-surface);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1));
+    text-transform: var(--nib-caps, uppercase);
+  }
+
+  .nib-footer__column ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nib-footer__column a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--nib-space-control-height);
+    color: var(--nib-on-surface-2);
+    font: var(--nib-body-md-font-weight) var(--nib-body-md-font-size) / var(--nib-body-md-line-height)
+      var(--nib-font-sans);
+    text-decoration: none;
+  }
+
+  .nib-footer__column a:hover {
+    color: var(--nib-on-surface);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .nib-footer__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--nib-space-xs) var(--nib-space-md);
+    padding: var(--nib-space-md) var(--nib-space-lg);
+    color: var(--nib-on-surface-3);
+    font: var(--nib-meta-sm-font-weight) var(--nib-meta-sm-font-size) / var(--nib-meta-sm-line-height)
+      var(--nib-font-mono);
+    text-transform: var(--nib-caps, uppercase);
+  }
+
+  .nib-footer__meta a {
+    color: inherit;
+  }
+
+  .nib-footer__meta > :last-child {
+    margin-inline-start: auto;
+  }
+}
