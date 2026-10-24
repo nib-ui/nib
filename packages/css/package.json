@@ -17,6 +17,26 @@
     "tags": [
       "type:css",
       "scope:public"
-    ]
+    ],
+    "targets": {
+      "lint": {
+        "command": "stylelint \"src/**/*.css\" --allow-empty-input",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "^build"
+        ],
+        "cache": true,
+        "inputs": [
+          "{projectRoot}/src/**/*.css",
+          "{projectRoot}/stylelint.config.mjs",
+          "^production"
+        ]
+      }
+    }
+  },
+  "devDependencies": {
+    "@nib-ui/stylelint-plugin": "workspace:*"
   }
 }
