@@ -1,11 +1,12 @@
 # 6. One 1.0 launch, lockstep versions, trusted publishing
 
-Date: 2026-10-24 · Status: accepted
+Date: 2026-10-24 · Status: accepted; monorepo tooling superseded by ADR 11
 
 ## Decision
 
-- Monorepo: pnpm + Turborepo + Changesets. Packages: `tokens`, `css`, `js`, `react`, `vue`,
-  `svelte`, `cli`, `fonts`, `icons`; apps: `docs` (custom Astro site, no Starlight), `playground`.
+- ~~Monorepo: pnpm + Turborepo + Changesets.~~ Superseded by ADR 11 (Nx on pnpm workspaces, Nx
+  Release with version plans, `@nib-ui/core` added). Apps: `docs` (custom Astro site, no
+  Starlight), `playground`.
 - Public launch happens once, at `1.0.0`. Before that, unannounced prereleases
   (`1.0.0-alpha.x`, `-beta.x`) go to the `next` dist-tag for dogfooding.
 - All packages share one version (lockstep). Strict semver from 1.0; class renames go through a
