@@ -1,0 +1,129 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<div data-nib="disclosure">
+  <button class="nib-disclosure__trigger" type="button" data-nib-trigger>Shipping and returns</button>
+  <div class="nib-disclosure__panel" data-nib-panel>Orders ship the day after roasting.</div>
+</div>
+
+<div class="nib-accordion" data-nib="accordion">
+  <div class="nib-accordion__item" data-nib-item="grind" data-open>
+    <h3 class="nib-accordion__heading"><button class="nib-disclosure__trigger" type="button" data-nib-trigger>Grind</button></h3>
+    <div class="nib-disclosure__panel" data-nib-panel>Grind just before brewing; ground coffee goes flat in a day.</div>
+  </div>
+  <div class="nib-accordion__item" data-nib-item="water">
+    <h3 class="nib-accordion__heading"><button class="nib-disclosure__trigger" type="button" data-nib-trigger>Water</button></h3>
+    <div class="nib-disclosure__panel" data-nib-panel>Just off the boil, about 94°C.</div>
+  </div>
+  <div class="nib-accordion__item" data-nib-item="ratio" data-disabled>
+    <h3 class="nib-accordion__heading"><button class="nib-disclosure__trigger" type="button" data-nib-trigger>Ratio · soon</button></h3>
+    <div class="nib-disclosure__panel" data-nib-panel>1:16.</div>
+  </div>
+</div>`;
+
+const code = {
+  html: `${html}
+
+<script type="module">
+  import '@nib-ui/js/disclosure';
+  import { init } from '@nib-ui/js';
+  init();
+</script>`,
+  react: `import { useAccordion } from '@nib-ui/react/disclosure';
+
+const items = [{ key: 'grind' }, { key: 'water' }];
+
+function BrewGuide() {
+  const accordion = useAccordion({ items, defaultValue: ['grind'] });
+  return (
+    <div className="nib-accordion">
+      {items.map((item) => (
+        <div key={item.key} className="nib-accordion__item">
+          <h3 className="nib-accordion__heading">
+            <button type="button" className="nib-disclosure__trigger" {...accordion.part('trigger', item.key)}>
+              {item.key}
+            </button>
+          </h3>
+          <div className="nib-disclosure__panel" {...accordion.part('panel', item.key)}>…</div>
+        </div>
+      ))}
+    </div>
+  );
+}`,
+  vue: `<script setup>
+import { useAccordion } from '@nib-ui/vue/disclosure';
+
+const items = [{ key: 'grind' }, { key: 'water' }];
+const accordion = useAccordion({ items, defaultValue: ['grind'] });
+</script>
+
+<template>
+  <div class="nib-accordion">
+    <div v-for="item in items" :key="item.key" class="nib-accordion__item">
+      <h3 class="nib-accordion__heading">
+        <button type="button" class="nib-disclosure__trigger" v-bind="accordion.part('trigger', item.key)">
+          {{ item.key }}
+        </button>
+      </h3>
+      <div class="nib-disclosure__panel" v-bind="accordion.part('panel', item.key)">…</div>
+    </div>
+  </div>
+</template>`,
+  svelte: `<script>
+  import { createAccordionStore } from '@nib-ui/svelte/disclosure';
+
+  const items = [{ key: 'grind' }, { key: 'water' }];
+  const accordion = createAccordionStore({ id: $props.id(), items, defaultValue: ['grind'] });
+</script>
+
+<div class="nib-accordion">
+  {#each items as item (item.key)}
+    <div class="nib-accordion__item">
+      <h3 class="nib-accordion__heading">
+        <button type="button" class="nib-disclosure__trigger" {...$accordion.part('trigger', item.key)}>{item.key}</button>
+      </h3>
+      <div class="nib-disclosure__panel" {...$accordion.part('panel', item.key)}>…</div>
+    </div>
+  {/each}
+</div>`,
+};
+---
+
+<ComponentPage
+  title="Disclosure and accordion"
+  lead="A button that shows and hides what follows it, alone or as a stack of sections."
+  kind="INTERACTIVE"
+  code={code}
+>
+  <div slot="example" class="disclosure-example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    <code>createDisclosure</code> drives one <code>trigger</code> and its <code>panel</code>;{' '}
+    <code>createAccordion</code>a list of sections by key, one open at a time unless <code>multiple</code>. With{' '}
+    <code>collapsible: false</code> the last open section stays open and its button says so with{' '}
+    <code>aria-disabled</code>. Both are controlled when you pass <code>expanded</code> / <code>value</code>.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      Follows the APG disclosure and accordion patterns: the trigger is a native <code>button</code> with
+      <code>aria-expanded</code> and <code>aria-controls</code>; each accordion panel is a region named by its button.
+    </li>
+    <li>Put each accordion button in a heading of the right level.</li>
+    <li>In an accordion, Up and Down arrows, Home and End move between the buttons.</li>
+    <li>The ▸ / ▾ glyph is decoration with empty alternative text; it mirrors under right-to-left.</li>
+  </ul>
+</ComponentPage>
+
+<script>
+  import '@nib-ui/js/disclosure';
+  import { init } from '@nib-ui/js';
+  init();
+</script>
+
+<style>
+  .disclosure-example > :global(* + *) {
+    margin-block-start: var(--nib-space-2xl);
+  }
+</style>

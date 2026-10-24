@@ -7,8 +7,8 @@ const selector = (id: string, part: string, key?: string) =>
 
 /**
  * Plays one APG row against a rendered component: focus the target, press the keys (waiting where
- * the row says), then compare the attributes the row expects. Returns what differs; intents are
- * checked in core, where they are data.
+ * the row says), then compare the attributes the row expects and, for a row whose last intent
+ * moves focus, where focus ended up. Returns what differs; the other intents are checked in core.
  */
 export async function runApgCase(page: Page, row: ConformanceCase): Promise<string[]> {
   const id = String(row.options['id']);
@@ -32,6 +32,11 @@ export async function runApgCase(page: Page, row: ConformanceCase): Promise<stri
           `${expected.part}${expected.key ? `[${expected.key}]` : ''} ${name}: expected ${want}, got ${got}`,
         );
     }
+  }
+  const focus = [...(row.expect.intents ?? [])].reverse().find((i) => i.type === 'focus');
+  if (focus?.type === 'focus') {
+    const active = await page.evaluate(() => document.activeElement?.id ?? null);
+    if (active !== focus.ref) failures.push(`focus: expected #${focus.ref}, got #${active}`);
   }
   return failures;
 }
