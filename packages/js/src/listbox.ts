@@ -5,8 +5,10 @@
 //   <li data-nib-option="fr" data-disabled>Français</li>
 // </ul>
 //
-// `data-multiple` on the list makes checked rows instead. Changes are announced on the list as a
-// `nib:change` event: `detail.value` (single) or `detail.checked` (multiple).
+// `data-multiple` on the list makes checked rows instead, starting from the options marked
+// `data-checked`. Changes are announced on the list as a `nib:change` event, once the DOM shows
+// them: `detail.value` (single) or `detail.checked` (multiple). Options may be added, removed or
+// (un)disabled at any time.
 import { createListbox } from '@nib-ui/core/listbox';
 import { bind } from './bind.ts';
 import { define } from './registry.ts';
@@ -20,7 +22,9 @@ define('listbox', (root, { id, locale, host }) => {
       label: (el.textContent ?? '').trim(),
       disabled: el.hasAttribute('data-disabled'),
     }));
-  const emit = (detail: object) => root.dispatchEvent(new CustomEvent('nib:change', { detail, bubbles: true }));
+  // Deferred: the controller reports a change before it commits it and the DOM is written.
+  const emit = (detail: object) =>
+    queueMicrotask(() => root.dispatchEvent(new CustomEvent('nib:change', { detail, bubbles: true })));
   const instance = createListbox(
     {
       id,
@@ -28,6 +32,9 @@ define('listbox', (root, { id, locale, host }) => {
       items: items(),
       multiple: root.hasAttribute('data-multiple'),
       defaultValue: root.dataset['value'] ?? null,
+      defaultChecked: options(root)
+        .filter((el) => el.hasAttribute('data-checked'))
+        .map((el) => el.dataset['nibOption'] ?? ''),
       onValueChange: (value) => emit({ value }),
       onCheckedChange: (checked) => emit({ checked }),
     },
@@ -37,7 +44,13 @@ define('listbox', (root, { id, locale, host }) => {
     { el: root, part: 'list' },
     ...options(root).map((el) => ({ el, part: 'option' as const, key: el.dataset['nibOption'] })),
   ]);
+  const observer = new MutationObserver(() => {
+    instance.update({ items: items() });
+    unbind.refresh();
+  });
+  observer.observe(root, { childList: true, subtree: true, attributeFilter: ['data-disabled', 'data-nib-option'] });
   return () => {
+    observer.disconnect();
     unbind();
     instance.destroy();
   };

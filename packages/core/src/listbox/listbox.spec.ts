@@ -129,11 +129,44 @@ describe('createListbox: typeahead, focus and pointer', () => {
     expect(list().attrs['aria-activedescendant']).toBe('lb-option-ar');
   });
 
-  it('drops a current or chosen option whose item was removed', () => {
-    const { listbox, press } = setup({ defaultValue: 'ar' });
+  it('keeps the chosen value while its item is gone, without reporting a change', () => {
+    const onValueChange = vi.fn();
+    const { listbox, option, press } = setup({ defaultValue: 'ar', onValueChange });
     press('End');
-    listbox.update({ items: ITEMS.slice(0, 3) });
-    expect(listbox.state).toMatchObject({ current: null, value: null });
+    listbox.update({ items: [] });
+    expect(listbox.state).toMatchObject({ current: null, value: 'ar' });
+    listbox.update({ items: ITEMS });
+    expect(option('ar').attrs['aria-selected']).toBe(true);
+    expect(onValueChange).not.toHaveBeenCalled();
+  });
+
+  it('lets Space continue a typeahead search instead of choosing', () => {
+    const { t, listbox, list, press } = setup({ locale: 'vi' });
+    for (const c of ['t', 'i', 'ế', 'n', 'g', ' ']) press(c);
+    // A typed Space must not scroll the page either.
+    expect(t.prevented).toBe(true);
+    press('v');
+    expect(list().attrs['aria-activedescendant']).toBe('lb-option-vi');
+    expect(listbox.state.value).toBeNull();
+    t.clock.advance(500);
+    press(' ');
+    expect(listbox.state.value).toBe('vi');
+  });
+
+  it('reads the current option when the key arrives, not when the list was rendered', () => {
+    const { t, listbox, list } = setup();
+    const rendered = list();
+    t.fire(rendered, 'keydown', { key: 'ArrowDown' });
+    t.fire(rendered, 'keydown', { key: 'Enter' });
+    expect(listbox.state.value).toBe('en');
+  });
+
+  it('types AltGr characters (Ctrl+Alt on Windows) but ignores Ctrl+Alt shortcuts', () => {
+    const { list, press } = setup();
+    press('ا', { ctrlKey: true, altKey: true });
+    expect(list().attrs['aria-activedescendant']).toBe('lb-option-ar');
+    press('Home', { ctrlKey: true, altKey: true });
+    expect(list().attrs['aria-activedescendant']).toBe('lb-option-ar');
   });
 
   it('lets the caller rebind or switch off a key', () => {
@@ -165,6 +198,20 @@ describe('createListbox: multiple', () => {
     // The click made ar current, so Space unchecks it.
     press(' ');
     expect(listbox.state.checked).toEqual(['en']);
+  });
+
+  it('keeps controlled checked rows that are hidden, and reports them on the next toggle', () => {
+    const onCheckedChange = vi.fn();
+    const { t, listbox, option } = setup({ multiple: true, checked: ['en', 'ar'], onCheckedChange });
+    listbox.update({ items: ITEMS.slice(0, 3) });
+    expect(listbox.state.checked).toEqual(['en', 'ar']);
+    t.fire(option('vi'), 'click');
+    expect(onCheckedChange).toHaveBeenCalledWith(['en', 'ar', 'vi']);
+  });
+
+  it('starts from defaultChecked', () => {
+    const { option } = setup({ multiple: true, defaultChecked: ['vi'] });
+    expect(option('vi').attrs['aria-checked']).toBe(true);
   });
 });
 

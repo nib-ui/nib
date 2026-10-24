@@ -48,6 +48,11 @@ export const listboxApg: ConformanceTable = {
     }),
     row('typing a letter moves to the first option that starts with it', ['t'], { attrs: [current('vi')] }),
     row('typeahead ignores diacritics: "tie" finds "Tiếng Việt"', ['t', 'i', 'e'], { attrs: [current('vi')] }),
+    row(
+      'Space during a search is part of it: "tieng v" finds "Tiếng Việt" without choosing it',
+      ['t', 'i', 'e', 'n', 'g', ' ', 'v'],
+      { attrs: [current('vi'), { part: 'option', key: 'vi', attrs: { 'aria-selected': 'false' } }] },
+    ),
     row('typing again after a pause starts a new search', ['t', { key: 'e', wait: 600 }], { attrs: [current('en')] }),
     row(
       'multiple: Space checks the current row with aria-checked, never aria-selected',

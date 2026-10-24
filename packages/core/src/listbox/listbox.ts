@@ -42,7 +42,8 @@ export type ListboxPart = 'list' | 'option';
 type ListboxEvent =
   | { type: 'move'; to: Direction; scroll?: boolean }
   | { type: 'go'; key: Key; scroll: boolean }
-  | { type: 'choose'; key: Key };
+  /** Without a key: the option current when the event arrives. */
+  | { type: 'choose'; key?: Key };
 
 const optionId = (id: string, key: Key) => `${id}-option-${key}`;
 
@@ -59,41 +60,44 @@ export function createListbox(
   let internalChecked = [...(options.checked ?? options.defaultChecked ?? [])];
   let latest = options;
   const checkedNow = () => [...(latest.checked ?? internalChecked)];
-  const enabled = (key: Key | null) => latest.items.some((i) => i.key === key && !i.disabled);
+  const enabled = (key: Key | null | undefined) => latest.items.some((i) => i.key === key && !i.disabled);
+  const sameKeys = (a: readonly Key[], b: readonly Key[]) => a.length === b.length && a.every((k, i) => k === b[i]);
 
   return createInstance<ListboxState, ListboxEvent, ListboxPart, ListboxOptions>(
     {
       name: 'listbox',
       parts: ['list', 'option'],
       init: () => ({ current: null, value: selection.value, checked: checkedNow() }),
+      // Items may come and go (loading, filtering): the chosen value and checked rows stay as they
+      // are, even while their item is missing, and nothing is reported. Only `current` must exist.
       sync: ({ state, options: o }) => {
         latest = o;
-        const exists = (key: Key | null) => o.items.some((i) => i.key === key);
         selection.sync(o);
-        if (selection.value !== null && !exists(selection.value)) selection.choose(null);
-        internalChecked = internalChecked.filter(exists);
+        // If the caller later stops controlling the checked rows, carry on from the last ones it set.
+        if (o.checked !== undefined) internalChecked = [...o.checked];
         const next = {
-          current: exists(state.current) ? state.current : null,
+          current: o.items.some((i) => i.key === state.current) ? state.current : null,
           value: selection.value,
-          checked: checkedNow().filter(exists),
+          checked: checkedNow(),
         };
         const same =
-          next.current === state.current && next.value === state.value && next.checked.join() === state.checked.join();
+          next.current === state.current && next.value === state.value && sameKeys(next.checked, state.checked);
         return same ? state : next;
       },
       reduce: ({ state, options: o, id }, event) => {
         if (event.type === 'choose') {
-          if (!enabled(event.key)) return { state };
+          const key = event.key ?? state.current;
+          if (key === null || !enabled(key)) return { state };
           if (o.multiple) {
-            const checked = state.checked.includes(event.key)
-              ? state.checked.filter((k) => k !== event.key)
-              : [...state.checked, event.key];
+            const checked = state.checked.includes(key)
+              ? state.checked.filter((k) => k !== key)
+              : [...state.checked, key];
             if (o.checked === undefined) internalChecked = checked;
             o.onCheckedChange?.(checked);
-            return { state: { ...state, current: event.key, checked: checkedNow() } };
+            return { state: { ...state, current: key, checked: checkedNow() } };
           }
-          selection.choose(event.key);
-          return { state: { ...state, current: event.key, value: selection.value } };
+          selection.choose(key);
+          return { state: { ...state, current: key, value: selection.value } };
         }
         const current = event.type === 'go' ? event.key : move(o.items, state.current, event.to);
         if (current === null || current === state.current || !enabled(current)) return { state };
@@ -103,18 +107,23 @@ export function createListbox(
       render: ({ state, options: o, id }, name, key, send): Part => {
         if (name === 'list') {
           const keydown = (e: NibEvent): readonly Intent[] => {
-            if (e.isComposing || e.key === undefined || e.ctrlKey || e.metaKey || e.altKey) return [];
-            const action = actionFor(e.key, o.keys);
+            if (e.isComposing || e.key === undefined) return [];
+            // AltGr arrives as Ctrl+Alt on Windows: it types characters but triggers no action.
+            const altGraph = !!e.ctrlKey && !!e.altKey && !e.metaKey;
+            if (!altGraph && (e.ctrlKey || e.metaKey || e.altKey)) return [];
+            const searching = e.key === ' ' && typeahead.active();
+            const action = altGraph || searching ? undefined : actionFor(e.key, o.keys);
             if (action === 'choose') {
-              if (state.current === null) return [];
               e.preventDefault();
-              return send({ type: 'choose', key: state.current });
+              return send({ type: 'choose' });
             }
             if (action) {
               e.preventDefault();
               return send({ type: 'move', to: action });
             }
             if ([...e.key].length !== 1) return [];
+            // A typed Space would otherwise scroll the page.
+            if (e.key === ' ') e.preventDefault();
             const found = typeahead.type(e.key, o.items, state.current);
             return found === null ? [] : send({ type: 'go', key: found, scroll: true });
           };

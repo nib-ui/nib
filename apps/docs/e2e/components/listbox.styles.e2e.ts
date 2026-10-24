@@ -44,6 +44,13 @@ test.describe('listbox', () => {
     expect(await style(both, 'background-color')).toBe(INK);
   });
 
+  test('a chosen value that is also disabled keeps readable block text', async ({ page }) => {
+    const chosen = page.getByRole('option', { name: 'Tiếng Việt' });
+    await chosen.evaluate((el) => el.setAttribute('aria-disabled', 'true'));
+    expect(await style(chosen, 'background-color')).toBe(INK);
+    expect(await style(chosen, 'color')).toBe('rgb(250, 249, 245)');
+  });
+
   test('disabled options are quieter; checked rows are [x], never a block', async ({ page }) => {
     expect(await style(page.getByRole('option', { name: 'Français' }), 'color')).toBe('rgb(101, 100, 94)');
     const list = page.getByRole('listbox', { name: 'TOPICS' });

@@ -17,7 +17,8 @@ const html = `<span id="lang-label" class="docs-kicker">LANGUAGE</span>
 
 const code = {
   html,
-  react: `import { useListbox } from '@nib-ui/react/listbox';
+  react: `import { useState } from 'react';
+import { useListbox } from '@nib-ui/react/listbox';
 
 const items = [
   { key: 'en', label: 'English' },
@@ -59,6 +60,8 @@ const listbox = useListbox(() => ({ items, value: value.value, onValueChange: (v
 
   let { items } = $props();
   const listbox = createListboxStore({ id: $props.id(), items, defaultValue: 'vi' });
+  // Items that change later (loaded, filtered) are passed on; the chosen value survives them.
+  $effect(() => listbox.update({ items }));
 </script>
 
 <ul class="nib-listbox" aria-label="Language" {...$listbox.part('list')}>

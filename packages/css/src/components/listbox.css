@@ -34,6 +34,12 @@
     background: var(--nib-hover);
   }
 
+  /* Before the chosen rule: a disabled value that is still chosen keeps readable block text. */
+  .nib-listbox__option[aria-disabled='true'] {
+    color: var(--nib-on-surface-3);
+    cursor: not-allowed;
+  }
+
   /* Chosen: the cursor block. The current rule stays on it (≥ 3:1 against ink in both themes). */
   .nib-listbox__option[aria-selected='true'] {
     background: var(--nib-cursor);
@@ -59,11 +65,6 @@
     color: var(--nib-on-surface);
   }
 
-  .nib-listbox__option[aria-disabled='true'] {
-    color: var(--nib-on-surface-3);
-    cursor: not-allowed;
-  }
-
   @media (forced-colors: active) {
     /* Forced colours paint even transparent borders; the rule shows only on the current option. */
     .nib-listbox__option {
@@ -74,6 +75,10 @@
       border-inline-start-color: CanvasText;
     }
 
+    .nib-listbox__option[aria-disabled='true'] {
+      color: GrayText;
+    }
+
     .nib-listbox__option[aria-selected='true'] {
       forced-color-adjust: none;
       background: Highlight;
@@ -82,10 +87,6 @@
 
     .nib-listbox__option[aria-selected='true'][data-current] {
       border-inline-start-color: HighlightText;
-    }
-
-    .nib-listbox__option[aria-disabled='true'] {
-      color: GrayText;
     }
 
     .nib-listbox:focus-visible {
