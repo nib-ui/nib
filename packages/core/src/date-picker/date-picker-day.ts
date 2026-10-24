@@ -14,7 +14,8 @@ export type DatePickerEvent =
 interface DayContext {
   id: string;
   firstDay: number;
-  rtl: boolean;
+  /** Read when a key is pressed: on a first render the grid is not in the page to ask. */
+  rtl: () => boolean;
   disabled: boolean;
   cal: ReturnType<typeof calendarLocale>;
 }
@@ -47,7 +48,8 @@ export function renderDay(
   send: (e: DatePickerEvent) => readonly Intent[],
 ): Part {
   const range = rangeOf(state, date);
-  const selected = o.mode === 'range' ? !!range && !state.anchor : state.value === date;
+  // A range's first press is announced as chosen at once; the rest of the preview is not.
+  const selected = o.mode === 'range' ? (state.anchor ? state.anchor === date : !!range) : state.value === date;
   return {
     attrs: {
       id: `${c.id}-day-${date}`,
@@ -61,7 +63,9 @@ export function renderDay(
     },
     on: {
       keydown: (e) => {
-        const to = keyTarget(e, state.focus, c.firstDay, c.rtl);
+        // Modified keys belong to the browser and the system (Alt+Left goes back).
+        if (e.ctrlKey || e.altKey || e.metaKey) return [];
+        const to = keyTarget(e, state.focus, c.firstDay, c.rtl());
         if (to) {
           e.preventDefault();
           return send({ type: 'move', to });

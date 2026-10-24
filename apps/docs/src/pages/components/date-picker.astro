@@ -117,8 +117,10 @@ const dp = useDatePicker({ mode: 'range' });
   </p>
   <p>
     <code>mode: 'range'</code> takes two presses, in either order; the pointer previews the range between them.
-    <code>min</code>, <code>max</code> and <code>isDisabled</code> keep dates from being chosen. There is no time
-    picking and no lunar calendar. For a field that opens a calendar, put it in a popover next to the field.
+    <code>min</code>, <code>max</code> and <code>isDisabled</code> keep dates from being chosen as a date or a range
+    end; a range may still span a closed day, so check the days between in <code>onValueChange</code> when it must not.
+    There is no time picking and no lunar calendar. For a field that opens a calendar, put it in a popover next to the
+    field.
   </p>
 
   <ul slot="accessibility">

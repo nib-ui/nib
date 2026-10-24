@@ -1,12 +1,55 @@
 import { parts, type IsoDate } from './civil.ts';
 
 // Regions whose week starts on Sunday or Saturday, for engines without `Intl.Locale` week info.
-const SUNDAY = new Set(['US', 'CA', 'JP', 'KR', 'TW', 'HK', 'IL', 'IN', 'BR', 'MX', 'PH', 'SA', 'ZA', 'AU']);
+const SUNDAY = new Set([
+  'US',
+  'CA',
+  'JP',
+  'KR',
+  'TW',
+  'HK',
+  'MO',
+  'IL',
+  'IN',
+  'BR',
+  'MX',
+  'PH',
+  'SA',
+  'ZA',
+  'TH',
+  'ID',
+  'PT',
+  'PK',
+  'SG',
+  'CO',
+  'PE',
+  'VE',
+  'BD',
+  'KE',
+  'ET',
+  'NP',
+  'GT',
+  'HN',
+  'PA',
+  'PR',
+  'DO',
+  'SV',
+  'BZ',
+  'JM',
+  'ZW',
+  'MZ',
+  'BT',
+  'KH',
+  'LA',
+  'MM',
+  'MT',
+  'YE',
+]);
 const SATURDAY = new Set(['AE', 'AF', 'BH', 'DJ', 'DZ', 'EG', 'IQ', 'IR', 'JO', 'KW', 'LY', 'OM', 'QA', 'SD', 'SY']);
 
 /** The first day of the week in a locale: 1 = Monday … 7 = Sunday. */
-export function firstDayOf(locale: string): number {
-  const loc = new Intl.Locale(locale) as Intl.Locale & {
+export function firstDayOf(locale: string, LocaleCtor: typeof Intl.Locale = Intl.Locale): number {
+  const loc = new LocaleCtor(locale) as Intl.Locale & {
     getWeekInfo?: () => { firstDay: number };
     weekInfo?: { firstDay: number };
   };
@@ -24,7 +67,9 @@ export function calendarLocale(locale: string) {
     t.setUTCFullYear(y, m - 1, d);
     return t;
   };
-  const fmt = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat(locale, { ...o, timeZone: 'UTC' });
+  // Gregorian always: the grid is, even where the locale's own calendar is not (fa-IR, ar-SA, th-TH).
+  const fmt = (o: Intl.DateTimeFormatOptions) =>
+    new Intl.DateTimeFormat(locale, { ...o, timeZone: 'UTC', calendar: 'gregory' });
   const title = fmt({ year: 'numeric', month: 'long' });
   const day = fmt({ day: 'numeric' });
   const full = fmt({ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });

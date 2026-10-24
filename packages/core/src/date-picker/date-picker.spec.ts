@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { runConformance } from '../testing/conformance.ts';
 import { createTestHost } from '../testing/test-host.ts';
+import { firstDayOf } from './calendar-locale.ts';
 import { addMonths, monthGrid } from './civil.ts';
 import { datePickerApg } from './date-picker.apg.ts';
 import { createDatePicker, type DatePickerOptions } from './index.ts';
@@ -87,11 +88,77 @@ describe('createDatePicker', () => {
     const { dp } = setup({ value: '2027-02-14' });
     expect(dp.state).toMatchObject({ month: '2027-02-01', focus: '2027-02-14' });
     dp.update({ value: '2027-03-01' });
-    expect(dp.part('day', '2027-03-01').attrs['aria-selected']).toBe(true);
+    expect(dp.state).toMatchObject({ month: '2027-03-01', focus: '2027-03-01' });
+    expect(dp.part('day', '2027-03-01').attrs).toMatchObject({ 'aria-selected': true, tabindex: 0 });
+  });
+
+  it('keeps the state when a controlled range comes back as a new but equal object', () => {
+    const { dp } = setup({ mode: 'range', value: { start: '2026-10-12', end: '2026-10-16' } });
+    const before = dp.state;
+    dp.update({ value: { start: '2026-10-12', end: '2026-10-16' } });
+    expect(dp.state).toBe(before);
+  });
+
+  it('renames the month and lays out the week again when the locale changes', () => {
+    const { dp } = setup();
+    dp.update({ locale: 'vi-VN' });
+    expect(dp.state).toMatchObject({ title: 'tháng 10 năm 2026', month: '2026-10-01' });
+    expect(dp.state.weekdays[0]?.long).toBe('Thứ Hai');
+  });
+
+  it('numbers days in the Gregorian calendar even where the locale uses another (fa-IR, ar-SA, th-TH)', () => {
+    for (const locale of ['fa-IR', 'ar-SA', 'th-TH']) {
+      const { dp } = setup({ locale });
+      const cell = dp.state.weeks.flat().find((c) => c?.date === '2026-10-24');
+      expect(
+        Number(
+          cell?.text
+            .replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)))
+            .replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))),
+        ),
+      ).toBe(24);
+    }
+  });
+
+  it('leaves modified keys to the browser', () => {
+    const { key } = setup();
+    expect(key('2026-10-24', { key: 'ArrowLeft', altKey: true })).toEqual([]);
+    expect(key('2026-10-24', { key: 'Home', metaKey: true })).toEqual([]);
+  });
+
+  it('marks a range first press as chosen, and the keyboard, not an old pointer, sets the preview', () => {
+    const { t, dp, key } = setup({ mode: 'range' });
+    t.fire(dp.part('day', '2026-10-20'), 'click');
+    expect(dp.part('day', '2026-10-20').attrs['aria-selected']).toBe(true);
+    t.fire(dp.part('day', '2026-10-28'), 'pointerenter');
+    key('2026-10-20', { key: 'ArrowRight' });
+    expect(dp.part('day', '2026-10-21').attrs['data-range']).toBe('end');
+    expect(dp.part('day', '2026-10-28').attrs['data-range']).toBeUndefined();
+    t.fire(dp.part('day', '2026-10-28'), 'pointerenter');
+    t.fire(dp.part('grid'), 'pointerleave');
+    expect(dp.state.hover).toBeNull();
+  });
+
+  it('reads the reading direction when a key is pressed, not when the cell was rendered', () => {
+    const { t, dp } = setup();
+    const day = dp.part('day', '2026-10-24');
+    t.geometry.setDirection('rtl');
+    expect(t.fire(day, 'keydown', { key: 'ArrowLeft' })).toEqual([{ type: 'focus', ref: 'dp-day-2026-10-25' }]);
   });
 
   it('passes every row of its APG table', () => {
     expect(runConformance(datePickerApg, createDatePicker as never).filter((r) => r.failures.length)).toEqual([]);
+  });
+});
+
+describe('first day of the week without Intl week info', () => {
+  it('falls back by region: Sunday in the US and Thailand, Saturday in Egypt, Monday elsewhere', () => {
+    class Bare extends Intl.Locale {
+      getWeekInfo = undefined;
+      weekInfo = undefined;
+    }
+    const of = (l: string) => firstDayOf(l, Bare as unknown as typeof Intl.Locale);
+    expect([of('en-US'), of('th-TH'), of('ar-EG'), of('vi-VN'), of('en-AU')]).toEqual([7, 7, 6, 1, 1]);
   });
 });
 

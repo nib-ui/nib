@@ -28,7 +28,7 @@ export const datePickerApg: ConformanceTable = {
       attrs: [day('2026-11-07', { tabindex: '0' })],
       intents: [focused('2026-10-31'), focused('2026-11-07')],
     }),
-    row('Home and End go to the ends of the week', ['Home'], { intents: [focused('2026-10-19')] }),
+    row('Home goes to the first day of the week', ['Home'], { intents: [focused('2026-10-19')] }),
     row('End goes to the last day of the week', ['End'], { intents: [focused('2026-10-25')] }),
     row('PageUp goes back a month', ['PageUp'], { intents: [focused('2026-09-24')] }),
     row('Shift+PageUp goes back a year', [{ key: 'PageUp', shiftKey: true }], { intents: [focused('2025-10-24')] }),

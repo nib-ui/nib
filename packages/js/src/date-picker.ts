@@ -4,7 +4,7 @@
 //
 // The calendar renders itself: a header (‹ month ›) and the grid of the month. `data-mode="range"`
 // chooses a range (`data-value="2026-10-12/2026-10-20"`); `data-min`, `data-max` and
-// `data-disabled-dates` (comma-separated) limit the choice; `data-prev-label` / `data-next-label`
+// `data-disabled-dates` (comma-separated) limit the choice; `data-first-day` (1 = Monday … 7) overrides the locale's; `data-prev-label` / `data-next-label`
 // name the buttons. With `data-name`, a hidden input carries the value into a form. Choosing
 // dispatches `nib:change` (`detail.value`).
 import { createDatePicker, type DateRange, type IsoDate } from '@nib-ui/core/date-picker';
@@ -12,10 +12,15 @@ import { bind } from './bind.ts';
 import { define } from './registry.ts';
 
 const encode = (v: IsoDate | DateRange | null) => (v === null ? '' : typeof v === 'string' ? v : `${v.start}/${v.end}`);
+const ISO = /^\d{4}-\d{2}-\d{2}$/;
+// A date attribute that is not an ISO date is ignored with a warning, not turned into NaN.
+const date = (s: string | undefined) => {
+  if (s && !ISO.test(s)) console.warn('[nib] date-picker: not an ISO date (YYYY-MM-DD):', s);
+  return s && ISO.test(s) ? s : undefined;
+};
 const decode = (s: string | undefined): IsoDate | DateRange | null => {
-  if (!s) return null;
-  const [start = '', end] = s.split('/');
-  return end ? { start, end } : start;
+  const [start, end] = (s ?? '').split('/').map(date);
+  return start && end ? { start, end } : (start ?? null);
 };
 
 define('date-picker', (root, { id, locale, host }) => {
@@ -37,9 +42,10 @@ define('date-picker', (root, { id, locale, host }) => {
       mode: d['mode'] === 'range' ? 'range' : 'single',
       defaultValue: decode(d['value']),
       onValueChange: emit,
-      ...(d['min'] && { min: d['min'] }),
-      ...(d['max'] && { max: d['max'] }),
-      ...(d['today'] && { today: d['today'] }),
+      ...(date(d['min']) && { min: date(d['min']) }),
+      ...(date(d['max']) && { max: date(d['max']) }),
+      ...(date(d['today']) && { today: date(d['today']) }),
+      ...(Number(d['firstDay']) >= 1 && Number(d['firstDay']) <= 7 && { firstDay: Number(d['firstDay']) }),
       ...(closed.size && { isDisabled: (date: IsoDate) => closed.has(date) }),
       labels: { ...(d['prevLabel'] && { prev: d['prevLabel'] }), ...(d['nextLabel'] && { next: d['nextLabel'] }) },
     },

@@ -24,7 +24,10 @@ export interface DatePickerOptions {
   /** The earliest and latest dates that can be chosen; the keyboard stops at them. */
   min?: IsoDate;
   max?: IsoDate;
-  /** Dates that cannot be chosen (a closed day): focusable, struck through, `aria-disabled`. */
+  /**
+   * Dates that cannot be chosen (a closed day): focusable, struck through, `aria-disabled`. A range
+   * may still span them; check the days between in `onValueChange` if it must not.
+   */
   isDisabled?: (date: IsoDate) => boolean;
   /** Today, marked `aria-current="date"`; defaults to the clock's date in the user's time zone. */
   today?: IsoDate;
@@ -79,20 +82,30 @@ export function createDatePicker(
 ): Instance<DatePickerState, DatePickerEvent, DatePickerPart, DatePickerOptions> {
   let internal = options.defaultValue ?? null;
   const valueOf = (o: DatePickerOptions) => (o.value !== undefined ? o.value : internal);
-  const cal = calendarLocale(options.locale ?? 'en-US');
+  // Names for the current locale, rebuilt when the caller changes it.
+  let cal = { locale: '', names: calendarLocale('en-US') };
+  const namesOf = (o: DatePickerOptions) => {
+    const locale = o.locale ?? 'en-US';
+    if (cal.locale !== locale) cal = { locale, names: calendarLocale(locale) };
+    return cal.names;
+  };
   const firstDay = (o: DatePickerOptions) => o.firstDay ?? firstDayOf(o.locale ?? 'en-US');
+  const sameValue = (a: IsoDate | DateRange | null, b: IsoDate | DateRange | null) =>
+    a === b || (!!a && !!b && typeof a === 'object' && typeof b === 'object' && a.start === b.start && a.end === b.end);
 
   // Everything shown for a month; recomputed only when the month changes.
   const view = (o: DatePickerOptions, month: IsoDate) => ({
     month,
-    title: cal.title(month),
-    weekdays: cal.weekdays(firstDay(o)),
-    weeks: monthGrid(month, firstDay(o)).map((w) => w.map((date) => (date ? { date, text: cal.day(date) } : null))),
+    title: namesOf(o).title(month),
+    weekdays: namesOf(o).weekdays(firstDay(o)),
+    weeks: monthGrid(month, firstDay(o)).map((w) =>
+      w.map((date) => (date ? { date, text: namesOf(o).day(date) } : null)),
+    ),
   });
   const focusOn = (state: DatePickerState, o: DatePickerOptions, date: IsoDate): DatePickerState => {
     const focus = clamp(date, o);
     const month = monthOf(focus);
-    return { ...state, focus, ...(month === state.month ? {} : view(o, month)) };
+    return { ...state, focus, hover: null, ...(month === state.month ? {} : view(o, month)) };
   };
   const disabled = (o: DatePickerOptions, date: IsoDate) =>
     (!!o.min && date < o.min) || (!!o.max && date > o.max) || !!o.isDisabled?.(date);
@@ -108,7 +121,14 @@ export function createDatePicker(
       },
       sync: ({ state, options: o }) => {
         const value = valueOf(o);
-        const s = value === state.value ? state : { ...state, value };
+        const changed = !sameValue(value, state.value);
+        let s = changed ? { ...state, value } : state;
+        // A new locale or first day of the week: the same month, renamed and laid out again.
+        const fresh = view(o, s.month);
+        if (fresh.title !== s.title || fresh.weekdays[0]?.long !== s.weekdays[0]?.long) s = { ...s, ...fresh };
+        // A value set from outside, in another month: show it.
+        const start = changed ? startOf(value) : null;
+        if (start && monthOf(start) !== s.month) return focusOn(s, o, start);
         const focus = clamp(s.focus, o);
         return focus === s.focus ? s : focusOn(s, o, focus);
       },
@@ -143,6 +163,7 @@ export function createDatePicker(
         }
       },
       render: ({ state, options: o, id, host: h }, name, key = '', send): Part => {
+        const rtl = () => (o.dir ?? h.geometry.direction?.(`${id}-grid`)) === 'rtl';
         const labels = o.labels ?? {};
         switch (name) {
           case 'grid':
@@ -153,7 +174,8 @@ export function createDatePicker(
                 'aria-labelledby': `${id}-title`,
                 'aria-multiselectable': o.mode === 'range' || undefined,
               },
-              on: {},
+              // Leaving the grid ends a pointer's range preview.
+              on: { pointerleave: () => (state.hover ? send({ type: 'hover', date: null }) : []) },
             };
           case 'title':
             return { attrs: { id: `${id}-title`, 'aria-live': 'polite' }, on: {} };
@@ -175,10 +197,14 @@ export function createDatePicker(
           }
           case 'weekday':
             return { attrs: { abbr: state.weekdays[Number(key)]?.long }, on: {} };
-          default: {
-            const rtl = (o.dir ?? h.geometry.direction?.(`${id}-grid`)) === 'rtl';
-            return renderDay(state, o, key, { id, firstDay: firstDay(o), rtl, disabled: disabled(o, key), cal }, send);
-          }
+          default:
+            return renderDay(
+              state,
+              o,
+              key,
+              { id, firstDay: firstDay(o), rtl, disabled: disabled(o, key), cal: namesOf(o) },
+              send,
+            );
         }
       },
     },
