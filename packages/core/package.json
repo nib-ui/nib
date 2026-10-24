@@ -95,6 +95,16 @@
       "@nib-ui/source": "./src/dialog/dialog.apg.ts",
       "types": "./dist/dialog/dialog.apg.d.ts",
       "default": "./dist/dialog/dialog.apg.js"
+    },
+    "./toaster": {
+      "@nib-ui/source": "./src/toaster/index.ts",
+      "types": "./dist/toaster/index.d.ts",
+      "default": "./dist/toaster/index.js"
+    },
+    "./toaster/apg": {
+      "@nib-ui/source": "./src/toaster/toaster.apg.ts",
+      "types": "./dist/toaster/toaster.apg.d.ts",
+      "default": "./dist/toaster/toaster.apg.js"
     }
   },
   "files": [

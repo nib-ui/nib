@@ -1,0 +1,8 @@
+---
+import FixtureLayout from '../../../layouts/fixture-layout.astro';
+import ToasterSvelte from '../../../fixtures/toaster-svelte.svelte';
+---
+
+<FixtureLayout title="Toaster · Svelte fixture">
+  <ToasterSvelte client:only="svelte" />
+</FixtureLayout>

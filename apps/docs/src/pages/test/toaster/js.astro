@@ -1,0 +1,28 @@
+---
+import FixtureLayout from '../../../layouts/fixture-layout.astro';
+---
+
+<FixtureLayout title="Toaster · vanilla fixture">
+  <button type="button" class="nib-button nib-button--outline" id="notify">
+    Notify
+  </button>
+  <button type="button" class="nib-button nib-button--outline" id="save">
+    Save
+  </button>
+  <section data-nib="toaster" class="nib-toaster" id="tr"></section>
+</FixtureLayout>
+
+<script>
+  import { toast } from '@nib-ui/js/toaster';
+  import { init } from '@nib-ui/js';
+  init();
+  document.getElementById('notify')?.addEventListener('click', () =>
+    toast({
+      title: 'Added to cart',
+      body: 'Kenya Nyeri ×2',
+      tone: 'success',
+      action: { label: 'Undo', onAction: () => undefined },
+    }),
+  );
+  document.getElementById('save')?.addEventListener('click', () => toast({ title: 'Saved' }));
+</script>

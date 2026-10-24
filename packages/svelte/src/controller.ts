@@ -15,9 +15,11 @@ export interface View<S, P extends string> {
 }
 
 /** A Svelte store (`$list`) plus a way to pass new options, e.g. from an `$effect`. */
-export interface Controller<S, P extends string, O> {
+export interface Controller<S, P extends string, O, E = never> {
   subscribe(run: (view: View<S, P>) => void): () => void;
   update(options: Partial<O>): void;
+  /** Sends an event from code, e.g. a toaster's push; its intents run after the next update. */
+  send(event: E): void;
 }
 
 const client = typeof document !== 'undefined';
@@ -37,13 +39,13 @@ function svelteProps(part: Part, queue: (intents: readonly Intent[]) => void): R
  * explicitly when rendering on the server. The controller is destroyed when the last subscriber
  * leaves, which is when the component unmounts.
  */
-export function controller<S, P extends string, O extends BaseOptions>(
-  create: (options: O, host?: Host) => Instance<S, never, P, O>,
+export function controller<S, P extends string, O extends BaseOptions, E = never>(
+  create: (options: O, host?: Host) => Instance<S, NoInfer<E>, P, O>,
   options: O,
-): Controller<S, P, O> {
+): Controller<S, P, O, E> {
   // Created on the first subscriber and destroyed after the last, so nothing leaks if the store is
   // never used, and a later subscriber gets a fresh controller with the latest options.
-  let current: { instance: Instance<S, never, P, O>; unsubscribe: () => void } | undefined;
+  let current: { instance: Instance<S, E, P, O>; unsubscribe: () => void } | undefined;
   const runs = new Set<(view: View<S, P>) => void>();
   const instance = () => {
     if (!current) {
@@ -86,6 +88,10 @@ export function controller<S, P extends string, O extends BaseOptions>(
         current.instance.destroy();
         current = undefined;
       };
+    },
+    send(event) {
+      // Only to a live controller: one created here would have no subscriber to ever destroy it.
+      if (current) queue(current.instance.send(event));
     },
     update(next) {
       options = { ...options, ...next };

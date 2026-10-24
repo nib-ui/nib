@@ -50,6 +50,11 @@
       "@nib-ui/source": "./src/dialog.ts",
       "types": "./dist/dialog.d.ts",
       "default": "./dist/dialog.js"
+    },
+    "./toaster": {
+      "@nib-ui/source": "./src/toaster.ts",
+      "types": "./dist/toaster.d.ts",
+      "default": "./dist/toaster.js"
     }
   },
   "files": [

@@ -60,6 +60,11 @@
       "@nib-ui/source": "./src/dialog.ts",
       "types": "./dist/dialog.d.ts",
       "default": "./dist/dialog.js"
+    },
+    "./toaster": {
+      "@nib-ui/source": "./src/toaster.ts",
+      "types": "./dist/toaster.d.ts",
+      "default": "./dist/toaster.js"
     }
   },
   "files": [
@@ -111,7 +116,9 @@
     "./dist/menu.js",
     "./src/menu.ts",
     "./dist/dialog.js",
-    "./src/dialog.ts"
+    "./src/dialog.ts",
+    "./dist/toaster.js",
+    "./src/toaster.ts"
   ],
   "dependencies": {
     "@nib-ui/core": "workspace:*",
