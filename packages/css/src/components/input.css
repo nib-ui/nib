@@ -39,7 +39,7 @@
   }
 
   .nib-input[aria-invalid='true'] {
-    border-color: var(--nib-red);
+    border-color: var(--nib-error);
   }
 
   .nib-input:disabled {

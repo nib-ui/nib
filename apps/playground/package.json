@@ -36,8 +36,5 @@
     "@nib-ui/fonts": "workspace:*",
     "@nib-ui/js": "workspace:*",
     "@nib-ui/tokens": "workspace:*"
-  },
-  "exports": {
-    "./package.json": "./package.json"
   }
 }

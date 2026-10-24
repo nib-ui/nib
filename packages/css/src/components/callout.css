@@ -51,7 +51,7 @@
   }
 
   .nib-callout--error {
-    --nib-callout-hue: var(--nib-red);
+    --nib-callout-hue: var(--nib-error);
     --nib-callout-glyph: '⚠\FE0E  ';
   }
 

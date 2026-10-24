@@ -48,7 +48,15 @@ function render() {
 
   const found = proofMarks(colors, choices);
   const errors = found.filter((m) => m.severity === 'error').length;
-  if (summary) summary.textContent = errors ? `${errors} pairs fail` : 'Every pair passes';
+  const warnings = found.length - errors;
+  const text = [
+    errors === 0 ? 'Every pair passes' : `${errors} ${errors === 1 ? 'pair fails' : 'pairs fail'}`,
+    warnings ? `${warnings} ${warnings === 1 ? 'warning' : 'warnings'}` : '',
+  ]
+    .filter(Boolean)
+    .join(' · ');
+  // Only a changed sentence is written, so dragging a colour does not repeat it to screen readers.
+  if (summary && summary.textContent !== text) summary.textContent = text;
   marks?.replaceChildren(
     ...found.map((m) => {
       const li = document.createElement('li');

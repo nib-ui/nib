@@ -19,7 +19,7 @@ interface ContrastRule {
 // ≥ 3:1). Exempt: on-surface-4 (decorative glyphs only) and line (decorative hairlines).
 const onSurfaces = (names: string[], min: number) => names.flatMap((fg) => SURFACES.map((bg) => ({ fg, bg, min })));
 const CONTRAST_RULES: ContrastRule[] = [
-  ...onSurfaces(['on-surface', 'on-surface-2', 'on-surface-3', 'accent-text', ...HUES], TEXT),
+  ...onSurfaces(['on-surface', 'on-surface-2', 'on-surface-3', 'accent-text', 'error', ...HUES], TEXT),
   ...SYNTAX.map((fg) => ({ fg, bg: 'surface-raised', min: TEXT })),
   { fg: 'on-cursor', bg: 'cursor', min: TEXT },
   ...HUES.map((bg) => ({ fg: 'on-hue', bg, min: TEXT })),

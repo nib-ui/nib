@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 
 // Served by the docs site under /play/; the docs build copies dist there.
 export default defineConfig({
