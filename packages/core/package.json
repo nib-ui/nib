@@ -75,6 +75,16 @@
       "@nib-ui/source": "./src/tooltip/tooltip.apg.ts",
       "types": "./dist/tooltip/tooltip.apg.d.ts",
       "default": "./dist/tooltip/tooltip.apg.js"
+    },
+    "./menu": {
+      "@nib-ui/source": "./src/menu/index.ts",
+      "types": "./dist/menu/index.d.ts",
+      "default": "./dist/menu/index.js"
+    },
+    "./menu/apg": {
+      "@nib-ui/source": "./src/menu/menu.apg.ts",
+      "types": "./dist/menu/menu.apg.d.ts",
+      "default": "./dist/menu/menu.apg.js"
     }
   },
   "files": [

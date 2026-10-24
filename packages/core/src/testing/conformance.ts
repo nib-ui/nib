@@ -61,12 +61,17 @@ function runCase(c: ConformanceCase, create: (options: Record<string, unknown>, 
   try {
     // A browser focuses the element before any key reaches it; a focus handler runs first here too.
     const target = instance.part(c.target.part, c.target.key);
-    if (target.on['focus']) t.fire(target, 'focus');
+    // A popover target is opened first, as the browser runner shows it before it can take focus.
+    if (target.attrs['popover'] !== undefined && target.on['toggle']) t.fire(target, 'toggle', { newState: 'open' });
+    const openIntents = t.intents.length;
+    if (target.on['focus']) t.fire(instance.part(c.target.part, c.target.key), 'focus');
     for (const press of c.keys) {
       const { wait = 0, ...init } = typeof press === 'string' ? { key: press } : press;
       t.clock.advance(wait);
       t.fire(instance.part(c.target.part, c.target.key), 'keydown', init);
     }
+    // Opening may focus or scroll; the row's intents are those of its keys.
+    if (target.attrs['popover'] !== undefined) t.intents.splice(0, openIntents);
     const failures: string[] = [];
     for (const expected of c.expect.attrs ?? []) {
       const actual = instance.part(expected.part, expected.key).attrs;

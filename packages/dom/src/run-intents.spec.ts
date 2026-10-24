@@ -47,4 +47,15 @@ describe('runIntents', () => {
     ]);
     expect(document.activeElement?.id).toBe('b');
   });
+
+  it('shows and hides a native popover, leaving one already in that state alone', () => {
+    document.body.innerHTML = '<div id="pop" popover="auto">x</div>';
+    const pop = document.getElementById('pop') as HTMLElement;
+    expect(runIntents([{ type: 'popover', ref: 'pop', open: true }])).toEqual([]);
+    expect(pop.matches(':popover-open')).toBe(true);
+    runIntents([{ type: 'popover', ref: 'pop', open: true }]);
+    runIntents([{ type: 'popover', ref: 'pop', open: false }]);
+    expect(pop.matches(':popover-open')).toBe(false);
+    expect(runIntents([{ type: 'popover', ref: 'gone', open: true }])).toHaveLength(1);
+  });
 });

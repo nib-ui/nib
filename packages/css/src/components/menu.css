@@ -1,0 +1,104 @@
+/* Menu: a native popover of items on the overlay surface with a 1px line, no shadow. Items are rows
+   like listbox options: the current one gets the 2px accent rule and the hover fill; checkbox and
+   radio items print [x] / [ ] and (•) / ( ) in mono. Separators are 1px line-soft. The controller
+   writes its place as --nib-x / --nib-y; until placed it stays unseen. */
+@layer nib.components {
+  .nib-menu[data-placed][style] {
+    position: fixed;
+    inset: auto;
+    top: var(--nib-y);
+    /* stylelint-disable-next-line nib/no-physical-direction -- physical viewport pixels from place() */
+    left: var(--nib-x);
+  }
+
+  .nib-menu {
+    box-sizing: border-box;
+    min-inline-size: 10rem;
+    max-inline-size: min(var(--nib-max-width, 100vw), 24rem);
+    max-block-size: var(--nib-max-height, none);
+    margin: 0;
+    padding: var(--nib-space-xs) 0;
+    overflow: auto;
+    border: var(--nib-space-hairline) solid var(--nib-line);
+    background: var(--nib-surface-overlay);
+    color: var(--nib-on-surface);
+  }
+
+  .nib-menu[data-nib-popover]:popover-open:not([data-placed]) {
+    visibility: hidden;
+  }
+
+  .nib-menu:focus-visible {
+    outline: none;
+  }
+
+  .nib-menu__item {
+    display: flex;
+    align-items: center;
+    gap: var(--nib-space-sm);
+    min-block-size: var(--nib-density-control-height);
+    padding-inline: calc(var(--nib-space-sm-plus) - var(--nib-space-rule)) var(--nib-space-sm-plus);
+    border-inline-start: var(--nib-space-rule) solid transparent;
+    font: var(--nib-item-md-font-weight) var(--nib-item-md-font-size) / var(--nib-item-md-line-height)
+      var(--nib-font-mono);
+    cursor: default;
+  }
+
+  .nib-menu__item[data-current] {
+    border-inline-start-color: var(--nib-accent);
+    background: var(--nib-hover);
+  }
+
+  /* The ring of a menu with focus shows on its current item instead. */
+  .nib-menu:focus-visible .nib-menu__item[data-current] {
+    outline: var(--nib-space-rule) solid var(--nib-accent);
+    outline-offset: calc(-1 * var(--nib-space-rule));
+  }
+
+  .nib-menu__item[aria-disabled='true'] {
+    color: var(--nib-on-surface-3);
+  }
+
+  .nib-menu__item[role='menuitemcheckbox']::before {
+    content: '[ ]' / '';
+    white-space: pre;
+  }
+
+  .nib-menu__item[role='menuitemcheckbox'][aria-checked='true']::before {
+    content: '[x]' / '';
+  }
+
+  .nib-menu__item[role='menuitemradio']::before {
+    content: '( )' / '';
+    white-space: pre;
+  }
+
+  .nib-menu__item[role='menuitemradio'][aria-checked='true']::before {
+    content: '(•)' / '';
+  }
+
+  .nib-menu__separator {
+    margin-block: var(--nib-space-xs);
+    border-block-start: var(--nib-space-hairline) solid var(--nib-line-soft);
+  }
+
+  @media (pointer: coarse) {
+    .nib-menu__item {
+      min-block-size: var(--nib-space-touch-target);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .nib-menu__item {
+      border-inline-start-color: Canvas;
+    }
+
+    .nib-menu__item[data-current] {
+      border-inline-start-color: CanvasText;
+    }
+
+    .nib-menu__item[aria-disabled='true'] {
+      color: GrayText;
+    }
+  }
+}

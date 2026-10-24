@@ -17,7 +17,18 @@ const selector = (id: string, part: string, key?: string) =>
 export async function runApgCase(page: Page, row: ConformanceCase): Promise<string[]> {
   const id = String(row.options['id']);
   const target = page.locator(selector(id, row.target.part, row.target.key));
-  await target.waitFor();
+  await target.waitFor({ state: 'attached' });
+  // A popover target (a menu) is opened first, as core's runner does; it then takes focus itself.
+  await target.evaluate(
+    (el) =>
+      new Promise<void>((resolve) => {
+        if (!(el instanceof HTMLElement) || !el.hasAttribute('popover') || el.matches(':popover-open'))
+          return resolve();
+        // The controller hears the opening from the async toggle event; wait for it and a render.
+        el.addEventListener('toggle', () => requestAnimationFrame(() => resolve()), { once: true });
+        el.showPopover();
+      }),
+  );
   await target.focus();
   for (const press of row.keys) {
     const { key, wait = 0, ...mods } = typeof press === 'string' ? { key: press } : press;
