@@ -1,0 +1,13 @@
+// Importing this module registers `data-nib="<%= name %>"`; call init() to set elements up.
+import { create<%= pascal %> } from '@nib-ui/core/<%= name %>';
+import { bind } from './bind.ts';
+import { define } from './registry.ts';
+
+define('<%= name %>', (root, { id, locale, host }) => {
+  const instance = create<%= pascal %>({ id, locale }, host);
+  const unbind = bind(instance, () => [{ el: root, part: 'root' }]);
+  return () => {
+    unbind();
+    instance.destroy();
+  };
+});

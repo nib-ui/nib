@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "$id": "NibComponent",
+  "title": "Nib component",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Component name in kebab-case, e.g. status-badge.",
+      "$default": { "$source": "argv", "index": 0 },
+      "x-prompt": "Component name (kebab-case)?"
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["css", "interactive"],
+      "description": "css: a stylesheet and docs only. interactive: also a core controller and the four bindings.",
+      "x-prompt": "Kind (css or interactive)?"
+    }
+  },
+  "required": ["name", "kind"]
+}

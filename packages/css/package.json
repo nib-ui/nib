@@ -75,7 +75,8 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./nib.css": "./dist/nib.css"
+    "./nib.css": "./dist/nib.css",
+    "./components/*": "./dist/components/*"
   },
   "files": [
     "dist"

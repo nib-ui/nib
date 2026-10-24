@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "component": {
+      "factory": "./src/component/component-generator.ts",
+      "schema": "./src/component/schema.json",
+      "description": "A Nib component: CSS, docs page and matrix tests; --kind=interactive adds the controller and four bindings."
+    }
+  }
+}

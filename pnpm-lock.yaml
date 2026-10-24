@@ -175,6 +175,9 @@ importers:
       '@eslint/js':
         specifier: 10.0.1
         version: 10.0.1(eslint@10.13.0(supports-color@7.2.0))
+      '@nx/devkit':
+        specifier: 24.0.1
+        version: 24.0.1(nx@24.0.1(@swc-node/register@1.11.1(@swc/core@1.15.8(@swc/helpers@0.5.18))(@swc/types@0.1.28)(supports-color@7.2.0)(typescript@6.0.3))(@swc/core@1.15.8(@swc/helpers@0.5.18)))
       '@nx/eslint':
         specifier: 24.0.1
         version: 24.0.1(@babel/traverse@7.29.10(supports-color@7.2.0))(@swc-node/register@1.11.1(@swc/core@1.15.8(@swc/helpers@0.5.18))(@swc/types@0.1.28)(supports-color@7.2.0)(typescript@6.0.3))(@swc/core@1.15.8(@swc/helpers@0.5.18))(@zkochan/js-yaml@0.0.7)(eslint@10.13.0(supports-color@7.2.0))(nx@24.0.1(@swc-node/register@1.11.1(@swc/core@1.15.8(@swc/helpers@0.5.18))(@swc/types@0.1.28)(supports-color@7.2.0)(typescript@6.0.3))(@swc/core@1.15.8(@swc/helpers@0.5.18)))(supports-color@7.2.0)
@@ -238,6 +241,9 @@ importers:
       lint-staged:
         specifier: 17.6.0
         version: 17.6.0
+      nib:
+        specifier: workspace:@nib-ui/nx-plugin@*
+        version: link:tools/nx-plugin
       nx:
         specifier: 24.0.1
         version: 24.0.1(@swc-node/register@1.11.1(@swc/core@1.15.8(@swc/helpers@0.5.18))(@swc/types@0.1.28)(supports-color@7.2.0)(typescript@6.0.3))(@swc/core@1.15.8(@swc/helpers@0.5.18))
@@ -397,7 +403,11 @@ importers:
         specifier: workspace:*
         version: link:../../packages/tokens
 
-  tools/nx-plugin: {}
+  tools/nx-plugin:
+    dependencies:
+      '@nx/devkit':
+        specifier: 24.0.1
+        version: 24.0.1(nx@24.0.1(@swc-node/register@1.11.1(@swc/core@1.15.8(@swc/helpers@0.5.18))(@swc/types@0.1.28)(supports-color@7.2.0)(typescript@6.0.3))(@swc/core@1.15.8(@swc/helpers@0.5.18)))
 
   tools/stylelint-plugin:
     dependencies:

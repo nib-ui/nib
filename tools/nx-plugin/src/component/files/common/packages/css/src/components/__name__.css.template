@@ -1,0 +1,15 @@
+/* <%= title %>. States come from ARIA attributes (aria-current, aria-selected, aria-invalid...),
+   never from extra state classes, so the look cannot drift from the markup's meaning. */
+@layer nib.components {
+  .nib-<%= name %> {
+    color: var(--nib-on-surface);
+    font: var(--nib-body-md-font-weight) var(--nib-body-md-font-size) / var(--nib-body-md-line-height)
+      var(--nib-font-sans);
+  }
+
+  @media (forced-colors: active) {
+    .nib-<%= name %> {
+      color: CanvasText;
+    }
+  }
+}

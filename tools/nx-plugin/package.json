@@ -18,5 +18,9 @@
       "type:tool",
       "scope:private"
     ]
+  },
+  "generators": "./generators.json",
+  "dependencies": {
+    "@nx/devkit": "24.0.1"
   }
 }

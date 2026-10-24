@@ -1,0 +1,13 @@
+import { expect, test } from '@playwright/test';
+
+// The APG keyboard behaviour of the live example, key by key, through the vanilla binding.
+const PAGE = '/components/<%= name %>/';
+
+test('<%= name %> renders its root part', async ({ page }) => {
+  await page.goto(PAGE);
+  await expect(page.locator('[data-nib="<%= name %>"]')).toHaveAttribute('id', /-root$/);
+});
+
+test.fixme('<%= name %> follows its APG keyboard pattern', () => {
+  // One test per row of packages/core/src/<%= name %>/<%= name %>.apg.ts.
+});
