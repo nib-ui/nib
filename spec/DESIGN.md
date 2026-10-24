@@ -333,7 +333,7 @@ role. Lines and hover fills are alpha over ink, so they work on any of the three
 - **Accent text** (#009e84 / #007561): the accent as text: link hover, the current step label,
   a `NOW` / `LIVE` tag. ≥ 4.5:1 on all three surfaces of its theme.
 - **Cursor** (ink inversion: on-surface fill with surface-colored text, 17.5:1): a *chosen value*:
-  the selected list row, the selected option in a listbox or select, the selected
+  the single selected row of a list or table, the selected option in a listbox or select, the selected
   date, the selected table row, the selected option in an option picker, a toggle that is on
   (`aria-pressed="true"`), text selection. It is the block cursor of the page.
 
@@ -540,9 +540,11 @@ Raised fill, 1px line-soft border, optional 2px hue rule on the inline-start edg
 10px. Line 1: mono id or name · sans description · meta · spacer · tag. Line 2 (optional): mono
 detail.
 
-- **selected** (`aria-selected`): cursor block (ink inversion).
+- **selected**, single-select (`aria-selected`): cursor block (ink inversion).
+- **checked**, multi-select: `[x]` checkbox + hover fill; never a cursor block (see Table).
 - **new**: `-soft` fill + 1px full-hue border + `NEW` tag.
-- **flagged** (drawn to attention in a hue: a warning, a search match): `-soft` fill + `-border` outline.
+- **flagged** (drawn to attention in a hue: a warning, a search match): `-soft` fill + `-border`
+  outline + a tag or glyph with a word (`▲ STALE`, `MATCH`). The tint never stands alone.
 - **ghost**: transparent, 1px dashed line border, on-surface 3 text.
 
 ### Button: words first
@@ -557,12 +559,17 @@ Mono label, 28px tall (36px `lg` for page-level CTAs, 44px on touch), 1px transp
 - **destructive**: 1px red border + red text.
 - **destructive primary** (the confirm button of a destructive dialog, e.g. `DELETE PROJECT`):
   2px red border + red text. It takes the primary's place, so the view still has one 2px frame.
+- **disabled**: 45% opacity.
 
 Hierarchy is stroke weight: primary 2px → outline 1px → ghost none. Size and position do the
 rest: a landing-page CTA is `lg` (36px, 48–52px when pinned on phones), sits next to the headline,
 and is the only 2px frame in the viewport. There is no filled-button exception, on landings or
 anywhere else.
-- **disabled**: 45% opacity.
+
+**Placement.** The primary sits in its region's **action row**: the footer of a form, dialog,
+sheet or pane, aligned to the inline-end side (or next to the headline in a hero). Pressed toggles
+and option pickers live in the header or the content of the region. A primary never shares a row
+or a button group with a cursor block, because the ink block outweighs a 2px frame.
 
 Text is a verb: `ADD TO CART`, `SUBSCRIBE`, `READ MORE →`, `RUN`. An icon may sit before the word;
 the word always stays. When a control has a keyboard shortcut, print it before the word:
@@ -574,13 +581,21 @@ accessible name and a tooltip.
 
 - **Field:** mono label (on-surface 2) above, input below. Input: raised fill, 1px line border,
   36px tall, mono text, square, 2px accent focus outline. Help text in body-sm on-surface 3.
+- **Required / optional:** only optional fields are marked, with a mono `OPTIONAL` in on-surface 3
+  after the label. Required fields carry the `required` attribute and no asterisk.
 - **Error** (`aria-invalid`): red border + red mono message below: `⚠ ENTER A VALID EMAIL`.
+- **Error summary:** when a submit fails, a red callout with `role="alert"` opens the form
+  (`⚠ 2 FIELDS NEED ATTENTION`), listing each error as a link that moves focus to its field.
 - **Checkbox / radio:** native `<input>` with `appearance: none`; the glyph `[x]` / `[ ]` and
   `(•)` / `( )` is drawn by CSS beside a sans label; the whole row is clickable. Never a `<span>`
   posing as a checkbox.
 - **Option picker** (size, color, plan, quantity): a row of outline buttons; the selected one is a
   cursor block.
-- **Switch:** `<input type="checkbox" role="switch">`; CSS prints `ON` / `OFF` in mono. No sliding knob.
+- **Switch:** `<input type="checkbox" role="switch">`; CSS prints `ON` / `OFF` in mono. No sliding
+  knob. `ON` is weight 500 on-surface, `OFF` weight 400 on-surface 3, so the state reads without
+  color. The whole row (word + label) is the hit area, at least 44px tall on touch.
+- **Switch or checkbox:** a switch takes effect immediately; a checkbox is part of a set that is
+  submitted with the form, or a consent.
 - **Select:** the native `<select>`, styled within what browsers allow. A fully custom list is the
   listbox / combobox component.
 - **Search / prompt input:** may start with `❯`.
@@ -600,10 +615,18 @@ Actions go in a row of word buttons below.
 ### Table and data grid
 
 Mono header row in label (on-surface 3), 1px line under it, 1px line-soft between rows, item
-typography in cells, numbers right-aligned and tabular. Hover row gets the hover fill. The selected
-row is a cursor block; the focused cell in a data grid gets the 2px accent focus ring. No zebra
-stripes, no outer box beyond the grid line. Sort direction is shown with `↑` / `↓` beside the
-header word; row selection uses `[x]` checkboxes.
+typography in cells, numbers right-aligned and tabular. Hover row gets the hover fill. The focused
+cell in a data grid gets the 2px accent focus ring. No zebra stripes, no outer box beyond the grid
+line. Sort direction is shown with `↑` / `↓` beside the header word.
+
+Selection comes in two scales:
+
+- **Single-select** (the row open in a detail view, the row a keyboard user picked): cursor block.
+- **Multi-select**: an `[x]` checkbox column; checked rows get the hover fill, never a cursor
+  block, so a table with many checked rows does not turn into a black slab. Checking a row shows
+  the **bulk action bar** above the table: a raised row with the count and word buttons
+  (`3 SELECTED · ARCHIVE · DELETE · CLEAR`), announced in a polite live region.
+- **Flagged rows** follow the list-row rule: tint plus a tag or glyph with a word.
 
 Data grid scope for 1.0: sort, row selection, sticky header, column resize, APG grid keyboard,
 pagination, simple cell edit, row virtualisation from about 1,000 rows. Not in 1.0: grouping,
@@ -613,15 +636,16 @@ pivot, column drag, spreadsheet-style range selection.
 
 Overlay surface, 1px line border, positioned next to its trigger (flip and shift to stay in the
 viewport). The option under the keyboard or pointer is *current*: a 2px accent rule on its
-inline-start edge. The selected value is a cursor block. A command palette has no selected value,
-so only the accent rule moves. Typed
-characters filter; matched characters are on-surface, the rest on-surface 2. The command palette is
+inline-start edge plus the hover fill. The selected value is a cursor block with `✓`; when it is
+also current, the accent rule sits on the block (≥ 3:1 against ink in both themes). A command
+palette has no selected value, so only the accent rule moves. Typed characters filter; matched characters are on-surface, the rest on-surface 2. The command palette is
 a dialog holding a combobox, opened with `[⌘K]`.
 
 ### Date picker
 
 A ruled 7-column grid of mono day numbers. Today: accent-text number with a 2px accent underline.
-Selected day: cursor block. Range: cursor blocks at both ends, hover fill between. Month and day
+Selected day: cursor block. Range: cursor blocks at both ends, hover fill between. Disabled day:
+on-surface 3 with a line-through, never just a fainter gray, and `aria-disabled`. Month and day
 names come from `Intl` for the page's locale, including the first day of the week. 1.0 scope:
 single date, range, min / max, disabled dates; no time picking, no lunar calendar.
 
@@ -635,7 +659,18 @@ current one on-surface with a 2px accent underline.
 ### Dialog / drawer / sheet
 
 Native `<dialog>`; overlay surface, 1px line border, no shadow, scrim behind. Dialogs about 500px
-wide; drawers 380–420px from the inline-end side. On phones both become bottom sheets.
+wide; drawers 380–420px from the inline-end side. On phones both become bottom sheets. Actions sit
+in the footer action row; the primary (or destructive primary) is last on the inline-end side.
+
+**Destructive confirmation.** Deleting a named resource that cannot be restored (a project, a
+repository, a database) uses a type-to-confirm dialog:
+
+- a `▲ CANNOT BE UNDONE` callout in red listing what will be lost;
+- the exact string to type, in mono, with a `COPY` word button;
+- an input that receives focus when the dialog opens;
+- the destructive primary (`DELETE PROJECT`) with `aria-disabled="true"` until the input matches.
+
+Small, recoverable deletions (a row, a draft) use a plain confirmation dialog or an undo toast.
 
 ### Footer
 
@@ -719,6 +754,8 @@ stepped `steps(1, end)`.
 - Target: WCAG 2.2 AA, and every interactive component follows its WAI-ARIA APG pattern.
 - Every text color ≥ 4.5:1 on all three surfaces in both themes; accent marks ≥ 3:1. On-surface 4
   is never text.
+- A `SKIP TO CONTENT` link is the first focusable element of every page; it appears on focus
+  and moves focus to the main region.
 - Focus: 2px solid accent outline, 2px offset, square, on every interactive element. Exactly one
   focus indicator per element.
 - Color is never the only signal: words, tags, glyphs and the cursor block travel with every hue.
@@ -759,8 +796,10 @@ names; the story names live in docs and marketing only.
 | `portfolio` | Folio | follows OS | current nav item only | none or one |
 
 - **Galley (docs).** Left nav column (mono labels, current page with an accent rule), article at
-  reading width, right column for the page outline. Callouts for notes and warnings, code blocks
-  with a `COPY` word button.
+  reading width, right column for the page outline ("On this page"), where the heading being
+  read gets a 2px accent rule and on-surface text, not just a color change. Callouts for notes and
+  warnings, code blocks with a `COPY` word button that reads `COPIED ✓` for two seconds and is
+  announced politely.
 - **Ledger (dashboard).** Header + ruled panes in fixed columns + bottom dock of word controls with
   printed hotkeys. Only the pane that changed is tinted.
 - **Broadsheet (blog).** Header + article as the focal point; post list as ruled rows or tiles.

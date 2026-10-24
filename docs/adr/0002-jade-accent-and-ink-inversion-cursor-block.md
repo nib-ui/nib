@@ -19,6 +19,7 @@ color-vision deficiency (see `plans/reports/researcher-251023-accent-candidates.
   *which one is chosen* (selected row, selected option, selected date, text selection). The option under the
   keyboard in a listbox or command palette is *current*, so it gets the jade rule, not the block.
 - Ink inversion means "chosen" and is never used to make an action stand out (see ADR 9).
+- The cursor block is for single selection; multi-select uses `[x]` + hover fill (see ADR 10).
 - Syntax keyword and number colors move off teal: keyword mauve (`#a98fc0` / `#6e4f8a`), number
   ochre (`#c2a26f` / `#7d5f2c`).
 - `nib theme check` tests custom accents for contrast, CVD distance to red/green/yellow, and

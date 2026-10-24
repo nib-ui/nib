@@ -102,6 +102,11 @@ A value the user has picked and that stays picked: a selected row, option, date,
 is on, a text selection. Shown as a cursor block.
 _Avoid_: active item, current item
 
+**Checked row**:
+One of several rows picked for a bulk action in a multi-select list or table. Shown with `[x]`
+and the hover fill, never as a cursor block.
+_Avoid_: selected rows (that is single selection), highlighted rows
+
 **Flagged**:
 A row or cell drawn to attention in a hue, with a soft fill and a hue outline (a warning, a search
 match). Flagging says "look here", not "this is current" or "this is chosen".
@@ -155,6 +160,16 @@ _Avoid_: secondary button, bordered button
 A low-priority action with no frame, shown only by its word and a hover fill.
 _Avoid_: text button, link button
 
+**Action row**:
+The footer row of a form, dialog, sheet or pane that holds its actions, with the primary button on
+the inline-end side.
+_Avoid_: button bar, toolbar, footer actions
+
+**Bulk action bar**:
+The raised row that appears above a list or table while rows are checked, showing the count and
+the actions that apply to all of them.
+_Avoid_: selection toolbar, batch bar
+
 **Printed hotkey**:
 A keyboard shortcut written before a control's word, such as `[⌘↵]RUN`.
 _Avoid_: shortcut badge, kbd hint
@@ -174,6 +189,15 @@ _Avoid_: eyebrow, overline, pre-title
 A raised block with a hue rule on its leading edge that carries a note, warning, error, success
 or next step.
 _Avoid_: admonition, alert box, banner
+
+**Error summary**:
+The alert callout that opens a form after a failed submit, listing each error as a link to its
+field.
+_Avoid_: error banner, validation box
+
+**Type-to-confirm**:
+The confirmation that makes the user type a resource's exact name before a permanent deletion.
+_Avoid_: double confirm, safety prompt
 
 **Glyph**:
 A typed character that carries meaning in text, such as `❯`, `✓`, `⚠` or `·`.
