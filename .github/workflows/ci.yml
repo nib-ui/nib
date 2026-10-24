@@ -58,7 +58,7 @@ jobs:
       - uses: pnpm/action-setup@v6
       - run: pnpm install --frozen-lockfile
       - uses: nrwl/nx-set-shas@v5
-      - run: pnpm nx affected -t e2e
+      - run: pnpm nx affected -t e2e --output-style=static
       - uses: actions/upload-artifact@v7
         if: failure()
         with:

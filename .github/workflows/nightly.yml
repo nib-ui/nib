@@ -40,7 +40,7 @@ jobs:
       - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - uses: pnpm/action-setup@v6
       - run: pnpm install --frozen-lockfile
-      - run: pnpm nx run-many -t e2e --skip-nx-cache
+      - run: pnpm nx run-many -t e2e --skip-nx-cache --output-style=static
       - uses: actions/upload-artifact@v7
         if: failure()
         with:
