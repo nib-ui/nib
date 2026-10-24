@@ -8,6 +8,6 @@ test('<%= name %> renders its root part', async ({ page }) => {
   await expect(page.locator('[data-nib="<%= name %>"]')).toHaveAttribute('id', /-root$/);
 });
 
-test.fixme('<%= name %> follows its APG keyboard pattern', async () => {
+test.fixme('<%= name %> follows its APG keyboard pattern', () => {
   // One test per row of packages/core/src/<%= name %>/<%= name %>.apg.ts.
 });

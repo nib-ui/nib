@@ -33,7 +33,8 @@ export async function buildCss(outDir: string, srcDir = SRC): Promise<void> {
   writeFileSync(`${outDir}/nib.css`, LAYER_ORDER + (await bundle(`${srcDir}/nib.css`)));
   const components = existsSync(`${srcDir}/components`) ? readdirSync(`${srcDir}/components`) : [];
   for (const file of components.filter((f) => f.endsWith('.css'))) {
-    writeFileSync(`${outDir}/components/${file}`, await bundle(`${srcDir}/components/${file}`));
+    // Each file declares the order too: whichever Nib stylesheet loads first fixes it for the page.
+    writeFileSync(`${outDir}/components/${file}`, LAYER_ORDER + (await bundle(`${srcDir}/components/${file}`)));
   }
 }
 

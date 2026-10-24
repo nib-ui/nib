@@ -1,4 +1,13 @@
-import { formatFiles, generateFiles, names, updateJson, type Tree } from '@nx/devkit';
+import {
+  formatFiles,
+  generateFiles,
+  installPackagesTask,
+  names,
+  readJson,
+  updateJson,
+  type GeneratorCallback,
+  type Tree,
+} from '@nx/devkit';
 import { fileURLToPath } from 'node:url';
 
 export interface ComponentOptions {
@@ -20,12 +29,34 @@ const subpath = (source: string, built: string) => ({
  * `nx g nib:component <name> --kind=css|interactive`: everything one component needs to meet the
  * definition of done, as stubs that pass lint, typecheck, test and build before any edit.
  */
-export async function componentGenerator(tree: Tree, options: ComponentOptions): Promise<void> {
+export async function componentGenerator(tree: Tree, options: ComponentOptions): Promise<GeneratorCallback | void> {
   const { name, kind } = options;
   if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(name)) throw new Error(`"${name}" is not a kebab-case name`);
   if (tree.exists(`packages/css/src/components/${name}.css`)) throw new Error(`Component "${name}" already exists`);
 
   const interactive = kind === 'interactive';
+  // generateFiles overwrites silently, so a name such as `auto`, `index` or `testing` would replace
+  // a package's own module. Check every file and export before writing anything.
+  const files = [
+    `packages/css/src/components/${name}.css`,
+    `apps/docs/src/pages/components/${name}.astro`,
+    `apps/docs/e2e/components/${name}.e2e.ts`,
+    ...(interactive
+      ? [
+          `packages/core/src/${name}`,
+          `apps/docs/e2e/components/${name}.keyboard.e2e.ts`,
+          ...BINDINGS.map((b) => `packages/${b}/src/${name}.ts`),
+        ]
+      : []),
+  ];
+  for (const file of files) if (tree.exists(file)) throw new Error(`${file} already exists`);
+  for (const pkg of interactive ? ['core', ...BINDINGS] : []) {
+    const json = `packages/${pkg}/package.json`;
+    if (tree.exists(json) && `./${name}` in (readJson(tree, json).exports ?? {})) {
+      throw new Error(`@nib-ui/${pkg} already exports ./${name}`);
+    }
+  }
+
   const { className: pascal, propertyName: camel } = names(name);
   const title = name.charAt(0).toUpperCase() + name.slice(1).replace(/-/g, ' ');
   const vars = { name, pascal, camel, title, interactive, tmpl: '' };
@@ -46,7 +77,8 @@ export async function componentGenerator(tree: Tree, options: ComponentOptions):
     updateJson(tree, `packages/${binding}/package.json`, (pkg) => {
       pkg.exports[`./${name}`] = subpath(name, name);
       // The vanilla module registers itself on import, so bundlers must keep it.
-      if (binding === 'js') pkg.sideEffects = [...(pkg.sideEffects ?? []), `./dist/${name}.js`, `./src/${name}.ts`];
+      if (binding === 'js')
+        pkg.sideEffects = [...new Set([...(pkg.sideEffects ?? []), `./dist/${name}.js`, `./src/${name}.ts`])];
       return pkg;
     });
   }
@@ -55,6 +87,8 @@ export async function componentGenerator(tree: Tree, options: ComponentOptions):
     return pkg;
   });
   await formatFiles(tree);
+  // The docs app may have gained a workspace dependency; the lockfile must follow.
+  return () => installPackagesTask(tree);
 }
 
 export default componentGenerator;

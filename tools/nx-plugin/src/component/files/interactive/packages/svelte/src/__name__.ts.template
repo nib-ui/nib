@@ -1,7 +1,7 @@
 import { create<%= pascal %>, type <%= pascal %>Options } from '@nib-ui/core/<%= name %>';
 import { controller } from './controller.ts';
 
-/** <%= title %> for Svelte: a store of its state and spreadable attributes per part (`root`). */
-export function <%= camel %>(options: <%= pascal %>Options = {}) {
+/** <%= title %> for Svelte (named `create…Store`, since component names such as `switch` are reserved words): a store of its state and spreadable attributes per part (`root`). */
+export function create<%= pascal %>Store(options: <%= pascal %>Options = {}) {
   return controller(create<%= pascal %>, options);
 }

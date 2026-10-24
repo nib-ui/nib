@@ -71,4 +71,22 @@ describe('nib:component', () => {
     await componentGenerator(tree, { name: 'badge', kind: 'css' });
     await expect(componentGenerator(tree, { name: 'badge', kind: 'css' })).rejects.toThrow(/already exists/);
   });
+
+  it('refuses names that would overwrite files or exports the packages already have', async () => {
+    tree.write('packages/js/src/auto.ts', '// side-effect entry');
+    await expect(componentGenerator(tree, { name: 'auto', kind: 'interactive' })).rejects.toThrow(
+      /packages\/js\/src\/auto\.ts already exists/,
+    );
+    tree.write('packages/core/package.json', JSON.stringify({ exports: { './testing': './src/testing/index.ts' } }));
+    await expect(componentGenerator(tree, { name: 'testing', kind: 'interactive' })).rejects.toThrow(
+      /@nib-ui\/core already exports \.\/testing/,
+    );
+    expect(tree.read('packages/js/src/auto.ts', 'utf8')).toBe('// side-effect entry');
+  });
+
+  it('names generated functions so that reserved words such as switch stay valid', async () => {
+    await componentGenerator(tree, { name: 'switch', kind: 'interactive' });
+    expect(tree.read('packages/svelte/src/switch.ts', 'utf8')).toContain('export function createSwitchStore(');
+    expect(tree.read('apps/docs/src/pages/components/switch.astro', 'utf8')).not.toMatch(/const switch\b/);
+  });
 });

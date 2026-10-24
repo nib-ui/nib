@@ -22,7 +22,7 @@ describe('buildCss', () => {
     const out = mkdtempSync(join(tmpdir(), 'nib-css-'));
     await buildCss(out, src);
     expect(readFileSync(join(out, 'components', 'badge.css'), 'utf8')).toBe(
-      '@layer nib.components{.nib-badge{color:red}}',
+      '@layer nib.theme,nib.base,nib.components,nib.utilities;@layer nib.components{.nib-badge{color:red}}',
     );
     expect(readFileSync(join(out, 'nib.css'), 'utf8')).toContain('.nib-badge');
   });

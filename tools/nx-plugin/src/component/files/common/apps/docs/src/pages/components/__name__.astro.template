@@ -5,15 +5,15 @@ const code = {
   html: `<div class="nib-<%= name %>"<% if (interactive) { %> data-nib="<%= name %>"<% } %>><%= title %></div>`,<% if (interactive) { %>
   react: `import { use<%= pascal %> } from '@nib-ui/react/<%= name %>';
 
-const <%= camel %> = use<%= pascal %>();
-return <div className="nib-<%= name %>" {...<%= camel %>.part('root')}><%= title %></div>;`,
+const ctrl = use<%= pascal %>();
+return <div className="nib-<%= name %>" {...ctrl.part('root')}><%= title %></div>;`,
   vue: `import { use<%= pascal %> } from '@nib-ui/vue/<%= name %>';
 
-const <%= camel %> = use<%= pascal %>();
-// <div class="nib-<%= name %>" v-bind="<%= camel %>.part('root')"><%= title %></div>`,
-  svelte: `import { <%= camel %> } from '@nib-ui/svelte/<%= name %>';
+const ctrl = use<%= pascal %>();
+// <div class="nib-<%= name %>" v-bind="ctrl.part('root')"><%= title %></div>`,
+  svelte: `import { create<%= pascal %>Store } from '@nib-ui/svelte/<%= name %>';
 
-const view = <%= camel %>({ id: $props.id() });
+const view = create<%= pascal %>Store({ id: $props.id() });
 // <div class="nib-<%= name %>" {...$view.part('root')}><%= title %></div>`,<% } %>
 };
 ---
