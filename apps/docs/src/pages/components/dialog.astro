@@ -1,0 +1,166 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<div data-nib="dialog">
+  <button type="button" class="nib-button nib-button--outline" data-nib-trigger>Archive order</button>
+  <dialog class="nib-dialog" data-nib-dialog>
+    <div class="nib-dialog__header"><h2 class="nib-dialog__title" data-nib-title>Archive order #1042?</h2></div>
+    <p class="nib-dialog__body" data-nib-description>You can restore it from the archive later.</p>
+    <div class="nib-dialog__footer nib-action-row">
+      <button type="button" class="nib-button" data-nib-close>Cancel</button>
+      <button type="button" class="nib-button nib-button--primary" data-nib-close>Archive</button>
+    </div>
+  </dialog>
+</div>
+
+<div data-nib="dialog">
+  <button type="button" class="nib-button nib-button--outline" data-nib-trigger>Filters</button>
+  <dialog class="nib-dialog nib-dialog--drawer" data-nib-dialog>
+    <div class="nib-dialog__header"><h2 class="nib-dialog__title" data-nib-title>Filters</h2></div>
+    <div class="nib-dialog__body" data-nib-description>Roast, origin and price.</div>
+    <div class="nib-dialog__footer nib-action-row">
+      <button type="button" class="nib-button nib-button--primary" data-nib-close>Show 24 coffees</button>
+    </div>
+  </dialog>
+</div>`;
+
+const confirm = `<div data-nib="dialog">
+  <button type="button" class="nib-button nib-button--destructive" data-nib-trigger>Delete project</button>
+  <dialog class="nib-dialog" data-nib-dialog>
+    <div class="nib-dialog__header"><h2 class="nib-dialog__title" data-nib-title>Delete beans-prod?</h2></div>
+    <div class="nib-dialog__body">
+      <div class="nib-callout nib-callout--error" data-nib-description>
+        <p class="nib-callout__label">▲ Cannot be undone</p>
+        <p>The project, its 3 environments and 214 orders are deleted.</p>
+      </div>
+      <div class="nib-field">
+        <label class="nib-field__label" for="confirm-name">Type <code>beans-prod</code> to confirm</label>
+        <input class="nib-input" id="confirm-name" autocomplete="off" spellcheck="false" autofocus data-confirm="beans-prod" />
+      </div>
+    </div>
+    <div class="nib-dialog__footer nib-action-row">
+      <button type="button" class="nib-button" data-nib-close>Cancel</button>
+      <button type="button" class="nib-button nib-button--destructive" aria-disabled="true">Delete project</button>
+    </div>
+  </dialog>
+</div>`;
+
+const code = {
+  html: `${html}
+
+<script type="module">
+  import '@nib-ui/js/dialog';
+  import { init } from '@nib-ui/js';
+  init();
+</script>`,
+  react: `import { useDialog } from '@nib-ui/react/dialog';
+
+function ArchiveOrder() {
+  const dialog = useDialog();
+  return (
+    <>
+      <button type="button" className="nib-button nib-button--outline" {...dialog.part('trigger')}>Archive order</button>
+      <dialog className="nib-dialog" {...dialog.part('dialog')}>
+        <div className="nib-dialog__header"><h2 className="nib-dialog__title" {...dialog.part('title')}>Archive order #1042?</h2></div>
+        <p className="nib-dialog__body" {...dialog.part('description')}>You can restore it from the archive later.</p>
+        <div className="nib-dialog__footer nib-action-row">
+          <button type="button" className="nib-button" {...dialog.part('close')}>Cancel</button>
+          <button type="button" className="nib-button nib-button--primary" onClick={archive}>Archive</button>
+        </div>
+      </dialog>
+    </>
+  );
+}`,
+  vue: `<script setup>
+import { useDialog } from '@nib-ui/vue/dialog';
+
+const dialog = useDialog();
+</script>
+
+<template>
+  <button type="button" class="nib-button nib-button--outline" v-bind="dialog.part('trigger')">Archive order</button>
+  <dialog class="nib-dialog" v-bind="dialog.part('dialog')">
+    <div class="nib-dialog__header"><h2 class="nib-dialog__title" v-bind="dialog.part('title')">Archive order #1042?</h2></div>
+    <p class="nib-dialog__body" v-bind="dialog.part('description')">You can restore it from the archive later.</p>
+    <div class="nib-dialog__footer nib-action-row">
+      <button type="button" class="nib-button" v-bind="dialog.part('close')">Cancel</button>
+      <button type="button" class="nib-button nib-button--primary" @click="archive">Archive</button>
+    </div>
+  </dialog>
+</template>`,
+  svelte: `<script>
+  import { createDialogStore } from '@nib-ui/svelte/dialog';
+
+  const dialog = createDialogStore({ id: $props.id() });
+</script>
+
+<button type="button" class="nib-button nib-button--outline" {...$dialog.part('trigger')}>Archive order</button>
+<dialog class="nib-dialog" {...$dialog.part('dialog')}>
+  <div class="nib-dialog__header"><h2 class="nib-dialog__title" {...$dialog.part('title')}>Archive order #1042?</h2></div>
+  <p class="nib-dialog__body" {...$dialog.part('description')}>You can restore it from the archive later.</p>
+  <div class="nib-dialog__footer nib-action-row">
+    <button type="button" class="nib-button" {...$dialog.part('close')}>Cancel</button>
+    <button type="button" class="nib-button nib-button--primary" onclick={archive}>Archive</button>
+  </div>
+</dialog>`,
+};
+---
+
+<ComponentPage
+  title="Dialog, drawer and sheet"
+  lead="A native dialog on the overlay surface with a scrim behind; a drawer from the inline-end side; a bottom sheet on phones."
+  kind="INTERACTIVE"
+  code={code}
+>
+  <div slot="example" class="dialog-example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    <code>createDialog</code> renders a <code>trigger</code>, the <code>dialog</code> (a native{' '}
+    <code>&lt;dialog&gt;</code>
+    named by its <code>title</code> and <code>description</code>) and <code>close</code> buttons. The buttons open and
+    close it with invoker commands, so it works before any script, and the browser makes a modal dialog's page inert,
+    closes it on Escape and gives focus back. Add <code>nib-dialog--drawer</code> for a drawer; under 30rem both become
+    a bottom sheet. Put the actions in the footer with the primary last.
+  </p>
+
+  <h2>Type-to-confirm</h2>
+  <p>
+    Deleting a named resource that cannot be restored asks for its exact name: a red callout says what is lost, the name
+    is shown in mono, the field takes focus, and the destructive button stays <code>aria-disabled</code> until the field
+    matches.
+  </p>
+  <div class="docs-example" set:html={confirm} />
+
+  <ul slot="accessibility">
+    <li>
+      Follows the APG dialog pattern on the native element: <code>aria-labelledby</code> and
+      <code>aria-describedby</code> name it; a modal one keeps focus inside, Escape closes it and focus returns to the
+      opener.
+    </li>
+    <li>
+      Put <code>autofocus</code> on the element that should take focus when it opens (the field, in type-to-confirm).
+    </li>
+    <li>Keep one primary action, last in the footer; a destructive one says what it does (DELETE PROJECT).</li>
+  </ul>
+</ComponentPage>
+
+<script>
+  import '@nib-ui/js/dialog';
+  import { init } from '@nib-ui/js';
+  init();
+  // Type-to-confirm: the destructive button stays disabled until the name matches.
+  for (const input of document.querySelectorAll<HTMLInputElement>('[data-confirm]')) {
+    const button = input.closest('dialog')?.querySelector<HTMLButtonElement>('.nib-button--destructive');
+    input.addEventListener('input', () =>
+      button?.setAttribute('aria-disabled', String(input.value !== input.dataset['confirm'])),
+    );
+  }
+</script>
+
+<style>
+  .dialog-example {
+    display: flex;
+    gap: var(--nib-space-md);
+  }
+</style>

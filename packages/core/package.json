@@ -85,6 +85,16 @@
       "@nib-ui/source": "./src/menu/menu.apg.ts",
       "types": "./dist/menu/menu.apg.d.ts",
       "default": "./dist/menu/menu.apg.js"
+    },
+    "./dialog": {
+      "@nib-ui/source": "./src/dialog/index.ts",
+      "types": "./dist/dialog/index.d.ts",
+      "default": "./dist/dialog/index.js"
+    },
+    "./dialog/apg": {
+      "@nib-ui/source": "./src/dialog/dialog.apg.ts",
+      "types": "./dist/dialog/dialog.apg.d.ts",
+      "default": "./dist/dialog/dialog.apg.js"
     }
   },
   "files": [

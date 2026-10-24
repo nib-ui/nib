@@ -1,0 +1,87 @@
+/* Dialog, drawer and sheet, on the native <dialog>: the overlay surface with a 1px line, no shadow,
+   a scrim behind. A dialog is about 500px wide; `--drawer` runs the full height from the
+   inline-end side (380–420px). Under 30rem both become a bottom sheet. Actions sit in the footer
+   (nib-action-row), the primary last on the inline-end side. It rises 4px into place when it opens. */
+@layer nib.components {
+  .nib-dialog {
+    box-sizing: border-box;
+    inline-size: min(100% - 2 * var(--nib-space-lg), 31.25rem);
+    max-block-size: calc(100dvh - 2 * var(--nib-space-lg));
+    padding: 0;
+    border: var(--nib-space-hairline) solid var(--nib-line);
+    background: var(--nib-surface-overlay);
+    color: var(--nib-on-surface);
+  }
+
+  .nib-dialog[open] {
+    display: flex;
+    flex-direction: column;
+    animation: nib-reveal var(--nib-duration-reveal) var(--nib-ease-out);
+  }
+
+  .nib-dialog::backdrop {
+    background: var(--nib-scrim);
+  }
+
+  .nib-dialog__header {
+    padding: var(--nib-space-lg) var(--nib-space-lg) 0;
+  }
+
+  .nib-dialog__title {
+    margin: 0;
+    font: var(--nib-headline-md-font-weight) var(--nib-headline-md-font-size) / var(--nib-headline-md-line-height)
+      var(--nib-font-sans);
+    letter-spacing: var(--nib-headline-md-letter-spacing);
+  }
+
+  .nib-dialog__body {
+    flex: 1;
+    padding: var(--nib-space-md) var(--nib-space-lg);
+    overflow: auto;
+    color: var(--nib-on-surface-2);
+  }
+
+  .nib-dialog__footer {
+    padding: var(--nib-space-md) var(--nib-space-lg) var(--nib-space-lg);
+    border-block-start: var(--nib-space-hairline) solid var(--nib-line-soft);
+  }
+
+  .nib-dialog--drawer {
+    inline-size: clamp(min(100%, 23.75rem), 30vw, 26.25rem);
+    max-block-size: none;
+    block-size: 100dvh;
+    margin-block: 0;
+    margin-inline: auto 0;
+    border-block: 0;
+    border-inline-end: 0;
+  }
+
+  @media (width < 30rem) {
+    /* Phones: a sheet from the bottom edge, full width. */
+    .nib-dialog,
+    .nib-dialog--drawer {
+      inline-size: 100%;
+      max-inline-size: none;
+      block-size: auto;
+      max-block-size: 90dvh;
+      margin-block: auto 0;
+      margin-inline: 0;
+      border-inline: 0;
+      border-block-end: 0;
+      border-block-start: var(--nib-space-hairline) solid var(--nib-line);
+    }
+  }
+
+  @keyframes nib-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .nib-dialog {
+      border-color: CanvasText;
+    }
+  }
+}

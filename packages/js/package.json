@@ -55,6 +55,11 @@
       "@nib-ui/source": "./src/menu.ts",
       "types": "./dist/menu.d.ts",
       "default": "./dist/menu.js"
+    },
+    "./dialog": {
+      "@nib-ui/source": "./src/dialog.ts",
+      "types": "./dist/dialog.d.ts",
+      "default": "./dist/dialog.js"
     }
   },
   "files": [
@@ -104,7 +109,9 @@
     "./dist/tooltip.js",
     "./src/tooltip.ts",
     "./dist/menu.js",
-    "./src/menu.ts"
+    "./src/menu.ts",
+    "./dist/dialog.js",
+    "./src/dialog.ts"
   ],
   "dependencies": {
     "@nib-ui/core": "workspace:*",
