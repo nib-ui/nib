@@ -38,3 +38,5 @@
 @import './components/toaster.css';
 @import './components/combobox.css';
 @import './components/calendar.css';
+@import './components/hotkey.css';
+@import './components/command-palette.css';

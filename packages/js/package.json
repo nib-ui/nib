@@ -75,6 +75,11 @@
       "@nib-ui/source": "./src/date-picker.ts",
       "types": "./dist/date-picker.d.ts",
       "default": "./dist/date-picker.js"
+    },
+    "./command-palette": {
+      "@nib-ui/source": "./src/command-palette.ts",
+      "types": "./dist/command-palette.d.ts",
+      "default": "./dist/command-palette.js"
     }
   },
   "files": [
@@ -132,7 +137,9 @@
     "./dist/combobox.js",
     "./src/combobox.ts",
     "./dist/date-picker.js",
-    "./src/date-picker.ts"
+    "./src/date-picker.ts",
+    "./dist/command-palette.js",
+    "./src/command-palette.ts"
   ],
   "dependencies": {
     "@nib-ui/core": "workspace:*",

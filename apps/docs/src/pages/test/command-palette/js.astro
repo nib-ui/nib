@@ -1,0 +1,44 @@
+---
+import FixtureLayout from '../../../layouts/fixture-layout.astro';
+---
+
+<FixtureLayout title="Command palette · vanilla fixture">
+  <div id="mount"></div>
+  <p id="ran">Ran: none</p>
+</FixtureLayout>
+
+<script>
+  import { commandPaletteApg } from '@nib-ui/core/command-palette/apg';
+  import type { CommandPaletteOptions } from '@nib-ui/core/command-palette';
+  import '@nib-ui/js/command-palette';
+  import { init } from '@nib-ui/js';
+  import { caseOptions } from '../../../fixtures/apg-case.ts';
+
+  // The vanilla binding reads its options from markup, so the row is written out as markup.
+  const o = caseOptions(commandPaletteApg) as unknown as CommandPaletteOptions & { id: string };
+  const root = Object.assign(document.createElement('div'), { id: o.id, lang: o.locale ?? '' });
+  root.dataset['nib'] = 'command-palette';
+  root.innerHTML = `<button type="button" class="nib-button" data-nib-trigger><kbd class="nib-hotkey" data-nib-shortcut></kbd> Commands</button>
+<dialog class="nib-palette" data-nib-dialog>
+  <div class="nib-palette__field"><input class="nib-palette__input" data-nib-input /></div>
+  <ul class="nib-listbox nib-palette__list" data-nib-listbox></ul>
+  <p class="nib-palette__empty" data-nib-empty hidden>No matching commands</p>
+</dialog>`;
+  const list = root.querySelector('ul');
+  for (const c of o.commands) {
+    const li = Object.assign(document.createElement('li'), { className: 'nib-listbox__option', textContent: c.label });
+    li.dataset['nibOption'] = c.key;
+    if (c.hotkey) {
+      li.dataset['hotkey'] = c.hotkey;
+      li.append(' ', Object.assign(document.createElement('kbd'), { className: 'nib-hotkey' }));
+    }
+    if (c.disabled) li.dataset['disabled'] = '';
+    list?.append(li);
+  }
+  document.getElementById('mount')?.append(root);
+  root.addEventListener('nib:run', (e) => {
+    const ran = document.getElementById('ran');
+    if (ran) ran.textContent = `Ran: ${(e as CustomEvent<{ key: string }>).detail.key}`;
+  });
+  init();
+</script>

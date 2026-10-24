@@ -1,0 +1,161 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const commands = [
+  { key: 'new-order', label: 'New order', hotkey: 'mod+n' },
+  { key: 'find-customer', label: 'Find customer', hotkey: 'mod+f' },
+  { key: 'print-receipt', label: 'Print receipt', hotkey: 'mod+p' },
+  { key: 'roast-log', label: 'Open roast log' },
+  { key: 'refund', label: 'Refund last order', disabled: true },
+];
+const html = `<div data-nib="command-palette" data-label="Commands">
+  <button type="button" class="nib-button nib-button--outline" data-nib-trigger>
+    <kbd class="nib-hotkey" data-nib-shortcut></kbd> Commands
+  </button>
+  <dialog class="nib-palette" data-nib-dialog>
+    <div class="nib-palette__field">
+      <input class="nib-palette__input" placeholder="Type a command" data-nib-input />
+    </div>
+    <ul class="nib-listbox nib-palette__list" data-nib-listbox>
+${commands
+  .map(
+    (c) =>
+      `      <li class="nib-listbox__option" data-nib-option="${c.key}"${c.hotkey ? ` data-hotkey="${c.hotkey}"` : ''}${
+        c.disabled ? ' data-disabled' : ''
+      }>${c.label}${c.hotkey ? ' <kbd class="nib-hotkey"></kbd>' : ''}</li>`,
+  )
+  .join('\n')}
+    </ul>
+    <p class="nib-palette__empty" data-nib-empty hidden>No matching commands</p>
+  </dialog>
+</div>`;
+
+const code = {
+  html: `${html}
+
+<script type="module">
+  import '@nib-ui/js/command-palette';
+  import { init } from '@nib-ui/js';
+  init();
+  document.addEventListener('nib:run', (e) => console.log('run', e.detail.key));
+</script>`,
+  react: `import { useCommandPalette } from '@nib-ui/react/command-palette';
+
+function Commands({ commands, run }) {
+  const palette = useCommandPalette({ commands, onRun: run });
+  return (
+    <>
+      <button type="button" className="nib-button nib-button--outline" {...palette.part('trigger')}>
+        <kbd className="nib-hotkey">{palette.shortcut}</kbd> Commands
+      </button>
+      <dialog className="nib-palette" {...palette.part('dialog')}>
+        <div className="nib-palette__field">
+          <input className="nib-palette__input" placeholder="Type a command" {...palette.part('input')} />
+        </div>
+        <ul className="nib-listbox nib-palette__list" {...palette.part('listbox')}>
+          {commands.map((c) => (
+            <li key={c.key} className="nib-listbox__option" {...palette.part('option', c.key)}>
+              {c.label} {c.hotkey && <kbd className="nib-hotkey">{palette.print(c.hotkey)}</kbd>}
+            </li>
+          ))}
+        </ul>
+      </dialog>
+    </>
+  );
+}`,
+  vue: `<script setup>
+import { useCommandPalette } from '@nib-ui/vue/command-palette';
+
+const props = defineProps(['commands']);
+const emit = defineEmits(['run']);
+const palette = useCommandPalette(() => ({ commands: props.commands, onRun: (key) => emit('run', key) }));
+</script>
+
+<template>
+  <button type="button" class="nib-button nib-button--outline" v-bind="palette.part('trigger')">
+    <kbd class="nib-hotkey">{{ palette.shortcut }}</kbd> Commands
+  </button>
+  <dialog class="nib-palette" v-bind="palette.part('dialog')">
+    <div class="nib-palette__field">
+      <input class="nib-palette__input" placeholder="Type a command" v-bind="palette.part('input')" />
+    </div>
+    <ul class="nib-listbox nib-palette__list" v-bind="palette.part('listbox')">
+      <li v-for="c in commands" :key="c.key" class="nib-listbox__option" v-bind="palette.part('option', c.key)">
+        {{ c.label }} <kbd v-if="c.hotkey" class="nib-hotkey">{{ palette.print(c.hotkey) }}</kbd>
+      </li>
+    </ul>
+  </dialog>
+</template>`,
+  svelte: `<script>
+  import { createCommandPaletteStore } from '@nib-ui/svelte/command-palette';
+
+  let { commands, run } = $props();
+  const palette = createCommandPaletteStore({ id: $props.id(), commands, onRun: run });
+</script>
+
+<button type="button" class="nib-button nib-button--outline" {...$palette.part('trigger')}>
+  <kbd class="nib-hotkey">{palette.shortcut}</kbd> Commands
+</button>
+<dialog class="nib-palette" {...$palette.part('dialog')}>
+  <div class="nib-palette__field">
+    <input class="nib-palette__input" placeholder="Type a command" {...$palette.part('input')} />
+  </div>
+  <ul class="nib-listbox nib-palette__list" {...$palette.part('listbox')}>
+    {#each commands as c (c.key)}
+      <li class="nib-listbox__option" {...$palette.part('option', c.key)}>
+        {c.label} {#if c.hotkey}<kbd class="nib-hotkey">{palette.print(c.hotkey)}</kbd>{/if}
+      </li>
+    {/each}
+  </ul>
+</dialog>`,
+};
+---
+
+<ComponentPage
+  title="Command palette"
+  lead="Every command of an app in one list, a shortcut away: ⌘K, type a few letters, Enter."
+  kind="INTERACTIVE"
+  code={code}
+>
+  <div slot="example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    <code>createCommandPalette</code> renders a <code>trigger</code>, a modal <code>dialog</code>, its search
+    <code>input</code>, the <code>listbox</code> and an <code>option</code> per command. The binding opens it with the
+    <code>shortcut</code> (<code>mod+k</code>: ⌘K on Apple platforms, Ctrl+K elsewhere) from anywhere on the page.
+    Typing narrows the commands, ignoring case and diacritics in the page's language; the first match is current, so
+    Enter runs it. Running closes the palette, then calls <code>onRun</code>; the next opening starts with an empty
+    field.
+  </p>
+  <p>
+    A command's <code>hotkey</code> is printed next to it (<code>&lt;kbd class="nib-hotkey"&gt;</code>, in brackets,
+    hidden on touch screens) to teach it; binding it is the app's job. There is no chosen value: only the accent rule of
+    the current command moves.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      A modal <code>&lt;dialog&gt;</code> named by <code>label</code>: the browser keeps focus inside, closes it on
+      Escape and gives focus back to what had it.
+    </li>
+    <li>
+      The field follows the APG combobox pattern with a list that is always shown: <code>aria-controls</code>, the
+      current command as <code>aria-activedescendant</code>; focus never leaves the field.
+    </li>
+    <li>
+      Up and Down move through the commands and wrap; Enter runs the current one. When nothing matches,
+      <code>emptyText</code> is announced politely.
+    </li>
+    <li>
+      The trigger carries <code>aria-keyshortcuts</code>, so screen readers tell the shortcut; printed hotkeys read
+      without their brackets.
+    </li>
+  </ul>
+</ComponentPage>
+
+<script>
+  import '@nib-ui/js/command-palette';
+  import { init } from '@nib-ui/js';
+  init();
+</script>

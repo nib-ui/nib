@@ -22,3 +22,9 @@ export function documentLocale(el?: Element | null, doc: Document = document): s
 export function domHost(doc: Document = document): Host {
   return { clock: systemClock, geometry: domGeometry(doc) };
 }
+
+/** Whether the platform's command key is ⌘ (macOS, iOS, iPadOS), for shortcuts written with `mod`. */
+export function applePlatform(nav: Navigator | undefined = globalThis.navigator): boolean {
+  const data = (nav as (Navigator & { userAgentData?: { platform?: string } }) | undefined)?.userAgentData;
+  return /mac|iphone|ipad|ipod/i.test(data?.platform ?? nav?.platform ?? '');
+}

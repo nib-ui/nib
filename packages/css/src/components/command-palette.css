@@ -1,0 +1,112 @@
+/* Command palette: a modal <dialog> on the overlay surface, about 640px wide and a fifth of the way
+   down the screen, holding a search field and the always-shown list of commands (nib-listbox rows:
+   only the current one's accent rule moves; there is no chosen value). Each row's printed hotkey
+   sits on its inline-end side. Under 30rem it fills the width from the top. */
+@layer nib.components {
+  .nib-palette {
+    box-sizing: border-box;
+    inline-size: min(100% - 2 * var(--nib-space-lg), 40rem);
+    max-block-size: min(70dvh, 32rem);
+    margin-block: 20dvh auto;
+    padding: 0;
+    border: var(--nib-space-hairline) solid var(--nib-line);
+    background: var(--nib-surface-overlay);
+    color: var(--nib-on-surface);
+  }
+
+  .nib-palette[open] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nib-palette::backdrop {
+    background: var(--nib-scrim);
+  }
+
+  .nib-palette__field {
+    display: flex;
+    align-items: center;
+    gap: var(--nib-space-sm);
+    padding-inline: var(--nib-space-md);
+    border-block-end: var(--nib-space-hairline) solid var(--nib-line);
+  }
+
+  .nib-palette__field::before {
+    content: '›' / '';
+    color: var(--nib-accent-text);
+    font-family: var(--nib-font-mono);
+  }
+
+  .nib-palette__input {
+    flex: 1;
+    min-inline-size: 0;
+    min-block-size: calc(var(--nib-density-control-height) + var(--nib-space-sm));
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: var(--nib-item-md-font-weight) var(--nib-item-md-font-size) / var(--nib-item-md-line-height)
+      var(--nib-font-mono);
+    font-variant-ligatures: none;
+  }
+
+  .nib-palette__input::placeholder {
+    color: var(--nib-on-surface-3);
+    opacity: 1;
+  }
+
+  /* Focus stays in the field the whole time: the field's line turns accent instead of an outline. */
+  .nib-palette__input:focus-visible {
+    outline: none;
+  }
+
+  .nib-palette__field:has(.nib-palette__input:focus-visible) {
+    margin-block-end: calc(var(--nib-space-hairline) - var(--nib-space-rule));
+    border-block-end: var(--nib-space-rule) solid var(--nib-accent);
+  }
+
+  .nib-palette__list {
+    flex: 1;
+    padding-block: var(--nib-space-xs);
+    border: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  .nib-palette__list > [hidden] {
+    display: none;
+  }
+
+  .nib-palette__list .nib-hotkey {
+    margin-inline-start: auto;
+  }
+
+  /* On the hover fill on-surface 3 falls under 4.5:1, so it steps up to on-surface 2. */
+  .nib-palette__list [data-current] .nib-hotkey {
+    color: var(--nib-on-surface-2);
+  }
+
+  .nib-palette__empty {
+    margin: 0;
+    padding: var(--nib-space-md);
+    color: var(--nib-on-surface-2);
+  }
+
+  @media (width < 30rem) {
+    .nib-palette {
+      inline-size: 100%;
+      max-inline-size: none;
+      max-block-size: 80dvh;
+      margin-block: 0 auto;
+      border-inline: 0;
+      border-block-start: 0;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .nib-palette__field:has(.nib-palette__input:focus-visible) {
+      border-block-end-color: Highlight;
+    }
+  }
+}

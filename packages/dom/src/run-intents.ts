@@ -33,6 +33,20 @@ export function runIntents(intents: readonly Intent[], options: RunIntentsOption
         }
         break;
       }
+      case 'modal': {
+        const el = doc.getElementById(intent.ref);
+        if (!(el instanceof HTMLDialogElement)) missing.push(intent);
+        else if (el.open !== intent.open) {
+          // A dialog that is not connected, or already open non-modally, throws on showModal().
+          try {
+            if (intent.open) el.showModal();
+            else el.close();
+          } catch {
+            missing.push(intent);
+          }
+        }
+        break;
+      }
       case 'focus':
       case 'scroll-into-view': {
         const el = doc.getElementById(intent.ref);
