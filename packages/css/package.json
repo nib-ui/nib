@@ -58,7 +58,7 @@
         ]
       },
       "size-limit": {
-        "command": "node ../../scripts/css-size.ts css=dist/nib.css utilities=dist/utilities.css $(for f in dist/components/*.css; do [ -e \"$f\" ] && printf \" cssModule=%s\" \"$f\"; done)",
+        "command": "node ../../scripts/css-size.ts css=dist/nib.css utilities=dist/utilities.css $(for f in dist/components/*.css dist/presets/*.css; do [ -e \"$f\" ] && printf \" cssModule=%s\" \"$f\"; done)",
         "options": {
           "cwd": "{projectRoot}"
         },
@@ -85,7 +85,8 @@
     "./nib.css": "./dist/nib.css",
     "./components/*": "./dist/components/*",
     "./utilities.css": "./dist/utilities.css",
-    "./utilities.json": "./dist/utilities.json"
+    "./utilities.json": "./dist/utilities.json",
+    "./presets/*": "./dist/presets/*"
   },
   "files": [
     "dist"

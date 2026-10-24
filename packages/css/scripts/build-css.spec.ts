@@ -26,4 +26,17 @@ describe('buildCss', () => {
     );
     expect(readFileSync(join(out, 'nib.css'), 'utf8')).toContain('.nib-badge');
   });
+
+  it('writes each preset on its own, outside nib.css', async () => {
+    const src = mkdtempSync(join(tmpdir(), 'nib-css-src-'));
+    mkdirSync(join(src, 'presets'));
+    writeFileSync(join(src, 'presets', 'docs.css'), '@layer nib.components { .nib-galley { display: grid } }');
+    writeFileSync(join(src, 'nib.css'), '@layer nib.base { a { color: inherit } }');
+    const out = mkdtempSync(join(tmpdir(), 'nib-css-'));
+    await buildCss(out, src);
+    expect(readFileSync(join(out, 'presets', 'docs.css'), 'utf8')).toBe(
+      '@layer nib.theme,nib.base,nib.components,nib.utilities;@layer nib.components{.nib-galley{display:grid}}',
+    );
+    expect(readFileSync(join(out, 'nib.css'), 'utf8')).not.toContain('.nib-galley');
+  });
 });

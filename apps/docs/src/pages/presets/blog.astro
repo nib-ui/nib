@@ -1,0 +1,77 @@
+---
+import PresetLayout from '../../layouts/preset-layout.astro';
+// After the layout, so the preset loads after nib.css.
+import '@nib-ui/css/presets/blog.css';
+---
+
+<PresetLayout title="Broadsheet, the blog preset" html={{ 'data-theme': 'light' }}>
+  <div class="nib-broadsheet__progress" aria-hidden="true"></div>
+  <header class="nib-header">
+    <div class="nib-header__bar">
+      <a class="nib-header__brand" href="#content">
+        The Roast Journal
+      </a>
+      <nav class="nib-nav" id="broadsheet-nav" aria-label="Main">
+        <a href="#content" aria-current="page">
+          Journal
+        </a>
+        <a href="#content">Guides</a>
+        <a href="#content">About</a>
+      </nav>
+      <a class="nib-header__word nib-header__menu" href="#broadsheet-nav">
+        Menu
+      </a>
+    </div>
+  </header>
+  <main id="content" tabindex="-1">
+    <article class="nib-broadsheet__article nib-prose">
+      <p class="nib-kicker">
+        <span class="nib-tag nib-category-essay">Essay</span> · 2026-10-23 · 6 min
+      </p>
+      <h1>Why we roast on Mondays</h1>
+      <p class="nib-text-lead">
+        Fresh beans need a few days to rest before they taste their best, so Monday roasts reach you at their peak.
+      </p>
+      <p>
+        Roasting drives gas out of the bean for days afterwards. Brewed too soon, that gas pushes water away from the
+        grounds and the cup tastes thin. <a href="#more">Resting</a> lets it settle.
+      </p>
+      <h2>Three days on the shelf</h2>
+      <p>
+        A Monday roast ships on Tuesday and lands on Thursday: three days of rest, which is about where a light roast
+        opens up.
+      </p>
+      <aside aria-labelledby="more">
+        <h2 class="nib-text-xl" id="more">
+          More from the journal
+        </h2>
+        <div class="nib-row nib-row--ruled nib-category-guide">
+          <span class="nib-tag nib-category-guide">Guide</span> Dialling in a new grinder
+          <span class="nib-row__meta">2026-10-16</span>
+        </div>
+        <div class="nib-row nib-row--ruled nib-category-note">
+          <span class="nib-tag nib-category-note">Note</span> The shop is closed on 1 November
+          <span class="nib-row__meta">2026-10-12</span>
+        </div>
+        <div class="nib-row nib-row--ruled nib-category-essay">
+          <span class="nib-tag nib-category-essay">Essay</span> What decaf costs the farmer
+          <span class="nib-row__meta">2026-10-02</span>
+        </div>
+      </aside>
+    </article>
+  </main>
+</PresetLayout>
+
+<script>
+  // Reading progress: the share of the page scrolled, written where the preset's rule reads it.
+  const bar = document.querySelector<HTMLElement>('.nib-broadsheet__progress');
+  const update = () => {
+    const room = document.documentElement.scrollHeight - innerHeight;
+    // A page with nothing to scroll (yet: fonts may still be loading) shows no progress.
+    bar?.style.setProperty('--nib-progress', String(room > 0 ? Math.min(1, scrollY / room) : 0));
+  };
+  addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', update);
+  addEventListener('load', update);
+  update();
+</script>

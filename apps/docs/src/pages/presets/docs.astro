@@ -1,0 +1,102 @@
+---
+import PresetLayout from '../../layouts/preset-layout.astro';
+// After the layout, so the preset loads after nib.css.
+import '@nib-ui/css/presets/docs.css';
+---
+
+<PresetLayout title="Galley, the docs preset">
+  <header class="nib-header">
+    <div class="nib-header__bar">
+      <a class="nib-header__brand" href="#content">
+        Kettle docs
+      </a>
+      <nav class="nib-nav" id="galley-nav" aria-label="Main">
+        <a href="#content" aria-current="page">
+          Guides
+        </a>
+        <a href="#content">API</a>
+        <a href="#content">Changelog</a>
+      </nav>
+      <a class="nib-header__word nib-header__menu" href="#galley-nav">
+        Menu
+      </a>
+    </div>
+  </header>
+  <div class="nib-galley">
+    <div class="nib-galley__nav">
+      <nav class="nib-side-nav" aria-label="Guides">
+        <p class="nib-side-nav__title">Start</p>
+        <ul>
+          <li>
+            <a href="#content">Install</a>
+          </li>
+          <li>
+            <a href="#content" aria-current="page">
+              Brew a first batch
+            </a>
+          </li>
+          <li>
+            <a href="#content">Configuration</a>
+          </li>
+        </ul>
+        <p class="nib-side-nav__title">Reference</p>
+        <ul>
+          <li>
+            <a href="#content">CLI</a>
+          </li>
+          <li>
+            <a href="#content">Recipes</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <main id="content" class="nib-galley__article nib-prose" tabindex="-1">
+      <p class="nib-kicker">Guides · Start</p>
+      <h1>Brew a first batch</h1>
+      <p class="nib-text-lead">
+        Kettle turns a recipe file into a timed brew. This guide runs one from start to finish.
+      </p>
+      <h2 id="recipe">Write the recipe</h2>
+      <p>
+        A recipe names the beans, the dose and the water. Kettle reads it from <code>kettle.toml</code>.
+      </p>
+      <figure class="nib-code">
+        <figcaption class="nib-code__header">kettle.toml</figcaption>
+        <pre tabindex="0"><code><span class="nib-syntax-keyword">[brew]</span>
+beans = <span class="nib-syntax-string">"Kenya Nyeri"</span>
+dose = <span class="nib-syntax-number">18</span>
+water = <span class="nib-syntax-number">300</span></code></pre>
+      </figure>
+      <div class="nib-callout nib-callout--note">
+        <p class="nib-callout__label">Note</p>
+        <p>Doses are in grams and water in millilitres, whatever the locale.</p>
+      </div>
+      <h2 id="run">Run it</h2>
+      <p>Start the brew from the folder that holds the recipe. Kettle prints each step as it goes.</p>
+      <div class="nib-callout nib-callout--warning">
+        <p class="nib-callout__label">Warning</p>
+        <p>A dose above 30 grams overflows the standard filter.</p>
+      </div>
+      <h2 id="next">Next steps</h2>
+      <p>Tune the grind in the configuration guide, or read every recipe field in the reference.</p>
+    </main>
+    <div class="nib-galley__outline">
+      <nav class="nib-side-nav" aria-label="On this page">
+        <p class="nib-side-nav__title">On this page</p>
+        <ul>
+          <li>
+            <a href="#recipe" aria-current="location">
+              Write the recipe
+            </a>
+          </li>
+          <li>
+            <a href="#run">Run it</a>
+          </li>
+          <li>
+            <a href="#next">Next steps</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</PresetLayout>
