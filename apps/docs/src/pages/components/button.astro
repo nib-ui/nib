@@ -9,29 +9,33 @@ const html = `<!-- In the region's content: a pressed toggle is a cursor block -
 
 <!-- The action row: inline-end, one primary -->
 <div class="nib-action-row">
+  <button type="button" class="nib-button nib-button--ghost" aria-keyshortcuts="Escape">
+    <span class="nib-button__key" aria-hidden="true">[ESC]</span><span class="nib-button__word">CANCEL</span>
+  </button>
   <button type="button" class="nib-button nib-button--ghost">DISCARD</button>
   <button type="button" class="nib-button nib-button--outline" disabled>ARCHIVE</button>
   <button type="button" class="nib-button nib-button--destructive">DELETE</button>
   <button type="button" class="nib-button nib-button--outline">PREVIEW</button>
-  <button type="submit" class="nib-button nib-button--primary" aria-keyshortcuts="Meta+Enter">
-    <span class="nib-button__key" aria-hidden="true">[⌘↵]</span><span class="nib-button__word">RUN</span>
-  </button>
+  <button type="submit" class="nib-button nib-button--primary">SAVE</button>
 </div>`;
 
 const code = {
   html,
-  react: `<button type="submit" className="nib-button nib-button--primary" aria-keyshortcuts="Meta+Enter">
-  <span className="nib-button__key" aria-hidden="true">[⌘↵]</span>
-  <span className="nib-button__word">RUN</span>
-</button>`,
-  vue: `<button type="submit" class="nib-button nib-button--primary" aria-keyshortcuts="Meta+Enter">
-  <span class="nib-button__key" aria-hidden="true">[⌘↵]</span>
-  <span class="nib-button__word">RUN</span>
-</button>`,
-  svelte: `<button type="submit" class="nib-button nib-button--primary" aria-keyshortcuts="Meta+Enter">
-  <span class="nib-button__key" aria-hidden="true">[⌘↵]</span>
-  <span class="nib-button__word">RUN</span>
-</button>`,
+  react: `<button type="button" className="nib-button nib-button--ghost" aria-keyshortcuts="Escape">
+  <span className="nib-button__key" aria-hidden="true">[ESC]</span>
+  <span className="nib-button__word">CANCEL</span>
+</button>
+<button type="submit" className="nib-button nib-button--primary">SAVE</button>`,
+  vue: `<button type="button" class="nib-button nib-button--ghost" aria-keyshortcuts="Escape">
+  <span class="nib-button__key" aria-hidden="true">[ESC]</span>
+  <span class="nib-button__word">CANCEL</span>
+</button>
+<button type="submit" class="nib-button nib-button--primary">SAVE</button>`,
+  svelte: `<button type="button" class="nib-button nib-button--ghost" aria-keyshortcuts="Escape">
+  <span class="nib-button__key" aria-hidden="true">[ESC]</span>
+  <span class="nib-button__word">CANCEL</span>
+</button>
+<button type="submit" class="nib-button nib-button--primary">SAVE</button>`,
 };
 ---
 
@@ -62,7 +66,8 @@ const code = {
       <code>DELETE PROJECT</code>). It takes the primary's place, so the view still has one 2px frame.
     </li>
     <li>
-      <code>nib-button--lg</code>: 36px, for page-level calls to action. On touch screens every button is 44px.
+      <code>nib-button--lg</code>: 36px, for page-level calls to action. On touch screens every button is at least 44px
+      and the primary 48px.
     </li>
   </ul>
   <p>
@@ -71,7 +76,7 @@ const code = {
     pickers live in the header or content; a primary never shares a row with a cursor block.
   </p>
   <p>
-    Text is a verb (<code>RUN</code>, <code>ADD TO CART</code>). An icon may sit before the word; the word stays. Print
+    Text is a verb (<code>SAVE</code>, <code>ADD TO CART</code>). An icon may sit before the word; the word stays. Print
     a keyboard shortcut before the word in <code>nib-button__key</code>, and declare it with
     <code>aria-keyshortcuts</code>.
   </p>
@@ -86,7 +91,9 @@ const code = {
     </li>
     <li>
       The printed shortcut is <code>aria-hidden</code>; <code>aria-keyshortcuts</code> carries it to assistive
-      technology. Shortcuts need a modifier key, or they fire on speech input (WCAG 2.1.4).
+      technology. Write it per platform (<code>[⌘↵]</code> / <code>Meta+Enter</code> on macOS,
+      <code>[CTRL↵]</code> / <code>Control+Enter</code> elsewhere). A single printable character needs a modifier, or it
+      fires on speech input (WCAG 2.1.4); keys such as Escape are fine alone.
     </li>
     <li>
       Prefer <code>disabled</code> on native buttons; use <code>aria-disabled="true"</code> to keep it focusable.

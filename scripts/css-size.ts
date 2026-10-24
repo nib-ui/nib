@@ -7,11 +7,19 @@ import { gzipSync } from 'node:zlib';
 const budgets: Record<string, string> = JSON.parse(
   readFileSync(new URL('../size-budgets.json', import.meta.url), 'utf8'),
 );
-const bytes = (size: string) => Number.parseFloat(size) * (size.endsWith('kB') ? 1000 : 1);
+// The units size-limit accepts: B, kB (1000), KiB (1024); case-insensitive "kb" is read as kB.
+const UNITS: Record<string, number> = { b: 1, kb: 1000, kib: 1024 };
+const bytes = (size: string) => {
+  const match = /^\s*([\d.]+)\s*([a-z]*)\s*$/i.exec(size);
+  const unit = UNITS[(match?.[2] || 'b').toLowerCase()];
+  if (!match || unit === undefined) throw new Error(`Cannot read the size "${size}"`);
+  return Number.parseFloat(match[1] ?? '') * unit;
+};
 
 let over = 0;
 for (const arg of process.argv.slice(2)) {
-  const [budget = '', file = ''] = arg.split('=');
+  const at = arg.indexOf('=');
+  const [budget, file] = [arg.slice(0, at), arg.slice(at + 1)];
   const limit = budgets[budget];
   if (!limit) throw new Error(`Unknown budget "${budget}" for ${file}`);
   const size = gzipSync(readFileSync(file), { level: 9 }).length;

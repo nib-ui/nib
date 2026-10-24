@@ -23,7 +23,7 @@
     transition: background-color var(--nib-duration-hover) var(--nib-ease-out);
   }
 
-  .nib-button:hover {
+  .nib-button:hover:not(:disabled, [aria-disabled='true'], [aria-pressed='true']) {
     background: var(--nib-hover);
   }
 
@@ -73,11 +73,6 @@
     cursor: not-allowed;
   }
 
-  .nib-button:disabled:hover,
-  .nib-button[aria-disabled='true']:hover {
-    background: transparent;
-  }
-
   .nib-button--lg {
     block-size: var(--nib-space-control-height-lg);
     padding-inline: calc(var(--nib-space-md) + var(--nib-space-hairline));
@@ -87,11 +82,15 @@
     padding-inline: var(--nib-space-md);
   }
 
-  /* Touch screens: every button is a 44px target. */
+  /* Touch screens: every button is a 44px target, the primary 48px. */
   @media (pointer: coarse) {
     .nib-button {
       min-block-size: var(--nib-space-touch-target);
       min-inline-size: var(--nib-space-touch-target);
+    }
+
+    .nib-button--primary {
+      min-block-size: var(--nib-space-touch-target-primary);
     }
   }
 
@@ -133,6 +132,13 @@
       opacity: 1;
       border-color: GrayText;
       color: GrayText;
+    }
+
+    /* A disabled toggle that is on: still a block, in the disabled system colours. */
+    .nib-button[aria-pressed='true']:is(:disabled, [aria-disabled='true']) {
+      border-color: GrayText;
+      background: GrayText;
+      color: Canvas;
     }
   }
 }
