@@ -30,7 +30,7 @@ Framework-agnostic CSS and headless components for docs, dashboards and develope
 
 ## Planned packages
 
-`@nib-ui/tokens` · `@nib-ui/css` · `@nib-ui/js` · `@nib-ui/react` · `@nib-ui/vue` ·
+`@nib-ui/tokens` · `@nib-ui/css` · `@nib-ui/core` · `@nib-ui/js` · `@nib-ui/react` · `@nib-ui/vue` ·
 `@nib-ui/svelte` · `@nib-ui/cli` · `@nib-ui/fonts` · `@nib-ui/icons`
 
 ## License
