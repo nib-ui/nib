@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { bundleAsync } from 'lightningcss';
+import { buildUtilities } from './build-utilities.ts';
 
 const SRC = fileURLToPath(new URL('../src', import.meta.url));
 const require = createRequire(import.meta.url);
@@ -39,5 +40,7 @@ export async function buildCss(outDir: string, srcDir = SRC): Promise<void> {
 }
 
 if (import.meta.main) {
-  await buildCss(fileURLToPath(new URL('../dist/', import.meta.url)));
+  const dist = fileURLToPath(new URL('../dist/', import.meta.url));
+  await buildCss(dist);
+  buildUtilities(dist);
 }
