@@ -22,7 +22,7 @@ const GROUPS: NavGroup[] = [
     ],
   },
   {
-    title: 'Components',
+    title: 'Interactive and form',
     pages: [
       { slug: 'button', title: 'Button', lead: 'A mono verb; hierarchy by stroke weight.' },
       { slug: 'forms', title: 'Forms', lead: 'Fields, glyph checkboxes, switches and the error summary.' },

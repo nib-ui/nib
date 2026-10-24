@@ -48,34 +48,43 @@ const path = Astro.url.pathname;
     <SiteHeader />
     <div class="nib-with-side docs-shell">
       <div class="docs-side">
-        <details class="docs-contents" open>
-          <summary class="nib-side-nav__title">{t.contents}</summary>
-          <nav class="nib-side-nav" aria-label={t.docsNav}>
-            {navigation().map((group) => (
-              <>
-                <p class="nib-side-nav__title">{group.title}</p>
-                <ul>
-                  {group.pages.map((page) => (
-                    <li>
-                      <a href={href(page.slug)} aria-current={path === href(page.slug) ? 'page' : undefined}>
-                        {page.title}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ))}
-          </nav>
-        </details>
-        <PageOutline />
+        <div class="docs-side__inner">
+          <PageOutline />
+          <details class="docs-contents" open>
+            <summary class="nib-side-nav__title">{t.contents}</summary>
+            <nav class="nib-side-nav" aria-label={t.docsNav}>
+              {navigation().map((group) => (
+                <>
+                  <p class="nib-side-nav__title">{group.title}</p>
+                  <ul role="list">
+                    {group.pages.map((page) => (
+                      <li>
+                        <a href={href(page.slug)} aria-current={path === href(page.slug) ? 'page' : undefined}>
+                          {page.title}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ))}
+            </nav>
+          </details>
+        </div>
       </div>
       <main id="content" class="nib-with-side__main" tabindex="-1">
         <slot />
       </main>
     </div>
     <script is:inline>
-      // On narrow screens the side column sits above the page: start with its contents closed.
-      if (matchMedia('(width < 48rem)').matches) document.querySelector('.docs-contents')?.removeAttribute('open');
+      // On narrow screens the side column sits above the page: its contents start closed. Widening
+      // the window opens them again, since the wide layout has no CONTENTS toggle.
+      (() => {
+        const narrow = matchMedia('(width < 48rem)');
+        const contents = document.querySelector('.docs-contents');
+        const apply = () => contents && (contents.open = !narrow.matches);
+        apply();
+        narrow.addEventListener('change', apply);
+      })();
     </script>
   </body>
 </html>

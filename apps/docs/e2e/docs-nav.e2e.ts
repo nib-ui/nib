@@ -19,10 +19,10 @@ test.describe('docs navigation', () => {
     }
     await page.goto(PAGES[0] ?? '/');
     await expect(side.locator(`a[href="${PAGES[0]}"]`)).toHaveAttribute('aria-current', 'page');
-    await expect(page.getByRole('list', { name: 'Site' }).getByRole('link', { name: 'Components' })).toHaveAttribute(
-      'aria-current',
-      'page',
-    );
+    // On a page inside the section, the section link says "current section", not "current page".
+    await expect(
+      page.getByRole('navigation', { name: 'Site' }).getByRole('link', { name: 'Components' }),
+    ).toHaveAttribute('aria-current', 'true');
   });
 
   test('"On this page" lists the h2 headings and marks the one being read', async ({ page }) => {
@@ -46,14 +46,34 @@ test.describe('docs navigation', () => {
     await expect(page.getByRole('button', { name: 'Switch to comfortable density' })).toBeVisible();
   });
 
-  test('on a phone the contents fold under CONTENTS', async ({ page }) => {
+  test('on a phone the page takes the full width, the contents fold above it, and nothing scrolls sideways', async ({
+    page,
+  }) => {
     await page.setViewportSize({ width: 360, height: 800 });
     await page.goto('/components/base/');
     const side = page.getByRole('navigation', { name: 'Docs' });
     await expect(side).toBeHidden();
-    await page.getByText('Contents', { exact: true }).click();
+    const main = await page.getByRole('main').boundingBox();
+    const column = await page.locator('.docs-side').boundingBox();
+    expect(main?.width).toBeGreaterThan(300);
+    expect(column?.y ?? 0).toBeLessThan(main?.y ?? 0);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(360);
+    await page.locator('.docs-contents > summary').click();
+    await expect(side).toBeVisible();
+    // Widening the window brings the navigation back beside the page.
+    await page.locator('.docs-contents > summary').click();
+    await page.setViewportSize({ width: 1280, height: 800 });
     await expect(side).toBeVisible();
   });
+
+  for (const width of [360, 1280]) {
+    test(`the shell at ${width}px looks right`, async ({ page }) => {
+      await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'reduce' });
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/components/base/');
+      await expect(page).toHaveScreenshot(`shell-${width}.png`);
+    });
+  }
 
   for (const theme of ['light', 'dark'] as const) {
     test(`the shell pages have no axe violations in the ${theme} theme`, async ({ page }) => {

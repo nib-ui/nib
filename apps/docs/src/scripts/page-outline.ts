@@ -13,8 +13,14 @@ const slug = (text: string) =>
     .replace(/\s+/g, '-');
 
 if (outline && headings.length > 1) {
-  const links = headings.map((h) => {
-    h.id ||= slug(h.textContent ?? '');
+  const links = headings.map((h, i) => {
+    if (!h.id) {
+      // Unique, and never empty (a heading in a script without ASCII letters slugs to nothing).
+      const base = slug(h.textContent ?? '') || `section-${i + 1}`;
+      let id = base;
+      for (let n = 2; document.getElementById(id); n++) id = `${base}-${n}`;
+      h.id = id;
+    }
     return Object.assign(document.createElement('a'), { href: `#${h.id}`, textContent: h.textContent });
   });
   outline.querySelector('ul')?.replaceChildren(
@@ -28,7 +34,9 @@ if (outline && headings.length > 1) {
 
   const update = () => {
     const line = innerHeight / 5;
-    const atBottom = innerHeight + scrollY >= document.documentElement.scrollHeight - 2;
+    const page = document.documentElement;
+    const scrolls = page.scrollHeight > innerHeight + 2;
+    const atBottom = scrolls && innerHeight + scrollY >= page.scrollHeight - 2;
     let current = 0;
     headings.forEach((h, i) => {
       if (h.getBoundingClientRect().top <= line) current = i;
@@ -39,6 +47,8 @@ if (outline && headings.length > 1) {
       else a.removeAttribute('aria-current');
     });
   };
+  // Font loading and the density toggle move headings without a scroll.
+  new ResizeObserver(update).observe(document.body);
   addEventListener('scroll', update, { passive: true });
   addEventListener('resize', update);
   update();

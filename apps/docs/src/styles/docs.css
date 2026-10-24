@@ -49,8 +49,8 @@
     border-block-start: 0;
   }
 
-  .docs-side {
-    align-self: flex-start;
+  /* The column runs the full height (so its rule does); its contents stick under the header. */
+  .docs-side__inner {
     position: sticky;
     inset-block-start: var(--nib-space-header-height);
     max-block-size: calc(100dvh - var(--nib-space-header-height));
@@ -61,11 +61,19 @@
     display: none;
   }
 
-  /* Narrow: the side column wraps above the page and its contents fold under CONTENTS. */
+  /* Narrow: the side column takes its own row above the page and folds under CONTENTS. */
   @media (width < 48rem) {
     .docs-side {
+      flex-basis: 100%;
+    }
+
+    .docs-side__inner {
       position: static;
       max-block-size: none;
+    }
+
+    .docs-search {
+      display: none;
     }
 
     .docs-contents > summary {
@@ -76,7 +84,6 @@
   }
 
   main {
-    min-inline-size: 0;
     padding: var(--nib-space-xl) var(--nib-space-lg);
   }
 
