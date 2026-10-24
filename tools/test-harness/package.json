@@ -1,7 +1,7 @@
 {
   "name": "@nib-ui/test-harness",
   "version": "0.0.0",
-  "description": "Shared test harness: theme \u00d7 density \u00d7 language matrix, axe, Playwright and Vitest browser presets, size budgets",
+  "description": "Shared test harness: theme × density × language matrix, axe, Playwright and Vitest browser presets, size budgets",
   "license": "MIT",
   "private": true,
   "type": "module",
@@ -11,6 +11,11 @@
       "@nib-ui/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./browser": {
+      "@nib-ui/source": "./src/browser.ts",
+      "types": "./dist/browser.d.ts",
+      "default": "./dist/browser.js"
     }
   },
   "nx": {

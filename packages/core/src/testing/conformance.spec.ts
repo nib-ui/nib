@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createList } from '../kernel/list.fixture.ts';
+import { createTestList as createList } from './test-list.ts';
 import { runConformance, type ConformanceTable } from './conformance.ts';
 
 const items = [{ key: 'a' }, { key: 'b', disabled: true }, { key: 'c' }];

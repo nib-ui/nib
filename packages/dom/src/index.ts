@@ -3,3 +3,4 @@ export { runIntents, type RunIntentsOptions } from './run-intents.ts';
 export { toNibEvent } from './to-nib-event.ts';
 export { uniqueId } from './unique-id.ts';
 export { domGeometry } from './dom-geometry.ts';
+export { documentLocale, domAttrs, domHost } from './binding-helpers.ts';

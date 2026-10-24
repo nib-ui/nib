@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { NibError } from '../nib-error.ts';
 import { createTestHost } from '../testing/test-host.ts';
-import { createList } from './list.fixture.ts';
+import { createTestList as createList } from '../testing/test-list.ts';
 
 const items = [{ key: 'a' }, { key: 'b' }, { key: 'c' }];
 
