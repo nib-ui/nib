@@ -244,7 +244,11 @@ importers:
 
   packages/vue: {}
 
-  tools/color-engine: {}
+  tools/color-engine:
+    dependencies:
+      '@nib-ui/tokens':
+        specifier: workspace:*
+        version: link:../../packages/tokens
 
   tools/nx-plugin: {}
 

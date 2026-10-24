@@ -47,10 +47,10 @@ colors:
   accent-text-light: "#007561"
   cursor-light: "#141413"
   on-cursor-light: "#faf9f5"
-  blue-light: "#2a60d6"
-  cyan-light: "#156f93"
-  green-light: "#537126"
-  magenta-light: "#8c46bb"
+  blue-light: "#255ad0"
+  cyan-light: "#09698d"
+  green-light: "#4e6b20"
+  magenta-light: "#8741b6"
   yellow-light: "#7a5d00"
   red-light: "#a04545"
   error-light: "#a04545"
@@ -351,10 +351,10 @@ the hue (soft: dark 11% / light 8%; border: dark 36% / light 35%).
 
 | Hue | Dark | Light |
 |---|---|---|
-| blue | #82aaff | #2a60d6 |
-| cyan | #89ddff | #156f93 |
-| green | #c3e88d | #537126 |
-| magenta | #c792ea | #8c46bb |
+| blue | #82aaff | #255ad0 |
+| cyan | #89ddff | #09698d |
+| green | #c3e88d | #4e6b20 |
+| magenta | #c792ea | #8741b6 |
 | yellow | #e5c07b | #7a5d00 |
 | red | #e08f8f | #a04545 |
 
