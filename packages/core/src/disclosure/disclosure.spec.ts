@@ -84,6 +84,30 @@ describe('createAccordion', () => {
     expect(a.part('panel', 'care').attrs['hidden']).toBeUndefined();
   });
 
+  it('locks the last open section that still exists, whatever the value still names', () => {
+    const { a, click } = accordion({ collapsible: false, defaultValue: ['ship'] });
+    a.update({ items: [{ key: 'care' }, { key: 'ship' }] });
+    expect(a.part('trigger', 'ship').attrs['aria-disabled']).toBe(true);
+    a.update({ items: [{ key: 'care' }] });
+    click('care');
+    expect(a.state.value).toEqual(['care']);
+    expect(a.part('trigger', 'care').attrs['aria-disabled']).toBe(true);
+  });
+
+  it('keeps one section open when multiple is switched off', () => {
+    const { a, click } = accordion({ multiple: true });
+    click('ship');
+    click('care');
+    a.update({ multiple: false });
+    expect(a.state.value).toEqual(['care']);
+  });
+
+  it('leaves an arrow that moves nowhere to the browser', () => {
+    const { t, a } = accordion({ items: [{ key: 'only' }] });
+    t.fire(a.part('trigger', 'only'), 'keydown', { key: 'ArrowDown' });
+    expect(t.prevented).toBe(false);
+  });
+
   it('leaves modified arrows to the browser', () => {
     const { t, a } = accordion();
     expect(t.fire(a.part('trigger', 'ship'), 'keydown', { key: 'ArrowDown', altKey: true })).toEqual([]);

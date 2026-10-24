@@ -1,7 +1,7 @@
 /* Disclosure and accordion. The trigger is a mono label button with ▸ (closed) or ▾ (open); the
    glyph mirrors under right-to-left and has empty alt text, since aria-expanded says the state.
-   An accordion stacks its sections between 1px lines. A panel that opens rises 4px into place
-   (180ms; still under reduced motion). */
+   An accordion stacks its sections between 1px lines. A panel rises 4px into place when it
+   appears (the reveal duration, which reduced motion makes 0), including on first paint. */
 @layer nib.components {
   @keyframes nib-reveal {
     from {
@@ -27,9 +27,10 @@
     cursor: pointer;
   }
 
+  /* The glyph cell plus the gap is 16px, which the accordion panel indents by to line up. */
   .nib-disclosure__trigger::before {
     flex: none;
-    inline-size: 1ch;
+    inline-size: var(--nib-space-sm);
     color: var(--nib-on-surface-3);
     content: '▸' / '';
   }
@@ -52,6 +53,10 @@
     cursor: not-allowed;
   }
 
+  .nib-disclosure__panel[hidden] {
+    display: none;
+  }
+
   .nib-disclosure__panel {
     padding-block: var(--nib-space-xs) var(--nib-space-md);
     color: var(--nib-on-surface-2);
@@ -72,22 +77,34 @@
     margin: 0;
   }
 
-  .nib-accordion .nib-disclosure__trigger {
+  /* Child selectors: a disclosure nested in a panel keeps its own look. */
+  .nib-accordion__heading > .nib-disclosure__trigger {
     inline-size: 100%;
     padding-inline: var(--nib-space-xs);
   }
 
-  .nib-accordion .nib-disclosure__trigger:hover {
+  .nib-accordion__heading > .nib-disclosure__trigger:hover:not([aria-disabled='true']) {
     background: var(--nib-hover);
   }
 
-  .nib-accordion .nib-disclosure__panel {
-    padding-inline: calc(var(--nib-space-xs) + 1ch + var(--nib-space-sm)) var(--nib-space-xs);
+  .nib-accordion__item > .nib-disclosure__panel {
+    padding-inline: calc(var(--nib-space-xs) + var(--nib-space-lg)) var(--nib-space-xs);
   }
 
   @media (pointer: coarse) {
     .nib-disclosure__trigger {
       min-block-size: var(--nib-space-touch-target);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .nib-disclosure__trigger {
+      background: Canvas;
+      color: ButtonText;
+    }
+
+    .nib-disclosure__trigger[aria-disabled='true'][aria-expanded='false'] {
+      color: GrayText;
     }
   }
 }

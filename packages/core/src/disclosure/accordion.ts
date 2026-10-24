@@ -34,6 +34,9 @@ type AccordionEvent = { type: 'toggle'; key: Key };
 
 const KEYS: Readonly<Record<string, Direction>> = { ArrowDown: 'next', ArrowUp: 'prev', Home: 'first', End: 'last' };
 const same = (a: readonly Key[], b: readonly Key[]) => a.length === b.length && a.every((k, i) => k === b[i]);
+/** The open keys that still have a section; the value itself keeps the rest, like listbox. */
+const live = (value: readonly Key[], items: readonly AccordionItem[]) =>
+  value.filter((k) => items.some((i) => i.key === k));
 
 /**
  * An accordion per the WAI-ARIA APG accordion pattern: a stack of headings whose buttons show and
@@ -53,18 +56,17 @@ export function createAccordion(
       init: () => ({ value: internal }),
       sync: ({ state, options: o }) => {
         if (o.value !== undefined) internal = o.value;
+        // A single-section accordion keeps one open key, also after `multiple` is switched off.
+        else if (!o.multiple && internal.length > 1) internal = internal.slice(-1);
         return same(internal, state.value) ? state : { value: internal };
       },
       reduce: ({ state, options: o }, event) => {
         const item = o.items.find((i) => i.key === event.key);
         if (!item || item.disabled) return { state };
-        const open = state.value.includes(event.key);
-        if (open && o.collapsible === false && state.value.length === 1) return { state };
-        const next = open
-          ? state.value.filter((k) => k !== event.key)
-          : o.multiple
-            ? [...state.value, event.key]
-            : [event.key];
+        const value = live(state.value, o.items);
+        const open = value.includes(event.key);
+        if (open && o.collapsible === false && value.length === 1) return { state };
+        const next = open ? value.filter((k) => k !== event.key) : o.multiple ? [...value, event.key] : [event.key];
         o.onValueChange?.(next);
         if (o.value !== undefined) return { state };
         internal = next;
@@ -84,13 +86,14 @@ export function createAccordion(
           };
         }
         const item = o.items.find((i) => i.key === key);
-        const locked = open && o.collapsible === false && state.value.length === 1;
+        const locked = open && o.collapsible === false && live(state.value, o.items).length === 1;
         const keydown = (e: NibEvent): readonly Intent[] => {
           const direction = e.key === undefined || e.altKey || e.ctrlKey || e.metaKey ? undefined : KEYS[e.key];
           if (!direction) return [];
-          e.preventDefault();
           const to = move(o.items, key, direction, { loop: true });
-          return to === null || to === key ? [] : [{ type: 'focus', ref: triggerId(id, to) }];
+          if (to === null || to === key) return [];
+          e.preventDefault();
+          return [{ type: 'focus', ref: triggerId(id, to) }];
         };
         return {
           attrs: {

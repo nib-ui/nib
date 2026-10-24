@@ -39,4 +39,28 @@ describe('disclosure and accordion (vanilla)', () => {
     await userEvent.keyboard('{ArrowDown}');
     expect(document.activeElement).toBe(a);
   });
+
+  it('follows sections added and disabled later, and leaves a nested accordion to itself', async () => {
+    document.body.innerHTML = `<div data-nib="accordion" id="outer">
+      <div data-nib-item="a"><h3><button data-nib-trigger>A</button></h3><div data-nib-panel>
+        <div data-nib="accordion" id="inner"><div data-nib-item="x"><h4><button data-nib-trigger>X</button></h4><div data-nib-panel>x</div></div></div>
+      </div></div>
+    </div>`;
+    init();
+    const outer = document.getElementById('outer') as HTMLElement;
+    outer.insertAdjacentHTML(
+      'beforeend',
+      '<div data-nib-item="b"><h3><button data-nib-trigger>B</button></h3><div data-nib-panel>b</div></div>',
+    );
+    await new Promise((r) => setTimeout(r));
+    const b = [...document.querySelectorAll('button')].find((el) => el.textContent === 'B') as HTMLButtonElement;
+    await userEvent.click(b);
+    expect(b.getAttribute('aria-expanded')).toBe('true');
+    // The outer accordion's section A does not take the inner X's button or panel.
+    const x = [...document.querySelectorAll('button')].find((el) => el.textContent === 'X') as HTMLButtonElement;
+    expect(x.id.startsWith('inner-')).toBe(true);
+    b.closest('[data-nib-item]')?.setAttribute('data-disabled', '');
+    await new Promise((r) => setTimeout(r));
+    expect(b.getAttribute('aria-disabled')).toBe('true');
+  });
 });

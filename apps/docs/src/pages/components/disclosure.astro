@@ -100,7 +100,7 @@ const accordion = useAccordion({ items, defaultValue: ['grind'] });
   <h2>Usage</h2>
   <p>
     <code>createDisclosure</code> drives one <code>trigger</code> and its <code>panel</code>;{' '}
-    <code>createAccordion</code>a list of sections by key, one open at a time unless <code>multiple</code>. With{' '}
+    <code>createAccordion</code> drives a list of sections by key, one open at a time unless <code>multiple</code>. With{' '}
     <code>collapsible: false</code> the last open section stays open and its button says so with{' '}
     <code>aria-disabled</code>. Both are controlled when you pass <code>expanded</code> / <code>value</code>.
   </p>
@@ -110,7 +110,13 @@ const accordion = useAccordion({ items, defaultValue: ['grind'] });
       Follows the APG disclosure and accordion patterns: the trigger is a native <code>button</code> with
       <code>aria-expanded</code> and <code>aria-controls</code>; each accordion panel is a region named by its button.
     </li>
-    <li>Put each accordion button in a heading of the right level.</li>
+    <li>
+      Put each accordion button in a heading of the right level, and give it <code>type="button"</code> inside a form.
+    </li>
+    <li>
+      Every accordion panel is a named region; with more than about six sections, consider plain disclosures so the page
+      does not fill with landmarks.
+    </li>
     <li>In an accordion, Up and Down arrows, Home and End move between the buttons.</li>
     <li>The ▸ / ▾ glyph is decoration with empty alternative text; it mirrors under right-to-left.</li>
   </ul>
