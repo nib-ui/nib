@@ -19,14 +19,18 @@ test.describe('docs shell', () => {
     await page.goto('/');
     const html = page.locator('html');
     await expect(html).not.toHaveAttribute('data-theme');
-    const toggle = page.getByRole('button', { name: /LIGHT/ });
+    // The word is right before any script runs: it is chosen by CSS from the theme showing.
+    const toggle = page.getByRole('button', { name: 'Switch to light theme' });
+    await expect(toggle).toHaveText(/LIGHT/);
     await toggle.click();
     await expect(html).toHaveAttribute('data-theme', 'light');
-    await expect(page.getByRole('button', { name: /DARK/ })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Switch to dark theme' })).toBeVisible();
     await page.reload();
     await expect(html).toHaveAttribute('data-theme', 'light');
-    // The printed hotkey works too.
+    // The printed hotkey needs Alt: a bare letter would fire on speech input and screen reader keys.
     await page.keyboard.press('t');
+    await expect(html).toHaveAttribute('data-theme', 'light');
+    await page.keyboard.press('Alt+KeyT');
     await expect(html).toHaveAttribute('data-theme', 'dark');
   });
 
@@ -42,7 +46,23 @@ test.describe('docs shell', () => {
     await expect(page.getByRole('tabpanel')).toContainText('@nib-ui/react');
     await page.keyboard.press('End');
     await expect(tabs.nth(3)).toHaveAttribute('aria-selected', 'true');
+    // Modified arrows stay with the browser (Alt+Left is Back).
+    await page.keyboard.press('Shift+ArrowLeft');
+    await expect(tabs.nth(3)).toHaveAttribute('aria-selected', 'true');
+    // Code is shown exactly as written, without template indentation.
+    await expect(page.getByRole('tabpanel').locator('code')).toHaveText(
+      "import { controller } from '@nib-ui/svelte';",
+      {
+        useInnerText: true,
+      },
+    );
     await expect(page.getByRole('heading', { name: 'Accessibility', level: 2 })).toBeVisible();
+  });
+
+  test('declares the layer order before any other style', async ({ page }) => {
+    await page.goto('/');
+    const first = await page.evaluate(() => document.styleSheets[0]?.cssRules[0]?.cssText);
+    expect(first).toBe('@layer nib.theme, nib.base, nib.components, nib.utilities;');
   });
 
   for (const theme of ['light', 'dark'] as const) {

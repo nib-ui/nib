@@ -1,4 +1,5 @@
 ---
+import { createHash } from 'node:crypto';
 import { strings } from '../i18n/ui.ts';
 
 /** One code sample per framework; empty ones are left out. */
@@ -10,43 +11,46 @@ interface Props {
 }
 
 const t = strings(Astro.currentLocale);
-const id = `code-${Math.random().toString(36).slice(2, 8)}`;
 const samples = (['html', 'react', 'vue', 'svelte'] as const)
   .map((name) => ({ name, code: Astro.props[name] }))
   .filter((s): s is { name: (typeof s)['name']; code: string } => !!s.code);
+const escape = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+// Ids from the samples themselves, so every build writes the same HTML.
+const id = `code-${createHash('sha256').update(JSON.stringify(samples)).digest('hex').slice(0, 8)}`;
 ---
 
-<div class="docs-tabs" data-code-tabs>
-  <div class="docs-tablist" role="tablist" aria-label={t.code}>
+{samples.length > 0 && (
+  <div class="docs-tabs" data-code-tabs>
+    <div class="docs-tablist" role="tablist" aria-label={t.code}>
+      {samples.map((s, i) => (
+        <button
+          type="button"
+          class="docs-tab"
+          role="tab"
+          id={`${id}-tab-${s.name}`}
+          aria-controls={`${id}-panel-${s.name}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+        >
+          {s.name.toUpperCase()}
+        </button>
+      ))}
+    </div>
     {samples.map((s, i) => (
-      <button
-        type="button"
-        class="docs-tab"
-        role="tab"
-        id={`${id}-tab-${s.name}`}
-        aria-controls={`${id}-panel-${s.name}`}
-        aria-selected={i === 0 ? 'true' : 'false'}
-        tabindex={i === 0 ? 0 : -1}
+      <div
+        class="docs-tabpanel"
+        role="tabpanel"
+        id={`${id}-panel-${s.name}`}
+        aria-labelledby={`${id}-tab-${s.name}`}
+        tabindex="0"
+        hidden={i !== 0}
       >
-        {s.name.toUpperCase()}
-      </button>
+        {/* One line: whitespace inside <pre> would print. */}
+        <pre set:html={`<code>${escape(s.code)}</code>`} />
+      </div>
     ))}
   </div>
-  {samples.map((s, i) => (
-    <div
-      class="docs-tabpanel"
-      role="tabpanel"
-      id={`${id}-panel-${s.name}`}
-      aria-labelledby={`${id}-tab-${s.name}`}
-      tabindex="0"
-      hidden={i !== 0}
-    >
-      <pre>
-          <code>{s.code}</code>
-        </pre>
-    </div>
-  ))}
-</div>
+)}
 
 <script>
   import '../scripts/code-tabs.ts';

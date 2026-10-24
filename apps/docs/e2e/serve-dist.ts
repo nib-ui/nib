@@ -17,12 +17,13 @@ const TYPES: Record<string, string> = {
 };
 
 const file = (url: string) => {
-  const path = join(ROOT, normalize(decodeURIComponent(new URL(url, 'http://x').pathname)));
-  if (!path.startsWith(ROOT)) return undefined;
   try {
-    const stat = statSync(path);
-    return stat.isDirectory() ? join(path, 'index.html') : path;
+    const path = join(ROOT, normalize(decodeURIComponent(new URL(url, 'http://x').pathname)));
+    if (!path.startsWith(ROOT)) return undefined;
+    const found = statSync(path).isDirectory() ? join(path, 'index.html') : path;
+    return statSync(found).isFile() ? found : undefined;
   } catch {
+    // Malformed escapes and missing files alike.
     return undefined;
   }
 };

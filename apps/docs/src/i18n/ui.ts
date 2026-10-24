@@ -4,6 +4,9 @@ export const ui = {
     skip: 'SKIP TO CONTENT',
     themeDark: 'DARK',
     themeLight: 'LIGHT',
+    /** Visually hidden around the word, so the button says what it does: "Switch to dark theme". */
+    themeBefore: 'Switch to',
+    themeAfter: 'theme',
     home: 'Nib',
     example: 'Example',
     code: 'Code',

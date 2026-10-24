@@ -17,6 +17,8 @@ for (const list of document.querySelectorAll<HTMLElement>('[data-code-tabs] [rol
     if (index >= 0) select(index);
   });
   list.addEventListener('keydown', (event) => {
+    // Modified arrows belong to the browser (Alt+Left is Back) and to text selection.
+    if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
     const current = tabs.indexOf(document.activeElement as HTMLButtonElement);
     const last = tabs.length - 1;
     const next = { ArrowRight: current + 1, ArrowLeft: current - 1, Home: 0, End: last }[event.key];

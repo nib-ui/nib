@@ -22,6 +22,8 @@
         "cache": true,
         "inputs": [
           "default",
+          "!{projectRoot}/e2e/**/*",
+          "!{projectRoot}/playwright.config.ts",
           "^production"
         ],
         "outputs": [

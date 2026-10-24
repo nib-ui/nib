@@ -4,16 +4,14 @@ import { strings } from '../i18n/ui.ts';
 const t = strings(Astro.currentLocale);
 ---
 
-<button
-  type="button"
-  class="docs-word"
-  data-theme-toggle
-  data-dark={t.themeDark}
-  data-light={t.themeLight}
-  aria-keyshortcuts="T"
->
+<!-- Both words are printed; CSS shows the one for the theme not showing, so the label is right
+     before any script runs. The hidden one is display:none and so not part of the name. -->
+<button type="button" class="docs-word docs-theme-toggle" data-theme-toggle aria-keyshortcuts="Alt+T">
   <span aria-hidden="true">[T]</span>
-  <span data-theme-word>{t.themeDark}</span>
+  <span class="docs-visually-hidden">{t.themeBefore} </span>
+  <span class="docs-theme-dark">{t.themeDark}</span>
+  <span class="docs-theme-light">{t.themeLight}</span>
+  <span class="docs-visually-hidden"> {t.themeAfter}</span>
 </button>
 
 <script>

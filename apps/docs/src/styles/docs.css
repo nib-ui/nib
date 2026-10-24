@@ -1,6 +1,11 @@
 /* Site chrome for the docs app. Component styles come from @nib-ui/css; this file only lays out the
    docs shell, in its own layer so component CSS keeps priority over it. */
 @layer nib.base {
+  html {
+    /* Keep focused elements clear of the sticky header (WCAG 2.4.11). */
+    scroll-padding-block-start: calc(var(--nib-space-header-height) + var(--nib-space-sm));
+  }
+
   body {
     margin: 0;
     background: var(--nib-surface);
@@ -28,8 +33,43 @@
 }
 
 @layer nib.components {
+  .docs-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* The toggle offers the theme that is not showing. */
+  .docs-theme-light,
+  :root[data-theme='dark'] .docs-theme-dark {
+    display: none;
+  }
+
+  :root[data-theme='dark'] .docs-theme-light {
+    display: inline;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) .docs-theme-dark {
+      display: none;
+    }
+
+    :root:not([data-theme='light']) .docs-theme-light {
+      display: inline;
+    }
+  }
+
   .docs-skip {
     position: absolute;
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--nib-space-touch-target);
     inset-block-start: var(--nib-space-sm);
     inset-inline-start: var(--nib-space-sm);
     padding: var(--nib-space-xs) var(--nib-space-sm);
@@ -111,14 +151,15 @@
 
   .docs-tablist {
     display: flex;
-    gap: var(--nib-space-md);
-    padding-inline: var(--nib-space-md);
+    gap: var(--nib-space-sm);
+    padding-inline: var(--nib-space-sm);
     border-block-end: 1px solid var(--nib-line);
   }
 
   .docs-tab {
     min-block-size: var(--nib-space-touch-target);
-    padding: 0;
+    min-inline-size: var(--nib-space-touch-target);
+    padding: 0 var(--nib-space-xs);
     border: 0;
     border-block-end: 2px solid transparent;
     background: none;

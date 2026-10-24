@@ -18,6 +18,11 @@ const t = strings(lang);
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
+    <!-- First stylesheet of the page: bundlers drop a bare layer statement from CSS files, and it
+         alone fixes the order of the layers for everything after it. -->
+    <style is:inline>
+      @layer nib.theme, nib.base, nib.components, nib.utilities;
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title === 'Nib' ? title : `${title} · Nib`}</title>
     {description && <meta name="description" content={description} />}
