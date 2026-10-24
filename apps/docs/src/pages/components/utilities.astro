@@ -1,0 +1,115 @@
+---
+import '@nib-ui/css/utilities.css';
+import list from '@nib-ui/css/utilities.json';
+import ComponentPage from '../../layouts/component-page.astro';
+
+const groups = ['layout', 'spacing', 'typography', 'colour'] as const;
+const tables = [
+  ...groups.map((group) => ({
+    title: group[0]?.toUpperCase() + group.slice(1),
+    rows: list.filter((u) => u.group === group && !('container' in u)),
+  })),
+  { title: 'Container variants', rows: list.filter((u) => 'container' in u) },
+];
+
+const html = `<!-- After nib.css: @import '@nib-ui/css/utilities.css'; -->
+
+<div class="nib-cq">
+  <ul class="nib-display-grid nib-columns-1 nib-at-sm-columns-3 nib-gap-sm nib-p-0" role="list">
+    <li class="nib-line nib-cell nib-fg-on-surface-2">Gap, padding and columns from the tokens</li>
+    <li class="nib-line nib-cell nib-bg-green-soft nib-fg-green nib-mono nib-caps">In stock</li>
+    <li class="nib-line nib-cell nib-rule-red">Ruled in red</li>
+  </ul>
+</div>`;
+---
+
+<ComponentPage
+  title="Utilities"
+  lead="An opt-in set of single-purpose classes generated from the tokens: layout, spacing, type and colour roles."
+  kind="CSS"
+  code={{ html }}
+>
+  <div slot="example" set:html={html.slice(html.indexOf('<div'))} />
+
+  <h2>Usage</h2>
+  <p>
+    Load <code>@nib-ui/css/utilities.css</code> after <code>nib.css</code>; its rules sit in
+    <code>nib.utilities</code>, the last layer, so a utility wins over a component. Every class starts with
+    <code>nib-</code>, so it can live next to Tailwind. Layout utilities also come as <code>nib-at-sm-</code>,
+    <code>nib-at-md-</code> and <code>nib-at-lg-</code>: they apply when the nearest <code>nib-cq</code> container is at
+    least 30, 48 or 64rem wide. There are no radius, shadow, gradient or blur utilities.
+  </p>
+
+  <p>
+    Put <code>nib-cq</code> on a wrapper, not on the element that uses <code>nib-at-*</code>: a container cannot query
+    itself. A <code>nib-cq</code> element has inline-size containment, so inside a flex row or an inline block give it a
+    width (<code>nib-grow</code>, a column) or it shrinks to nothing.
+  </p>
+
+  <h2>Reference</h2>
+  {tables.map(({ title, rows }) => (
+    <>
+      <h3>{title}</h3>
+      <div class="utilities-table" role="region" aria-label={`${title} utilities`} tabindex="0">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Class</th>
+              <th scope="col">Declarations</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((u) => (
+              <tr>
+                <td>
+                  <code>{u.name}</code>
+                </td>
+                <td>
+                  <code>{u.decls.join('; ')}</code>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  ))}
+
+  <ul slot="accessibility">
+    <li>
+      <code>nib-visually-hidden</code> hides text on screen but keeps it for screen readers; <code>nib-hidden</code>
+      hides it from both.
+    </li>
+    <li>
+      Text colours are the ones that pass 4.5:1 on every surface in both themes; <code>on-surface-4</code> has no text
+      utility. Hue text passes 4.5:1 on its own <code>-soft</code> fill over every surface. A hue never carries meaning
+      alone: put a word next to it.
+    </li>
+    <li>
+      Spacing and borders are logical, so they mirror under <code>dir="rtl"</code>.
+    </li>
+  </ul>
+</ComponentPage>
+
+<style>
+  .utilities-table {
+    overflow-x: auto;
+  }
+
+  table {
+    inline-size: 100%;
+    font-size: var(--nib-meta-sm-font-size);
+  }
+
+  td code {
+    overflow-wrap: anywhere;
+  }
+
+  th,
+  td {
+    padding: var(--nib-space-xs) var(--nib-space-sm);
+    border-block-end: var(--nib-space-hairline) solid var(--nib-line);
+    text-align: start;
+    vertical-align: top;
+  }
+</style>
