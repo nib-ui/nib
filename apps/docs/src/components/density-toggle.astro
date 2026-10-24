@@ -1,0 +1,18 @@
+---
+import { strings } from '../i18n/ui.ts';
+
+const t = strings(Astro.currentLocale);
+---
+
+<!-- Like the theme toggle: CSS prints the density that is not showing, so the word is right before
+     any script runs. -->
+<button type="button" class="nib-header__word docs-density-toggle" data-density-toggle>
+  <span class="docs-visually-hidden">{t.densityBefore} </span>
+  <span class="docs-density-compact">{t.densityCompact}</span>
+  <span class="docs-density-comfortable">{t.densityComfortable}</span>
+  <span class="docs-visually-hidden"> {t.densityAfter}</span>
+</button>
+
+<script>
+  import '../scripts/density-toggle.ts';
+</script>

@@ -25,6 +25,72 @@
     white-space: nowrap;
   }
 
+  /* The density toggle offers the density that is not showing. */
+  .docs-density-comfortable,
+  :root[data-density='compact'] .docs-density-compact {
+    display: none;
+  }
+
+  :root[data-density='compact'] .docs-density-comfortable {
+    display: inline;
+  }
+
+  .docs-search {
+    color: var(--nib-on-surface-3);
+    cursor: default;
+  }
+
+  /* The shell: the docs navigation and the page outline in a side column, the page beside it. */
+  .docs-shell {
+    --nib-side-width: 15rem;
+
+    max-inline-size: var(--nib-space-page-max-width);
+    margin-inline: auto;
+    border-block-start: 0;
+  }
+
+  /* The column runs the full height (so its rule does); its contents stick under the header. */
+  .docs-side__inner {
+    position: sticky;
+    inset-block-start: var(--nib-space-header-height);
+    max-block-size: calc(100dvh - var(--nib-space-header-height));
+    overflow-y: auto;
+  }
+
+  .docs-contents > summary {
+    display: none;
+  }
+
+  /* Narrow: the side column takes its own row above the page and folds under CONTENTS. */
+  @media (width < 48rem) {
+    .docs-side {
+      flex-basis: 100%;
+    }
+
+    .docs-side__inner {
+      position: static;
+      max-block-size: none;
+    }
+
+    .docs-search {
+      display: none;
+    }
+
+    .docs-contents > summary {
+      display: list-item;
+      margin: var(--nib-space-md) 0;
+      cursor: pointer;
+    }
+  }
+
+  main {
+    padding: var(--nib-space-xl) var(--nib-space-lg);
+  }
+
+  main > * {
+    max-inline-size: var(--nib-space-reading-width);
+  }
+
   /* The toggle offers the theme that is not showing. */
   .docs-theme-light,
   :root[data-theme='dark'] .docs-theme-dark {
@@ -43,46 +109,6 @@
     :root:not([data-theme='light']) .docs-theme-light {
       display: inline;
     }
-  }
-
-  .docs-header {
-    position: sticky;
-    inset-block-start: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    block-size: var(--nib-space-header-height);
-    padding-inline: var(--nib-space-md);
-    border-block-end: 1px solid var(--nib-line);
-    background: var(--nib-surface);
-  }
-
-  .docs-wordmark,
-  .docs-word {
-    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
-      var(--nib-font-mono);
-    letter-spacing: var(--nib-label-md-letter-spacing);
-    color: var(--nib-on-surface);
-    text-decoration: none;
-  }
-
-  .docs-word {
-    min-block-size: var(--nib-space-touch-target);
-    padding: 0;
-    border: 0;
-    background: none;
-    color: var(--nib-on-surface-2);
-    cursor: pointer;
-  }
-
-  .docs-word:hover {
-    color: var(--nib-on-surface);
-  }
-
-  main {
-    max-inline-size: var(--nib-space-reading-width);
-    margin-inline: auto;
-    padding: var(--nib-space-xl) var(--nib-space-md);
   }
 
   main:focus {

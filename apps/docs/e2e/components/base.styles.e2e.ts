@@ -69,8 +69,9 @@ test.describe('base', () => {
   });
 
   test('the side column sits beside the main column, and wraps above it when space runs out', async ({ page }) => {
-    const side = page.locator('.nib-with-side > *').first();
-    const main = page.locator('.nib-with-side__main').first();
+    const example = page.getByRole('region', { name: 'Example' });
+    const side = example.locator('.nib-with-side > *').first();
+    const main = example.locator('.nib-with-side__main').first();
     const [s, m] = [await side.boundingBox(), await main.boundingBox()];
     expect(s?.y).toBe(m?.y);
     await page.setViewportSize({ width: 360, height: 800 });

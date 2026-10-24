@@ -1,7 +1,8 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 const PAGE = '/components/page-chrome/';
 const ACCENT = 'rgb(2, 128, 108)';
+const example = (page: Page) => page.getByRole('region', { name: 'Example' });
 
 test.describe('page chrome', () => {
   test.beforeEach(async ({ page }) => {
@@ -10,10 +11,10 @@ test.describe('page chrome', () => {
   });
 
   test('the header is 48px, sticky, with a 1px line under it', async ({ page }) => {
-    const header = page.locator('.nib-header');
+    const header = example(page).locator('.nib-header');
     await expect(header).toHaveCSS('position', 'sticky');
     await expect(header).toHaveCSS('border-bottom-width', '1px');
-    expect((await page.locator('.nib-header__bar').boundingBox())?.height).toBe(48);
+    expect((await example(page).locator('.nib-header__bar').boundingBox())?.height).toBe(48);
   });
 
   test('the current nav word is on-surface with a 2px accent underline; others are on-surface 2', async ({ page }) => {
@@ -29,7 +30,7 @@ test.describe('page chrome', () => {
     await page.setViewportSize({ width: 360, height: 800 });
     const nav = page.getByRole('list', { name: 'Main' });
     await expect(nav).toBeHidden();
-    await page.getByRole('link', { name: 'Menu' }).click();
+    await example(page).getByRole('link', { name: 'Menu' }).click();
     await expect(nav).toBeVisible();
     await expect(nav.getByRole('link', { name: 'Journal' })).toBeVisible();
   });

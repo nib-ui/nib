@@ -26,3 +26,6 @@ document.addEventListener('keydown', (event) => {
   event.preventDefault();
   toggle();
 });
+
+// A module, so its names stay its own.
+export {};

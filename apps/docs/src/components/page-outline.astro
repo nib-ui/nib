@@ -1,0 +1,16 @@
+---
+import { strings } from '../i18n/ui.ts';
+
+const t = strings(Astro.currentLocale);
+---
+
+<!-- Filled from the page's h2 headings by a script; hidden until then, so no-JS pages show nothing
+     empty. The heading in view gets aria-current="location" and the accent rule. -->
+<nav class="nib-side-nav docs-outline" aria-label={t.onThisPage} hidden>
+  <p class="nib-side-nav__title">{t.onThisPage}</p>
+  <ul></ul>
+</nav>
+
+<script>
+  import '../scripts/page-outline.ts';
+</script>
