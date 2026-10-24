@@ -1,7 +1,8 @@
-/* Loading. The spinner is ✻ stepping through frames in a fixed-width mono cell (110ms each,
-   stepped, no easing), followed by words: `✻ Loading products…`. It is the only perpetual
-   animation; with reduced motion it stands still. A progress bar is a 2px rule. An image that is
-   not there yet is the raised surface in its aspect ratio. */
+/* Loading. A region that is loading carries aria-busy="true" and shows ghosts or placeholders
+   until its content arrives. The spinner is ✻ stepping through frames in a fixed-width mono cell
+   (110ms each, stepped, no easing), followed by words: `✻ Loading products…`. It is the only
+   perpetual animation; with reduced motion it stands still. A progress bar is a 2px rule. An image
+   that is not there yet is the raised surface in its aspect ratio with a mono label (IMAGE 4:3). */
 @layer nib.components {
   @keyframes nib-spinner {
     0% {
@@ -29,6 +30,10 @@
     }
   }
 
+  [aria-busy='true'] {
+    cursor: progress;
+  }
+
   .nib-loading {
     display: inline-flex;
     align-items: baseline;
@@ -49,7 +54,8 @@
     animation: nib-spinner calc(6 * var(--nib-duration-spinner-frame)) steps(1, end) infinite;
   }
 
-  /* Reduced motion sets the frame to 0ms: the cell holds a still ✻. */
+  /* Reduced motion: the tokens make the frame 0ms, and an infinite zero-length animation is
+     undefined, so the animation is switched off and the cell holds a still ✻. */
   @media (prefers-reduced-motion: reduce) {
     .nib-spinner::before {
       animation: none;
@@ -78,11 +84,30 @@
     background: var(--nib-accent);
   }
 
+  /* No value: the track darkens and stands still (Firefox would otherwise run its own animation). */
+  .nib-progress:indeterminate {
+    background: var(--nib-line);
+  }
+
+  .nib-progress:indeterminate::-webkit-progress-bar {
+    background: var(--nib-line);
+  }
+
+  .nib-progress:indeterminate::-moz-progress-bar {
+    background: transparent;
+    animation: none;
+  }
+
   .nib-media-placeholder {
-    display: block;
+    display: grid;
+    place-items: center;
     inline-size: 100%;
     aspect-ratio: var(--nib-aspect, 1);
     background: var(--nib-surface-raised);
+    color: var(--nib-on-surface-3);
+    font: var(--nib-meta-sm-font-weight) var(--nib-meta-sm-font-size) / var(--nib-meta-sm-line-height)
+      var(--nib-font-mono);
+    text-transform: var(--nib-caps, uppercase);
   }
 
   @media (forced-colors: active) {
@@ -90,6 +115,10 @@
       forced-color-adjust: none;
       background: Canvas;
       outline: var(--nib-space-hairline) solid CanvasText;
+    }
+
+    .nib-progress::-webkit-progress-bar {
+      background: Canvas;
     }
 
     .nib-progress::-webkit-progress-value {

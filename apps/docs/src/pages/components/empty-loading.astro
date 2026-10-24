@@ -3,22 +3,25 @@ import ComponentPage from '../../layouts/component-page.astro';
 
 const html = `<div class="nib-empty">
   <div class="nib-empty__ghosts" aria-hidden="true">
-    <div class="nib-ghost">Order · item · total</div>
-    <div class="nib-ghost">Order · item · total</div>
+    <div class="nib-ghost">#order · item · total</div>
+    <div class="nib-ghost">customer · date · status</div>
   </div>
   <p class="nib-empty__label">No orders yet</p>
   <p class="nib-empty__text">Orders appear here as soon as someone checks out.</p>
   <a class="nib-button nib-button--primary" href="#content">Share your shop</a>
 </div>
 
-<p class="nib-loading" role="status">
-  <span class="nib-spinner" aria-hidden="true"></span>Loading products…
-</p>
+<section aria-busy="true" aria-labelledby="e-products">
+  <h3 class="nib-text-label" id="e-products">Products</h3>
+  <p class="nib-loading" role="status">
+    <span class="nib-spinner" aria-hidden="true"></span>Loading products…
+  </p>
+</section>
 
 <label class="nib-field__label" for="e-upload">Upload</label>
 <progress class="nib-progress" id="e-upload" max="100" value="40">40%</progress>
 
-<span class="nib-media-placeholder" style="--nib-aspect: 16 / 9" role="img" aria-label="Photo loading"></span>`;
+<span class="nib-media-placeholder" style="--nib-aspect: 16 / 9" role="img" aria-label="Photo loading">Image 16:9</span>`;
 ---
 
 <ComponentPage
@@ -43,8 +46,9 @@ const html = `<div class="nib-empty">
 
   <ul slot="accessibility">
     <li>
-      Wrap the spinner and its words in <code>role="status"</code> so the words are announced; the spinner itself is
-      hidden.
+      Mark the region that is loading with <code>aria-busy="true"</code> and drop it when the content is in. Put the
+      spinner's words in a <code>role="status"</code> that is already on the page before they change, so the change is
+      announced; the spinner itself is hidden.
     </li>
     <li>
       Ghost rows are decoration: hide them with <code>aria-hidden="true"</code>; the label and sentence say it.
