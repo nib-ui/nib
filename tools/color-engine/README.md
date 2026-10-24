@@ -13,6 +13,7 @@ functions, no DOM, no dependencies.
 | Rule | Severity |
 |---|---|
 | on-surface 1–3, accent-text and the six hues ≥ 4.5:1 on all three surfaces | error |
+| each hue ≥ 4.5:1 on its own `-soft` fill mixed over all three surfaces (tags) | error |
 | syntax colours ≥ 4.5:1 on surface raised; on-cursor on cursor and on-hue on each hue ≥ 4.5:1 | error |
 | accent ≥ 3:1 on all three surfaces and on the cursor block | error |
 | accent and any hue under ΔE 8 for normal vision | error |
@@ -21,10 +22,8 @@ functions, no DOM, no dependencies.
 Every colour a rule reads must be opaque; `checkTheme` throws otherwise.
 
 Exempt: on-surface 4 (decorative glyphs) and `line` (decorative hairlines). Colour-vision closeness
-is a warning only, because law 5 pairs every hue with a word. Nib's own palette produces five such
+is a warning only, because law 5 pairs every hue with a word. Nib's own palette produces four such
 warnings today, all known from the accent research; a test pins that list.
-
-Not checked yet: hue text on its own `-soft` fill (tags).
 
 The palette test reads the built `@nib-ui/tokens/tokens.json`, so run it with `nx test`, which
 builds tokens first.

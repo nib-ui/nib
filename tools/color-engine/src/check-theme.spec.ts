@@ -58,7 +58,7 @@ describe('checkTheme', () => {
     const c = colors();
     c.dark.accent = '#008a9b';
     c.dark.blue = '#008fa0';
-    const errors = checkTheme(c).filter((m) => m.severity === 'error');
+    const errors = checkTheme(c).filter((m) => m.severity === 'error' && m.message.includes(' apart '));
     expect(errors).toHaveLength(1);
     expect(errors[0]).toMatchObject({ theme: 'dark' });
     expect(errors[0]?.message).toMatch(
@@ -95,6 +95,15 @@ describe('checkTheme', () => {
     const c = colors();
     c.dark.accent = '#0090c080';
     expect(() => checkTheme(c)).toThrow('accent in the dark theme must be opaque, got #0090c080');
+  });
+
+  it('checks hue text on its own -soft fill mixed over each surface', () => {
+    const c = colors();
+    // Dark mixes the soft fill at 11%: a mid-grey red over black loses against its own tint.
+    c.dark.red = '#8a5a5a';
+    expect(checkTheme(c).map((m) => m.message)).toContainEqual(
+      expect.stringMatching(/^Proof mark: red on red-soft over ink-overlay is [0-3]\.\d:1, needs 4\.5:1\.$/),
+    );
   });
 });
 

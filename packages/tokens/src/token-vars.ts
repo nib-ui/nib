@@ -26,7 +26,8 @@ const PREFIX = { font: 'font-', typography: '', spacing: 'space-', motion: '' } 
 // The six semantic hues are fixed by the spec; each gets a -soft fill and a -border outline,
 // mixed from the hue with these percentages (light, dark).
 const HUES = ['blue', 'cyan', 'green', 'magenta', 'yellow', 'red'];
-const DERIVED = { soft: [8, 11], border: [35, 36] } as const;
+/** Percent of the hue in its derived variants, mixed with transparent: `[light, dark]`. */
+export const HUE_MIX = { soft: [8, 11], border: [35, 36] } as const;
 
 const lightDark = (light: string, dark: string) => `light-dark(${light}, ${dark})`;
 const mix = (name: string, pct: number) => `color-mix(in srgb, var(--nib-${name}) ${pct}%, transparent)`;
@@ -73,7 +74,7 @@ export function tokenVars(source: TokenSource): TokenVar[] {
     const base = { group: 'color' as const, type: 'color' };
     const vars: TokenVar[] = [{ ...base, name, path, cssName: `--nib-${name}`, value }];
     if (HUES.includes(name)) {
-      for (const [suffix, [l, d]] of Object.entries(DERIVED)) {
+      for (const [suffix, [l, d]] of Object.entries(HUE_MIX)) {
         vars.push({
           ...base,
           name: `${name}-${suffix}`,

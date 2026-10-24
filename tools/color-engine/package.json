@@ -19,7 +19,7 @@
       "scope:private"
     ]
   },
-  "devDependencies": {
+  "dependencies": {
     "@nib-ui/tokens": "workspace:*"
   }
 }

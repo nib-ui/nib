@@ -1,5 +1,7 @@
+import { HUE_MIX } from '@nib-ui/tokens';
 import { COLLISION_COLOURS, collisionMarks, HUES } from './collisions.ts';
 import { contrast } from './contrast.ts';
+import { composite } from './srgb.ts';
 import { colour, floor1, placeName, type ProofMark, type Theme, type ThemeColors } from './proof-marks.ts';
 
 const SURFACES = ['surface', 'surface-raised', 'surface-overlay'];
@@ -30,13 +32,31 @@ const CONTRAST_RULES: ContrastRule[] = [
 /** Every colour any rule reads; a renamed token must fail loudly, not skip its checks. */
 const REQUIRED = [...new Set([...CONTRAST_RULES.flatMap((r) => [r.fg, r.bg]), ...COLLISION_COLOURS])];
 
+const fail = (theme: Theme, fg: string, place: string, ratio: number, min: number): ProofMark[] => [
+  { severity: 'error', theme, message: `Proof mark: ${fg} on ${place} is ${floor1(ratio)}:1, needs ${min}:1.` },
+];
+
 function contrastMarks(colors: Record<string, string>, theme: Theme): ProofMark[] {
   return CONTRAST_RULES.flatMap(({ fg, bg, min }) => {
     const ratio = contrast(colour(colors, fg), colour(colors, bg));
-    if (ratio >= min) return [];
-    const message = `Proof mark: ${fg} on ${placeName(bg, theme)} is ${floor1(ratio)}:1, needs ${min}:1.`;
-    return [{ severity: 'error' as const, theme, message }];
+    return ratio >= min ? [] : fail(theme, fg, placeName(bg, theme), ratio, min);
   });
+}
+
+/**
+ * A tag sets hue text on that hue's -soft fill, which is the hue at a few percent over whatever
+ * surface holds the tag; the tint pulls the background towards the text.
+ */
+function softTagMarks(colors: Record<string, string>, theme: Theme): ProofMark[] {
+  const percent = HUE_MIX.soft[theme === 'light' ? 0 : 1];
+  const alpha = Math.round((percent / 100) * 255).toString(16).padStart(2, '0');
+  return HUES.flatMap((hue) =>
+    SURFACES.flatMap((surface) => {
+      const hex = colour(colors, hue);
+      const ratio = contrast(hex, composite(`${hex}${alpha}`, colour(colors, surface)));
+      return ratio >= TEXT ? [] : fail(theme, hue, `${hue}-soft over ${placeName(surface, theme)}`, ratio, TEXT);
+    }),
+  );
 }
 
 /** Runs every contrast and colour-distance rule on both themes. */
@@ -50,6 +70,10 @@ export function checkTheme(colors: ThemeColors): ProofMark[] {
       const hex = colour(colors[theme], name);
       if (hex.length > 7) throw new Error(`${name} in the ${theme} theme must be opaque, got ${hex}`);
     }
-    return [...contrastMarks(colors[theme], theme), ...collisionMarks(colors[theme], theme)];
+    return [
+      ...contrastMarks(colors[theme], theme),
+      ...softTagMarks(colors[theme], theme),
+      ...collisionMarks(colors[theme], theme),
+    ];
   });
 }

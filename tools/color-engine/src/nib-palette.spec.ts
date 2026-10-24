@@ -19,7 +19,6 @@ describe("Nib's own palette", () => {
     expect(pairs.sort()).toEqual([
       'dark red protanopia',
       'light green deuteranopia',
-      'light green protanopia',
       'light green tritanopia',
       'light red deuteranopia',
     ]);

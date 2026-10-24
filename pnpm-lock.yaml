@@ -245,7 +245,7 @@ importers:
   packages/vue: {}
 
   tools/color-engine:
-    devDependencies:
+    dependencies:
       '@nib-ui/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
