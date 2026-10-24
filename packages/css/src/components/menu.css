@@ -3,7 +3,7 @@
    radio items print [x] / [ ] and (•) / ( ) in mono. Separators are 1px line-soft. The controller
    writes its place as --nib-x / --nib-y; until placed it stays unseen. */
 @layer nib.components {
-  .nib-menu[style] {
+  .nib-menu[data-placed][style] {
     position: fixed;
     inset: auto;
     top: var(--nib-y);
@@ -14,6 +14,7 @@
   .nib-menu {
     box-sizing: border-box;
     min-inline-size: 10rem;
+    max-inline-size: min(var(--nib-max-width, 100vw), 24rem);
     max-block-size: var(--nib-max-height, none);
     margin: 0;
     padding: var(--nib-space-xs) 0;

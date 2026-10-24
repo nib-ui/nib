@@ -40,7 +40,7 @@ export type MenuPart = 'button' | 'menu' | 'item';
 
 type MenuEvent =
   | { type: 'toggled'; open: boolean }
-  | { type: 'go'; key: Key | null }
+  | { type: 'go'; key: Key | null; scroll?: boolean }
   | { type: 'select'; key?: Key }
   | { type: 'place' };
 
@@ -64,6 +64,8 @@ export function createMenu(
   let entry: Direction = 'first';
   const ref = (id: string, part: string, key?: Key) => `${id}-${part}${key === undefined ? '' : `-${key}`}`;
   const close = (id: string): Intent[] => [{ type: 'popover', ref: ref(id, 'menu'), open: false }];
+  const scrollTo = (id: string, key: Key | null): Intent[] =>
+    key === null ? [] : [{ type: 'scroll-into-view', ref: ref(id, 'item', key), block: 'nearest' }];
 
   const instance = createInstance<MenuState, MenuEvent, MenuPart, MenuOptions>(
     {
@@ -84,17 +86,21 @@ export function createMenu(
             if (event.open === state.open) return { state };
             stop();
             typeahead.reset();
+            const from = entry;
+            entry = 'first';
             if (!event.open) return { state: { open: false, current: null, placement: null } };
             stop = h.geometry.watch(() => instance.send({ type: 'place' }));
-            const current = move(o.items, null, entry);
-            entry = 'first';
+            const current = move(o.items, null, from);
             return {
               state: { open: true, current, placement: placeMenu() },
-              intents: [{ type: 'focus', ref: ref(id, 'menu') }],
+              intents: [{ type: 'focus', ref: ref(id, 'menu') }, ...scrollTo(id, current)],
             };
           }
-          case 'go':
-            return { state: event.key === state.current ? state : { ...state, current: event.key } };
+          case 'go': {
+            if (event.key === state.current) return { state };
+            // The keyboard keeps its item in view; the pointer is already on it.
+            return { state: { ...state, current: event.key }, intents: event.scroll ? scrollTo(id, event.key) : [] };
+          }
           case 'select': {
             const key = event.key ?? state.current;
             const item = o.items.find((i) => i.key === key);
@@ -110,10 +116,9 @@ export function createMenu(
             const to = e.key === 'ArrowDown' ? 'first' : e.key === 'ArrowUp' ? 'last' : null;
             if (!to || e.altKey || e.ctrlKey || e.metaKey) return [];
             e.preventDefault();
+            if (state.open) return send({ type: 'go', key: move(o.items, null, to), scroll: true });
             entry = to;
-            return state.open
-              ? send({ type: 'go', key: move(o.items, null, to) })
-              : [{ type: 'popover', ref: ref(id, 'menu'), open: true }];
+            return [{ type: 'popover', ref: ref(id, 'menu'), open: true }];
           };
           return {
             attrs: {
@@ -133,15 +138,17 @@ export function createMenu(
             const direction = MOVES[e.key];
             if (direction) {
               e.preventDefault();
-              return send({ type: 'go', key: move(o.items, state.current, direction, { loop: true }) });
+              return send({ type: 'go', key: move(o.items, state.current, direction, { loop: true }), scroll: true });
             }
             if (e.key === 'Enter' || (e.key === ' ' && !typeahead.active())) {
               e.preventDefault();
               return send({ type: 'select' });
             }
             if ([...e.key].length !== 1) return [];
+            // A typed Space would otherwise scroll the menu or the page.
+            if (e.key === ' ') e.preventDefault();
             const found = typeahead.type(e.key, o.items, state.current);
-            return found === null ? [] : send({ type: 'go', key: found });
+            return found === null ? [] : send({ type: 'go', key: found, scroll: true });
           };
           const p = state.placement;
           return {

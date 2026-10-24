@@ -36,7 +36,10 @@ describe('createMenu', () => {
 
   it('opens on the first item with focus on the menu, placed below the button', () => {
     const { menu, toggle } = setup();
-    expect(toggle('open')).toEqual([{ type: 'focus', ref: 'mn-menu' }]);
+    expect(toggle('open')).toEqual([
+      { type: 'focus', ref: 'mn-menu' },
+      { type: 'scroll-into-view', ref: 'mn-item-copy', block: 'nearest' },
+    ]);
     expect(menu.state).toMatchObject({ open: true, current: 'copy', placement: { side: 'bottom' } });
     expect(menu.part('button').attrs['aria-expanded']).toBe(true);
   });
@@ -48,6 +51,23 @@ describe('createMenu', () => {
     ]);
     toggle('open');
     expect(menu.state.current).toBe('mono');
+  });
+
+  it('opens on the first item again after an ArrowUp that moved inside an open menu', () => {
+    const { t, menu, toggle } = setup();
+    toggle('open');
+    t.fire(menu.part('button'), 'keydown', { key: 'ArrowUp' });
+    toggle('closed');
+    toggle('open');
+    expect(menu.state.current).toBe('copy');
+  });
+
+  it('keeps a Space that continues a search from scrolling', () => {
+    const { t, menu, toggle } = setup();
+    toggle('open');
+    t.fire(menu.part('menu'), 'keydown', { key: 'w' });
+    t.fire(menu.part('menu'), 'keydown', { key: ' ' });
+    expect(t.prevented).toBe(true);
   });
 
   it('chooses on click, reports the key and closes', () => {

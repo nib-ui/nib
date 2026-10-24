@@ -27,7 +27,10 @@ export const menuApg: ConformanceTable = {
     row('opening lands on the first item', [], {
       attrs: [current('copy'), { part: 'item', key: 'copy', attrs: { 'data-current': 'true' } }],
     }),
-    row('ArrowDown moves to the next item, skipping disabled ones', ['ArrowDown'], { attrs: [current('paste')] }),
+    row('ArrowDown moves to the next item, skipping disabled ones, and keeps it in view', ['ArrowDown'], {
+      attrs: [current('paste')],
+      intents: [{ type: 'scroll-into-view', ref: 'mn-item-paste', block: 'nearest' }],
+    }),
     row('ArrowUp on the first item wraps to the last', ['ArrowUp'], { attrs: [current('delete')] }),
     row('End moves to the last item, Home to the first', ['End', 'Home'], { attrs: [current('copy')] }),
     row('typing a letter moves to the item that starts with it', ['d'], { attrs: [current('delete')] }),
