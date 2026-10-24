@@ -12,7 +12,7 @@ runtime dependencies.
 ## Decision
 
 - Prefer native HTML first (`<dialog>`, `popover`, `<details>`, native form controls).
-- One headless TypeScript core, published as `@nib-ui/core` (ADR 11): per-component controllers that own state, APG keyboard handling
+- One headless TypeScript core, published as `@nib-ui/core` (ADR 11; interface in ADR 12, DOM code in `@nib-ui/dom`): per-component controllers that own state, APG keyboard handling
   and computed ARIA attributes, without touching the DOM directly.
 - Thin bindings on top: `@nib-ui/js` (vanilla, `init(root)` / `destroy()`, auto-init via `data-*`,
   idempotent so SPA re-renders never double-bind), `@nib-ui/react`, `@nib-ui/vue`, `@nib-ui/svelte`.
