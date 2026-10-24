@@ -1,0 +1,99 @@
+/* Checkbox and radio: a native input over the whole row, with appearance removed; the row prints
+   the glyph in mono: [ ] [x] [-] for checkboxes, ( ) (•) for radios. The input covers the row, so
+   the row is the hit area and the focus ring goes around it. Glyphs carry empty alt text: the
+   input already reports its state. */
+@layer nib.components {
+  .nib-choice {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nib-space-sm);
+    min-block-size: var(--nib-density-control-height);
+    color: var(--nib-on-surface);
+    font: var(--nib-body-md-font-weight) var(--nib-body-md-font-size) / var(--nib-body-md-line-height)
+      var(--nib-font-sans);
+    cursor: pointer;
+  }
+
+  .nib-choice > input {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+    appearance: none;
+    cursor: inherit;
+  }
+
+  .nib-choice::before {
+    flex: none;
+    content: '[ ]' / '';
+    color: var(--nib-on-surface-2);
+    font: var(--nib-item-md-font-weight) var(--nib-item-md-font-size) / var(--nib-item-md-line-height)
+      var(--nib-font-mono);
+    white-space: pre;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .nib-choice:has(> input:checked)::before {
+    content: '[x]' / '';
+    color: var(--nib-on-surface);
+  }
+
+  .nib-choice:has(> input[type='checkbox']:indeterminate)::before {
+    content: '[-]' / '';
+    color: var(--nib-on-surface);
+  }
+
+  .nib-choice:has(> input[type='radio'])::before {
+    content: '( )' / '';
+  }
+
+  .nib-choice:has(> input[type='radio']:checked)::before {
+    content: '(•)' / '';
+  }
+
+  .nib-choice:has(> input[aria-invalid='true'])::before {
+    color: var(--nib-red);
+  }
+
+  .nib-choice:has(> input:disabled) {
+    color: var(--nib-on-surface-3);
+    cursor: not-allowed;
+  }
+
+  .nib-choice:has(> input:disabled)::before {
+    color: var(--nib-on-surface-3);
+  }
+
+  /* A link in the label ("I accept the terms") stays clickable above the input. */
+  .nib-choice a {
+    position: relative;
+    z-index: 1;
+  }
+
+  .nib-choice > input:focus-visible {
+    outline: var(--nib-space-rule) solid var(--nib-accent);
+    outline-offset: var(--nib-space-rule);
+  }
+
+  @media (pointer: coarse) {
+    .nib-choice {
+      min-block-size: var(--nib-space-touch-target);
+    }
+  }
+
+  @media (forced-colors: active) {
+    /* A link in the label ("I accept the terms") stays clickable above the input. */
+    .nib-choice a {
+      position: relative;
+      z-index: 1;
+    }
+
+    .nib-choice > input:focus-visible {
+      outline-color: CanvasText;
+    }
+  }
+}

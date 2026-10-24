@@ -1,0 +1,137 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<form class="forms-example" novalidate>
+  <div class="nib-error-summary" role="alert" tabindex="-1">
+    <p class="nib-error-summary__title">2 fields need attention</p>
+    <ul>
+      <li><a href="#f-email">Enter a valid email</a></li>
+      <li><a href="#f-terms">Accept the terms to continue</a></li>
+    </ul>
+  </div>
+
+  <div class="nib-field">
+    <label class="nib-field__label" for="f-email">Email</label>
+    <input class="nib-input" id="f-email" type="email" required value="ana@"
+      aria-invalid="true" aria-describedby="f-email-error" />
+    <p class="nib-field__error" id="f-email-error">Enter a valid email</p>
+  </div>
+
+  <div class="nib-field">
+    <label class="nib-field__label" for="f-company">
+      Company <span class="nib-field__optional">Optional</span>
+    </label>
+    <input class="nib-input" id="f-company" aria-describedby="f-company-hint" />
+    <p class="nib-field__hint" id="f-company-hint">Shown on the invoice.</p>
+  </div>
+
+  <div class="nib-field">
+    <label class="nib-field__label" for="f-plan">Plan</label>
+    <select class="nib-input" id="f-plan">
+      <option>Monthly</option>
+      <option>Yearly</option>
+    </select>
+  </div>
+
+  <fieldset class="nib-fieldset">
+    <legend class="nib-field__label">Delivery</legend>
+    <label class="nib-choice"><input type="radio" name="delivery" checked /> Standard · 3–5 days</label>
+    <label class="nib-choice"><input type="radio" name="delivery" /> Express · next day</label>
+  </fieldset>
+
+  <fieldset class="nib-fieldset">
+    <legend class="nib-field__label">Updates</legend>
+    <label class="nib-choice"><input type="checkbox" checked /> Order status</label>
+    <label class="nib-choice"><input type="checkbox" /> New roasts</label>
+    <label class="nib-choice"><input type="checkbox" id="f-terms" required aria-invalid="true"
+      aria-describedby="f-terms-error" /> I accept the terms</label>
+    <p class="nib-field__error" id="f-terms-error">Accept the terms to continue</p>
+  </fieldset>
+
+  <label class="nib-switch"><input type="checkbox" role="switch" checked /> Dark roast only</label>
+</form>`;
+
+const react = `<div className="nib-field">
+  <label className="nib-field__label" htmlFor={id}>Email</label>
+  <input className="nib-input" id={id} type="email" required
+    aria-invalid={error ? true : undefined} aria-describedby={error ? \`\${id}-error\` : undefined} />
+  {error && <p className="nib-field__error" id={\`\${id}-error\`}>{error}</p>}
+</div>
+
+<label className="nib-switch">
+  <input type="checkbox" role="switch" checked={on} onChange={(e) => setOn(e.target.checked)} /> Dark roast only
+</label>`;
+
+const confirm = `<div class="nib-field">
+  <label class="nib-field__label" for="f-confirm">Type <code>beans-prod</code> to delete it</label>
+  <input class="nib-input" id="f-confirm" autocomplete="off" spellcheck="false" data-confirm="beans-prod" />
+</div>
+<div class="nib-action-row">
+  <button class="nib-button nib-button--destructive" type="button" disabled>Delete beans-prod</button>
+</div>`;
+---
+
+<ComponentPage
+  title="Forms"
+  lead="Native inputs in Nib's voice: mono labels above raised fields, glyph checkboxes, ON / OFF switches and an error summary."
+  kind="CSS"
+  code={{ html, react }}
+>
+  <div slot="example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    Every control is the native element: <code>nib-input</code> on <code>input</code>, <code>textarea</code> and
+    <code>select</code>; <code>nib-choice</code> is a <code>label</code> around a checkbox or radio, which prints
+    <code>[x]</code> or <code>(•)</code>; <code>nib-switch</code> is a <code>label</code> around
+    <code>&lt;input type="checkbox" role="switch"&gt;</code> and prints <code>ON</code> / <code>OFF</code>. The whole
+    row is the hit area. A switch takes effect at once; options sent with a form are checkboxes.
+  </p>
+  <p>
+    Mark only optional fields (<code>nib-field__optional</code>); required ones carry <code>required</code> and no
+    asterisk. After a failed submit, render the error summary first in the form, focus it, and set
+    <code>aria-invalid</code> plus an error under each field. An option picker (size, plan) is a row of outline buttons
+    with <code>aria-pressed</code>.
+  </p>
+
+  <h2>Type-to-confirm</h2>
+  <p>
+    Before a permanent deletion, ask for the resource's exact name. The button stays disabled until the field matches.
+  </p>
+  <div class="docs-example" set:html={confirm} />
+  <script>
+    for (const input of document.querySelectorAll<HTMLInputElement>('[data-confirm]')) {
+      const button = input.closest('.docs-example')?.querySelector('button');
+      input.addEventListener('input', () => {
+        if (button) button.disabled = input.value !== input.dataset['confirm'];
+      });
+    }
+  </script>
+  <ul slot="accessibility">
+    <li>
+      Labels are real <code>label</code> elements; help and error text are tied to the control with
+      <code>aria-describedby</code>, and an invalid control has <code>aria-invalid="true"</code>.
+    </li>
+    <li>
+      The error summary has <code>role="alert"</code>, so it is announced when it appears; each entry links to its
+      field.
+    </li>
+    <li>
+      Glyphs (<code>[x]</code>, <code>(•)</code>, <code>ON</code>) are drawn by CSS with empty alternative text: the
+      native control reports its own state, so nothing is read twice.
+    </li>
+    <li>
+      Group checkboxes and radios in a <code>fieldset</code> with a <code>legend</code>.
+    </li>
+    <li>On touch screens every control and row is at least 44px tall.</li>
+  </ul>
+</ComponentPage>
+
+<style>
+  :global(.forms-example) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--nib-space-lg);
+    max-inline-size: 28rem;
+  }
+</style>
