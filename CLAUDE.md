@@ -1,12 +1,12 @@
 # CLAUDE.md
 
-warm-terminal is a UI framework.
+Nib is a framework-agnostic UI framework (CSS + headless components). Spec: `spec/DESIGN.md`. Decisions: `docs/adr/`.
 
 ## Agent skills
 
 ### Issue tracker
 
-Issues are tracked in GitHub Issues (`ngocsangyem/warm-terminal`) via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+Issues are tracked in GitHub Issues (`nib-ui/nib`) via the `gh` CLI. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

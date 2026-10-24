@@ -1,0 +1,38 @@
+{
+  "brand": "Warm Terminal",
+  "tagline": "Any screen, read like a well-typeset terminal",
+  "brief": "A domain-agnostic design system: flat, ruled, square, mono labels over sans text, one orange accent for the current thing. The mark has to carry those laws on its own.",
+  "adjectives": ["calm", "precise", "honest", "technical", "warm"],
+  "criteria": "Square and flat (radius 0), one accent with one meaning, distinct from the >_ terminal cliché, legible at 16 px, works on both themes.",
+  "industry": "software",
+  "nav": ["Tokens", "Components", "Recipes"],
+  "brand_color": "#c15f3c",
+  "tile_color": "#141413",
+  "greyscale": false,
+  "final": true,
+  "designer": "Warm Terminal",
+  "concepts": [
+    {
+      "name": "Current cell",
+      "symbol": "../warm-terminal-mark.svg",
+      "lockup": "../warm-terminal-horizontal.svg",
+      "stacked": "../warm-terminal-stacked.svg",
+      "symbol_on_tile": "../warm-terminal-mark-dark.svg",
+      "symbol_on_dark": "../warm-terminal-mark-dark.svg",
+      "lockup_on_dark": "../warm-terminal-horizontal-dark.svg",
+      "stacked_on_dark": "../warm-terminal-stacked-dark.svg",
+      "stacked_on_tile": "../warm-terminal-stacked-dark.svg",
+      "idea": "A ruled grid where one cell is the cursor, in the accent, and the next cell is still empty.",
+      "rationale": [
+        "Flat, square and ruled: the system's first two laws, drawn",
+        "The only orange is the current thing, exactly as in the UI",
+        "The empty last cell says what comes next; no >_ cliché",
+        "Wordmark built from 2-unit rectangles, x-height = one cell"
+      ]
+    }
+  ],
+  "next_steps": [
+    "Trademark search before public use",
+    "Use the grid as a loading or empty-state motif (cells fill, cursor steps)"
+  ]
+}

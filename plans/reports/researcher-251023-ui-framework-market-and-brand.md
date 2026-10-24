@@ -1,0 +1,147 @@
+# Warm Terminal: UI framework market, names, brand risk, font facts
+
+Date: 2026-10-23. Scope: market scan, lessons, name check, brand/legal facts (not legal advice), font tech facts.
+Method: npm registry + downloads API, GitHub API (via gh CLI), RDAP, official pages, font binaries parsed with fontTools. Stars/downloads = snapshot 2026-10-23.
+
+## 0. Ranked recommendations
+
+| # | Decision | Recommendation | Why |
+|---|---|---|---|
+| 1 | Distribution model | Pure CSS core (classes + semantic elements, CSS custom properties generated from DESIGN.md tokens), zero-JS base, optional tiny vanilla-JS modules for dialog/tabs | Only model that is framework-agnostic with no build step. Matches Bulma/Oat/WebTUI. Lowest maintenance for a solo author |
+| 2 | Second | Shadcn-style copy-in recipes for interactive parts, after core has users | Copy-in succeeded at scale (shadcn 126k stars) but is React-first; vanilla variant exists (Basecoat) so no need to invent |
+| 3 | Third | Web Components | Shoelace died into Web Awesome; shadow DOM complicates theming. Defer |
+| 4 | Fourth | Tailwind plugin adapter | DaisyUI proves demand (655k/wk) but couples you to Tailwind. Optional adapter only, never core |
+| 5 | Last | Headless wrappers (Radix/Ark) | React-first, behavior not your differentiator, highest upkeep. Reject for v1 |
+| B1 | Name | Reserve npm/GitHub/domain names now (all verified free, see s.3). Decide rename vs keep before public launch | Cheap now, costly later |
+| B2 | Brand | Drop any Anthropic logo/mark, never label the palette "Claude", add "not affiliated with Anthropic" notice | Anthropic trademark rules are explicit about affiliation and marks. Colors are the softer question |
+| B3 | Positioning | Compete in ruled/mono/terminal niche (vs WebTUI), not generic Bootstrap | Bootstrap (175k stars) owns generic. Niche has one active leader |
+
+## 1. Competitive landscape (snapshot 2026-10-23)
+
+Adoption = GitHub stars / npm weekly downloads (last 7d, api.npmjs.org). Status from GitHub `pushed_at`/`archived` and official banners.
+
+| Library | Delivery | Framework-agnostic | Stars | npm/wk | Status Oct 2026 | Key strength | Key weakness |
+|---|---|---|---|---|---|---|---|
+| Bootstrap 5 | CSS classes + small JS | Yes | 175k | 3.14M | Active; latest stable 5.3.8; v6 alpha in repo | Ubiquitous, docs, every stack | Generic "Bootstrap look" |
+| Bulma | Pure CSS classes | Yes | 50k | 170k | Repo pushed Sep 2026; npm latest 1.0.4 (no 1.1 found) | Clean, no JS, CSS vars | Slow release cadence |
+| Pico CSS | Classless semantic CSS | Yes | 16.8k | 29.5k | **Dead**: GitHub `archived: true`; site: "no longer maintained" | Classless idea, tiny | Abandoned; avoid as dependency |
+| DaisyUI | Tailwind plugin (classes) | No (needs Tailwind) | 42.7k | 655k | Active; v5.7.50 | Theme system, big reach | Tailwind-coupled |
+| Tailwind UI / Catalyst (Tailwind Plus) | Paid copy-in templates | No (Tailwind/React) | n/a | n/a | **Conflicting**: pricing page lists $149 Catalyst / $299 Plus; third-party posts say new sales closed Sep 2026. Unverified | Polished | Paid; React-centric |
+| shadcn/ui | Copy-in CLI, React + Radix | No (React) | 126k | 7.45M (shadcn CLI) | Active, pushed Oct 23 | Copy-in ownership model | React-only |
+| Basecoat (shadcn-for-vanilla) | Tailwind CSS + vanilla JS | Yes (any stack) | 4.4k | 17.6k | Active, pushed Oct 23 | shadcn look without React, MIT | Needs Tailwind; small team |
+| Web Awesome (ex-Shoelace) | Web Components | Yes | 1.4k (new repo) | 175k (`@awesome.me/webawesome`) | Active, pushed Oct 23 | Agnostic WCs, Font Awesome backing | Paid Pro tier (not re-verified); shadow-DOM theming |
+| Shoelace | Web Components | Yes | 13.8k | 62k | **Archived May 14 2026**, sunset, redirects to Web Awesome | - | Dead; migrate |
+| Radix Primitives | Headless | No (React) | 19.4k | 45M (react-dialog, transitive-heavy) | Active | Gold-standard a11y | React only, unstyled |
+| Zag (core) / Ark UI | Headless state machines | Yes (Zag core); Ark for React/Vue/Solid | 5.2k / 5.4k | 822k / 537k | Active, pushed Oct 22-23 | Real framework-agnostic logic layer | Unstyled; you style it |
+| Park UI | Copy-in CLI on Ark + Panda CSS | No | 2.4k | 9.4k (panda-preset) | **Stale signal**: last push Apr 10 2026 | Good design system | Panda dependency; ~6 mo no push |
+| Franken UI | UIkit 3 + Lit WCs | Mostly | 2.6k | ~0.6k (`franken-ui`) | Pushed Jun 2026 | HTML-first, MIT | Small; UIkit lock-in |
+| Open Props | CSS custom-property tokens | Yes | 5.5k | 22.9k | Active, pushed Oct 11 | Token system, no JS | Not components |
+| Oat (knadh) | Semantic HTML + native WCs | Yes | 5.5k | not checked | Active, pushed Oct 19; **pre-1.0**, breaking changes expected | ~7 KB CSS, native tags styled without classes, MIT | Pre-1.0 churn |
+
+### Terminal / retro / ruled niche
+
+| Library | Stars | npm/wk | Last push | Status | Fit with Warm Terminal |
+|---|---|---|---|---|---|
+| **WebTUI** (`@webtui/css`) | 2.5k | 2.5k | 2026-10-12 | **Alive, closest** | Pure CSS, attribute API (`box-`, `size-`), themes, MIT. Direct competitor in terminal niche |
+| terminal.css | 1.5k | 364 | 2026-02-12 | Slowing | Classless-ish terminal look; simple |
+| TuiCss | 2.0k | 38 | 2026-06-19 | Low usage | Text-UI look; almost no installs |
+| 7.css | 2.5k | 518 | 2026-09-30 | Alive | Win7 recreation, different axis |
+| 98.css | 11.6k | 5.1k | 2025-09-07 | Stale-ish | Win98 recreation |
+| NES.css | 21.8k | 1.1k | 2024-01-17 | **Stale** | Stars high, installs low (star-to-install gap = hobby interest, not usage) |
+| 2025-26 brutalist/mono/ruled CSS frameworks | none found | - | - | Niche empty | Only AI "skill" files (e.g. Leonxlnx/taste-skill, "industrial brutalist ui"). Count of stars claimed by catalogs (~84-87k) unverified |
+
+Closest to niche: **WebTUI #1**, terminal.css and TuiCss #2 (both weak usage), Oat as classless/semantic reference, Basecoat as shadcn-vanilla reference, Open Props as token reference.
+
+Sources: https://github.com/twbs/bootstrap · https://github.com/jgthms/bulma · https://www.npmjs.com/package/bulma · https://picocss.com/docs/mission · https://github.com/picocss/pico · https://github.com/saadeghi/daisyui · https://tailwindcss.com/plus · https://tailwindcss.com/plus/templates/catalyst · https://github.com/shadcn-ui/ui · https://github.com/hunvreus/basecoat · https://basecoatui.com/introduction.md · https://github.com/shoelace-style/webawesome · https://github.com/shoelace-style/shoelace · https://github.com/radix-ui/primitives · https://github.com/chakra-ui/zag · https://github.com/chakra-ui/ark · https://github.com/chakra-ui/park-ui · https://github.com/franken-ui/ui · https://github.com/argyleink/open-props · https://github.com/knadh/oat · https://oat.ink/components · https://github.com/webtui/webtui · https://webtui.ironclad.sh/start/intro · https://github.com/Gioni06/terminal.css · https://github.com/vinibiavatti1/TuiCss · https://github.com/khang-nd/7.css · https://github.com/jdan/98.css · https://github.com/nostalgic-css/NES.css · https://tessl.io/registry/skills/github/Leonxlnx/taste-skill/industrial-brutalist-ui · npm stats: https://api.npmjs.org/downloads/point/last-week/<pkg>
+
+## 2. Lessons (why agnostic UI libs live or die)
+
+Evidence: Shoelace archived after Font Awesome acquisition (2022) and Web Awesome Kickstarter (company-published: $200k by day 3, unverified) - https://blog.fontawesome.com/web-awesome-kickstarter/ · Pico archived; star count (16.8k) vs installs (29.5k/wk) shows it was already fading - https://picocss.com/docs/mission. NES.css: 21.8k stars, 1.1k/wk, last push Jan 2024 - https://github.com/nostalgic-css/NES.css.
+
+Top 5 for a first-time solo author:
+1. **Maintenance is the killer, not design.** Pico, NES.css, Shoelace all died or stalled. Scope to what one person can sustain: small component set, CSS-only core, no JS framework. YAGNI.
+2. **Distribution beats features.** DaisyUI (655k/wk) and shadcn (7.45M/wk) grew by riding a host ecosystem (Tailwind, React). Pure agnostic libs grow via CDN + zero build step (Bootstrap, Bulma). Pick one lane explicitly; a Tailwind adapter can come later.
+3. **Stars overstate usage in aesthetic niches.** NES.css and 98.css have 10x the stars of their weekly installs. Track npm downloads and issues, not stars, as the success signal.
+4. **Copy-in + headless reset developer expectations.** Developers now expect either owned copy-in code or behavior that works. A pure-CSS lib needs a clear answer for dialog/dropdown/tabs (Oat: native elements/WCs; Basecoat: small vanilla JS).
+5. **Commercial sustainability is a design input.** Web Awesome survives on company funding + Pro tier. A solo author has no such backing, so either stay MIT-hobby with a small scope or plan a sponsorship/Pro tier from day 1. Decide before v1, not after.
+
+## 3. Name availability (verified 2026-10-23)
+
+| Namespace | Check | Result |
+|---|---|---|
+| npm `warm-terminal` | registry.npmjs.org/warm-terminal | 404 = unpublished (free) |
+| npm `warmterminal` | registry | 404 = free |
+| npm scope `@warm-terminal` | /-/org/warm-terminal/package | "Scope not found" = unclaimed |
+| npm similar names | search "warm-terminal" | No match for this name; `@warm-ai/warm` ("hosted coding agent for your terminal") is a near-neighbour in the same space - https://www.npmjs.com/package/@warm-ai/warm |
+| GitHub user/org `warm-terminal`, `warmterminal`, `warm-terminal-ui`, `warm-terminal-css`, `warmterminal-ui` | api.github.com | All 404 = unclaimed |
+| GitHub repo search | "warm terminal in:name" | `ethereal-keys/warm-terminal` (0 stars, a portfolio site) and your own `ngocsangyem/warm-terminal`. Repo-name collision only, not a product |
+| Domains (RDAP) | rdap.org / registry RDAP | `warmterminal.dev`, `.com`, `.io`, `.app`, `.ai` and `warm-terminal.dev` = RDAP 404 (likely unregistered). **`warm-terminal.com` could not be verified** (network failure). Confirm at a registrar |
+| Existing product | search | No UI framework named Warm Terminal found. Terminal-adjacent "warm" products exist (`@warm-ai/warm`) |
+| USPTO trademark | not searched | **Unverified**. Required before launch |
+
+Name risk note: "terminal" + warm accent + Anthropic-style palette is close to Claude Code (Anthropic's terminal product). Perceived-affiliation risk is larger than colour risk. This is a judgment call for the user.
+
+## 4. Brand / legal facts (not legal advice)
+
+| Item | Finding | Source |
+|---|---|---|
+| #d97757 | Listed as "Orange - Primary accent" in Anthropic's own `anthropics/skills` brand-guidelines skill. Strongest source found. Not a trademark registration. | https://github.com/anthropics/skills/blob/main/skills/brand-guidelines/SKILL.md |
+| #141413, #faf9f5, #b0aea5 | Same skill file: Dark, Light, Mid Gray | same |
+| #c15f3c | **Not in** Anthropic skill file (grep: 0 hits). Only in third-party extractions (those list #c6613f as "clay" dark variant). Unverified as a published Anthropic colour | same; third-party: https://kombai.com/examples/design-systems/claude-kombai |
+| Anthropic palette/fonts | Skill names Poppins/Lora, which conflicts with third-party "Anthropic Serif/Sans" claims. No official palette doc found | same |
+| Trademark rules | "You may only use our trademarks as specifically permitted by us and only in materials we approve beforehand." "No alterations of our trademarks (changes to color, font, proportion, or otherwise) are permitted." "You may not use our trademarks in a manner that implies Anthropic's sponsorship or endorsement, or a relationship or affiliation..." Permission: marketing@anthropic.com | https://www.anthropic.com/legal/trademark-guidelines |
+| Trade dress / "look and feel" | Trademark page does **not** address it. Colour rules apply to the marks (logos), not to the palette generally | same |
+| "Claude" naming | Australian registration: CLAUDE word mark, Class 42, owner Anthropic PBC (registered, third-party aggregator). US: CLAUDE MYTHOS application seen. Plain US CLAUDE Class 9/42 **not confirmed** | https://search.ipaustralia.gov.au/trademarks/search/view/2380964/details · https://www.trademarkelite.com/trademark/trademark-detail/99872440/CLAUDE-MYTHOS |
+| Community "Claude-inspired" DESIGN.md | getdesign.md: "independent analysis... not affiliated with or endorsed by Claude" (names Claude, not Anthropic). shadcn.io Claude DESIGN.md: no disclaimer seen | https://getdesign.md/claude/design-md · https://www.shadcn.io/design/claude |
+
+Practical reading: colours and "warm/cream" aesthetic are not shown to be protected. Logos, the word CLAUDE, and implied affiliation are. Keep: no Anthropic logo or asterisk mark, no "Claude" in package/brand name, explicit non-affiliation notice.
+
+## 5. Tech facts: fonts
+
+| Font | Version | Vietnamese (incl. uppercase) | Licence | Bundling |
+|---|---|---|---|---|
+| JetBrains Mono | v2.304 (Regular, Medium checked) | **Yes**. All 90 precomposed codepoints U+1EA0-1EF9 present (Ấ Ệ Ự Ơ Đ and lowercase). Verified with fontTools cmap | OFL-1.1 (OFL.txt + README) | OK in npm with OFL.txt shipped. Check RFN clause if subsetting |
+| Inter | v4.1 (Regular, Variable checked) | **Yes**. Same 90/90 coverage, same test | OFL-1.1 (README + font name table) | OK in npm with OFL.txt |
+
+Other findings:
+- Google Fonts `vietnamese` subset for both fonts is `U+0102-0103, 0110-0111, 0128-0129, 0168-0169, 01A0-01A1, 01AF-01B0, 0300-0301, 0303-0304, 0308-0309, 0323, 0329, 1EA0-1EF9, 20AB`. Corroborates cmap check - https://fonts.googleapis.com/css2?family=Inter:wght@500&subset=vietnamese
+- JetBrains Mono GSUB has **no `tnum`** and no `liga`. DESIGN.md `meta-sm` sets `"tnum" 1`: a no-op (mono is already tabular). Harmless; drop or keep for documentation.
+- Inter GSUB includes `case`, `tnum`, `ss01-08`, `cv01-14`. Uppercase Vietnamese OK.
+- Size: JetBrains Mono v2.304 zip is 5.6 MB. Ship WOFF2 subsets (Latin + Latin-ext + Vietnamese) for web, not full TTFs.
+- OFL-1.1 permits bundling and redistribution inside npm packages and commercial use; restrictions are: no selling the font alone, modified versions must not use any Reserved Font Name, and licence text must ship. Verify each font's RFN line before subsetting/renaming.
+
+Sources: https://github.com/JetBrains/JetBrainsMono · https://github.com/JetBrains/JetBrainsMono/releases/download/v2.304/JetBrainsMono-2.304.zip · https://github.com/rsms/inter · https://github.com/rsms/inter/releases/tag/v4.1 · https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&subset=vietnamese
+
+## 6. Architectural fit notes
+
+- Existing stack: no code yet; DESIGN.md is the only artefact. Token-first approach (YAML to CSS custom properties) fits the pure-CSS core with no runtime.
+- Five laws map to CSS directly: radius 0, no shadow, 1px grid lines, mono-uppercase labels via font-family + text-transform, one accent via a single custom property. No JS needed for the visual layer.
+- Team skill: solo author. Pure CSS + small vanilla JS minimises upkeep. Avoid React/Radix/Shadow-DOM WCs in v1.
+
+## 7. Limitations
+
+- No USPTO or EUIPO trademark search performed. Name clearance is not done.
+- Domain checks are RDAP only (no WHOIS, no registrar). `warm-terminal.com` unverified.
+- Tailwind Plus sales status conflicting: official page fetched was a login form. Not resolved.
+- Brand palette source is Anthropic's own skill repo (a skill, not a brand guide). No official palette page found. #c15f3c unverified.
+- Web Awesome Pro pricing and Basecoat's exact Tailwind requirement not re-verified beyond npm/README text.
+- Franken UI npm count (~0.6k/wk) may be for a sub-package; treat as approximate.
+- Oat npm downloads not checked. Oat's "~7 KB" is from its own site.
+- Bulma 1.1 not found; latest npm 1.0.4.
+- Brutalist/mono niche searched via web only. No npm-keyword sweep (e.g. `keywords:brutalist`) run, so small libs may be missed.
+- Contrast/accessibility of the palette not tested. Out of scope.
+- Not legal advice. Facts only.
+
+## Unresolved questions
+
+1. Keep "Warm Terminal" name, or rename given terminal + Claude-palette perceived-affiliation risk? (User decision.)
+2. Run USPTO/trademark clearance before reserving names? Who does it?
+3. `warm-terminal.com`: available or not? Check at registrar.
+4. Is Tailwind Plus still selling new licences? Affects whether Catalyst is a comparison point or a dead option.
+5. Keep `#c15f3c` (light-mode accent in DESIGN.md)? It is not in Anthropic's published skill palette. Relevant only if brand-colour claims are made publicly.
+6. Monetisation: stay MIT hobby, or plan sponsorship/Pro tier before v1?
+7. Confirm Web Awesome Pro pricing and licence split (not verified).
+
+**Status:** DONE_WITH_CONCERNS
+**Summary:** Market is crowded in generic agnostic CSS (Bootstrap, Bulma) and dead in several niches (Pico, Shoelace archived). WebTUI is the one active terminal-niche competitor. Names warm-terminal / warmterminal / @warm-terminal / GitHub org are free; domains look free by RDAP. Anthropic's skill repo lists #d97757, #141413, #faf9f5 as brand colours; trademark rules restrict marks and affiliation, not palette explicitly. Inter and JetBrains Mono both cover full Vietnamese incl. uppercase (verified by cmap), both OFL-1.1.
+**Concerns/Blockers:** No USPTO search. Tailwind Plus status conflicting. #c15f3c unverified as Anthropic colour. Name carries perceived-affiliation risk with Claude Code. Not legal advice.

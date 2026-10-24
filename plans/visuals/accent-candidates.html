@@ -1,0 +1,97 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Accent candidates</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#141413;color:#faf9f5;font:14px/1.5 Inter,system-ui,sans-serif;padding:24px 16px}
+h1{font-weight:500;font-size:24px;margin:0 0 4px}h2{font-weight:500;font-size:16px;margin:32px 0 2px}
+.meta,.lbl,.tag,.ni,.btn,.now,.opt,.selsample{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px}
+.meta{color:#87867f;margin-bottom:8px}.sub{color:#b0aea5;max-width:70ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:0;border:1px solid #faf9f529}
+.pane{background:var(--s);color:var(--ink);padding:16px;display:grid;gap:14px}
+.lbl{color:var(--i3)}
+.nav{display:flex;gap:16px;border-bottom:1px solid var(--line)}
+.ni{color:var(--i2);padding:6px 0;margin-bottom:-1px;border-bottom:2px solid transparent}
+.ni.on{color:var(--ink);border-bottom-color:var(--rule)}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn{background:var(--ink);color:var(--s);border:0;padding:8px 14px;border-radius:0;letter-spacing:.04em}
+.btn.focus{outline:2px solid var(--acc);outline-offset:2px}
+.opt{background:var(--r);border:1px solid var(--line);padding:8px 12px;color:var(--i2)}
+.opt.sel{border:2px solid var(--acc);padding:7px 11px;color:var(--ink)}
+.prog{width:140px;height:4px;background:var(--line)}.prog i{display:block;width:62%;height:100%;background:var(--acc)}
+.now{color:var(--at)}.inv{background:var(--ink);color:var(--s);padding:1px 4px;font-weight:500}
+.selsample{padding:2px 6px}
+.tags{gap:8px}.tag{padding:1px 6px}
+</style></head><body><h1>Accent candidates</h1>
+<p class="sub">Each card: dark and light theme. Nav underline 2px, focus ring 2px/2px offset, selected border, progress, NOW tag text, selection sample, then the six hues and the old coral (dashed) for comparison. Ranked best first. Candidates C and F show ink inversion for current/selection.</p>
+<section><h2>1. F ink block + jade rule (hybrid)</h2><div class="meta">#00967d / #009e84 / #02806c / #007561 &middot; text/sel min 4.65:1</div><div class="grid"><div class="pane" style="--s:#141413;--r:#1a1a18;--p:#1e1d1b;--ink:#faf9f5;--i2:#b0aea5;--i3:#87867f;--line:#faf9f529;--acc:#00967d;--at:#009e84;--rule:#00967d">
+ <div class="lbl">dark &middot; accent #00967d &middot; text #009e84</div>
+ <div class="nav"><span class="ni">Overview</span><span class="ni on">Docs</span><span class="ni">Pricing</span><span class="ni">Status</span></div>
+ <div class="row"><button class="btn focus">RUN</button><span class="opt sel">Selected option</span><span class="opt">Other option</span></div>
+ <div class="row"><div class="prog"><i></i></div><span class="now">NOW</span><span class="selsample" style="background:#faf9f5;color:#141413">selected text</span></div>
+ <div class="row tags"><span class="tag" style="color:#82aaff;border:1px solid #82aaff66">blue</span><span class="tag" style="color:#89ddff;border:1px solid #89ddff66">cyan</span><span class="tag" style="color:#c3e88d;border:1px solid #c3e88d66">green</span><span class="tag" style="color:#c792ea;border:1px solid #c792ea66">magenta</span><span class="tag" style="color:#e5c07b;border:1px solid #e5c07b66">yellow</span><span class="tag" style="color:#e08f8f;border:1px solid #e08f8f66">red</span><span class="tag" style="color:#d97757;border:1px dashed #d9775788" title="old accent">old coral</span></div>
+ </div><div class="pane" style="--s:#faf9f5;--r:#f1efe8;--p:#ece9e0;--ink:#141413;--i2:#4c4b45;--i3:#65645e;--line:#14141338;--acc:#02806c;--at:#007561;--rule:#02806c">
+ <div class="lbl">light &middot; accent #02806c &middot; text #007561</div>
+ <div class="nav"><span class="ni">Overview</span><span class="ni on">Docs</span><span class="ni">Pricing</span><span class="ni">Status</span></div>
+ <div class="row"><button class="btn focus">RUN</button><span class="opt sel">Selected option</span><span class="opt">Other option</span></div>
+ <div class="row"><div class="prog"><i></i></div><span class="now">NOW</span><span class="selsample" style="background:#141413;color:#faf9f5">selected text</span></div>
+ <div class="row tags"><span class="tag" style="color:#2a60d6;border:1px solid #2a60d666">blue</span><span class="tag" style="color:#156f93;border:1px solid #156f9366">cyan</span><span class="tag" style="color:#537126;border:1px solid #53712666">green</span><span class="tag" style="color:#8c46bb;border:1px solid #8c46bb66">magenta</span><span class="tag" style="color:#7a5d00;border:1px solid #7a5d0066">yellow</span><span class="tag" style="color:#a04545;border:1px solid #a0454566">red</span><span class="tag" style="color:#c15f3c;border:1px dashed #c15f3c88" title="old accent">old coral</span></div>
+ </div></div></section><section><h2>2. A teal-jade (hue gap 176)</h2><div class="meta">#00967d / #009e84 / #02806c / #007561 &middot; text/sel min 4.63:1</div><div class="grid"><div class="pane" style="--s:#141413;--r:#1a1a18;--p:#1e1d1b;--ink:#faf9f5;--i2:#b0aea5;--i3:#87867f;--line:#faf9f529;--acc:#00967d;--at:#009e84;--rule:#00967d">
+ <div class="lbl">dark &middot; accent #00967d &middot; text #009e84</div>
+ <div class="nav"><span class="ni">Overview</span><span class="ni on">Docs</span><span class="ni">Pricing</span><span class="ni">Status</span></div>
+ <div class="row"><button class="btn focus">RUN</button><span class="opt sel">Selected option</span><span class="opt">Other option</span></div>
+ <div class="row"><div class="prog"><i></i></div><span class="now">NOW</span><span class="selsample" style="background:#00967d;color:#141413">selected text</span></div>
+ <div class="row tags"><span class="tag" style="color:#82aaff;border:1px solid #82aaff66">blue</span><span class="tag" style="color:#89ddff;border:1px solid #89ddff66">cyan</span><span class="tag" style="color:#c3e88d;border:1px solid #c3e88d66">green</span><span class="tag" style="color:#c792ea;border:1px solid #c792ea66">magenta</span><span class="tag" style="color:#e5c07b;border:1px solid #e5c07b66">yellow</span><span class="tag" style="color:#e08f8f;border:1px solid #e08f8f66">red</span><span class="tag" style="color:#d97757;border:1px dashed #d9775788" title="old accent">old coral</span></div>
+ </div><div class="pane" style="--s:#faf9f5;--r:#f1efe8;--p:#ece9e0;--ink:#141413;--i2:#4c4b45;--i3:#65645e;--line:#14141338;--acc:#02806c;--at:#007561;--rule:#02806c">
+ <div class="lbl">light &middot; accent #02806c &middot; text #007561</div>
+ <div class="nav"><span class="ni">Overview</span><span class="ni on">Docs</span><span class="ni">Pricing</span><span class="ni">Status</span></div>
+ <div class="row"><button class="btn focus">RUN</button><span class="opt sel">Selected option</span><span class="opt">Other option</span></div>
+ <div class="row"><div class="prog"><i></i></div><span class="now">NOW</span><span class="selsample" style="background:#02806c;color:#faf9f5">selected text</span></div>
+ <div class="row tags"><span class="tag" style="color:#2a60d6;border:1px solid #2a60d666">blue</span><span class="tag" style="color:#156f93;border:1px solid #156f9366">cyan</span><span class="tag" style="color:#537126;border:1px solid #53712666">green</span><span class="tag" style="color:#8c46bb;border:1px solid #8c46bb66">magenta</span><span class="tag" style="color:#7a5d00;border:1px solid #7a5d0066">yellow</span><span class="tag" style="color:#a04545;border:1px solid #a0454566">red</span><span class="tag" style="color:#c15f3c;border:1px dashed #c15f3c88" title="old accent">old coral</span></div>
+ </div></div></section><section><h2>3. C cursor-block ink (neutral)</h2><div class="meta">#faf9f5 / #faf9f5 / #141413 / #141413 &middot; text/sel min 15.18:1</div><div class="grid"><div class="pane" style="--s:#141413;--r:#1a1a18;--p:#1e1d1b;--ink:#faf9f5;--i2:#b0aea5;--i3:#87867f;--line:#faf9f529;--acc:#faf9f5;--at:#faf9f5;--rule:#faf9f5">
+ <div class="lbl">dark &middot; accent #faf9f5 &middot; text #faf9f5</div>
+ <div class="nav"><span class="ni">Overview</span><span class="ni on">Docs</span><span class="ni">Pricing</span><span class="ni">Status</span></div>
+ <div class="row"><button class="btn focus">RUN</button><span class="opt sel">Selected option</span><span class="opt">Other option</span></div>
+ <div class="row"><div class="prog"><i></i></div><span class="now"><b class="inv">NOW</b></span><span class="selsample" style="background:#faf9f5;color:#141413">selected text</span></div>
+ <div class="row tags"><span class="tag" style="color:#82aaff;border:1px solid #82aaff66">blue</span><span class="tag" style="color:#89ddff;border:1px solid #89ddff66">cyan</span><span class="tag" style="color:#c3e88d;border:1px solid #c3e88d66">green</span><span class="tag" style="color:#c792ea;border:1px solid #c792ea66">magenta</span><span class="tag" style="color:#e5c07b;border:1px solid #e5c07b66">yellow</span><span class="tag" style="color:#e08f8f;border:1px solid #e08f8f66">red</span><span class="tag" style="color:#d97757;border:1px dashed #d9775788" title="old accent">old coral</span></div>
+ </div><div class="pane" style="--s:#faf9f5;--r:#f1efe8;--p:#ece9e0;--ink:#141413;--i2:#4c4b45;--i3:#65645e;--line:#14141338;--acc:#141413;--at:#141413;--rule:#141413">
+ <div class="lbl">light &middot; accent #141413 &middot; text #141413</div>
+ <div class="nav"><span class="ni">Overview</span><span class="ni on">Docs</span><span class="ni">Pricing</span><span class="ni">Status</span></div>
+ <div class="row"><button class="btn focus">RUN</button><span class="opt sel">Selected option</span><span class="opt">Other option</span></div>
+ <div class="row"><div class="prog"><i></i></div><span class="now"><b class="inv">NOW</b></span><span class="selsample" style="background:#141413;color:#faf9f5">selected text</span></div>
+ <div class="row tags"><span class="tag" style="color:#2a60d6;border:1px solid #2a60d666">blue</span><span class="tag" style="color:#156f93;border:1px solid #156f9366">cyan</span><span class="tag" style="color:#537126;border:1px solid #53712666">green</span><span class="tag" style="color:#8c46bb;border:1px solid #8c46bb66">magenta</span><span class="tag" style="color:#7a5d00;border:1px solid #7a5d0066">yellow</span><span class="tag" style="color:#a04545;border:1px solid #a0454566">red</span><span class="tag" style="color:#c15f3c;border:1px dashed #c15f3c88" title="old accent">old coral</span></div>
+ </div></div></section><section><h2>4. E rose-pink (hue gap 350)</h2><div class="meta">#c86497 / #cf6a9e / #b14f82 / #a64579 &middot; text/sel min 4.61:1</div><div class="grid"><div class="pane" style="--s:#141413;--r:#1a1a18;--p:#1e1d1b;--ink:#faf9f5;--i2:#b0aea5;--i3:#87867f;--line:#faf9f529;--acc:#c86497;--at:#cf6a9e;--rule:#c86497">
+ <div class="lbl">dark &middot; accent #c86497 &middot; text #cf6a9e</div>
+ <div class="nav"><span class="ni">Overview</span><span class="ni on">Docs</span><span class="ni">Pricing</span><span class="ni">Status</span></div>
+ <div class="row"><button class="btn focus">RUN</button><span class="opt sel">Selected option</span><span class="opt">Other option</span></div>
+ <div class="row"><div class="prog"><i></i></div><span class="now">NOW</span><span class="selsample" style="background:#c86497;color:#141413">selected text</span></div>
+ <div class="row tags"><span class="tag" style="color:#82aaff;border:1px solid #82aaff66">blue</span><span class="tag" style="color:#89ddff;border:1px solid #89ddff66">cyan</span><span class="tag" style="color:#c3e88d;border:1px solid #c3e88d66">green</span><span class="tag" style="color:#c792ea;border:1px solid #c792ea66">magenta</span><span class="tag" style="color:#e5c07b;border:1px solid #e5c07b66">yellow</span><span class="tag" style="color:#e08f8f;border:1px solid #e08f8f66">red</span><span class="tag" style="color:#d97757;border:1px dashed #d9775788" title="old accent">old coral</span></div>
+ </div><div class="pane" style="--s:#faf9f5;--r:#f1efe8;--p:#ece9e0;--ink:#141413;--i2:#4c4b45;--i3:#65645e;--line:#14141338;--acc:#b14f82;--at:#a64579;--rule:#b14f82">
+ <div class="lbl">light &middot; accent #b14f82 &middot; text #a64579</div>
+ <div class="nav"><span class="ni">Overview</span><span class="ni on">Docs</span><span class="ni">Pricing</span><span class="ni">Status</span></div>
+ <div class="row"><button class="btn focus">RUN</button><span class="opt sel">Selected option</span><span class="opt">Other option</span></div>
+ <div class="row"><div class="prog"><i></i></div><span class="now">NOW</span><span class="selsample" style="background:#b14f82;color:#faf9f5">selected text</span></div>
+ <div class="row tags"><span class="tag" style="color:#2a60d6;border:1px solid #2a60d666">blue</span><span class="tag" style="color:#156f93;border:1px solid #156f9366">cyan</span><span class="tag" style="color:#537126;border:1px solid #53712666">green</span><span class="tag" style="color:#8c46bb;border:1px solid #8c46bb66">magenta</span><span class="tag" style="color:#7a5d00;border:1px solid #7a5d0066">yellow</span><span class="tag" style="color:#a04545;border:1px solid #a0454566">red</span><span class="tag" style="color:#c15f3c;border:1px dashed #c15f3c88" title="old accent">old coral</span></div>
+ </div></div></section><section><h2>5. D indigo-violet (hue gap 287)</h2><div class="meta">#8478de / #8a7ee5 / #7260d3 / #6955c7 &middot; text/sel min 4.60:1</div><div class="grid"><div class="pane" style="--s:#141413;--r:#1a1a18;--p:#1e1d1b;--ink:#faf9f5;--i2:#b0aea5;--i3:#87867f;--line:#faf9f529;--acc:#8478de;--at:#8a7ee5;--rule:#8478de">
+ <div class="lbl">dark &middot; accent #8478de &middot; text #8a7ee5</div>
+ <div class="nav"><span class="ni">Overview</span><span class="ni on">Docs</span><span class="ni">Pricing</span><span class="ni">Status</span></div>
+ <div class="row"><button class="btn focus">RUN</button><span class="opt sel">Selected option</span><span class="opt">Other option</span></div>
+ <div class="row"><div class="prog"><i></i></div><span class="now">NOW</span><span class="selsample" style="background:#8478de;color:#141413">selected text</span></div>
+ <div class="row tags"><span class="tag" style="color:#82aaff;border:1px solid #82aaff66">blue</span><span class="tag" style="color:#89ddff;border:1px solid #89ddff66">cyan</span><span class="tag" style="color:#c3e88d;border:1px solid #c3e88d66">green</span><span class="tag" style="color:#c792ea;border:1px solid #c792ea66">magenta</span><span class="tag" style="color:#e5c07b;border:1px solid #e5c07b66">yellow</span><span class="tag" style="color:#e08f8f;border:1px solid #e08f8f66">red</span><span class="tag" style="color:#d97757;border:1px dashed #d9775788" title="old accent">old coral</span></div>
+ </div><div class="pane" style="--s:#faf9f5;--r:#f1efe8;--p:#ece9e0;--ink:#141413;--i2:#4c4b45;--i3:#65645e;--line:#14141338;--acc:#7260d3;--at:#6955c7;--rule:#7260d3">
+ <div class="lbl">light &middot; accent #7260d3 &middot; text #6955c7</div>
+ <div class="nav"><span class="ni">Overview</span><span class="ni on">Docs</span><span class="ni">Pricing</span><span class="ni">Status</span></div>
+ <div class="row"><button class="btn focus">RUN</button><span class="opt sel">Selected option</span><span class="opt">Other option</span></div>
+ <div class="row"><div class="prog"><i></i></div><span class="now">NOW</span><span class="selsample" style="background:#7260d3;color:#faf9f5">selected text</span></div>
+ <div class="row tags"><span class="tag" style="color:#2a60d6;border:1px solid #2a60d666">blue</span><span class="tag" style="color:#156f93;border:1px solid #156f9366">cyan</span><span class="tag" style="color:#537126;border:1px solid #53712666">green</span><span class="tag" style="color:#8c46bb;border:1px solid #8c46bb66">magenta</span><span class="tag" style="color:#7a5d00;border:1px solid #7a5d0066">yellow</span><span class="tag" style="color:#a04545;border:1px solid #a0454566">red</span><span class="tag" style="color:#c15f3c;border:1px dashed #c15f3c88" title="old accent">old coral</span></div>
+ </div></div></section><section><h2>6. B phosphor chartreuse-lime (110)</h2><div class="meta">#878a00 / #8e9100 / #727602 / #696c00 &middot; text/sel min 4.62:1</div><div class="grid"><div class="pane" style="--s:#141413;--r:#1a1a18;--p:#1e1d1b;--ink:#faf9f5;--i2:#b0aea5;--i3:#87867f;--line:#faf9f529;--acc:#878a00;--at:#8e9100;--rule:#878a00">
+ <div class="lbl">dark &middot; accent #878a00 &middot; text #8e9100</div>
+ <div class="nav"><span class="ni">Overview</span><span class="ni on">Docs</span><span class="ni">Pricing</span><span class="ni">Status</span></div>
+ <div class="row"><button class="btn focus">RUN</button><span class="opt sel">Selected option</span><span class="opt">Other option</span></div>
+ <div class="row"><div class="prog"><i></i></div><span class="now">NOW</span><span class="selsample" style="background:#878a00;color:#141413">selected text</span></div>
+ <div class="row tags"><span class="tag" style="color:#82aaff;border:1px solid #82aaff66">blue</span><span class="tag" style="color:#89ddff;border:1px solid #89ddff66">cyan</span><span class="tag" style="color:#c3e88d;border:1px solid #c3e88d66">green</span><span class="tag" style="color:#c792ea;border:1px solid #c792ea66">magenta</span><span class="tag" style="color:#e5c07b;border:1px solid #e5c07b66">yellow</span><span class="tag" style="color:#e08f8f;border:1px solid #e08f8f66">red</span><span class="tag" style="color:#d97757;border:1px dashed #d9775788" title="old accent">old coral</span></div>
+ </div><div class="pane" style="--s:#faf9f5;--r:#f1efe8;--p:#ece9e0;--ink:#141413;--i2:#4c4b45;--i3:#65645e;--line:#14141338;--acc:#727602;--at:#696c00;--rule:#727602">
+ <div class="lbl">light &middot; accent #727602 &middot; text #696c00</div>
+ <div class="nav"><span class="ni">Overview</span><span class="ni on">Docs</span><span class="ni">Pricing</span><span class="ni">Status</span></div>
+ <div class="row"><button class="btn focus">RUN</button><span class="opt sel">Selected option</span><span class="opt">Other option</span></div>
+ <div class="row"><div class="prog"><i></i></div><span class="now">NOW</span><span class="selsample" style="background:#727602;color:#faf9f5">selected text</span></div>
+ <div class="row tags"><span class="tag" style="color:#2a60d6;border:1px solid #2a60d666">blue</span><span class="tag" style="color:#156f93;border:1px solid #156f9366">cyan</span><span class="tag" style="color:#537126;border:1px solid #53712666">green</span><span class="tag" style="color:#8c46bb;border:1px solid #8c46bb66">magenta</span><span class="tag" style="color:#7a5d00;border:1px solid #7a5d0066">yellow</span><span class="tag" style="color:#a04545;border:1px solid #a0454566">red</span><span class="tag" style="color:#c15f3c;border:1px dashed #c15f3c88" title="old accent">old coral</span></div>
+ </div></div></section></body></html>
