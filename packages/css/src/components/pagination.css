@@ -1,0 +1,88 @@
+/* Pagination: `← PREV · 2 / 9 · NEXT →` in mono labels. Prev and next are links (rel="prev" /
+   "next"); on the first or last page render the step as <a role="link" aria-disabled="true">
+   without href, so it is announced as a dimmed link and the row keeps its shape.
+   The arrows point the reading way and swap under right-to-left; arrows and dots are decoration.
+   Give the status words for screen readers in `nib-pagination__label` (Page 2 of 9) and hide the
+   short form with aria-hidden. */
+@layer nib.components {
+  .nib-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--nib-space-sm);
+    color: var(--nib-on-surface-2);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1));
+    text-transform: var(--nib-caps, uppercase);
+  }
+
+  .nib-pagination__prev,
+  .nib-pagination__next {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--nib-space-touch-target);
+    color: var(--nib-on-surface);
+    text-decoration: none;
+  }
+
+  .nib-pagination__prev:is(a[href]):hover,
+  .nib-pagination__next:is(a[href]):hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .nib-pagination [aria-disabled='true'] {
+    color: var(--nib-on-surface-3);
+    cursor: not-allowed;
+  }
+
+  .nib-pagination__prev::before {
+    margin-inline-end: var(--nib-space-xs);
+    content: '←' / '';
+  }
+
+  .nib-pagination__next::after {
+    margin-inline-start: var(--nib-space-xs);
+    content: '→' / '';
+  }
+
+  .nib-pagination__prev:dir(rtl)::before {
+    content: '→' / '';
+  }
+
+  .nib-pagination__next:dir(rtl)::after {
+    content: '←' / '';
+  }
+
+  /* 2 / 9 reads left to right in every script; flex drops the markup's spaces. */
+  .nib-pagination__status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nib-space-sm);
+    direction: ltr;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .nib-pagination__status::before,
+  .nib-pagination__status::after {
+    color: var(--nib-on-surface-3);
+    content: '·' / '';
+  }
+
+  /* Read, not shown. */
+  .nib-pagination__label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  @media (forced-colors: active) {
+    .nib-pagination [aria-disabled='true'] {
+      color: GrayText;
+    }
+  }
+}
