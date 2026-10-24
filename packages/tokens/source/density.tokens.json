@@ -1,0 +1,37 @@
+{
+  "$description": "Comfortable (Leaded) is the default; compact (Set solid). Density changes paddings and control heights, never type sizes.",
+  "density": {
+    "comfortable": {
+      "cell-padding": {
+        "$type": "dimension",
+        "$value": {
+          "value": 16,
+          "unit": "px"
+        }
+      },
+      "control-height": {
+        "$type": "dimension",
+        "$value": {
+          "value": 36,
+          "unit": "px"
+        }
+      }
+    },
+    "compact": {
+      "cell-padding": {
+        "$type": "dimension",
+        "$value": {
+          "value": 12,
+          "unit": "px"
+        }
+      },
+      "control-height": {
+        "$type": "dimension",
+        "$value": {
+          "value": 28,
+          "unit": "px"
+        }
+      }
+    }
+  }
+}

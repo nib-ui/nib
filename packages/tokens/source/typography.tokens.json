@@ -1,0 +1,359 @@
+{
+  "$description": "Type roles. Mono roles also turn off ligatures; that is a law applied in base CSS, not a token.",
+  "typography": {
+    "headline-hero": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.sans}"
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$value": {
+          "value": 48,
+          "unit": "px"
+        }
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": 500
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": {
+          "value": 52,
+          "unit": "px"
+        }
+      },
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": {
+          "value": -0.03,
+          "unit": "em"
+        }
+      }
+    },
+    "headline-xl": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.sans}"
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$value": {
+          "value": 32,
+          "unit": "px"
+        }
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": 500
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": {
+          "value": 38,
+          "unit": "px"
+        }
+      },
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": {
+          "value": -0.02,
+          "unit": "em"
+        }
+      }
+    },
+    "headline-display": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.sans}"
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$value": {
+          "value": 24,
+          "unit": "px"
+        }
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": 500
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": {
+          "value": 30,
+          "unit": "px"
+        }
+      },
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": {
+          "value": -0.02,
+          "unit": "em"
+        }
+      }
+    },
+    "headline-lead": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.sans}"
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$value": {
+          "value": 20,
+          "unit": "px"
+        }
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": 500
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": {
+          "value": 28,
+          "unit": "px"
+        }
+      },
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": {
+          "value": -0.01,
+          "unit": "em"
+        }
+      }
+    },
+    "headline-md": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.sans}"
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$value": {
+          "value": 17,
+          "unit": "px"
+        }
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": 500
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": {
+          "value": 24,
+          "unit": "px"
+        }
+      },
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": {
+          "value": -0.01,
+          "unit": "em"
+        }
+      }
+    },
+    "body-lg": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.sans}"
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$value": {
+          "value": 17,
+          "unit": "px"
+        }
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": 400
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": {
+          "value": 28,
+          "unit": "px"
+        }
+      }
+    },
+    "body-md": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.sans}"
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$value": {
+          "value": 14,
+          "unit": "px"
+        }
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": 400
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": {
+          "value": 22,
+          "unit": "px"
+        }
+      }
+    },
+    "body-sm": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.sans}"
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$value": {
+          "value": 12.5,
+          "unit": "px"
+        }
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": 400
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": {
+          "value": 17,
+          "unit": "px"
+        }
+      }
+    },
+    "label-md": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.mono}"
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$value": {
+          "value": 12,
+          "unit": "px"
+        }
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": 500
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": {
+          "value": 18,
+          "unit": "px"
+        }
+      },
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": {
+          "value": 0.02,
+          "unit": "em"
+        }
+      }
+    },
+    "label-sm": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.mono}"
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$value": {
+          "value": 11,
+          "unit": "px"
+        }
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": 500
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": {
+          "value": 16,
+          "unit": "px"
+        }
+      }
+    },
+    "code-md": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.mono}"
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$value": {
+          "value": 13,
+          "unit": "px"
+        }
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": 400
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": {
+          "value": 22,
+          "unit": "px"
+        }
+      }
+    },
+    "item-md": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.mono}"
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$value": {
+          "value": 12.5,
+          "unit": "px"
+        }
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": 400
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": {
+          "value": 18,
+          "unit": "px"
+        }
+      }
+    },
+    "meta-sm": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font.mono}"
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$value": {
+          "value": 11.5,
+          "unit": "px"
+        }
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": 400
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": {
+          "value": 16,
+          "unit": "px"
+        }
+      }
+    }
+  }
+}

@@ -1,1 +1,1 @@
-export { NibError, type NibErrorCode } from './nib-error.js';
+export { NibError, type NibErrorCode } from './nib-error.ts';

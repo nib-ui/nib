@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { NibError } from './index.js';
+import { NibError } from './index.ts';
 
 describe('NibError', () => {
   it('carries its code and prefixes the message with it', () => {
