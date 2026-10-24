@@ -65,6 +65,19 @@
           /></label>
         </div>
         <div class="nib-field">
+          <label class="nib-field__label" for="preset">Preset</label>
+          <select class="nib-input" id="preset" name="preset">
+            <option value="">None</option>
+            <option value="docs">docs (Galley)</option>
+            <option value="dashboard">dashboard (Ledger)</option>
+            <option value="blog">blog (Broadsheet)</option>
+            <option value="landing">landing (Broadside)</option>
+          </select>
+          <p class="nib-field__hint press__preset-link" hidden>
+            <a class="nib-link" href="/presets/">Open the sample page</a>
+          </p>
+        </div>
+        <div class="nib-field">
           <label class="nib-field__label" for="error-hue">Error hue</label>
           <select class="nib-input" id="error-hue" name="errorHue"></select>
         </div>
@@ -103,6 +116,27 @@
           <span class="nib-row__end nib-tag nib-tag--accent">Now</span>
         </div>
         <p class="nib-loading"><span class="nib-spinner" aria-hidden="true"></span>Roasting…</p>
+        <!-- Each preset's own hue roles; only the chosen preset's strip shows. -->
+        <div class="press__preset" data-preset="docs" hidden>
+          <div class="nib-callout nib-callout--note">
+            <p class="nib-callout__label">Note</p>
+            <p>Doses are in grams.</p>
+          </div>
+        </div>
+        <div class="press__preset" data-preset="dashboard" hidden>
+          <span class="nib-tag nib-series-1">Orders</span> <span class="nib-tag nib-series-2">Roasts</span>
+          <span class="nib-tag nib-series-3">Subscriptions</span>
+        </div>
+        <div class="press__preset" data-preset="blog" hidden>
+          <span class="nib-tag nib-category-guide">Guide</span> <span class="nib-tag nib-category-essay">Essay</span>
+          <span class="nib-tag nib-category-note">Note</span>
+        </div>
+        <div class="press__preset" data-preset="landing" hidden>
+          <ol class="nib-broadside__steps">
+            <li>Write the recipe.</li>
+            <li>Start the brew.</li>
+          </ol>
+        </div>
       </section>
 
       <section class="press__export" aria-labelledby="export-title">

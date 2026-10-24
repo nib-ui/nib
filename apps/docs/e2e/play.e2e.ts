@@ -9,7 +9,26 @@ const { light, dark } = tokens.color;
 
 const PAGE = '/play/';
 
+/** A #rrggbb colour as the rgb() string getComputedStyle reports. */
+const hex = (value: string) => `rgb(${[1, 3, 5].map((i) => parseInt(value.slice(i, i + 2), 16)).join(', ')})`;
+
 test.describe('proof press', () => {
+  test('a preset sets its page defaults, shows its hue roles and names its stylesheet', async ({ page }) => {
+    await page.goto(PAGE);
+    const preview = page.getByRole('region', { name: 'Preview' });
+    await page.getByLabel('Preset').selectOption('dashboard');
+    await expect(preview).toHaveAttribute('data-theme', 'dark');
+    await expect(preview).toHaveAttribute('data-density', 'compact');
+    await expect(preview.locator('.nib-series-2')).toHaveCSS('color', hex(dark['cyan'] ?? ''));
+    await expect(page.locator('.press__css')).toContainText('@nib-ui/css/presets/dashboard.css');
+    await expect(page.getByRole('link', { name: 'Open the sample page' })).toHaveAttribute(
+      'href',
+      '/presets/dashboard/',
+    );
+    await page.getByLabel('Preset').selectOption('');
+    await expect(preview.locator('.nib-series-2')).toBeHidden();
+  });
+
   test('starts from the shipped tokens with every pair passing', async ({ page }) => {
     await page.goto(PAGE);
     await expect(page.getByRole('status')).toHaveText(/^Every pair passes/);

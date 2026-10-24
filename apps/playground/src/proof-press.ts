@@ -46,8 +46,20 @@ export function customProperties(choices: Choices): Record<string, string> {
   };
 }
 
-/** The choices as a stylesheet to paste after nib.css. */
-export function exportCss(choices: Choices): string {
+export const PRESETS = ['docs', 'dashboard', 'blog', 'landing'] as const;
+export type Preset = (typeof PRESETS)[number];
+
+/** The page defaults a preset sets on <html>; a missing one follows the system or stays as chosen. */
+export const PRESET_PAGE: Record<Preset, { theme?: Theme; density?: 'comfortable' | 'compact' }> = {
+  docs: {},
+  dashboard: { theme: 'dark', density: 'compact' },
+  blog: { theme: 'light' },
+  landing: {},
+};
+
+/** The choices as a stylesheet to paste after nib.css; with a preset, a note on loading it first. */
+export function exportCss(choices: Choices, preset?: Preset): string {
   const lines = Object.entries(customProperties(choices)).map(([name, value]) => `  ${name}: ${value};`);
-  return `@layer nib.theme {\n  :root {\n${lines.join('\n')}\n  }\n}\n`;
+  const note = preset ? `/* Preset ${preset}: load @nib-ui/css/presets/${preset}.css after nib.css. */\n` : '';
+  return `${note}@layer nib.theme {\n  :root {\n${lines.join('\n')}\n  }\n}\n`;
 }
