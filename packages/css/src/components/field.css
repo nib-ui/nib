@@ -1,0 +1,88 @@
+/* Field: mono label above the control, help text and an error below; only optional fields are
+   marked (OPTIONAL), required ones carry `required` and no asterisk. The error summary opens a
+   form after a failed submit: a red callout with role="alert" listing each error as a link. */
+@layer nib.components {
+  .nib-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--nib-space-xs);
+  }
+
+  .nib-field__label {
+    color: var(--nib-on-surface-2);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1));
+    text-transform: var(--nib-caps, uppercase);
+  }
+
+  /* A name to type or a key to press is shown as written, never in caps. */
+  .nib-field__label :is(code, kbd) {
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .nib-field__optional {
+    margin-inline-start: var(--nib-space-sm);
+    color: var(--nib-on-surface-3);
+    font-size: var(--nib-label-sm-font-size);
+  }
+
+  .nib-field__hint {
+    margin: 0;
+    color: var(--nib-on-surface-3);
+    font: var(--nib-body-sm-font-weight) var(--nib-body-sm-font-size) / var(--nib-body-sm-line-height)
+      var(--nib-font-sans);
+  }
+
+  .nib-field__error,
+  .nib-error-summary__title {
+    margin: 0;
+    color: var(--nib-red);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1));
+    text-transform: var(--nib-caps, uppercase);
+  }
+
+  .nib-field__error::before,
+  .nib-error-summary__title::before {
+    content: '⚠ ' / '';
+  }
+
+  /* A group of checkboxes, radios or switches under one legend. */
+  .nib-fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: var(--nib-space-xs);
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .nib-fieldset > legend {
+    margin-block-end: var(--nib-space-xs);
+    padding: 0;
+  }
+
+  .nib-error-summary {
+    padding: var(--nib-space-sm-plus) var(--nib-space-md);
+    border-inline-start: var(--nib-space-rule) solid var(--nib-red);
+    background: var(--nib-surface-raised);
+  }
+
+  .nib-error-summary ul {
+    margin: var(--nib-space-xs) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nib-error-summary a {
+    color: var(--nib-on-surface);
+    font: var(--nib-body-md-font-weight) var(--nib-body-md-font-size) / var(--nib-body-md-line-height)
+      var(--nib-font-sans);
+    text-decoration-color: var(--nib-red);
+    text-underline-offset: 3px;
+  }
+}

@@ -8,3 +8,7 @@
 @import './base/layout.css';
 @import './components/button.css';
 @import './components/listbox.css';
+@import './components/input.css';
+@import './components/choice.css';
+@import './components/switch.css';
+@import './components/field.css';

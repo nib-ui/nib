@@ -1,0 +1,68 @@
+/* Text input, textarea and select: raised fill, 1px line border, mono text, square, as tall as
+   the density's control height. Error and disabled states come from aria-invalid and disabled. */
+@layer nib.components {
+  .nib-input {
+    box-sizing: border-box;
+    inline-size: 100%;
+    min-block-size: var(--nib-density-control-height);
+    margin: 0;
+    padding-block: 0;
+    padding-inline: var(--nib-space-sm-plus);
+    border: var(--nib-space-hairline) solid var(--nib-line);
+    border-radius: 0;
+    background: var(--nib-surface-raised);
+    color: var(--nib-on-surface);
+    font: var(--nib-item-md-font-weight) var(--nib-item-md-font-size) / var(--nib-item-md-line-height)
+      var(--nib-font-mono);
+    font-variant-ligatures: none;
+  }
+
+  /* Addresses and numbers read left to right in every script. */
+  .nib-input:is([type='email'], [type='url'], [type='tel']) {
+    direction: ltr;
+  }
+
+  .nib-input::placeholder {
+    color: var(--nib-on-surface-3);
+    opacity: 1;
+  }
+
+  textarea.nib-input {
+    min-block-size: calc(5 * var(--nib-item-md-line-height) + 2 * var(--nib-space-sm));
+    padding-block: var(--nib-space-sm);
+    resize: vertical;
+  }
+
+  .nib-input:focus-visible {
+    outline: var(--nib-space-rule) solid var(--nib-accent);
+    outline-offset: var(--nib-space-rule);
+  }
+
+  .nib-input[aria-invalid='true'] {
+    border-color: var(--nib-red);
+  }
+
+  .nib-input:disabled {
+    border-color: var(--nib-line-soft);
+    color: var(--nib-on-surface-3);
+    cursor: not-allowed;
+  }
+
+  /* Touch: every control at least 44px tall. */
+  @media (pointer: coarse) {
+    .nib-input {
+      min-block-size: var(--nib-space-touch-target);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .nib-input:focus-visible {
+      outline-color: CanvasText;
+    }
+
+    /* The red border is lost to the system colours: an invalid field gets a heavier one. */
+    .nib-input[aria-invalid='true'] {
+      border-width: var(--nib-space-rule);
+    }
+  }
+}

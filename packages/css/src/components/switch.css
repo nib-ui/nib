@@ -1,0 +1,66 @@
+/* Switch: <input type="checkbox" role="switch"> over the whole row; the row prints ON or OFF in
+   mono at its inline end. No knob: ON is weight 500 on-surface, OFF weight 400 on-surface 3, so the
+   state reads without colour. A switch takes effect at once; a form's set of options is checkboxes. */
+@layer nib.components {
+  .nib-switch {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--nib-space-md);
+    min-block-size: var(--nib-density-control-height);
+    color: var(--nib-on-surface);
+    font: var(--nib-body-md-font-weight) var(--nib-body-md-font-size) / var(--nib-body-md-line-height)
+      var(--nib-font-sans);
+    cursor: pointer;
+  }
+
+  .nib-switch > input {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+    appearance: none;
+    cursor: inherit;
+  }
+
+  /* Both words take the width of the longer one, so the row does not shift when it flips. */
+  .nib-switch::after {
+    flex: none;
+    min-inline-size: 3ch;
+    content: 'OFF' / '';
+    color: var(--nib-on-surface-3);
+    font: 400 var(--nib-label-md-font-size) / var(--nib-label-md-line-height) var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1));
+    text-align: end;
+  }
+
+  .nib-switch:has(> input:checked)::after {
+    content: 'ON' / '';
+    color: var(--nib-on-surface);
+    font-weight: 500;
+  }
+
+  .nib-switch:has(> input:disabled) {
+    color: var(--nib-on-surface-3);
+    cursor: not-allowed;
+  }
+
+  .nib-switch > input:focus-visible {
+    outline: var(--nib-space-rule) solid var(--nib-accent);
+    outline-offset: var(--nib-space-rule);
+  }
+
+  @media (pointer: coarse) {
+    .nib-switch {
+      min-block-size: var(--nib-space-touch-target);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .nib-switch > input:focus-visible {
+      outline-color: CanvasText;
+    }
+  }
+}
