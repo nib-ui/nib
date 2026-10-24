@@ -11,19 +11,13 @@ import '@nib-ui/css/presets/dashboard.css';
         <a class="nib-header__brand" href="#content">
           Roastery ops
         </a>
-        <ul class="nib-nav" id="ledger-nav" aria-label="Main">
-          <li>
-            <a href="#content" aria-current="page">
-              Today
-            </a>
-          </li>
-          <li>
-            <a href="#content">Orders</a>
-          </li>
-          <li>
-            <a href="#content">Stock</a>
-          </li>
-        </ul>
+        <nav class="nib-nav" id="ledger-nav" aria-label="Main">
+          <a href="#content" aria-current="page">
+            Today
+          </a>
+          <a href="#content">Orders</a>
+          <a href="#content">Stock</a>
+        </nav>
         <a class="nib-header__word nib-header__menu" href="#ledger-nav">
           Menu
         </a>
@@ -102,7 +96,7 @@ import '@nib-ui/css/presets/dashboard.css';
         </div>
       </section>
     </main>
-    <nav class="nib-ledger__dock" aria-label="Actions">
+    <div class="nib-ledger__dock" role="group" aria-label="Actions">
       <button class="nib-button nib-button--ghost" type="button">
         <span class="nib-button__key" aria-hidden="true">
           [R]
@@ -121,6 +115,6 @@ import '@nib-ui/css/presets/dashboard.css';
         </span>
         <span class="nib-button__word">Export</span>
       </button>
-    </nav>
+    </div>
   </div>
 </PresetLayout>

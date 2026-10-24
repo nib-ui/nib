@@ -68,8 +68,9 @@
     color: var(--nib-on-surface);
   }
 
-  /* The current page, or the section the page is in (aria-current="true"). */
-  .nib-nav a:is([aria-current='page'], [aria-current='true']) {
+  /* The current page, the section the page is in (aria-current="true"), or the section of a long
+     page in view (aria-current="location", from a scroll spy). */
+  .nib-nav a:is([aria-current='page'], [aria-current='true'], [aria-current='location']) {
     border-block-end-color: var(--nib-accent);
     color: var(--nib-on-surface);
   }
@@ -105,7 +106,7 @@
   }
 
   @media (forced-colors: active) {
-    .nib-nav a:is([aria-current='page'], [aria-current='true']) {
+    .nib-nav a:is([aria-current='page'], [aria-current='true'], [aria-current='location']) {
       border-block-end-color: CanvasText;
     }
   }

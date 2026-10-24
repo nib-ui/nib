@@ -35,7 +35,8 @@
     }
   }
 
-  /* The dock: word controls, each with its key printed after it (nib-hotkey). */
+  /* The dock: word controls, each with its key printed before its word (nib-button__key); a
+     labelled group of commands, not a navigation. */
   .nib-ledger__dock {
     position: sticky;
     inset-block-end: 0;

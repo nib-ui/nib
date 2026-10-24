@@ -36,10 +36,11 @@ for (const preset of PAGES) {
       test.skip(cell.forcedColors && browserName !== 'chromium', 'Playwright emulates forced colours in Chromium only');
       await applyCell(page, cell);
       await page.goto(`/presets/${preset}/`);
-      // Forced colours paint system colours, but axe reads the page's own: on a page that sets
-      // data-theme="dark" it compares dark-theme text with the forced white canvas. The screenshot
-      // shows what is painted.
-      await expectAccessible(page, undefined, cell.forcedColors ? ['color-contrast'] : []);
+      // Forced colours paint system colours, but axe reads the page's own: on a page that sets its
+      // theme (data-theme) it compares that theme's text with the forced canvas. The screenshot
+      // shows what is painted; pages that follow the OS keep the contrast check.
+      const ownTheme = cell.forcedColors && DEFAULTS[preset]?.[0] !== undefined;
+      await expectAccessible(page, undefined, ownTheme ? ['color-contrast'] : []);
       await expect(page).toHaveScreenshot(`${preset}-${cell.name}.png`);
     });
   }

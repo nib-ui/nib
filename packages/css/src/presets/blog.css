@@ -25,6 +25,7 @@
       position: fixed;
       z-index: 2;
       display: block;
+      pointer-events: none;
       inset-block-start: 0;
       inset-inline: 0;
       block-size: var(--nib-space-rule);

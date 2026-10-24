@@ -50,11 +50,19 @@
 
     .nib-galley__outline {
       border-block-start: var(--nib-space-hairline) solid var(--nib-line);
-      border-inline: 0 var(--nib-space-hairline) solid var(--nib-line);
+      border-inline-start: 0;
+      border-inline-end: var(--nib-space-hairline) solid var(--nib-line);
+    }
+
+    /* Stacked in one column, the side lists scroll with the page. */
+    .nib-galley__nav > *,
+    .nib-galley__outline > * {
+      position: static;
+      max-block-size: none;
     }
   }
 
-  /* Narrow: one column in reading order, the side lists no longer sticky. */
+  /* Narrow: one column in reading order. */
   @media (width < 48rem) {
     .nib-galley {
       grid-template-areas: 'nav' 'article' 'outline';
@@ -66,12 +74,6 @@
     .nib-galley__outline {
       border-inline: 0;
       border-block-end: var(--nib-space-hairline) solid var(--nib-line);
-    }
-
-    .nib-galley__nav > *,
-    .nib-galley__outline > * {
-      position: static;
-      max-block-size: none;
     }
   }
 }
