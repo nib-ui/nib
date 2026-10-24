@@ -9,13 +9,13 @@ import { href, navigation } from '../../data/nav.ts';
 >
   <p class="nib-kicker">Docs</p>
   <h1>Components</h1>
-  {navigation().map((group) => (
+  {navigation('components').map((group) => (
     <section aria-labelledby={`group-${group.title}`} class="docs-index">
       <h2 id={`group-${group.title}`}>{group.title}</h2>
       <ul class="nib-grid" role="list" style="--nib-grid-min: 14rem">
         {group.pages.map((page) => (
           <li>
-            <a class="nib-tile" href={href(page.slug)}>
+            <a class="nib-tile" href={href('components', page.slug)}>
               <span class="nib-tile__title">{page.title}</span>
               <span class="nib-text-small">{page.lead}</span>
             </a>

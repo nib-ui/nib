@@ -1,0 +1,96 @@
+---
+import CodeBlock from '../../components/code-block.astro';
+import GuidePage from '../../layouts/guide-page.astro';
+---
+
+<GuidePage
+  title="Getting started"
+  lead="Nib is CSS first: one stylesheet styles every component. Add a binding only for the interactive ones."
+>
+  <h2 id="packages">The packages</h2>
+  <div class="nib-table-scroll" role="region" aria-label="Packages" tabindex="0">
+    <table class="nib-table">
+      <thead>
+        <tr>
+          <th scope="col">Package</th>
+          <th scope="col">What it holds</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <code>@nib-ui/css</code>
+          </td>
+          <td>
+            <code>nib.css</code> (tokens, base and every component), single components, <code>utilities.css</code> and
+            the presets
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <code>@nib-ui/tokens</code>
+          </td>
+          <td>The design tokens as CSS variables, a Tailwind v4 theme and JSON</td>
+        </tr>
+        <tr>
+          <td>
+            <code>@nib-ui/fonts</code>
+          </td>
+          <td>Inter and JetBrains Mono, self-hosted; optional</td>
+        </tr>
+        <tr>
+          <td>
+            <code>@nib-ui/icons</code>
+          </td>
+          <td>The icon set as CSS masks, a sprite and ES modules</td>
+        </tr>
+        <tr>
+          <td>
+            <code>@nib-ui/js</code>
+          </td>
+          <td>Interactive components wired from markup, no framework</td>
+        </tr>
+        <tr>
+          <td>
+            <code>@nib-ui/react</code>, <code>vue</code>, <code>svelte</code>
+          </td>
+          <td>The same components as hooks, composables and stores</td>
+        </tr>
+        <tr>
+          <td>
+            <code>@nib-ui/core</code>, <code>@nib-ui/dom</code>
+          </td>
+          <td>The headless controllers and their DOM adapters, used by every binding</td>
+        </tr>
+        <tr>
+          <td>
+            <code>@nib-ui/cli</code>
+          </td>
+          <td>
+            <code>nib init</code>, <code>nib theme check</code> and <code>nib lint</code>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="quick">The quickest start</h2>
+  <p>The CLI asks for a preset and how you load CSS, then writes the files a project needs.</p>
+  <CodeBlock
+    label="shell"
+    code={`npx @nib-ui/cli init
+pnpm add @nib-ui/css @nib-ui/tokens @nib-ui/fonts`}
+  />
+  <p>
+    Then import the CSS entry it wrote once, before your own styles. Continue with <a href="/guides/css/">plain CSS</a>
+    or <a href="/guides/tailwind/">Tailwind</a>, and for interactive components with
+    <a href="/guides/javascript/">vanilla JS</a>, <a href="/guides/react/">React</a>,<a href="/guides/vue/">Vue</a> or{' '}
+    <a href="/guides/svelte/">Svelte</a>.
+  </p>
+
+  <h2 id="browsers">Browsers</h2>
+  <p>
+    The last two versions of Chrome, Firefox and Safari. Nib uses a feature only when all three have it, with no
+    fallbacks; each minor release records its browserslist snapshot in the changelog.
+  </p>
+</GuidePage>

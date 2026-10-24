@@ -1,0 +1,14 @@
+---
+// A code sample with its file name or language on top; the panel scrolls, so it is focusable.
+interface Props {
+  label: string;
+  code: string;
+}
+
+const { label, code } = Astro.props;
+---
+
+<figure class="nib-code">
+  <figcaption class="nib-code__header">{label}</figcaption>
+  <pre tabindex="0"><code>{code}</code></pre>
+</figure>

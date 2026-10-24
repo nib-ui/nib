@@ -1,0 +1,18 @@
+---
+import BaseLayout from './base-layout.astro';
+
+// A guide: kicker, title, lead, then prose. Its h2 headings fill "On this page".
+interface Props {
+  title: string;
+  lead: string;
+}
+
+const { title, lead } = Astro.props;
+---
+
+<BaseLayout title={title} description={lead}>
+  <p class="nib-kicker">Guide</p>
+  <h1>{title}</h1>
+  <p class="nib-text-lead">{lead}</p>
+  <slot />
+</BaseLayout>

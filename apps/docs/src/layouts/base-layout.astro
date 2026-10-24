@@ -59,7 +59,10 @@ const path = Astro.url.pathname;
                   <ul role="list">
                     {group.pages.map((page) => (
                       <li>
-                        <a href={href(page.slug)} aria-current={path === href(page.slug) ? 'page' : undefined}>
+                        <a
+                          href={href(group.section, page.slug)}
+                          aria-current={path === href(group.section, page.slug) ? 'page' : undefined}
+                        >
                           {page.title}
                         </a>
                       </li>

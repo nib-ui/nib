@@ -5,9 +5,11 @@ import { strings } from '../i18n/ui.ts';
 
 const t = strings(Astro.currentLocale);
 const path = Astro.url.pathname;
+// `section` is the path a link stands for: on any page under it the link is the current section.
 const links = [
-  { href: '/components/', label: t.components },
-  { href: '/play/', label: t.play },
+  { href: '/guides/install/', section: '/guides/', label: t.guides },
+  { href: '/components/', section: '/components/', label: t.components },
+  { href: '/play/', section: '/play/', label: t.play },
 ];
 ---
 
@@ -20,7 +22,7 @@ const links = [
       {links.map((link) => (
         <a
           href={link.href}
-          aria-current={path === link.href ? 'page' : path.startsWith(link.href) ? 'true' : undefined}
+          aria-current={path === link.href ? 'page' : path.startsWith(link.section) ? 'true' : undefined}
         >
           {link.label}
         </a>

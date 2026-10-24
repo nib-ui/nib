@@ -1,0 +1,42 @@
+---
+import CodeBlock from '../../components/code-block.astro';
+import GuidePage from '../../layouts/guide-page.astro';
+---
+
+<GuidePage title="Vue" lead="One composable per component; bind the object it hands out for each part with v-bind.">
+  <h2 id="install">Install</h2>
+  <CodeBlock label="shell" code="pnpm add @nib-ui/vue @nib-ui/css @nib-ui/tokens" />
+  <p>
+    Vue 3.5 or later. Load the CSS as in <a href="/guides/css/">plain CSS</a> or{' '}
+    <a href="/guides/tailwind/">Tailwind</a>.
+  </p>
+
+  <h2 id="use">Use a component</h2>
+  <CodeBlock
+    label="Language.vue"
+    code={`<script setup>
+import { ref } from 'vue';
+import { useListbox } from '@nib-ui/vue/listbox';
+
+const items = [
+  { key: 'en', label: 'English' },
+  { key: 'vi', label: 'Tiếng Việt' },
+];
+const value = ref('vi');
+const listbox = useListbox(() => ({ items, value: value.value, onValueChange: (v) => (value.value = v) }));
+</script>
+
+<template>
+  <ul class="nib-listbox" aria-label="Language" v-bind="listbox.part('list')">
+    <li v-for="item in items" :key="item.key" class="nib-listbox__option" v-bind="listbox.part('option', item.key)">
+      {{ item.label }}
+    </li>
+  </ul>
+</template>`}
+  />
+  <p>
+    Pass the options as a getter (or a ref) and the composable follows them as they change. Each composable (
+    <code>useListbox</code>, <code>useDialog</code>, <code>useDataGrid</code>, …) returns <code>state</code>,
+    <code>part(name, key?)</code> and <code>send(event)</code>. Ids are stable across server and client rendering.
+  </p>
+</GuidePage>

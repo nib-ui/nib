@@ -1,0 +1,42 @@
+---
+import CodeBlock from '../../components/code-block.astro';
+import GuidePage from '../../layouts/guide-page.astro';
+---
+
+<GuidePage
+  title="CLI"
+  lead="Three commands: set a project up, proof its theme, and check it keeps the laws. No telemetry."
+>
+  <h2 id="init">nib init</h2>
+  <p>
+    Asks for a preset and how CSS is loaded (or takes <code>--preset</code>, <code>--css plain|tailwind</code> and
+    <code>--dir</code>), then writes <code>nib.config.json</code>, a CSS entry and an empty theme file. Files already
+    there are kept, and an existing config's choices win.
+  </p>
+  <CodeBlock label="shell" code={`npx @nib-ui/cli init --preset dashboard --css tailwind`} />
+
+  <h2 id="theme-check">nib theme check</h2>
+  <p>
+    Reads the <code>--nib-*</code> colours of your theme file (or the files given), lays them over Nib's palette and
+    proofs both themes. Errors exit with 1, so it fits in CI.
+  </p>
+  <CodeBlock
+    label="output"
+    code={`Pulling a proof of src/nib-theme.css…
+error    Proof mark: accent on paper-raised is 2.8:1, needs 3:1.
+Not locked up: 1 error, 4 warnings.`}
+  />
+
+  <h2 id="lint">nib lint</h2>
+  <p>
+    Runs Nib's own Stylelint rules over your CSS and scans class names in HTML, JSX, Vue, Svelte and Astro for Tailwind
+    utilities that bring back radius, shadows, gradients, blur or colours outside the tokens. A
+    <code>nib-lint-ignore</code> comment waives its line and the next.
+  </p>
+  <CodeBlock
+    label="output"
+    code={`Setting type: 42 files…
+src/card.vue:2:19  nib/no-shadow  shadow-lg: nothing casts a shadow.
+Not locked up: 1 proof mark in 1 file.`}
+  />
+</GuidePage>

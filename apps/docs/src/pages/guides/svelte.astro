@@ -1,0 +1,37 @@
+---
+import CodeBlock from '../../components/code-block.astro';
+import GuidePage from '../../layouts/guide-page.astro';
+---
+
+<GuidePage title="Svelte" lead="One store per component; spread the attributes it hands out for each part.">
+  <h2 id="install">Install</h2>
+  <CodeBlock label="shell" code="pnpm add @nib-ui/svelte @nib-ui/css @nib-ui/tokens" />
+  <p>
+    Svelte 5. Load the CSS as in <a href="/guides/css/">plain CSS</a> or <a href="/guides/tailwind/">Tailwind</a>.
+  </p>
+
+  <h2 id="use">Use a component</h2>
+  <CodeBlock
+    label="Language.svelte"
+    code={`<script>
+  import { createListboxStore } from '@nib-ui/svelte/listbox';
+
+  let { items } = $props();
+  const listbox = createListboxStore({ id: $props.id(), items, defaultValue: 'vi' });
+  // Options that change later (items loaded or filtered) are passed on.
+  $effect(() => listbox.update({ items }));
+</script>
+
+<ul class="nib-listbox" aria-label="Language" {...$listbox.part('list')}>
+  {#each items as item (item.key)}
+    <li class="nib-listbox__option" {...$listbox.part('option', item.key)}>{item.label}</li>
+  {/each}
+</ul>`}
+  />
+  <p>
+    Each store (<code>createListboxStore</code>, <code>createDialogStore</code>, <code>createDataGridStore</code>, …)
+    holds <code>state</code> and <code>part(name, key?)</code>; read them with <code>$store</code>. Call
+    <code>update(options)</code> when options change, <code>send(event)</code> to act from code, and pass{' '}
+    <code>$props.id()</code> so server and client render the same ids.
+  </p>
+</GuidePage>
