@@ -22,6 +22,10 @@ export interface NibEvent {
   data?: string;
   /** The state a popover or details element moves to, on `toggle` and `beforetoggle`. */
   newState?: 'open' | 'closed';
+  /** Pointer events: the kind of pointer, so hover-only behaviour can skip touch. */
+  pointerType?: string;
+  /** Focus events: whether the browser shows a focus ring (keyboard focus, not a click). */
+  focusVisible?: boolean;
   /** Core calls it when it handled the event, e.g. an arrow key it moved on. */
   preventDefault(): void;
 }

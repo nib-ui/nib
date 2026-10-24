@@ -35,6 +35,11 @@
       "@nib-ui/source": "./src/popover.ts",
       "types": "./dist/popover.d.ts",
       "default": "./dist/popover.js"
+    },
+    "./tooltip": {
+      "@nib-ui/source": "./src/tooltip.ts",
+      "types": "./dist/tooltip.d.ts",
+      "default": "./dist/tooltip.js"
     }
   },
   "files": [

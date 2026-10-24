@@ -65,6 +65,16 @@
       "@nib-ui/source": "./src/place/index.ts",
       "types": "./dist/place/index.d.ts",
       "default": "./dist/place/index.js"
+    },
+    "./tooltip": {
+      "@nib-ui/source": "./src/tooltip/index.ts",
+      "types": "./dist/tooltip/index.d.ts",
+      "default": "./dist/tooltip/index.js"
+    },
+    "./tooltip/apg": {
+      "@nib-ui/source": "./src/tooltip/tooltip.apg.ts",
+      "types": "./dist/tooltip/tooltip.apg.d.ts",
+      "default": "./dist/tooltip/tooltip.apg.js"
     }
   },
   "files": [

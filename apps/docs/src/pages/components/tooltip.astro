@@ -1,0 +1,88 @@
+---
+import '@nib-ui/icons/icons.css';
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<span data-nib="tooltip">
+  <button type="button" class="nib-button nib-button--outline" data-nib-trigger aria-label="Copy">
+    <span class="nib-icon nib-icon-copy" aria-hidden="true"></span>
+  </button>
+  <span class="nib-tooltip" data-nib-tooltip>Copies the order id to the clipboard</span>
+</span>`;
+
+const code = {
+  html: `${html}
+
+<script type="module">
+  import '@nib-ui/js/tooltip';
+  import { init } from '@nib-ui/js';
+  init();
+</script>`,
+  react: `import { useTooltip } from '@nib-ui/react/tooltip';
+
+function CopyId() {
+  const tooltip = useTooltip();
+  return (
+    <>
+      <button type="button" aria-label="Copy order id" className="nib-button" {...tooltip.part('trigger')}>…</button>
+      <span className="nib-tooltip" {...tooltip.part('tooltip')}>Copy order id</span>
+    </>
+  );
+}`,
+  vue: `<script setup>
+import { useTooltip } from '@nib-ui/vue/tooltip';
+
+const tooltip = useTooltip();
+</script>
+
+<template>
+  <button type="button" aria-label="Copy order id" class="nib-button" v-bind="tooltip.part('trigger')">…</button>
+  <span class="nib-tooltip" v-bind="tooltip.part('tooltip')">Copy order id</span>
+</template>`,
+  svelte: `<script>
+  import { createTooltipStore } from '@nib-ui/svelte/tooltip';
+
+  const tooltip = createTooltipStore({ id: $props.id() });
+</script>
+
+<button type="button" aria-label="Copy order id" class="nib-button" {...$tooltip.part('trigger')}>…</button>
+<span class="nib-tooltip" {...$tooltip.part('tooltip')}>Copy order id</span>`,
+};
+---
+
+<ComponentPage
+  title="Tooltip"
+  lead="A short line that names or explains its trigger, on hover after a moment and at once on focus."
+  kind="INTERACTIVE"
+  code={code}
+>
+  <div slot="example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    <code>createTooltip</code> renders a <code>trigger</code> and a <code>tooltip</code>. It shows after
+    <code>delay</code> (500ms) of hover and at once on focus, and is placed with <code>place()</code> (<code>top</code>,
+    centred, by default). Pair it with every icon-only control: the icon set's rule is words first, and a dense control
+    that drops its word carries an <code>aria-label</code> and this tooltip with the same words.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      Follows the APG tooltip pattern: <code>role="tooltip"</code>, referenced by the trigger's{' '}
+      <code>aria-describedby</code>.
+    </li>
+    <li>
+      It stays while the pointer moves onto it and closes with Escape while the trigger has focus (WCAG 1.4.13); keep it
+      to text, never links or buttons.
+    </li>
+    <li>
+      The tooltip is a description, read after the name: say something the name does not (the name here is "Copy").
+    </li>
+    <li>Do not put anything only in a tooltip that touch users need: they cannot hover, and touch never opens it.</li>
+  </ul>
+</ComponentPage>
+
+<script>
+  import '@nib-ui/js/tooltip';
+  import { init } from '@nib-ui/js';
+  init();
+</script>
