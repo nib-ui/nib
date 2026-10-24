@@ -33,6 +33,8 @@ jobs:
       # Vitest browser-mode tests run in headless Chromium.
       - run: pnpm exec playwright install --with-deps chromium
       - uses: nrwl/nx-set-shas@e602fada7ad5987b0f7b1905e7a99ea1c661514c # v5.1.0
+      - name: Formatting
+        run: pnpm format:check
       - name: Workspace in sync (TS project references)
         run: pnpm nx sync:check
       - name: Version plan for every touched public package
