@@ -6,7 +6,9 @@
 export type Intent =
   | { type: 'focus'; ref: string }
   | { type: 'announce'; text: string; politeness: 'polite' | 'assertive' }
-  | { type: 'scroll-into-view'; ref: string; block: 'nearest' | 'center' };
+  | { type: 'scroll-into-view'; ref: string; block: 'nearest' | 'center' }
+  /** Shows or hides a native popover (`showPopover()` / `hidePopover()`); see ADR 12, amendment 1. */
+  | { type: 'popover'; ref: string; open: boolean };
 
 /** The structural shape of a DOM event that core reads; bindings build it, core never sees a node. */
 export interface NibEvent {

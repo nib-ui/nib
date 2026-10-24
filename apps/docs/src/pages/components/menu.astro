@@ -1,0 +1,117 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<div data-nib="menu">
+  <button type="button" class="nib-button nib-button--outline" data-nib-button>View</button>
+  <div class="nib-menu" data-nib-menu>
+    <div class="nib-menu__item" data-nib-item="refresh">Refresh</div>
+    <div class="nib-menu__item" data-nib-item="export" data-disabled>Export · soon</div>
+    <div class="nib-menu__separator" role="separator"></div>
+    <div class="nib-menu__item" data-nib-item="wrap" data-kind="checkbox" data-checked>Wrap lines</div>
+    <div class="nib-menu__separator" role="separator"></div>
+    <div class="nib-menu__item" data-nib-item="list" data-kind="radio" data-group="layout" data-checked>List</div>
+    <div class="nib-menu__item" data-nib-item="grid" data-kind="radio" data-group="layout">Grid</div>
+  </div>
+</div>`;
+
+const code = {
+  html: `${html}
+
+<script type="module">
+  import '@nib-ui/js/menu';
+  import { init } from '@nib-ui/js';
+  init();
+</script>`,
+  react: `import { useMenu } from '@nib-ui/react/menu';
+
+function ViewMenu({ wrap, setWrap }) {
+  const items = [
+    { key: 'refresh', label: 'Refresh' },
+    { key: 'wrap', label: 'Wrap lines', kind: 'checkbox', checked: wrap },
+  ];
+  const menu = useMenu({ items, onSelect: (key) => key === 'wrap' && setWrap(!wrap) });
+  return (
+    <>
+      <button type="button" className="nib-button nib-button--outline" {...menu.part('button')}>View</button>
+      <div className="nib-menu" {...menu.part('menu')}>
+        {items.map((item) => (
+          <div key={item.key} className="nib-menu__item" {...menu.part('item', item.key)}>{item.label}</div>
+        ))}
+      </div>
+    </>
+  );
+}`,
+  vue: `<script setup>
+import { computed } from 'vue';
+import { useMenu } from '@nib-ui/vue/menu';
+
+const items = [{ key: 'refresh', label: 'Refresh' }, { key: 'copy', label: 'Copy link' }];
+const menu = useMenu({ items, onSelect: (key) => console.log(key) });
+</script>
+
+<template>
+  <button type="button" class="nib-button nib-button--outline" v-bind="menu.part('button')">View</button>
+  <div class="nib-menu" v-bind="menu.part('menu')">
+    <div v-for="item in items" :key="item.key" class="nib-menu__item" v-bind="menu.part('item', item.key)">{{ item.label }}</div>
+  </div>
+</template>`,
+  svelte: `<script>
+  import { createMenuStore } from '@nib-ui/svelte/menu';
+
+  const items = [{ key: 'refresh', label: 'Refresh' }, { key: 'copy', label: 'Copy link' }];
+  const menu = createMenuStore({ id: $props.id(), items, onSelect: (key) => console.log(key) });
+</script>
+
+<button type="button" class="nib-button nib-button--outline" {...$menu.part('button')}>View</button>
+<div class="nib-menu" {...$menu.part('menu')}>
+  {#each items as item (item.key)}
+    <div class="nib-menu__item" {...$menu.part('item', item.key)}>{item.label}</div>
+  {/each}
+</div>`,
+};
+---
+
+<ComponentPage
+  title="Menu"
+  lead="A list of actions behind a button: mono rows, the current one ruled in jade, checked ones marked [x] or (•)."
+  kind="INTERACTIVE"
+  code={code}
+>
+  <div slot="example" class="menu-example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    <code>createMenu</code> renders a <code>button</code>, a <code>menu</code> (a native popover beside the button) and
+    an
+    <code>item</code> per key. Items are actions (<code>kind: 'item'</code>), on/off settings (<code>'checkbox'</code>)
+    or one of a group (<code>'radio'</code>); <code>onSelect</code> receives the key and the menu closes, and the
+    checked state stays yours. Use a menu for actions; to choose a value use the listbox or a select.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      Follows the APG menu button pattern: <code>aria-haspopup="menu"</code> and <code>aria-expanded</code> on the
+      button, <code>menu</code> / <code>menuitem</code> / <code>menuitemcheckbox</code> / <code>menuitemradio</code>{' '}
+      roles, the current item as <code>aria-activedescendant</code>.
+    </li>
+    <li>
+      Enter, Space or ArrowDown open it on the first item, ArrowUp on the last; arrows, Home, End and typing move; Enter
+      or Space chooses; Escape and Tab close it, Escape returning focus to the button.
+    </li>
+    <li>
+      The <code>[x]</code> and <code>(•)</code> marks are drawn by CSS with empty alternative text.
+    </li>
+  </ul>
+</ComponentPage>
+
+<script>
+  import '@nib-ui/js/menu';
+  import { init } from '@nib-ui/js';
+  init();
+</script>
+
+<style>
+  .menu-example {
+    min-block-size: 16rem;
+  }
+</style>

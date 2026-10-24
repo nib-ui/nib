@@ -31,6 +31,7 @@ const GROUPS: NavGroup[] = [
       { slug: 'tabs', title: 'Tabs', lead: 'Panels of one place, one at a time.' },
       { slug: 'popover', title: 'Popover', lead: 'A box of content beside its trigger.' },
       { slug: 'tooltip', title: 'Tooltip', lead: 'A short line that names its trigger.' },
+      { slug: 'menu', title: 'Menu', lead: 'A list of actions behind a button.' },
       { slug: 'text', title: 'Text', lead: 'Links, tags, callouts and code with COPY.' },
       { slug: 'content', title: 'Content', lead: 'Sections, tiles, list rows, panes and tables.' },
       { slug: 'empty-loading', title: 'Empty state and loading', lead: 'Ghosts, the stepping ✻ and progress.' },

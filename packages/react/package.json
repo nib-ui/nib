@@ -40,6 +40,11 @@
       "@nib-ui/source": "./src/tooltip.ts",
       "types": "./dist/tooltip.d.ts",
       "default": "./dist/tooltip.js"
+    },
+    "./menu": {
+      "@nib-ui/source": "./src/menu.ts",
+      "types": "./dist/menu.d.ts",
+      "default": "./dist/menu.js"
     }
   },
   "files": [

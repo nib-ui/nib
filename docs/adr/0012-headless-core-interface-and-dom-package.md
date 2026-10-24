@@ -92,3 +92,11 @@ to expose and where DOM-touching code lives.
   lines per controller.
 - Size budgets are tightest for the data grid; if it exceeds 12 KB, virtualisation and column
   resize split into their own subpaths.
+
+## Amendment 1 (2026-10-24): a popover intent
+
+Floating parts sit on the native `popover` attribute (top layer, light dismiss, Escape, focus
+return come from the browser). A menu must close itself when an item is chosen, and open from the
+keyboard on its first or last item, so core may ask for `{ type: 'popover', ref, open }`, which
+`@nib-ui/dom` runs as `showPopover()` / `hidePopover()`. It is the only intent added; anything the
+browser already does for a popover stays the browser's.

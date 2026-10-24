@@ -1,0 +1,33 @@
+---
+import FixtureLayout from '../../../layouts/fixture-layout.astro';
+---
+
+<FixtureLayout title="Menu · vanilla fixture">
+  <div id="mount"></div>
+</FixtureLayout>
+
+<script>
+  import { menuApg } from '@nib-ui/core/menu/apg';
+  import type { MenuOptions } from '@nib-ui/core/menu';
+  import '@nib-ui/js/menu';
+  import { init } from '@nib-ui/js';
+  import { caseOptions } from '../../../fixtures/apg-case.ts';
+
+  // The vanilla binding reads its items from markup, so the row is written out as markup.
+  const o = caseOptions(menuApg) as unknown as MenuOptions & { id: string };
+  const root = Object.assign(document.createElement('div'), { id: o.id });
+  root.dataset['nib'] = 'menu';
+  const button = Object.assign(document.createElement('button'), { className: 'nib-button', textContent: 'Edit' });
+  button.dataset['nibButton'] = '';
+  const menu = Object.assign(document.createElement('div'), { className: 'nib-menu' });
+  menu.dataset['nibMenu'] = '';
+  for (const item of o.items) {
+    const el = Object.assign(document.createElement('div'), { className: 'nib-menu__item', textContent: item.label });
+    el.dataset['nibItem'] = item.key;
+    if (item.disabled) el.dataset['disabled'] = '';
+    menu.append(el);
+  }
+  root.append(button, menu);
+  document.getElementById('mount')?.append(root);
+  init();
+</script>

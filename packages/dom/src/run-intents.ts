@@ -16,6 +16,16 @@ export function runIntents(intents: readonly Intent[], options: RunIntentsOption
       case 'announce':
         announce(intent.text, intent.politeness, options);
         break;
+      case 'popover': {
+        const el = doc.getElementById(intent.ref);
+        if (!el) missing.push(intent);
+        // Only when it is not already so: showing an open popover throws.
+        else if (el.matches(':popover-open') !== intent.open) {
+          if (intent.open) el.showPopover();
+          else el.hidePopover();
+        }
+        break;
+      }
       case 'focus':
       case 'scroll-into-view': {
         const el = doc.getElementById(intent.ref);
