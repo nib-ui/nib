@@ -1,0 +1,83 @@
+/* Pane and stat, for dashboards. A pane is a ruled cell under a 38px header (base nib-pane-header):
+   8×8 mark · mono title · count in meta · state word on the end. `--changed` tints the pane in its
+   hue with a 2px top rule; pair it with a CHANGED label. A stat is a mono label, a headline-xl
+   tabular number and a meta delta, ▲ green or ▼ red. */
+@layer nib.components {
+  .nib-pane {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nib-pane__title {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nib-space-sm);
+    color: var(--nib-on-surface);
+  }
+
+  .nib-pane__count {
+    color: var(--nib-on-surface-3);
+    font: var(--nib-meta-sm-font-weight) var(--nib-meta-sm-font-size) / var(--nib-meta-sm-line-height)
+      var(--nib-font-mono);
+    text-transform: none;
+  }
+
+  .nib-pane__body {
+    padding: var(--nib-density-cell-padding);
+  }
+
+  .nib-pane--changed {
+    border-block-start: var(--nib-space-rule) solid var(--nib-hue, var(--nib-accent));
+    background: var(--nib-hue-soft, var(--nib-hover));
+  }
+
+  .nib-stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--nib-space-xs);
+    margin: 0;
+  }
+
+  .nib-stat__label {
+    color: var(--nib-on-surface-2);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1));
+    text-transform: var(--nib-caps, uppercase);
+  }
+
+  .nib-stat__value {
+    margin: 0;
+    font: var(--nib-headline-xl-font-weight) var(--nib-headline-xl-font-size) / var(--nib-headline-xl-line-height)
+      var(--nib-font-sans);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .nib-stat__delta {
+    color: var(--nib-on-surface-3);
+    font: var(--nib-meta-sm-font-weight) var(--nib-meta-sm-font-size) / var(--nib-meta-sm-line-height)
+      var(--nib-font-mono);
+  }
+
+  .nib-stat__delta[data-trend='up'] {
+    color: var(--nib-green);
+  }
+
+  .nib-stat__delta[data-trend='down'] {
+    color: var(--nib-red);
+  }
+
+  .nib-stat__delta[data-trend='up']::before {
+    content: '▲ ' / '';
+  }
+
+  .nib-stat__delta[data-trend='down']::before {
+    content: '▼ ' / '';
+  }
+
+  @media (forced-colors: active) {
+    .nib-pane--changed {
+      border-block-start-color: CanvasText;
+    }
+  }
+}

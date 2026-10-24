@@ -62,8 +62,9 @@
         ],
         "cache": true,
         "inputs": [
-          "{projectRoot}/dist/nib.css",
-          "{projectRoot}/dist/utilities.css",
+          "{projectRoot}/src/**/*.css",
+          "{projectRoot}/scripts/*.ts",
+          "^production",
           "{workspaceRoot}/size-budgets.json",
           "{workspaceRoot}/scripts/css-size.ts"
         ]
