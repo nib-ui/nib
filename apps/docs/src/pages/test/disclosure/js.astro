@@ -1,0 +1,29 @@
+---
+import FixtureLayout from '../../../layouts/fixture-layout.astro';
+---
+
+<FixtureLayout title="Accordion · vanilla fixture">
+  <div id="mount"></div>
+</FixtureLayout>
+
+<script>
+  import { disclosureApg } from '@nib-ui/core/disclosure/apg';
+  import type { AccordionOptions } from '@nib-ui/core/disclosure';
+  import '@nib-ui/js/disclosure';
+  import { init } from '@nib-ui/js';
+  import { caseOptions } from '../../../fixtures/apg-case.ts';
+
+  // The vanilla binding reads its options from markup, so the row is written out as markup.
+  const o = caseOptions(disclosureApg) as unknown as AccordionOptions & { id: string };
+  const root = Object.assign(document.createElement('div'), { id: o.id, className: 'nib-accordion' });
+  root.dataset['nib'] = 'accordion';
+  for (const item of o.items) {
+    const section = Object.assign(document.createElement('div'), { className: 'nib-accordion__item' });
+    section.dataset['nibItem'] = item.key;
+    if (item.disabled) section.dataset['disabled'] = '';
+    section.innerHTML = `<h3 class="nib-accordion__heading"><button class="nib-disclosure__trigger" data-nib-trigger>${item.key}</button></h3><div class="nib-disclosure__panel" data-nib-panel>${item.key}</div>`;
+    root.append(section);
+  }
+  document.getElementById('mount')?.append(root);
+  init();
+</script>

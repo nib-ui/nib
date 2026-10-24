@@ -30,6 +30,11 @@
       "@nib-ui/source": "./src/copy.ts",
       "types": "./dist/copy.d.ts",
       "default": "./dist/copy.js"
+    },
+    "./disclosure": {
+      "@nib-ui/source": "./src/disclosure.ts",
+      "types": "./dist/disclosure.d.ts",
+      "default": "./dist/disclosure.js"
     }
   },
   "files": [
@@ -69,7 +74,9 @@
     "./dist/listbox.js",
     "./src/listbox.ts",
     "./dist/copy.js",
-    "./src/copy.ts"
+    "./src/copy.ts",
+    "./dist/disclosure.js",
+    "./src/disclosure.ts"
   ],
   "dependencies": {
     "@nib-ui/core": "workspace:*",

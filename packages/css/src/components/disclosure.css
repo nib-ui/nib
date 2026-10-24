@@ -1,0 +1,110 @@
+/* Disclosure and accordion. The trigger is a mono label button with ▸ (closed) or ▾ (open); the
+   glyph mirrors under right-to-left and has empty alt text, since aria-expanded says the state.
+   An accordion stacks its sections between 1px lines. A panel rises 4px into place when it
+   appears (the reveal duration, which reduced motion makes 0), including on first paint. */
+@layer nib.components {
+  @keyframes nib-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+  }
+
+  .nib-disclosure__trigger {
+    display: flex;
+    align-items: center;
+    gap: var(--nib-space-sm);
+    min-block-size: var(--nib-density-control-height);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--nib-on-surface);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1));
+    text-align: start;
+    text-transform: var(--nib-caps, uppercase);
+    cursor: pointer;
+  }
+
+  /* The glyph cell plus the gap is 16px, which the accordion panel indents by to line up. */
+  .nib-disclosure__trigger::before {
+    flex: none;
+    inline-size: var(--nib-space-sm);
+    color: var(--nib-on-surface-3);
+    content: '▸' / '';
+  }
+
+  .nib-disclosure__trigger:dir(rtl)::before {
+    content: '◂' / '';
+  }
+
+  .nib-disclosure__trigger[aria-expanded='true']::before {
+    content: '▾' / '';
+  }
+
+  /* Disabled (closed): quieter. The one section that may not close keeps its ink. */
+  .nib-disclosure__trigger[aria-disabled='true'] {
+    cursor: default;
+  }
+
+  .nib-disclosure__trigger[aria-disabled='true'][aria-expanded='false'] {
+    color: var(--nib-on-surface-3);
+    cursor: not-allowed;
+  }
+
+  .nib-disclosure__panel[hidden] {
+    display: none;
+  }
+
+  .nib-disclosure__panel {
+    padding-block: var(--nib-space-xs) var(--nib-space-md);
+    color: var(--nib-on-surface-2);
+    font: var(--nib-body-md-font-weight) var(--nib-body-md-font-size) / var(--nib-body-md-line-height)
+      var(--nib-font-sans);
+    animation: nib-reveal var(--nib-duration-reveal) var(--nib-ease-out);
+  }
+
+  .nib-accordion {
+    border-block-start: var(--nib-space-hairline) solid var(--nib-line);
+  }
+
+  .nib-accordion__item {
+    border-block-end: var(--nib-space-hairline) solid var(--nib-line);
+  }
+
+  .nib-accordion__heading {
+    margin: 0;
+  }
+
+  /* Child selectors: a disclosure nested in a panel keeps its own look. */
+  .nib-accordion__heading > .nib-disclosure__trigger {
+    inline-size: 100%;
+    padding-inline: var(--nib-space-xs);
+  }
+
+  .nib-accordion__heading > .nib-disclosure__trigger:hover:not([aria-disabled='true']) {
+    background: var(--nib-hover);
+  }
+
+  .nib-accordion__item > .nib-disclosure__panel {
+    padding-inline: calc(var(--nib-space-xs) + var(--nib-space-lg)) var(--nib-space-xs);
+  }
+
+  @media (pointer: coarse) {
+    .nib-disclosure__trigger {
+      min-block-size: var(--nib-space-touch-target);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .nib-disclosure__trigger {
+      background: Canvas;
+      color: ButtonText;
+    }
+
+    .nib-disclosure__trigger[aria-disabled='true'][aria-expanded='false'] {
+      color: GrayText;
+    }
+  }
+}

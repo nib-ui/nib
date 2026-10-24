@@ -20,6 +20,11 @@
       "@nib-ui/source": "./src/listbox.ts",
       "types": "./dist/listbox.d.ts",
       "default": "./dist/listbox.js"
+    },
+    "./disclosure": {
+      "@nib-ui/source": "./src/disclosure.ts",
+      "types": "./dist/disclosure.d.ts",
+      "default": "./dist/disclosure.js"
     }
   },
   "files": [
