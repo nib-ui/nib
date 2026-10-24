@@ -1,0 +1,107 @@
+/* Loading. The spinner is ✻ stepping through frames in a fixed-width mono cell (110ms each,
+   stepped, no easing), followed by words: `✻ Loading products…`. It is the only perpetual
+   animation; with reduced motion it stands still. A progress bar is a 2px rule. An image that is
+   not there yet is the raised surface in its aspect ratio. */
+@layer nib.components {
+  @keyframes nib-spinner {
+    0% {
+      content: '·' / '';
+    }
+
+    16.7% {
+      content: '✢' / '';
+    }
+
+    33.3% {
+      content: '✳' / '';
+    }
+
+    50% {
+      content: '✶' / '';
+    }
+
+    66.7% {
+      content: '✻' / '';
+    }
+
+    83.3% {
+      content: '✽' / '';
+    }
+  }
+
+  .nib-loading {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--nib-space-sm);
+    color: var(--nib-on-surface-2);
+  }
+
+  .nib-spinner {
+    display: inline-block;
+    inline-size: 1ch;
+    color: var(--nib-accent-text);
+    font-family: var(--nib-font-mono);
+    text-align: center;
+  }
+
+  .nib-spinner::before {
+    content: '✻' / '';
+    animation: nib-spinner calc(6 * var(--nib-duration-spinner-frame)) steps(1, end) infinite;
+  }
+
+  /* Reduced motion sets the frame to 0ms: the cell holds a still ✻. */
+  @media (prefers-reduced-motion: reduce) {
+    .nib-spinner::before {
+      animation: none;
+    }
+  }
+
+  .nib-progress {
+    display: block;
+    inline-size: 100%;
+    block-size: var(--nib-space-rule);
+    border: 0;
+    background: var(--nib-line-soft);
+    color: var(--nib-accent);
+    appearance: none;
+  }
+
+  .nib-progress::-webkit-progress-bar {
+    background: var(--nib-line-soft);
+  }
+
+  .nib-progress::-webkit-progress-value {
+    background: var(--nib-accent);
+  }
+
+  .nib-progress::-moz-progress-bar {
+    background: var(--nib-accent);
+  }
+
+  .nib-media-placeholder {
+    display: block;
+    inline-size: 100%;
+    aspect-ratio: var(--nib-aspect, 1);
+    background: var(--nib-surface-raised);
+  }
+
+  @media (forced-colors: active) {
+    .nib-progress {
+      forced-color-adjust: none;
+      background: Canvas;
+      outline: var(--nib-space-hairline) solid CanvasText;
+    }
+
+    .nib-progress::-webkit-progress-value {
+      background: Highlight;
+    }
+
+    .nib-progress::-moz-progress-bar {
+      background: Highlight;
+    }
+
+    .nib-media-placeholder {
+      border: var(--nib-space-hairline) dashed CanvasText;
+    }
+  }
+}

@@ -1,0 +1,43 @@
+/* Empty state: show the shape of what will appear (ghost rows or tiles labelled with what goes
+   there), one mono label (NOTHING HERE YET, CART EMPTY), one sentence and one primary action. No
+   illustrations. A ghost is a placeholder: transparent, 1px dashed line border, on-surface 3. */
+@layer nib.components {
+  .nib-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--nib-space-sm);
+  }
+
+  .nib-empty__label {
+    margin: 0;
+    color: var(--nib-on-surface);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1));
+    text-transform: var(--nib-caps, uppercase);
+  }
+
+  .nib-empty__text {
+    margin: 0;
+    color: var(--nib-on-surface-2);
+    font: var(--nib-body-sm-font-weight) var(--nib-body-sm-font-size) / var(--nib-body-sm-line-height)
+      var(--nib-font-sans);
+  }
+
+  .nib-empty__ghosts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--nib-space-xs);
+    align-self: stretch;
+    margin-block-end: var(--nib-space-sm);
+  }
+
+  .nib-ghost {
+    padding: var(--nib-space-xs-plus) var(--nib-space-sm-plus);
+    border: var(--nib-space-hairline) dashed var(--nib-line);
+    color: var(--nib-on-surface-3);
+    font: var(--nib-item-md-font-weight) var(--nib-item-md-font-size) / var(--nib-item-md-line-height)
+      var(--nib-font-mono);
+  }
+}

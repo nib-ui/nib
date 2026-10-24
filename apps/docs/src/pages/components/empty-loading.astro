@@ -1,0 +1,66 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<div class="nib-empty">
+  <div class="nib-empty__ghosts" aria-hidden="true">
+    <div class="nib-ghost">Order · item · total</div>
+    <div class="nib-ghost">Order · item · total</div>
+  </div>
+  <p class="nib-empty__label">No orders yet</p>
+  <p class="nib-empty__text">Orders appear here as soon as someone checks out.</p>
+  <a class="nib-button nib-button--primary" href="#content">Share your shop</a>
+</div>
+
+<p class="nib-loading" role="status">
+  <span class="nib-spinner" aria-hidden="true"></span>Loading products…
+</p>
+
+<label class="nib-field__label" for="e-upload">Upload</label>
+<progress class="nib-progress" id="e-upload" max="100" value="40">40%</progress>
+
+<span class="nib-media-placeholder" style="--nib-aspect: 16 / 9" role="img" aria-label="Photo loading"></span>`;
+---
+
+<ComponentPage
+  title="Empty state and loading"
+  lead="What a screen shows before it has content: the shape of what will come, a word, one action, and a stepping ✻."
+  kind="CSS"
+  code={{ html }}
+>
+  <div slot="example" class="el-example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    An empty state shows ghost rows or tiles (<code>nib-ghost</code>, dashed, labelled with what goes there), one mono
+    label, one sentence and one primary action. No illustrations.
+  </p>
+  <p>
+    <code>nib-spinner</code> steps through six frames, 110ms each, in a one-character cell; put the words after it in a
+    <code>nib-loading</code> live region. It is the only animation that runs on its own and it stands still under
+    reduced motion. <code>nib-progress</code> styles a native <code>progress</code> as a 2px rule;
+    <code>nib-media-placeholder</code> holds an image's place in its aspect ratio (<code>--nib-aspect</code>).
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      Wrap the spinner and its words in <code>role="status"</code> so the words are announced; the spinner itself is
+      hidden.
+    </li>
+    <li>
+      Ghost rows are decoration: hide them with <code>aria-hidden="true"</code>; the label and sentence say it.
+    </li>
+    <li>
+      A <code>progress</code> needs a label; its value is announced by the browser.
+    </li>
+  </ul>
+</ComponentPage>
+
+<style>
+  .el-example > :global(* + *) {
+    margin-block-start: var(--nib-space-2xl);
+  }
+
+  .el-example :global(.nib-progress) {
+    margin-block-start: var(--nib-space-xs);
+  }
+</style>
