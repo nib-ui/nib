@@ -39,7 +39,7 @@ focus mode.
 | Dialog           | Open; Tab around; Escape                                              | Dialog name and description; focus stays inside; Escape returns focus to the opener  |     |         |             |
 | Drawer and sheet | Open; Tab; Escape                                                     | As dialog                                                                            |     |         |             |
 | Toast            | Trigger a toast; trigger an error toast; Tab to UNDO                  | Polite announcement; the error assertively; the action stays until closed            |     |         |             |
-| Combobox         | Type "da n"; ↓; Enter; Escape twice                                   | Combobox, expanded, count of results; option names; the chosen value; Escape clears  |     |         |             |
+| Combobox         | Type "da n"; ↓; Enter; Escape twice                                   | Combobox, expanded; each option as you move; the chosen value; Escape clears         |     |         |             |
 | Command palette  | Press the shortcut; type; ↓ ↑; Enter; type nonsense                   | Dialog name; the shortcut on the trigger; current command; "no results" politely     |     |         |             |
 | Date picker      | Open; arrows; Page Down; Shift+Page Down; Enter; in range mode Escape | Grid named by the month; each day's full date; today as current; month changes read  |     |         |             |
 | Data grid        | Tab in; arrows; Ctrl+End; Enter on a header; Space on a row; F2       | Grid, row and column position; sort state; the selected count; the editor's label    |     |         |             |
