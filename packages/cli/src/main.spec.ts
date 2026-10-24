@@ -1,13 +1,16 @@
-import { mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { main } from './main.ts';
 
 /** Runs `nib …` in a fresh folder holding `files`; returns the exit code and what it printed. */
 async function nib(args: string[], files: Record<string, string> = {}) {
   const cwd = mkdtempSync(join(tmpdir(), 'nib-cli-'));
-  for (const [name, text] of Object.entries(files)) writeFileSync(join(cwd, name), text);
+  for (const [name, text] of Object.entries(files)) {
+    mkdirSync(dirname(join(cwd, name)), { recursive: true });
+    writeFileSync(join(cwd, name), text);
+  }
   const out: string[] = [];
   const err: string[] = [];
   const code = await main(args, { cwd, out: (l) => out.push(l), err: (l) => err.push(l) });
@@ -51,6 +54,44 @@ describe('nib theme check', () => {
     const run = await nib(['theme', 'check', 'a.css'], { 'a.css': ':root { --nib-accent: #00967d80; }' });
     expect(run.code).toBe(1);
     expect(run.err).toContain('must be opaque');
+  });
+});
+
+describe('nib lint', () => {
+  it('passes a project that keeps the laws', async () => {
+    const run = await nib(['lint'], {
+      'src/app.css': '.card { border: 1px solid var(--nib-line); color: var(--nib-on-surface); }',
+      'src/card.tsx': 'export const Card = () => <div className="border-2 bg-nib-surface rounded-none" />;',
+    });
+    expect(run).toMatchObject({ code: 0, err: '' });
+    expect(run.out).toContain('Setting type: 2 files…');
+    expect(run.out).toContain('Locked up: no proof marks.');
+  });
+
+  it('marks CSS and class names that break a law, with file, line, column and rule', async () => {
+    const run = await nib(['lint'], {
+      'src/app.css': '.card {\n  border-radius: 4px;\n  color: #333;\n}',
+      'src/card.vue': '<template>\n  <div class="p-4 shadow-lg text-red-500"></div>\n</template>',
+      'node_modules/x/y.css': '.z { border-radius: 9px; }',
+    });
+    expect(run.code).toBe(1);
+    expect(run.err.split('\n')).toEqual([
+      expect.stringMatching(/^src\/app\.css:2:18 {2}nib\/no-radius {2}Unexpected border-radius/),
+      expect.stringMatching(/^src\/app\.css:3:10 {2}nib\/color-tokens {2}Unexpected color "#333"/),
+      'src/card.vue:2:19  nib/no-shadow  shadow-lg: nothing casts a shadow.',
+      'src/card.vue:2:29  nib/color-tokens  text-red-500: colours come from the tokens (nib-*).',
+    ]);
+    expect(run.out).toContain('Not locked up: 4 proof marks in 2 files.');
+  });
+
+  it("lets the config's theme file set colours, and only that file", async () => {
+    const run = await nib(['lint', 'src'], {
+      'nib.config.json': JSON.stringify({ theme: 'src/theme.css' }),
+      'src/theme.css': ':root { --nib-accent: light-dark(#02806c, #00967d); }',
+      'src/other.css': ':root { --brand: #02806c; }',
+    });
+    expect(run.code).toBe(1);
+    expect(run.err).toMatch(/^src\/other\.css:1:\d+ {2}nib\/color-tokens/);
   });
 });
 

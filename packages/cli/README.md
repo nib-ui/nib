@@ -39,3 +39,25 @@ Pulling a proof of src/theme.css…
 error    Proof mark: accent on paper-raised is 2.8:1, needs 3:1.
 Not locked up: 1 error, 4 warnings.
 ```
+
+## nib lint [path …]
+
+Checks a project against the Nib laws; with no path, the current folder. `node_modules`, `dist`
+and other build folders are skipped.
+
+- **CSS** goes through Nib's own Stylelint rules: no radius, shadows, gradients, blur or
+  `!important`; logical properties instead of left and right; colours only from the tokens
+  (`var(--nib-…)`). The `theme` file in `nib.config.json` may set colours. A project's own Stylelint
+  config and its disable comments do not apply to these rules.
+- **Markup** (HTML, JSX, TSX, Vue, Svelte, Astro, MDX, and class helpers such as `clsx`, `cn`,
+  `cva` in JS and TS): class names that bring the same things back through Tailwind: `rounded-*`,
+  `shadow-*`, `bg-linear-*` and other gradients, `blur-*`, colours from Tailwind's palette
+  (`text-red-500`, `bg-white`) and arbitrary colours (`bg-[#f00]`). `-none` forms are allowed.
+
+```
+Setting type: 42 files…
+src/card.vue:2:19  nib/no-shadow  shadow-lg: nothing casts a shadow.
+Not locked up: 1 proof mark in 1 file.
+```
+
+Placement rules (where the primary button goes) are not checkable; the docs model them.

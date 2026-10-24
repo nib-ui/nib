@@ -16,6 +16,9 @@
       "path": "../tokens/tsconfig.lib.json"
     },
     {
+      "path": "../../tools/stylelint-plugin/tsconfig.lib.json"
+    },
+    {
       "path": "../../tools/color-engine/tsconfig.lib.json"
     }
   ]

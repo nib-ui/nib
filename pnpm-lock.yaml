@@ -365,10 +365,16 @@ importers:
       '@nib-ui/tokens':
         specifier: workspace:*
         version: link:../tokens
+      stylelint:
+        specifier: ^17.16.0
+        version: 17.16.0(supports-color@7.2.0)(typescript@6.0.3)
     devDependencies:
       '@nib-ui/color-engine':
         specifier: workspace:*
         version: link:../../tools/color-engine
+      '@nib-ui/stylelint-plugin':
+        specifier: workspace:*
+        version: link:../../tools/stylelint-plugin
 
   packages/core: {}
 
