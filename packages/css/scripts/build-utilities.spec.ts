@@ -1,4 +1,4 @@
-import { mkdtempSync, readFileSync } from 'node:fs';
+import { mkdtempSync, readdirSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { gzipSync } from 'node:zlib';
@@ -17,7 +17,9 @@ beforeAll(() => {
 });
 
 describe('buildUtilities', () => {
-  it('puts every rule in nib.utilities, after the layer order', () => {
+  it('puts every rule in nib.utilities, after the same layer order as nib.css', () => {
+    const order = /@layer [^;{]+;/.exec(readFileSync(new URL('../src/nib.css', import.meta.url), 'utf8'))?.[0];
+    expect(css.split('\n')[0]).toBe(order);
     expect(css.startsWith('@layer nib.theme, nib.base, nib.components, nib.utilities;\n@layer nib.utilities {')).toBe(
       true,
     );
@@ -34,11 +36,30 @@ describe('buildUtilities', () => {
   });
 
   it('gives layout utilities container-query variants', () => {
-    expect(css).toMatch(
-      /@container \(min-width: 48rem\) {\n(\s+\.nib-at-md-[^\n]+\n)*\s+\.nib-at-md-flex { display: flex; }/,
-    );
+    const md = css.slice(css.indexOf('@container nib (min-width: 48rem) {'));
+    expect(md.slice(0, md.indexOf('\n  }'))).toContain('.nib-at-md-flex { display: flex; }');
+    // After every plain rule, so a variant wins over the utility it varies.
+    expect(css.indexOf('@container')).toBeGreaterThan(css.lastIndexOf('.nib-rule-'));
+    expect(css).toContain('.nib-cq { container: nib / inline-size; }');
     expect(css).toContain('.nib-at-lg-columns-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }');
     expect(css).not.toContain('.nib-at-md-gap');
+  });
+
+  it('lets a one-side spacing utility override the density cell padding', () => {
+    expect(css.indexOf('.nib-cell ')).toBeLessThan(css.indexOf('.nib-pi-0 '));
+  });
+
+  it('shares no class name with the base and component CSS', () => {
+    const src = new URL('../src/', import.meta.url);
+    const files = [
+      ...readdirSync(new URL('base/', src)).map((f) => new URL(`base/${f}`, src)),
+      ...readdirSync(new URL('components/', src)).map((f) => new URL(`components/${f}`, src)),
+    ];
+    const taken = new Set(
+      files.flatMap((f) => [...readFileSync(f, 'utf8').matchAll(/\.(nib-[a-z0-9_-]+)/g)].map((m) => m[1])),
+    );
+    const ours = [...css.matchAll(/^\s*\.([a-z0-9-]+)\s*{/gm)].map((m) => m[1]);
+    expect(ours.filter((c) => taken.has(c))).toEqual([]);
   });
 
   it('prefixes every class, so none collides with Tailwind', () => {
@@ -56,8 +77,10 @@ describe('buildUtilities', () => {
     expect(gzipSync(css, { level: 9 }).length).toBeLessThanOrEqual(10_000);
   });
 
-  it('lists every utility for the docs', () => {
+  it('lists every utility for the docs, container variants included', () => {
     const list = JSON.parse(readFileSync(join(out, 'utilities.json'), 'utf8')) as { name: string; group: string }[];
+    const classes = [...css.matchAll(/^\s*\.([a-z0-9-]+)\s*{/gm)].map((m) => m[1]);
+    expect(list.map((u) => u.name).sort()).toEqual(classes.sort());
     expect(list.find((x) => x.name === 'nib-gap-md')).toEqual({
       name: 'nib-gap-md',
       group: 'spacing',

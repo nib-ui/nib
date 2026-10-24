@@ -15,6 +15,9 @@ export interface TokenJson {
   vars: Record<string, string>;
 }
 
+/** The container `nib-cq` establishes; the `nib-at-<size>-` variants query it by this name. */
+export const CONTAINER_NAME = 'nib';
+
 /** Container widths for the `nib-at-<size>-` variants, applied to layout utilities only. */
 export const CONTAINER_SIZES = { sm: '30rem', md: '48rem', lg: '64rem' } as const;
 
@@ -52,7 +55,7 @@ function layout(): Utility[] {
       u('layout', `columns-${n}`, `grid-template-columns: repeat(${n}, minmax(0, 1fr))`),
     ),
     u('layout', 'span-full', 'grid-column: 1 / -1'),
-    u('layout', 'cq', 'container-type: inline-size'),
+    u('layout', 'cq', `container: ${CONTAINER_NAME} / inline-size`),
   ];
 }
 
@@ -65,14 +68,19 @@ function spacing(vars: Record<string, string>): Utility[] {
     ['pb', 'padding-block'],
     ['mbs', 'margin-block-start'],
     ['mbe', 'margin-block-end'],
+    ['row-gap', 'row-gap'],
+    ['column-gap', 'column-gap'],
   ];
   return [
+    // First, so the longhand utilities after it can override one side of the density padding.
+    u('spacing', 'cell', 'padding: var(--nib-density-cell-padding)'),
     ...props.flatMap(([short, prop]) => [
       u('spacing', `${short}-0`, `${prop}: 0`),
       ...steps.map((s) => u('spacing', `${short}-${s}`, `${prop}: var(--nib-space-${s})`)),
     ]),
     u('spacing', 'mi-auto', 'margin-inline: auto'),
-    u('spacing', 'cell', 'padding: var(--nib-density-cell-padding)'),
+    u('spacing', 'mis-auto', 'margin-inline-start: auto'),
+    u('spacing', 'mie-auto', 'margin-inline-end: auto'),
   ];
 }
 
@@ -80,6 +88,7 @@ function typography(): Utility[] {
   return [
     u('typography', 'sans', 'font-family: var(--nib-font-sans)'),
     u('typography', 'mono', 'font-family: var(--nib-font-mono)', 'font-variant-ligatures: none'),
+    // The weights the type roles use, plus 600 for a word of emphasis inside prose.
     ...[400, 500, 600].map((w) => u('typography', `weight-${w}`, `font-weight: ${w}`)),
     u(
       'typography',
@@ -87,7 +96,7 @@ function typography(): Utility[] {
       'text-transform: var(--nib-caps, uppercase)',
       'letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1))',
     ),
-    ...['start', 'center', 'end'].map((a) => u('typography', `text-${a}`, `text-align: ${a}`)),
+    ...['start', 'center', 'end'].map((a) => u('typography', `align-${a}`, `text-align: ${a}`)),
     u('typography', 'measure', 'max-inline-size: var(--nib-space-reading-width)'),
     u('typography', 'balance', 'text-wrap: balance'),
     u(
