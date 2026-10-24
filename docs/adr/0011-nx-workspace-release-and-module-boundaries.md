@@ -1,6 +1,6 @@
 # 11. Nx workspace: Nx Release, module boundaries, generators, Nx Cloud cache
 
-Date: 2026-10-24 · Status: accepted · Supersedes the monorepo-tooling line of ADR 6
+Date: 2026-10-24 · Status: accepted (amended by ADR 12) · Supersedes the monorepo-tooling line of ADR 6
 
 ## Context
 
@@ -20,7 +20,7 @@ module boundaries and self-hosted caching (Oct 2026); Nx 23 was released 2026-06
   `@nx/eslint`, `@nx/playwright`); Astro and Svelte run through `package.json` scripts. The repo
   stays a valid pnpm workspace if Nx is ever removed.
 - Layout:
-  - `packages/` (public): `tokens`, `css`, `core`, `js`, `react`, `vue`, `svelte`, `cli`, `fonts`, `icons`
+  - `packages/` (public): `tokens`, `css`, `core`, `dom`, `js`, `react`, `vue`, `svelte`, `cli`, `fonts`, `icons`
   - `apps/` (private): `docs`, `playground`
   - `tools/` (private): `color-engine` (contrast + CVD, shared by `nib theme check`, CI and docs),
     `stylelint-plugin`, `nx-plugin`
@@ -46,13 +46,14 @@ module boundaries and self-hosted caching (Oct 2026); Nx 23 was released 2026-06
 | tokens | `type:tokens`, `scope:public` | nothing (build may use `type:tool`) |
 | css | `type:css`, `scope:public` | tokens, tool |
 | core | `type:core`, `scope:public` | nothing |
-| js, react, vue, svelte | `type:binding`, `scope:public` | core, asset |
+| dom | `type:dom`, `scope:public` | core (added by ADR 12) |
+| js, react, vue, svelte | `type:binding`, `scope:public` | core, dom, asset |
 | fonts, icons | `type:asset`, `scope:public` | nothing (build may use tool) |
 | cli | `type:cli`, `scope:public` | tokens, tool |
 | color-engine, stylelint-plugin, nx-plugin | `type:tool`, `scope:private` | tool, tokens |
 | docs, playground | `type:app`, `scope:private` | anything |
 
-- `bannedExternalImports` on `type:core` and `type:binding`: no third-party runtime imports; only
+- `bannedExternalImports` on `type:core`, `type:dom` and `type:binding`: no third-party runtime imports; only
   the framework itself (`react`, `vue`, `svelte`) as a peer dependency.
 - A `scope:public` package never depends at runtime on a `scope:private` one; the only exception is
   `cli`, which bundles `color-engine` at build time.
