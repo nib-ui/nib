@@ -125,6 +125,16 @@
       "@nib-ui/source": "./src/combobox/combobox.apg.ts",
       "types": "./dist/combobox/combobox.apg.d.ts",
       "default": "./dist/combobox/combobox.apg.js"
+    },
+    "./command-palette": {
+      "@nib-ui/source": "./src/command-palette/index.ts",
+      "types": "./dist/command-palette/index.d.ts",
+      "default": "./dist/command-palette/index.js"
+    },
+    "./command-palette/apg": {
+      "@nib-ui/source": "./src/command-palette/command-palette.apg.ts",
+      "types": "./dist/command-palette/command-palette.apg.d.ts",
+      "default": "./dist/command-palette/command-palette.apg.js"
     }
   },
   "files": [

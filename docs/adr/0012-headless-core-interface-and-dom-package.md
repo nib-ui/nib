@@ -100,3 +100,10 @@ return come from the browser). A menu must close itself when an item is chosen, 
 keyboard on its first or last item, so core may ask for `{ type: 'popover', ref, open }`, which
 `@nib-ui/dom` runs as `showPopover()` / `hidePopover()`. It is the only intent added; anything the
 browser already does for a popover stays the browser's.
+
+## Amendment 2 (2026-10-24): a modal intent
+
+A dialog opens from its buttons with invoker commands and needs no intent. The command palette
+also opens from a page-wide shortcut (⌘K) and closes itself when a command runs, so core may ask
+for `{ type: 'modal', ref, open }`, which `@nib-ui/dom` runs as `showModal()` / `close()` on a
+`<dialog>`. Focus trapping, Escape and focus return stay the browser's.

@@ -1,0 +1,39 @@
+/* Printed hotkey: a keyboard shortcut in brackets, on-surface 3, mono label-md ([⌘K]). It reads
+   as written in every script, and hides on touch screens, where there is no keyboard to press it. */
+@layer nib.components {
+  .nib-hotkey {
+    color: var(--nib-on-surface-3);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: var(--nib-label-md-letter-spacing);
+    white-space: nowrap;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  /* Nothing printed yet (no keys): no empty brackets either. */
+  .nib-hotkey:empty {
+    display: none;
+  }
+
+  /* The brackets are decoration: a screen reader reads the keys alone. */
+  .nib-hotkey::before {
+    content: '[' / '';
+  }
+
+  .nib-hotkey::after {
+    content: ']' / '';
+  }
+
+  @media (pointer: coarse) and (not (any-pointer: fine)) {
+    .nib-hotkey {
+      display: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .nib-hotkey {
+      color: CanvasText;
+    }
+  }
+}

@@ -58,4 +58,15 @@ describe('runIntents', () => {
     expect(pop.matches(':popover-open')).toBe(false);
     expect(runIntents([{ type: 'popover', ref: 'gone', open: true }])).toHaveLength(1);
   });
+
+  it('opens a <dialog> as modal and closes it, reporting an element that is not a dialog', () => {
+    document.body.innerHTML = '<dialog id="d">x</dialog><div id="div"></div>';
+    const d = document.getElementById('d') as HTMLDialogElement;
+    expect(runIntents([{ type: 'modal', ref: 'd', open: true }])).toEqual([]);
+    expect(d.matches(':modal')).toBe(true);
+    runIntents([{ type: 'modal', ref: 'd', open: true }]);
+    runIntents([{ type: 'modal', ref: 'd', open: false }]);
+    expect(d.open).toBe(false);
+    expect(runIntents([{ type: 'modal', ref: 'div', open: true }])).toHaveLength(1);
+  });
 });

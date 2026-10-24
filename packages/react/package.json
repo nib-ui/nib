@@ -65,6 +65,11 @@
       "@nib-ui/source": "./src/date-picker.ts",
       "types": "./dist/date-picker.d.ts",
       "default": "./dist/date-picker.js"
+    },
+    "./command-palette": {
+      "@nib-ui/source": "./src/command-palette.ts",
+      "types": "./dist/command-palette.d.ts",
+      "default": "./dist/command-palette.js"
     }
   },
   "files": [

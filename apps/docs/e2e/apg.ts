@@ -29,6 +29,16 @@ export async function runApgCase(page: Page, row: ConformanceCase): Promise<stri
         el.showPopover();
       }),
   );
+  // A target inside a closed <dialog> (a command palette's field) opens it first, the same way.
+  await target.evaluate(
+    (el) =>
+      new Promise<void>((resolve) => {
+        const dialog = el.closest('dialog');
+        if (!dialog || dialog.open) return resolve();
+        dialog.addEventListener('toggle', () => requestAnimationFrame(() => resolve()), { once: true });
+        dialog.showModal();
+      }),
+  );
   await target.focus();
   for (const press of row.keys) {
     const { key, wait = 0, ...mods } = typeof press === 'string' ? { key: press } : press;
