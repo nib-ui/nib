@@ -29,6 +29,21 @@ The workspace runs on [Nx](https://nx.dev). Every check runs per project and is 
 | Refresh screenshot baselines (Docker)   | `pnpm update-snapshots`                                    |
 | Project graph                           | `pnpm nx graph`                                            |
 
+## A new component
+
+Start every component from the generator, so it meets the definition of done from the first commit:
+
+```bash
+pnpm nx g nib:component status-badge --kind=css
+```
+
+`--kind=css` writes the stylesheet (in `@layer nib.components`, imported by `nib.css`), a docs page
+with an Accessibility section, and an axe + visual-regression spec over the whole matrix.
+`--kind=interactive` adds the core controller with its APG conformance table, the React, Vue, Svelte
+and vanilla bindings, their package exports, and a Playwright keyboard spec. Size budgets pick new
+files up by themselves. The output passes lint, typecheck, test and build untouched; record its
+screenshot baselines with `pnpm update-snapshots` (Docker) before you open the pull request.
+
 ## Version plans
 
 A pull request that changes a public package carries a version plan; CI checks it.

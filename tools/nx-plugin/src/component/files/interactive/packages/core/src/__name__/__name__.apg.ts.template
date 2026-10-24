@@ -1,0 +1,10 @@
+import type { ConformanceTable } from '../testing/conformance.ts';
+
+/**
+ * The APG keyboard behaviour of <%= title.toLowerCase() %>, as data. Core runs it in its spec; the
+ * Playwright keyboard spec runs the same rows against every binding.
+ */
+export const <%= camel %>Apg: ConformanceTable = {
+  pattern: '<%= name %>',
+  cases: [],
+};

@@ -1,0 +1,32 @@
+import { nullHost, type Host } from '../host.ts';
+import { createInstance, type Instance } from '../kernel/create-instance.ts';
+import type { Part } from '../types.ts';
+
+export interface <%= pascal %>Options {
+  /** Prefix of every element id; bindings pass their framework's id. */
+  id?: string;
+  /** BCP 47 language tag; bindings default it to the page's `lang`. */
+  locale?: string;
+}
+
+export type <%= pascal %>State = Readonly<Record<string, never>>;
+
+export type <%= pascal %>Part = 'root';
+
+/** <%= title %>. Name the WAI-ARIA APG pattern it follows here. */
+export function create<%= pascal %>(
+  options: <%= pascal %>Options = {},
+  host: Host = nullHost,
+): Instance<<%= pascal %>State, never, <%= pascal %>Part, <%= pascal %>Options> {
+  return createInstance<<%= pascal %>State, never, <%= pascal %>Part, <%= pascal %>Options>(
+    {
+      name: '<%= camel %>',
+      parts: ['root'],
+      init: () => ({}),
+      reduce: ({ state }) => ({ state }),
+      render: ({ id }): Part => ({ attrs: { id: `${id}-root` }, on: {} }),
+    },
+    options,
+    host,
+  );
+}

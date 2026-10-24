@@ -1,0 +1,8 @@
+import { create<%= pascal %>, type <%= pascal %>Options } from '@nib-ui/core/<%= name %>';
+import type { MaybeRefOrGetter } from 'vue';
+import { useController } from './use-controller.ts';
+
+/** <%= title %> for Vue: its state, and `v-bind` objects for each part (`root`). */
+export function use<%= pascal %>(options: MaybeRefOrGetter<<%= pascal %>Options> = {}) {
+  return useController(create<%= pascal %>, options);
+}

@@ -1,0 +1,15 @@
+import { describe, expect, it } from 'vitest';
+import { runConformance } from '../testing/conformance.ts';
+import { create<%= pascal %> } from './index.ts';
+import { <%= camel %>Apg } from './<%= name %>.apg.ts';
+
+describe('create<%= pascal %>', () => {
+  it('prefixes its element ids with the id it was given', () => {
+    expect(create<%= pascal %>({ id: 'x' }).part('root').attrs['id']).toBe('x-root');
+  });
+
+  it('passes its APG conformance table', () => {
+    const failures = runConformance(<%= camel %>Apg, create<%= pascal %>).filter((r) => r.failures.length);
+    expect(failures).toEqual([]);
+  });
+});
