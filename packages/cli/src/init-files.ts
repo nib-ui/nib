@@ -14,11 +14,14 @@ export type CssKind = 'plain' | 'tailwind';
 
 export const isPreset = (value: string): value is Preset => Object.hasOwn(PRESETS, value);
 
-/** The stylesheet the app imports once: Nib alone, or Tailwind with Nib's tokens as its theme. */
-export function entryCss(css: CssKind, themeImport: string): string {
+/**
+ * The stylesheet the app imports once: Nib alone, or Tailwind with Nib's tokens as its theme; then
+ * the preset's layout recipes and hue roles, then the theme file.
+ */
+export function entryCss(css: CssKind, themeImport: string, preset: Preset): string {
   const head = '/* Nib, set by `nib init`. Import this file once, before your own styles. */\n';
-  const theme = `@import '${themeImport}';\n`;
-  if (css === 'plain') return `${head}@import '@nib-ui/css/nib.css';\n${theme}`;
+  const tail = `@import '@nib-ui/css/presets/${preset}.css';\n@import '${themeImport}';\n`;
+  if (css === 'plain') return `${head}@import '@nib-ui/css/nib.css';\n${tail}`;
   return (
     `${head}` +
     "/* Tailwind's preflight first, then Nib's reset and components; Tailwind utilities still win. */\n" +
@@ -26,7 +29,7 @@ export function entryCss(css: CssKind, themeImport: string): string {
     "@import 'tailwindcss';\n" +
     "@import '@nib-ui/tokens/tailwind.css';\n" +
     "@import '@nib-ui/css/nib.css';\n" +
-    theme
+    tail
   );
 }
 

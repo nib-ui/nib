@@ -33,7 +33,9 @@ describe('nib init', () => {
       entry: 'src/nib.css',
       theme: 'src/nib-theme.css',
     });
-    expect(run.read('src/nib.css')).toContain("@import '@nib-ui/css/nib.css';\n@import './nib-theme.css';");
+    expect(run.read('src/nib.css')).toContain(
+      "@import '@nib-ui/css/nib.css';\n@import '@nib-ui/css/presets/docs.css';\n@import './nib-theme.css';",
+    );
     expect(run.read('src/nib-theme.css')).toContain(':root {');
     expect(run.out).toContain('Next: install @nib-ui/css @nib-ui/tokens, then import src/nib.css once in your app.');
     expect(run.out).toMatch(/Pulled a proof → nib\.config\.json\. Locked up\.$/);
@@ -45,6 +47,9 @@ describe('nib init', () => {
     const entry = run.read('app/styles/nib.css');
     expect(entry).toContain('@layer theme, base, nib, components, utilities;');
     expect(entry.indexOf("@import 'tailwindcss';")).toBeLessThan(entry.indexOf("@import '@nib-ui/css/nib.css';"));
+    expect(entry.indexOf("@import '@nib-ui/css/nib.css';")).toBeLessThan(
+      entry.indexOf("@import '@nib-ui/css/presets/dashboard.css';"),
+    );
     expect(run.out).toContain('install @nib-ui/css @nib-ui/tokens tailwindcss');
     expect(run.out).toContain('The dashboard preset sets the page: <html data-theme="dark" data-density="compact">.');
   });
@@ -57,7 +62,7 @@ describe('nib init', () => {
     expect(run.read('nib.config.json')).toBe('{ "css": "plain", "theme": "mine.css" }');
     expect(run.out).toContain('Reading   nib.config.json: its css, theme stay as they are');
     expect(run.read('src/nib.css')).toBe(
-      "/* Nib, set by `nib init`. Import this file once, before your own styles. */\n@import '@nib-ui/css/nib.css';\n@import '../mine.css';\n",
+      "/* Nib, set by `nib init`. Import this file once, before your own styles. */\n@import '@nib-ui/css/nib.css';\n@import '@nib-ui/css/presets/blog.css';\n@import '../mine.css';\n",
     );
     expect(run.out).toContain('Kept      nib.config.json (already there)');
     expect(run.out).toContain('The blog preset sets the page: <html data-theme="light">.');

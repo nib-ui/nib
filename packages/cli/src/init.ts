@@ -73,7 +73,7 @@ export async function init(options: InitOptions, io: Io): Promise<number> {
   const css: CssKind = config.css === 'tailwind' ? 'tailwind' : 'plain';
   // The theme file is imported from the entry by its path relative to the entry's folder.
   const themeImport = posix.relative(posix.dirname(config.entry), config.theme) || 'nib-theme.css';
-  await place(io, config.entry, entryCss(css, themeImport.startsWith('.') ? themeImport : `./${themeImport}`));
+  await place(io, config.entry, entryCss(css, themeImport.startsWith('.') ? themeImport : `./${themeImport}`, preset));
   await place(io, config.theme, THEME_CSS);
   // Written last, so a failed write above never leaves a config pointing at missing files.
   const wrote = await place(io, CONFIG_FILE, `${JSON.stringify(config, null, 2)}\n`);

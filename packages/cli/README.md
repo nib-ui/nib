@@ -17,7 +17,8 @@ or with flags:
   Nib's reset follows Tailwind's preflight and Tailwind utilities still win;
 - `--dir <folder>`: where the stylesheets go (default `src`).
 
-It writes `nib.config.json`, the CSS entry (`src/nib.css`, imported once by the app) and an empty
+It writes `nib.config.json`, the CSS entry (`src/nib.css`, imported once by the app: Nib, then the
+preset's stylesheet, then the theme) and an empty
 theme file (`src/nib-theme.css`) for the open tokens. Files already there are kept. It installs
 nothing and sends nothing anywhere.
 
