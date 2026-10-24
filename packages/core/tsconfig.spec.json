@@ -14,7 +14,8 @@
   "include": [
     "vitest.config.mts",
     "src/**/*.spec.ts",
-    "src/**/*.test.ts"
+    "src/**/*.test.ts",
+    "src/**/*.fixture.ts"
   ],
   "references": [
     {
