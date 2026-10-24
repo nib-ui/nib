@@ -26,8 +26,12 @@ module boundaries and self-hosted caching (Oct 2026); Nx 23 was released 2026-06
     `stylelint-plugin`, `nx-plugin`
 - `@nib-ui/core` is a published package holding the headless controllers, so apps that use two
   bindings ship one copy of the logic.
-- Exact versions of `nx` and `@nx/*` are pinned; `nx migrate latest` runs monthly in its own PR;
+- Exact versions of `nx` and `@nx/*` are pinned (Nx 24.0.1 at scaffold time, 2026-10-24); `nx migrate latest` runs monthly in its own PR;
   no Nx major upgrade during the 1.0 beta.
+- Contributors and CI use Node 24 (`.nvmrc`); Vitest 5 and size-limit no longer run on Node 20.
+  `pnpm-workspace.yaml` lists the only dependencies allowed to run install scripts (`allowBuilds`).
+- Each project's TypeScript `lib` follows its tag: `core` and `tokens` compile without the DOM
+  library, so a stray `document` fails the build, not only the lint.
 
 **Release** (replaces Changesets)
 - Nx Release with one **fixed** release group `nib` containing every public package; git tag

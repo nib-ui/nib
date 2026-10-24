@@ -1,0 +1,22 @@
+{
+  "name": "@nib-ui/fonts",
+  "version": "0.0.0",
+  "description": "Nib fonts: JetBrains Mono and Inter, self-hosted",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nib-ui/nib.git",
+    "directory": "packages/fonts"
+  },
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "nx": {
+    "tags": [
+      "type:asset",
+      "scope:public"
+    ]
+  }
+}

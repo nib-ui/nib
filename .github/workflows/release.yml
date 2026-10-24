@@ -1,0 +1,54 @@
+# The npm trusted-publisher entry names this file. Renaming it breaks publishing until npm is updated.
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      preid:
+        description: Prerelease id (empty for a stable release on `latest`)
+        type: choice
+        options: ['', alpha, beta]
+        default: ''
+      dry-run:
+        description: Preview versions, changelog and publish without writing anything
+        type: boolean
+        default: true
+
+permissions:
+  contents: write # release commit, tag and GitHub release
+  id-token: write # npm OIDC trusted publishing with provenance
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      DRY_RUN: ${{ inputs.dry-run && '--dry-run' || '' }}
+      PREID: ${{ inputs.preid && format('--preid={0}', inputs.preid) || '' }}
+      DIST_TAG: ${{ inputs.preid && 'next' || 'latest' }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - run: pnpm install --frozen-lockfile
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Version and changelog from version plans
+        run: pnpm nx release $PREID $DRY_RUN --skip-publish --yes
+      - name: Clean build of every public package (no cache)
+        run: pnpm nx run-many -t build --projects=tag:scope:public --skip-nx-cache
+      - name: Publish with provenance
+        run: pnpm nx release publish --tag=$DIST_TAG $DRY_RUN

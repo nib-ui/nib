@@ -1,0 +1,32 @@
+# build output
+dist
+out-tsc
+tmp
+*.tsbuildinfo
+
+# dependencies
+node_modules
+
+# Nx
+.nx/cache
+.nx/workspace-data
+.nx/polygraph
+.nx/self-healing
+.nx/migrate-runs
+
+# test output
+coverage
+test-output
+vitest.config.*.timestamp*
+.vitest
+
+# editors and OS
+.idea
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+
+# local agent settings
+.claude/settings.local.json
+.claude/worktrees

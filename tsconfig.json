@@ -1,0 +1,40 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./tools/stylelint-plugin"
+    },
+    {
+      "path": "./tools/color-engine"
+    },
+    {
+      "path": "./tools/nx-plugin"
+    },
+    {
+      "path": "./packages/svelte"
+    },
+    {
+      "path": "./packages/tokens"
+    },
+    {
+      "path": "./packages/react"
+    },
+    {
+      "path": "./packages/core"
+    },
+    {
+      "path": "./packages/cli"
+    },
+    {
+      "path": "./packages/dom"
+    },
+    {
+      "path": "./packages/vue"
+    },
+    {
+      "path": "./packages/js"
+    }
+  ]
+}

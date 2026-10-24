@@ -1,0 +1,34 @@
+{
+  "name": "@nib-ui/tokens",
+  "version": "0.0.0",
+  "description": "Nib design tokens (DTCG source, CSS variables, Tailwind theme, JSON)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nib-ui/nib.git",
+    "directory": "packages/tokens"
+  },
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@nib-ui/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "nx": {
+    "tags": [
+      "type:tokens",
+      "scope:public"
+    ]
+  }
+}

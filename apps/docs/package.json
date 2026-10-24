@@ -1,0 +1,14 @@
+{
+  "name": "@nib-ui/docs",
+  "version": "0.0.0",
+  "description": "Nib documentation site",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "nx": {
+    "tags": [
+      "type:app",
+      "scope:private"
+    ]
+  }
+}

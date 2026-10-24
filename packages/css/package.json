@@ -1,0 +1,22 @@
+{
+  "name": "@nib-ui/css",
+  "version": "0.0.0",
+  "description": "Nib CSS: base, components and utilities in cascade layers",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nib-ui/nib.git",
+    "directory": "packages/css"
+  },
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "nx": {
+    "tags": [
+      "type:css",
+      "scope:public"
+    ]
+  }
+}

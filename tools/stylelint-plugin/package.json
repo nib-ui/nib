@@ -1,0 +1,22 @@
+{
+  "name": "@nib-ui/stylelint-plugin",
+  "version": "0.0.0",
+  "description": "Stylelint rules that enforce the Nib laws",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@nib-ui/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "nx": {
+    "tags": [
+      "type:tool",
+      "scope:private"
+    ]
+  }
+}
