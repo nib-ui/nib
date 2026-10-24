@@ -6,7 +6,7 @@ const t = strings(Astro.currentLocale);
 
 <!-- Both words are printed; CSS shows the one for the theme not showing, so the label is right
      before any script runs. The hidden one is display:none and so not part of the name. -->
-<button type="button" class="docs-word docs-theme-toggle" data-theme-toggle aria-keyshortcuts="Alt+T">
+<button type="button" class="nib-header__word docs-theme-toggle" data-theme-toggle aria-keyshortcuts="Alt+T">
   <span aria-hidden="true">[T]</span>
   <span class="docs-visually-hidden">{t.themeBefore} </span>
   <span class="docs-theme-dark">{t.themeDark}</span>

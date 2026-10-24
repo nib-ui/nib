@@ -3,6 +3,8 @@ import '@nib-ui/fonts/fonts.css';
 import '@nib-ui/css/nib.css';
 import '../styles/docs.css';
 import SiteHeader from '../components/site-header.astro';
+import PageOutline from '../components/page-outline.astro';
+import { href, navigation } from '../data/nav.ts';
 import { strings } from '../i18n/ui.ts';
 
 interface Props {
@@ -13,6 +15,7 @@ interface Props {
 const { title, description } = Astro.props;
 const lang = Astro.currentLocale ?? 'en';
 const t = strings(lang);
+const path = Astro.url.pathname;
 ---
 
 <!doctype html>
@@ -29,10 +32,12 @@ const t = strings(lang);
     {description && <meta name="description" content={description} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script is:inline>
-      // Apply a stored theme before first paint; without one the page follows the OS.
+      // Apply a stored theme and density before first paint; without one the page follows the OS.
       try {
         const theme = localStorage.getItem('nib-theme');
         if (theme === 'dark' || theme === 'light') document.documentElement.dataset.theme = theme;
+        const density = localStorage.getItem('nib-density');
+        if (density === 'compact' || density === 'comfortable') document.documentElement.dataset.density = density;
       } catch {}
     </script>
   </head>
@@ -41,8 +46,36 @@ const t = strings(lang);
       {t.skip}
     </a>
     <SiteHeader />
-    <main id="content" tabindex="-1">
-      <slot />
-    </main>
+    <div class="nib-with-side docs-shell">
+      <div class="docs-side">
+        <details class="docs-contents" open>
+          <summary class="nib-side-nav__title">{t.contents}</summary>
+          <nav class="nib-side-nav" aria-label={t.docsNav}>
+            {navigation().map((group) => (
+              <>
+                <p class="nib-side-nav__title">{group.title}</p>
+                <ul>
+                  {group.pages.map((page) => (
+                    <li>
+                      <a href={href(page.slug)} aria-current={path === href(page.slug) ? 'page' : undefined}>
+                        {page.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ))}
+          </nav>
+        </details>
+        <PageOutline />
+      </div>
+      <main id="content" class="nib-with-side__main" tabindex="-1">
+        <slot />
+      </main>
+    </div>
+    <script is:inline>
+      // On narrow screens the side column sits above the page: start with its contents closed.
+      if (matchMedia('(width < 48rem)').matches) document.querySelector('.docs-contents')?.removeAttribute('open');
+    </script>
   </body>
 </html>
