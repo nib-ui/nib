@@ -72,4 +72,9 @@ describe('toNibEvent', () => {
     const nib = toNibEvent(new view.KeyboardEvent('keydown', { key: 'Home', ctrlKey: true }));
     expect(nib).toMatchObject({ type: 'keydown', key: 'Home', ctrlKey: true });
   });
+
+  it('reads the new state of a popover toggle', () => {
+    const nib = toNibEvent(new ToggleEvent('toggle', { oldState: 'closed', newState: 'open' }));
+    expect(nib).toMatchObject({ type: 'toggle', newState: 'open' });
+  });
 });

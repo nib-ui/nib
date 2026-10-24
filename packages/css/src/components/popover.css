@@ -1,0 +1,44 @@
+/* Popover: a box of content beside its trigger, on the overlay surface with a 1px line, no shadow.
+   It is a native popover (top layer, light dismiss); the controller writes where it goes as
+   --nib-x / --nib-y (viewport pixels) and the room it has as --nib-max-width / --nib-max-height,
+   in its style attribute. Until it is placed it stays invisible, so it never flashes elsewhere. */
+@layer nib.components {
+  /* place() works in physical viewport pixels, so the box is placed with top and left. */
+  .nib-popover[style] {
+    position: fixed;
+    inset: auto;
+    top: var(--nib-y);
+    /* stylelint-disable-next-line nib/no-physical-direction -- physical viewport pixels from place() */
+    left: var(--nib-x);
+  }
+
+  .nib-popover {
+    box-sizing: border-box;
+    max-inline-size: min(var(--nib-max-width, 100vw), 32rem);
+    max-block-size: var(--nib-max-height, none);
+    margin: 0;
+    padding: var(--nib-space-md);
+    overflow: auto;
+    border: var(--nib-space-hairline) solid var(--nib-line);
+    background: var(--nib-surface-overlay);
+    color: var(--nib-on-surface);
+    font: var(--nib-body-md-font-weight) var(--nib-body-md-font-size) / var(--nib-body-md-line-height)
+      var(--nib-font-sans);
+  }
+
+  .nib-popover:popover-open {
+    animation: nib-reveal var(--nib-duration-reveal) var(--nib-ease-out);
+  }
+
+  /* Opened but not placed yet (the moment before the controller hears it opened). */
+  .nib-popover[data-nib-popover]:popover-open:not([data-placed]) {
+    visibility: hidden;
+  }
+
+  @keyframes nib-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+  }
+}

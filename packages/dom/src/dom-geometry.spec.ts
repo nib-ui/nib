@@ -83,4 +83,13 @@ describe('domGeometry', () => {
     await frames(3);
     expect(calls).toBe(before);
   });
+
+  it('reads the writing direction at an element', () => {
+    document.body.innerHTML =
+      '<div dir="rtl"><button id="rtl-trigger">x</button></div><button id="ltr-trigger">y</button>';
+    const geometry = domGeometry();
+    expect(geometry.direction?.('rtl-trigger')).toBe('rtl');
+    expect(geometry.direction?.('ltr-trigger')).toBe('ltr');
+    expect(geometry.direction?.('missing')).toBe('ltr');
+  });
 });

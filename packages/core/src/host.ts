@@ -24,6 +24,8 @@ export interface Geometry {
   viewport(): Size;
   /** Calls `fn` when layout may have changed (resize, scroll); returns a function that stops it. */
   watch(fn: () => void): () => void;
+  /** The writing direction at the element with this id; absent means left to right. */
+  direction?(ref: string): 'ltr' | 'rtl';
 }
 
 /** What a controller may use from its environment. Omit it on the server. */

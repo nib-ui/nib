@@ -40,6 +40,11 @@
       "@nib-ui/source": "./src/tabs.ts",
       "types": "./dist/tabs.d.ts",
       "default": "./dist/tabs.js"
+    },
+    "./popover": {
+      "@nib-ui/source": "./src/popover.ts",
+      "types": "./dist/popover.d.ts",
+      "default": "./dist/popover.js"
     }
   },
   "files": [
@@ -83,7 +88,9 @@
     "./dist/disclosure.js",
     "./src/disclosure.ts",
     "./dist/tabs.js",
-    "./src/tabs.ts"
+    "./src/tabs.ts",
+    "./dist/popover.js",
+    "./src/popover.ts"
   ],
   "dependencies": {
     "@nib-ui/core": "workspace:*",

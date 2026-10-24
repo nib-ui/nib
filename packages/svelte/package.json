@@ -30,6 +30,11 @@
       "@nib-ui/source": "./src/tabs.ts",
       "types": "./dist/tabs.d.ts",
       "default": "./dist/tabs.js"
+    },
+    "./popover": {
+      "@nib-ui/source": "./src/popover.ts",
+      "types": "./dist/popover.d.ts",
+      "default": "./dist/popover.js"
     }
   },
   "files": [

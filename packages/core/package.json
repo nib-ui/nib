@@ -50,6 +50,21 @@
       "@nib-ui/source": "./src/tabs/tabs.apg.ts",
       "types": "./dist/tabs/tabs.apg.d.ts",
       "default": "./dist/tabs/tabs.apg.js"
+    },
+    "./popover": {
+      "@nib-ui/source": "./src/popover/index.ts",
+      "types": "./dist/popover/index.d.ts",
+      "default": "./dist/popover/index.js"
+    },
+    "./popover/apg": {
+      "@nib-ui/source": "./src/popover/popover.apg.ts",
+      "types": "./dist/popover/popover.apg.d.ts",
+      "default": "./dist/popover/popover.apg.js"
+    },
+    "./place": {
+      "@nib-ui/source": "./src/place/index.ts",
+      "types": "./dist/place/index.d.ts",
+      "default": "./dist/place/index.js"
     }
   },
   "files": [
