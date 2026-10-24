@@ -360,7 +360,15 @@ importers:
         specifier: workspace:*
         version: link:../../packages/tokens
 
-  packages/cli: {}
+  packages/cli:
+    dependencies:
+      '@nib-ui/tokens':
+        specifier: workspace:*
+        version: link:../tokens
+    devDependencies:
+      '@nib-ui/color-engine':
+        specifier: workspace:*
+        version: link:../../tools/color-engine
 
   packages/core: {}
 

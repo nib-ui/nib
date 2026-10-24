@@ -6,9 +6,17 @@
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
     "emitDeclarationOnly": false,
     "lib": ["es2024"],
-    "types": ["node"]
+    "types": ["node"],
+    "resolveJsonModule": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
-  "references": []
+  "references": [
+    {
+      "path": "../tokens/tsconfig.lib.json"
+    },
+    {
+      "path": "../../tools/color-engine/tsconfig.lib.json"
+    }
+  ]
 }

@@ -10,16 +10,10 @@
   },
   "type": "module",
   "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "@nib-ui/source": "./src/index.ts",
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    }
+    "./package.json": "./package.json"
   },
   "files": [
-    "dist",
-    "!**/*.tsbuildinfo"
+    "dist/nib.js"
   ],
   "publishConfig": {
     "access": "public",
@@ -29,6 +23,37 @@
     "tags": [
       "type:cli",
       "scope:public"
-    ]
+    ],
+    "targets": {
+      "build": {
+        "command": "vite build",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "^build"
+        ],
+        "inputs": [
+          "production",
+          "^production"
+        ],
+        "outputs": [
+          "{projectRoot}/dist"
+        ],
+        "cache": true
+      }
+    }
+  },
+  "bin": {
+    "nib": "./dist/nib.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@nib-ui/tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "@nib-ui/color-engine": "workspace:*"
   }
 }
