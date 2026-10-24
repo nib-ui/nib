@@ -1,0 +1,78 @@
+/* Toaster and toast: a stack of short messages in the inline-end bottom corner (full width on
+   phones), on the overlay surface with a 1px line and, like a callout, a 2px rule in the tone's
+   hue. Mono caps title, body text, a row of word buttons (UNDO, CLOSE). Each rises 4px into place. */
+@layer nib.components {
+  .nib-toaster {
+    position: fixed;
+    z-index: 3;
+    inset-block-end: var(--nib-space-lg);
+    inset-inline-end: var(--nib-space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--nib-space-sm);
+    inline-size: min(100% - 2 * var(--nib-space-lg), 22rem);
+  }
+
+  .nib-toaster:empty {
+    display: none;
+  }
+
+  .nib-toast {
+    --nib-toast-hue: var(--nib-blue);
+
+    padding: var(--nib-space-sm-plus) var(--nib-space-md);
+    border: var(--nib-space-hairline) solid var(--nib-line);
+    border-inline-start: var(--nib-space-rule) solid var(--nib-toast-hue);
+    background: var(--nib-surface-overlay);
+    color: var(--nib-on-surface-2);
+    font: var(--nib-body-md-font-weight) var(--nib-body-md-font-size) / var(--nib-body-md-line-height)
+      var(--nib-font-sans);
+    animation: nib-reveal var(--nib-duration-reveal) var(--nib-ease-out);
+  }
+
+  .nib-toast[data-tone='success'] {
+    --nib-toast-hue: var(--nib-green);
+  }
+
+  .nib-toast[data-tone='warning'] {
+    --nib-toast-hue: var(--nib-yellow);
+  }
+
+  .nib-toast[data-tone='error'] {
+    --nib-toast-hue: var(--nib-error);
+  }
+
+  .nib-toast__title {
+    margin: 0;
+    color: var(--nib-on-surface);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1));
+    text-transform: var(--nib-caps, uppercase);
+  }
+
+  .nib-toast__body {
+    margin: var(--nib-space-xs) 0 0;
+  }
+
+  .nib-toast__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--nib-space-sm);
+    margin-block-start: var(--nib-space-sm);
+  }
+
+  @media (width < 30rem) {
+    .nib-toaster {
+      inset-inline: var(--nib-space-sm);
+      inset-block-end: var(--nib-space-sm);
+      inline-size: auto;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .nib-toast {
+      border-color: CanvasText;
+    }
+  }
+}

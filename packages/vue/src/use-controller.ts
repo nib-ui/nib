@@ -9,9 +9,11 @@ interface BaseOptions {
 }
 
 /** What a component gets: the current state and `v-bind` objects for each part. */
-export interface Controller<S, P extends string> {
+export interface Controller<S, P extends string, E = never> {
   readonly state: S;
   part(name: P, key?: string): Record<string, unknown>;
+  /** Sends an event from code, e.g. a toaster's push; its intents run after the next patch. */
+  send(event: E): void;
 }
 
 const client = typeof document !== 'undefined';
@@ -31,10 +33,10 @@ function vueProps(part: Part, queue: (intents: readonly Intent[]) => void): Reco
  * them reactive. Ids come from `useId`, so server and client render the same markup; `locale`
  * defaults to the page's `lang` on the client, so pass it explicitly when rendering on the server.
  */
-export function useController<S, P extends string, O extends BaseOptions>(
-  create: (options: O, host?: Host) => Instance<S, never, P, O>,
+export function useController<S, P extends string, O extends BaseOptions, E = never>(
+  create: (options: O, host?: Host) => Instance<S, NoInfer<E>, P, O>,
   options: MaybeRefOrGetter<O>,
-): Controller<S, P> {
+): Controller<S, P, E> {
   const vueId = useId();
   const initial = toValue(options);
   const instance = create(
@@ -81,5 +83,6 @@ export function useController<S, P extends string, O extends BaseOptions>(
       void version.value;
       return vueProps(instance.part(name, key), queue);
     },
+    send: (event) => queue(instance.send(event)),
   };
 }

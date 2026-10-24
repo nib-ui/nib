@@ -1,0 +1,124 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<button type="button" class="nib-button nib-button--outline" data-demo-toast>Add to cart</button>
+<button type="button" class="nib-button nib-button--outline" data-demo-error>Pay</button>
+
+<section data-nib="toaster" class="nib-toaster"></section>`;
+
+const code = {
+  html: `${html}
+
+<script type="module">
+  import { toast } from '@nib-ui/js/toaster';
+  import { init } from '@nib-ui/js';
+  init();
+  toast({ title: 'Added to cart', body: 'Kenya Nyeri ×2', tone: 'success' });
+</script>`,
+  react: `import { useToaster } from '@nib-ui/react/toaster';
+
+function App() {
+  const toaster = useToaster();
+  return (
+    <>
+      <button onClick={() => toaster.toast({ title: 'Added to cart', tone: 'success' })}>Add to cart</button>
+      <section className="nib-toaster" {...toaster.part('region')}>
+        {toaster.state.toasts.map((t) => (
+          <div key={t.key} className="nib-toast" {...toaster.part('toast', t.key)}>
+            <p className="nib-toast__title">{t.title}</p>
+            <div className="nib-toast__actions">
+              <button className="nib-button" {...toaster.part('close', t.key)}>Close</button>
+            </div>
+          </div>
+        ))}
+      </section>
+    </>
+  );
+}`,
+  vue: `<script setup>
+import { useToaster } from '@nib-ui/vue/toaster';
+
+const toaster = useToaster();
+</script>
+
+<template>
+  <button @click="toaster.toast({ title: 'Added to cart', tone: 'success' })">Add to cart</button>
+  <section class="nib-toaster" v-bind="toaster.part('region')">
+    <div v-for="t in toaster.state.toasts" :key="t.key" class="nib-toast" v-bind="toaster.part('toast', t.key)">
+      <p class="nib-toast__title">{{ t.title }}</p>
+      <div class="nib-toast__actions"><button class="nib-button" v-bind="toaster.part('close', t.key)">Close</button></div>
+    </div>
+  </section>
+</template>`,
+  svelte: `<script>
+  import { createToasterStore } from '@nib-ui/svelte/toaster';
+
+  const toaster = createToasterStore({ id: $props.id() });
+</script>
+
+<button onclick={() => toaster.toast({ title: 'Added to cart', tone: 'success' })}>Add to cart</button>
+<section class="nib-toaster" {...$toaster.part('region')}>
+  {#each $toaster.state.toasts as t (t.key)}
+    <div class="nib-toast" {...$toaster.part('toast', t.key)}>
+      <p class="nib-toast__title">{t.title}</p>
+      <div class="nib-toast__actions"><button class="nib-button" {...$toaster.part('close', t.key)}>Close</button></div>
+    </div>
+  {/each}
+</section>`,
+};
+---
+
+<ComponentPage
+  title="Toast"
+  lead="A short message in the corner that says what just happened, announced to screen readers, gone after a moment."
+  kind="INTERACTIVE"
+  code={code}
+>
+  <div slot="example" class="toaster-example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    One toaster per page (<code>createToaster</code>), near the root; push toasts with <code>toast()</code>(
+    <code>title</code>, <code>body</code>, <code>tone</code>: info, success, warning or error, an optional
+    <code>action</code> such as UNDO, and <code>duration</code>). It keeps at most three, closes each after five
+    seconds, and waits while the pointer or focus is in it. A toast reports what happened; anything the user must act on
+    belongs in a dialog or on the page.
+  </p>
+  <p>
+    For a small deletion that can be taken back (a row, a draft), delete at once and offer UNDO in a toast instead of
+    asking first.
+  </p>
+
+  <ul slot="accessibility">
+    <li>Each toast is announced through a live region (an error assertively); the region is a named landmark.</li>
+    <li>Timers wait while the pointer or focus is in the region, so a toast can be read and its buttons reached.</li>
+    <li>
+      Use <code>duration: Infinity</code> for a toast whose action matters, and never put the only copy of information
+      in one.
+    </li>
+  </ul>
+</ComponentPage>
+
+<script>
+  import { toast } from '@nib-ui/js/toaster';
+  import { init } from '@nib-ui/js';
+  init();
+  document
+    .querySelector('[data-demo-toast]')
+    ?.addEventListener('click', () => toast({ title: 'Added to cart', body: 'Kenya Nyeri ×2', tone: 'success' }));
+  document.querySelector('[data-demo-error]')?.addEventListener('click', () =>
+    toast({
+      title: 'Payment failed',
+      body: 'The card was declined.',
+      tone: 'error',
+      action: { label: 'Retry', onAction: () => undefined },
+    }),
+  );
+</script>
+
+<style>
+  .toaster-example {
+    display: flex;
+    gap: var(--nib-space-md);
+  }
+</style>

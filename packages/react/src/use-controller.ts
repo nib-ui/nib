@@ -9,10 +9,12 @@ interface BaseOptions {
   locale?: string;
 }
 
-/** What a component gets: the current state and props for each part. */
-export interface Controller<S, P extends string> {
+/** What a component gets: the current state, props for each part, and a way to send it an event. */
+export interface Controller<S, P extends string, E = never> {
   state: S;
   part(name: P, key?: string): Record<string, unknown>;
+  /** Sends an event from code, e.g. a toaster's push; its intents run after the next commit. */
+  send(event: E): void;
 }
 
 const client = typeof document !== 'undefined';
@@ -29,13 +31,13 @@ const same = (a: object, b: object) => {
  * effects until the instance is subscribed to or sent an event (every core controller qualifies),
  * because React may throw a render away without committing it.
  */
-export function useController<S, P extends string, O extends BaseOptions>(
-  create: (options: O, host?: Host) => Instance<S, never, P, O>,
+export function useController<S, P extends string, O extends BaseOptions, E = never>(
+  create: (options: O, host?: Host) => Instance<S, NoInfer<E>, P, O>,
   options: O,
-): Controller<S, P> {
+): Controller<S, P, E> {
   const reactId = useId();
   const [box] = useState(() => ({
-    instance: null as Instance<S, never, P, O> | null,
+    instance: null as Instance<S, E, P, O> | null,
     applied: options,
     intents: [] as Intent[],
     mounted: false,
@@ -88,5 +90,9 @@ export function useController<S, P extends string, O extends BaseOptions>(
     box.intents.push(...intents);
     rerender();
   };
-  return { state, part: (name, key) => reactProps(instance.part(name, key), queue) };
+  return {
+    state,
+    part: (name, key) => reactProps(instance.part(name, key), queue),
+    send: (event) => queue(get().send(event)),
+  };
 }
