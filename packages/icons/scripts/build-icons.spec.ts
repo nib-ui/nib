@@ -33,19 +33,22 @@ beforeAll(() => {
 });
 
 describe('buildIcons', () => {
-  it('has every icon the components need, each within the drawing laws', () => {
-    expect([...readIcons().keys()]).toEqual(NEEDED);
+  it('has every icon the components need, each within the drawing laws, and 60 to 80 in all', () => {
+    const names = [...readIcons().keys()];
+    expect(names).toEqual(expect.arrayContaining(NEEDED));
+    expect(names.length).toBeGreaterThanOrEqual(60);
+    expect(names.length).toBeLessThanOrEqual(80);
   });
 
   it('writes a sprite of currentColor symbols with square caps', () => {
     const sprite = read('sprite.svg');
-    expect(sprite.match(/<symbol /g)).toHaveLength(NEEDED.length);
+    expect(sprite.match(/<symbol /g)).toHaveLength(readIcons().size);
     expect(sprite).toContain('<symbol id="nib-icon-close" viewBox="0 0 16 16" fill="none" stroke="currentColor"');
     expect(sprite).toContain('stroke-linecap="square"');
   });
 
   it('writes one ES module per icon and an index of camelCase names', async () => {
-    expect(readdirSync(join(out, 'esm')).filter((f) => f.endsWith('.js'))).toHaveLength(NEEDED.length + 1);
+    expect(readdirSync(join(out, 'esm')).filter((f) => f.endsWith('.js'))).toHaveLength(readIcons().size + 1);
     const { default: close } = (await import(join(out, 'esm', 'close.js'))) as { default: string };
     expect(close).toMatch(/^<svg [^>]*width="16" height="16" aria-hidden="true" focusable="false">/);
     expect(read('esm/index.js')).toContain("export { default as chevronDown } from './chevron-down.js';");
@@ -55,7 +58,8 @@ describe('buildIcons', () => {
     const css = read('icons.css');
     expect(css.startsWith('@layer nib.theme, nib.base, nib.components, nib.utilities;')).toBe(true);
     expect(css).toContain('.nib-icon-search{--nib-icon:url("data:image/svg+xml,');
-    expect(css).toContain('.nib-icon-arrow-prev:dir(rtl),.nib-icon-arrow-next:dir(rtl){transform:scaleX(-1)}');
+    expect(css).toContain('.nib-icon-arrow-prev:dir(rtl),.nib-icon-arrow-next:dir(rtl),.nib-icon-log-in:dir(rtl)');
+    expect(css).not.toContain('.nib-icon-arrow-up:dir(rtl)');
   });
 
   it('draws nothing for a bare or misspelt nib-icon, never a filled square', () => {

@@ -2,6 +2,7 @@
 import '@nib-ui/icons/icons.css';
 import ComponentPage from '../../layouts/component-page.astro';
 
+// Every icon, grouped by use: moving, acting, editing, status, things, views, media and misc.
 const names = [
   'chevron-up',
   'chevron-down',
@@ -9,17 +10,80 @@ const names = [
   'chevron-right',
   'arrow-prev',
   'arrow-next',
+  'arrow-up',
+  'arrow-down',
+  'external',
+  'log-in',
+  'log-out',
+  'maximize',
+  'minimize',
   'close',
   'check',
   'plus',
   'minus',
   'search',
-  'calendar',
-  'copy',
-  'external',
+  'zoom-in',
+  'zoom-out',
   'menu',
-  'warning',
+  'more-horizontal',
+  'more-vertical',
+  'filter',
+  'sort',
+  'sliders',
+  'settings',
+  'copy',
+  'edit',
+  'trash',
+  'save',
+  'download',
+  'upload',
+  'print',
+  'refresh',
+  'undo',
+  'redo',
+  'link',
+  'lock',
+  'eye',
+  'eye-off',
   'info',
+  'warning',
+  'error',
+  'done',
+  'help',
+  'bell',
+  'flag',
+  'shield',
+  'key',
+  'home',
+  'user',
+  'mail',
+  'message',
+  'phone',
+  'calendar',
+  'clock',
+  'pin',
+  'bookmark',
+  'tag',
+  'folder',
+  'file',
+  'image',
+  'grid',
+  'list',
+  'table',
+  'columns',
+  'sidebar',
+  'terminal',
+  'code',
+  'chart-bar',
+  'chart-line',
+  'play',
+  'pause',
+  'stop',
+  'sun',
+  'moon',
+  'cart',
+  'package',
+  'coffee',
 ];
 
 const html = `<!-- CSS mask: @nib-ui/icons/icons.css -->
@@ -38,7 +102,7 @@ const react = `import { copy } from '@nib-ui/icons';
 
 <ComponentPage
   title="Icons"
-  lead="Seventeen marks drawn on the pixel grid in straight 1px strokes, for the components that need them. Words come first."
+  lead="Eighty marks drawn on the pixel grid in straight 1px and 2px strokes. Words come first; an icon accompanies one."
   kind="CSS"
   code={{ html, react }}
 >
@@ -58,8 +122,10 @@ const react = `import { copy } from '@nib-ui/icons';
     Three deliveries of the same drawings: <code>icons.css</code> (a <code>nib-icon nib-icon-&lt;name&gt;</code> mask in
     the text colour, no JavaScript), <code>sprite.svg</code> (symbols <code>nib-icon-&lt;name&gt;</code>) and one ES
     module per icon (<code>import copy from '@nib-ui/icons/copy'</code>, the SVG markup as a string). Every icon is
-    16×16, square-capped, in <code>currentColor</code>. <code>arrow-prev</code> and <code>arrow-next</code> point the
-    reading way and flip under <code>dir="rtl"</code>; chevrons point where they say.
+    16×16, square-capped, in <code>currentColor</code>. Icons that follow the reading way (<code>arrow-prev</code>,{' '}
+    <code>arrow-next</code>, <code>log-in</code>, <code>log-out</code>, <code>undo</code>,<code>redo</code>,{' '}
+    <code>sidebar</code>, <code>list</code>) flip under <code>dir="rtl"</code>; chevrons and the up and down arrows
+    point where they say.
   </p>
 
   <ul slot="accessibility">
