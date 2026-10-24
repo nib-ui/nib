@@ -59,6 +59,9 @@ function runCase(c: ConformanceCase, create: (options: Record<string, unknown>, 
   const t = createTestHost();
   const instance = create(c.options, t.host) as AnyInstance;
   try {
+    // A browser focuses the element before any key reaches it; a focus handler runs first here too.
+    const target = instance.part(c.target.part, c.target.key);
+    if (target.on['focus']) t.fire(target, 'focus');
     for (const press of c.keys) {
       const { wait = 0, ...init } = typeof press === 'string' ? { key: press } : press;
       t.clock.advance(wait);

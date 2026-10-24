@@ -1,0 +1,95 @@
+/* Listbox: the current option (keyboard or pointer) gets a 2px accent rule on its inline-start edge
+   plus the hover fill; the chosen value is a cursor block with ✓; checked rows (multiple) are [x].
+   Every state comes from the attributes the controller writes. */
+@layer nib.components {
+  .nib-listbox {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: var(--nib-space-hairline) solid var(--nib-line);
+    background: var(--nib-surface-overlay);
+    list-style: none;
+  }
+
+  .nib-listbox:focus-visible {
+    outline: var(--nib-space-rule) solid var(--nib-accent);
+    outline-offset: var(--nib-space-rule);
+  }
+
+  .nib-listbox__option {
+    display: flex;
+    align-items: center;
+    gap: var(--nib-space-sm);
+    padding-block: var(--nib-space-xs-plus);
+    padding-inline: calc(var(--nib-space-sm-plus) - var(--nib-space-rule)) var(--nib-space-sm-plus);
+    border-inline-start: var(--nib-space-rule) solid transparent;
+    color: var(--nib-on-surface);
+    font: var(--nib-item-md-font-weight) var(--nib-item-md-font-size) / var(--nib-item-md-line-height)
+      var(--nib-font-sans);
+    cursor: default;
+  }
+
+  .nib-listbox__option[data-current] {
+    border-inline-start-color: var(--nib-accent);
+    background: var(--nib-hover);
+  }
+
+  /* Chosen: the cursor block. The current rule stays on it (≥ 3:1 against ink in both themes). */
+  .nib-listbox__option[aria-selected='true'] {
+    background: var(--nib-cursor);
+    color: var(--nib-on-cursor);
+  }
+
+  .nib-listbox__option[aria-selected='true']::after {
+    content: '✓';
+    margin-inline-start: auto;
+    font-family: var(--nib-font-mono);
+  }
+
+  /* Checked rows: a mono [x] before the label, never a block. */
+  .nib-listbox__option[aria-checked]::before {
+    content: '[ ]';
+    color: var(--nib-on-surface-2);
+    font-family: var(--nib-font-mono);
+    white-space: pre;
+  }
+
+  .nib-listbox__option[aria-checked='true']::before {
+    content: '[x]';
+    color: var(--nib-on-surface);
+  }
+
+  .nib-listbox__option[aria-disabled='true'] {
+    color: var(--nib-on-surface-3);
+    cursor: not-allowed;
+  }
+
+  @media (forced-colors: active) {
+    /* Forced colours paint even transparent borders; the rule shows only on the current option. */
+    .nib-listbox__option {
+      border-inline-start-color: Canvas;
+    }
+
+    .nib-listbox__option[data-current] {
+      border-inline-start-color: CanvasText;
+    }
+
+    .nib-listbox__option[aria-selected='true'] {
+      forced-color-adjust: none;
+      background: Highlight;
+      color: HighlightText;
+    }
+
+    .nib-listbox__option[aria-selected='true'][data-current] {
+      border-inline-start-color: HighlightText;
+    }
+
+    .nib-listbox__option[aria-disabled='true'] {
+      color: GrayText;
+    }
+
+    .nib-listbox:focus-visible {
+      outline-color: CanvasText;
+    }
+  }
+}

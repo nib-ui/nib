@@ -1,0 +1,159 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<span id="lang-label" class="docs-kicker">LANGUAGE</span>
+<ul class="nib-listbox" data-nib="listbox" aria-labelledby="lang-label" data-value="vi">
+  <li class="nib-listbox__option" data-nib-option="en">English</li>
+  <li class="nib-listbox__option" data-nib-option="fr" data-disabled>Français</li>
+  <li class="nib-listbox__option" data-nib-option="vi">Tiếng Việt</li>
+  <li class="nib-listbox__option" data-nib-option="ar">العربية</li>
+</ul>
+
+<script type="module">
+  import '@nib-ui/js/listbox';
+  import { init } from '@nib-ui/js';
+  init();
+</script>`;
+
+const code = {
+  html,
+  react: `import { useListbox } from '@nib-ui/react/listbox';
+
+const items = [
+  { key: 'en', label: 'English' },
+  { key: 'fr', label: 'Français', disabled: true },
+  { key: 'vi', label: 'Tiếng Việt' },
+];
+
+function Language() {
+  const [value, setValue] = useState('vi');
+  const listbox = useListbox({ items, value, onValueChange: setValue });
+  return (
+    <ul className="nib-listbox" aria-label="Language" {...listbox.part('list')}>
+      {items.map((item) => (
+        <li key={item.key} className="nib-listbox__option" {...listbox.part('option', item.key)}>
+          {item.label}
+        </li>
+      ))}
+    </ul>
+  );
+}`,
+  vue: `<script setup>
+import { ref } from 'vue';
+import { useListbox } from '@nib-ui/vue/listbox';
+
+const items = [/* { key, label, disabled } */];
+const value = ref('vi');
+const listbox = useListbox(() => ({ items, value: value.value, onValueChange: (v) => (value.value = v) }));
+</script>
+
+<template>
+  <ul class="nib-listbox" aria-label="Language" v-bind="listbox.part('list')">
+    <li v-for="item in items" :key="item.key" class="nib-listbox__option" v-bind="listbox.part('option', item.key)">
+      {{ item.label }}
+    </li>
+  </ul>
+</template>`,
+  svelte: `<script>
+  import { createListboxStore } from '@nib-ui/svelte/listbox';
+
+  let { items } = $props();
+  const listbox = createListboxStore({ id: $props.id(), items, defaultValue: 'vi' });
+</script>
+
+<ul class="nib-listbox" aria-label="Language" {...$listbox.part('list')}>
+  {#each items as item (item.key)}
+    <li class="nib-listbox__option" {...$listbox.part('option', item.key)}>{item.label}</li>
+  {/each}
+</ul>`,
+};
+---
+
+<ComponentPage
+  title="Listbox"
+  lead="A list of options to choose from: a jade rule marks the current option, a cursor block the chosen one."
+  kind="INTERACTIVE"
+  code={code}
+>
+  <div slot="example" class="docs-listbox-demo">
+    <span id="lang-label" class="docs-kicker">
+      LANGUAGE
+    </span>
+    <ul class="nib-listbox" data-nib="listbox" aria-labelledby="lang-label" data-value="vi">
+      <li class="nib-listbox__option" data-nib-option="en">
+        English
+      </li>
+      <li class="nib-listbox__option" data-nib-option="fr" data-disabled>
+        Français
+      </li>
+      <li class="nib-listbox__option" data-nib-option="vi">
+        Tiếng Việt
+      </li>
+      <li class="nib-listbox__option" data-nib-option="ar">
+        العربية
+      </li>
+    </ul>
+    <span id="topics-label" class="docs-kicker">
+      TOPICS
+    </span>
+    <ul class="nib-listbox" data-nib="listbox" data-multiple aria-labelledby="topics-label">
+      <li class="nib-listbox__option" data-nib-option="css">
+        CSS
+      </li>
+      <li class="nib-listbox__option" data-nib-option="a11y">
+        Accessibility
+      </li>
+      <li class="nib-listbox__option" data-nib-option="i18n">
+        Internationalisation
+      </li>
+    </ul>
+  </div>
+  <h2>Usage</h2>
+  <ul>
+    <li>
+      <strong>Current</strong> (<code>data-current</code>): the option under the keyboard or pointer. A 2px accent rule
+      on its inline-start edge plus the hover fill.
+    </li>
+    <li>
+      <strong>Chosen value</strong> (<code>aria-selected="true"</code>): a cursor block with <code>✓</code>. When it is
+      also current, the accent rule sits on the block.
+    </li>
+    <li>
+      <strong>Multiple</strong>: checked rows get <code>[x]</code> and <code>aria-checked</code>, never a cursor block,
+      so many picks never turn the list into an ink slab.
+    </li>
+    <li>Disabled options stay in the list, readable but skipped by the keyboard.</li>
+  </ul>
+  <ul slot="accessibility">
+    <li>
+      Follows the WAI-ARIA APG listbox pattern. Focus stays on the list; the current option is its
+      <code>aria-activedescendant</code>.
+    </li>
+    <li>
+      Keys: <kbd>↓</kbd> <kbd>↑</kbd> move, <kbd>Home</kbd> <kbd>End</kbd> jump, <kbd>Enter</kbd> or <kbd>Space</kbd>
+      choose (or check, when multiple), typing finds an option by its first letters, ignoring case and diacritics.
+      Choosing never follows the arrows.
+    </li>
+    <li>
+      Label the list (<code>aria-labelledby</code> or <code>aria-label</code>); screen readers read it first.
+    </li>
+    <li>
+      Keys can be rebound or switched off with the <code>keys</code> option.
+    </li>
+  </ul>
+</ComponentPage>
+
+<script>
+  import '@nib-ui/js/listbox';
+  import { init } from '@nib-ui/js';
+
+  init();
+</script>
+
+<style>
+  .docs-listbox-demo {
+    display: grid;
+    gap: var(--nib-space-sm);
+    max-inline-size: 20rem;
+  }
+</style>

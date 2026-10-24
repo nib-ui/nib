@@ -62,6 +62,9 @@ describe('nib:component', () => {
       types: './dist/tree-view/index.d.ts',
       default: './dist/tree-view/index.js',
     });
+    expect(readJson(tree, 'packages/core/package.json').exports['./tree-view/apg']['@nib-ui/source']).toBe(
+      './src/tree-view/tree-view.apg.ts',
+    );
     expect(readJson(tree, 'packages/react/package.json').exports['./tree-view']['default']).toBe('./dist/tree-view.js');
     expect(readJson(tree, 'apps/docs/package.json').dependencies['@nib-ui/js']).toBe('workspace:*');
   });

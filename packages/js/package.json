@@ -20,6 +20,11 @@
       "@nib-ui/source": "./src/auto.ts",
       "types": "./dist/auto.d.ts",
       "default": "./dist/auto.js"
+    },
+    "./listbox": {
+      "@nib-ui/source": "./src/listbox.ts",
+      "types": "./dist/listbox.d.ts",
+      "default": "./dist/listbox.js"
     }
   },
   "files": [
@@ -55,7 +60,9 @@
   },
   "sideEffects": [
     "./dist/auto.js",
-    "./src/auto.ts"
+    "./src/auto.ts",
+    "./dist/listbox.js",
+    "./src/listbox.ts"
   ],
   "dependencies": {
     "@nib-ui/core": "workspace:*",

@@ -1,0 +1,40 @@
+---
+import FixtureLayout from '../../../layouts/fixture-layout.astro';
+---
+
+<FixtureLayout title="Listbox · vanilla fixture">
+  <div id="mount"></div>
+</FixtureLayout>
+
+<script>
+  import { listboxApg } from '@nib-ui/core/listbox/apg';
+  import type { ListboxItem } from '@nib-ui/core/listbox';
+  import '@nib-ui/js/listbox';
+  import { init } from '@nib-ui/js';
+  import { caseOptions } from '../../../fixtures/apg-case.ts';
+
+  // The vanilla binding reads its options from markup, so the row is written out as markup.
+  const o = caseOptions(listboxApg) as {
+    id: string;
+    locale?: string;
+    items: ListboxItem[];
+    defaultValue?: string;
+    multiple?: boolean;
+  };
+  const list = document.createElement('ul');
+  Object.assign(list, { id: o.id, className: 'nib-listbox', lang: o.locale ?? '' });
+  list.dataset['nib'] = 'listbox';
+  list.setAttribute('aria-label', 'Fixture');
+  if (o.defaultValue) list.dataset['value'] = o.defaultValue;
+  if (o.multiple) list.dataset['multiple'] = '';
+  for (const item of o.items) {
+    const li = document.createElement('li');
+    li.className = 'nib-listbox__option';
+    li.dataset['nibOption'] = item.key;
+    if (item.disabled) li.dataset['disabled'] = '';
+    li.textContent = item.label;
+    list.append(li);
+  }
+  document.getElementById('mount')?.append(list);
+  init();
+</script>
