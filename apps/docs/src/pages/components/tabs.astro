@@ -1,0 +1,134 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<div data-nib="tabs">
+  <div class="nib-tabs__list" data-nib-tablist aria-label="Brew methods">
+    <button class="nib-tabs__tab" type="button" data-nib-tab="pour">Pour over</button>
+    <button class="nib-tabs__tab" type="button" data-nib-tab="press">French press</button>
+    <button class="nib-tabs__tab" type="button" data-nib-tab="espresso" data-disabled>Espresso · soon</button>
+  </div>
+  <div class="nib-tabs__panel" data-nib-panel="pour">15 g coffee, 250 g water, 3 minutes.</div>
+  <div class="nib-tabs__panel" data-nib-panel="press">30 g coarse coffee, 500 g water, 4 minutes.</div>
+  <div class="nib-tabs__panel" data-nib-panel="espresso">Soon.</div>
+</div>
+
+<div data-nib="tabs" data-manual data-orientation="vertical" class="tabs-vertical">
+  <div class="nib-tabs__list" data-nib-tablist aria-label="Grind settings">
+    <button class="nib-tabs__tab" type="button" data-nib-tab="fine">Fine</button>
+    <button class="nib-tabs__tab" type="button" data-nib-tab="medium">Medium</button>
+    <button class="nib-tabs__tab" type="button" data-nib-tab="coarse">Coarse</button>
+  </div>
+  <div class="nib-tabs__panel" data-nib-panel="fine">Espresso and Turkish coffee.</div>
+  <div class="nib-tabs__panel" data-nib-panel="medium">Pour over and drip.</div>
+  <div class="nib-tabs__panel" data-nib-panel="coarse">French press and cold brew.</div>
+</div>`;
+
+const code = {
+  html: `${html}
+
+<script type="module">
+  import '@nib-ui/js/tabs';
+  import { init } from '@nib-ui/js';
+  init();
+</script>`,
+  react: `import { useTabs } from '@nib-ui/react/tabs';
+
+const items = [{ key: 'pour' }, { key: 'press' }];
+
+function BrewMethods() {
+  const tabs = useTabs({ items });
+  return (
+    <>
+      <div className="nib-tabs__list" aria-label="Brew methods" {...tabs.part('list')}>
+        {items.map((item) => (
+          <button key={item.key} type="button" className="nib-tabs__tab" {...tabs.part('tab', item.key)}>
+            {item.key}
+          </button>
+        ))}
+      </div>
+      {items.map((item) => (
+        <div key={item.key} className="nib-tabs__panel" {...tabs.part('panel', item.key)}>…</div>
+      ))}
+    </>
+  );
+}`,
+  vue: `<script setup>
+import { useTabs } from '@nib-ui/vue/tabs';
+
+const items = [{ key: 'pour' }, { key: 'press' }];
+const tabs = useTabs({ items });
+</script>
+
+<template>
+  <div class="nib-tabs__list" aria-label="Brew methods" v-bind="tabs.part('list')">
+    <button v-for="item in items" :key="item.key" type="button" class="nib-tabs__tab" v-bind="tabs.part('tab', item.key)">
+      {{ item.key }}
+    </button>
+  </div>
+  <div v-for="item in items" :key="item.key" class="nib-tabs__panel" v-bind="tabs.part('panel', item.key)">…</div>
+</template>`,
+  svelte: `<script>
+  import { createTabsStore } from '@nib-ui/svelte/tabs';
+
+  const items = [{ key: 'pour' }, { key: 'press' }];
+  const tabs = createTabsStore({ id: $props.id(), items });
+</script>
+
+<div class="nib-tabs__list" aria-label="Brew methods" {...$tabs.part('list')}>
+  {#each items as item (item.key)}
+    <button type="button" class="nib-tabs__tab" {...$tabs.part('tab', item.key)}>{item.key}</button>
+  {/each}
+</div>
+{#each items as item (item.key)}
+  <div class="nib-tabs__panel" {...$tabs.part('panel', item.key)}>…</div>
+{/each}`,
+};
+---
+
+<ComponentPage
+  title="Tabs"
+  lead="Panels of one place, one at a time: mono words with the selected one underlined in jade."
+  kind="INTERACTIVE"
+  code={code}
+>
+  <div slot="example" class="tabs-example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    <code>createTabs</code> takes the tabs by key and renders a <code>list</code>, a <code>tab</code> per key and a
+    <code>panel</code> per key. Activation is automatic (arrows select) unless you choose <code>manual</code> (arrows
+    move focus, Enter or Space selects); use manual when a panel is slow to show. Vertical tabs use Up and Down. Pass
+    <code>dir: 'rtl'</code> in right-to-left text so Left and Right follow it; the vanilla binding reads it from the
+    page.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      Follows the APG tabs pattern: <code>tablist</code>, <code>tab</code> and <code>tabpanel</code> roles, with only
+      the selected tab in the Tab order; Tab then moves into the panel.
+    </li>
+    <li>
+      Name the tab list with <code>aria-label</code> or <code>aria-labelledby</code>.
+    </li>
+    <li>Tabs are native buttons, so Enter and Space work without extra code.</li>
+    <li>In forced colours the selected tab keeps its underline as a CanvasText border.</li>
+  </ul>
+</ComponentPage>
+
+<script>
+  import '@nib-ui/js/tabs';
+  import { init } from '@nib-ui/js';
+  init();
+</script>
+
+<style>
+  .tabs-example :global(.tabs-vertical) {
+    display: flex;
+    gap: var(--nib-space-xl);
+    margin-block-start: var(--nib-space-2xl);
+  }
+
+  .tabs-example :global(.tabs-vertical .nib-tabs__panel) {
+    padding-block: var(--nib-space-sm);
+  }
+</style>

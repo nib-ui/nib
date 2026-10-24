@@ -14,31 +14,34 @@ const t = strings(Astro.currentLocale);
 const samples = (['html', 'react', 'vue', 'svelte'] as const)
   .map((name) => ({ name, code: Astro.props[name] }))
   .filter((s): s is { name: (typeof s)['name']; code: string } => !!s.code);
+const LABELS = { html: 'HTML', react: 'React', vue: 'Vue', svelte: 'Svelte' } as const;
 const escape = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 // Ids from the samples themselves, so every build writes the same HTML.
 const id = `code-${createHash('sha256').update(JSON.stringify(samples)).digest('hex').slice(0, 8)}`;
 ---
 
 {samples.length > 0 && (
-  <div class="docs-tabs" data-code-tabs>
-    <div class="docs-tablist" role="tablist" aria-label={t.code}>
+  <div class="docs-tabs" data-nib="tabs" id={id}>
+    <div class="nib-tabs__list docs-tablist" data-nib-tablist role="tablist" aria-label={t.code}>
       {samples.map((s, i) => (
         <button
           type="button"
-          class="docs-tab"
+          class="nib-tabs__tab"
+          data-nib-tab={s.name}
           role="tab"
           id={`${id}-tab-${s.name}`}
           aria-controls={`${id}-panel-${s.name}`}
           aria-selected={i === 0 ? 'true' : 'false'}
           tabindex={i === 0 ? 0 : -1}
         >
-          {s.name.toUpperCase()}
+          {LABELS[s.name]}
         </button>
       ))}
     </div>
     {samples.map((s, i) => (
       <div
-        class="docs-tabpanel"
+        class="nib-tabs__panel docs-tabpanel"
+        data-nib-panel={s.name}
         role="tabpanel"
         id={`${id}-panel-${s.name}`}
         aria-labelledby={`${id}-tab-${s.name}`}
@@ -52,6 +55,10 @@ const id = `code-${createHash('sha256').update(JSON.stringify(samples)).digest('
   </div>
 )}
 
+<!-- The server writes the first tab selected, so the code reads without JavaScript; the Nib tabs
+     controller takes over from there. -->
 <script>
-  import '../scripts/code-tabs.ts';
+  import '@nib-ui/js/tabs';
+  import { init } from '@nib-ui/js';
+  init();
 </script>

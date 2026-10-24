@@ -1,0 +1,38 @@
+---
+import FixtureLayout from '../../../layouts/fixture-layout.astro';
+---
+
+<FixtureLayout title="Tabs · vanilla fixture">
+  <div id="mount"></div>
+</FixtureLayout>
+
+<script>
+  import { tabsApg } from '@nib-ui/core/tabs/apg';
+  import type { TabsOptions } from '@nib-ui/core/tabs';
+  import '@nib-ui/js/tabs';
+  import { init } from '@nib-ui/js';
+  import { caseOptions } from '../../../fixtures/apg-case.ts';
+
+  // The vanilla binding reads its options from markup, so the row is written out as markup.
+  const o = caseOptions(tabsApg) as unknown as TabsOptions & { id: string };
+  const root = Object.assign(document.createElement('div'), { id: o.id, dir: o.dir ?? 'ltr' });
+  root.dataset['nib'] = 'tabs';
+  if (o.defaultValue) root.dataset['value'] = o.defaultValue;
+  if (o.activation === 'manual') root.dataset['manual'] = '';
+  if (o.orientation) root.dataset['orientation'] = o.orientation;
+  const list = Object.assign(document.createElement('div'), { className: 'nib-tabs__list' });
+  list.dataset['nibTablist'] = '';
+  list.setAttribute('aria-label', 'Fixture');
+  root.append(list);
+  for (const item of o.items) {
+    const tab = Object.assign(document.createElement('button'), { className: 'nib-tabs__tab', textContent: item.key });
+    tab.dataset['nibTab'] = item.key;
+    if (item.disabled) tab.dataset['disabled'] = '';
+    list.append(tab);
+    const panel = Object.assign(document.createElement('div'), { className: 'nib-tabs__panel', textContent: item.key });
+    panel.dataset['nibPanel'] = item.key;
+    root.append(panel);
+  }
+  document.getElementById('mount')?.append(root);
+  init();
+</script>

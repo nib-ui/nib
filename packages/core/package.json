@@ -40,6 +40,16 @@
       "@nib-ui/source": "./src/disclosure/disclosure.apg.ts",
       "types": "./dist/disclosure/disclosure.apg.d.ts",
       "default": "./dist/disclosure/disclosure.apg.js"
+    },
+    "./tabs": {
+      "@nib-ui/source": "./src/tabs/index.ts",
+      "types": "./dist/tabs/index.d.ts",
+      "default": "./dist/tabs/index.js"
+    },
+    "./tabs/apg": {
+      "@nib-ui/source": "./src/tabs/tabs.apg.ts",
+      "types": "./dist/tabs/tabs.apg.d.ts",
+      "default": "./dist/tabs/tabs.apg.js"
     }
   },
   "files": [
