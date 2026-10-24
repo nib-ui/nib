@@ -12,7 +12,7 @@
     ],
     "targets": {
       "build": {
-        "command": "astro build",
+        "command": "astro build && node scripts/copy-playground.ts",
         "options": {
           "cwd": "{projectRoot}"
         },
@@ -80,7 +80,10 @@
           "{projectRoot}/playwright-report"
         ]
       }
-    }
+    },
+    "implicitDependencies": [
+      "@nib-ui/playground"
+    ]
   },
   "scripts": {
     "dev": "astro dev",

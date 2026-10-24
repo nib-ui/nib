@@ -339,7 +339,23 @@ importers:
         specifier: 1.64.1
         version: 1.64.1
 
-  apps/playground: {}
+  apps/playground:
+    dependencies:
+      '@nib-ui/color-engine':
+        specifier: workspace:*
+        version: link:../../tools/color-engine
+      '@nib-ui/css':
+        specifier: workspace:*
+        version: link:../../packages/css
+      '@nib-ui/fonts':
+        specifier: workspace:*
+        version: link:../../packages/fonts
+      '@nib-ui/js':
+        specifier: workspace:*
+        version: link:../../packages/js
+      '@nib-ui/tokens':
+        specifier: workspace:*
+        version: link:../../packages/tokens
 
   packages/cli: {}
 

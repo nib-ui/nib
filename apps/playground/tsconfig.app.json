@@ -1,0 +1,30 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "lib": ["es2024", "dom", "dom.iterable"],
+    "types": ["vite/client"],
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"],
+  "references": [
+    {
+      "path": "../../packages/tokens/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/js/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/fonts"
+    },
+    {
+      "path": "../../packages/css"
+    },
+    {
+      "path": "../../tools/color-engine/tsconfig.lib.json"
+    }
+  ]
+}
