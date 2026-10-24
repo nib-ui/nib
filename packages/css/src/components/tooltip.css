@@ -1,0 +1,24 @@
+/* Tooltip: a short line on the overlay surface with a 1px line, mono meta text, at most 32
+   characters wide, no shadow and no arrow. The controller writes its place as --nib-x / --nib-y
+   (viewport pixels); it stays unseen until placed. */
+@layer nib.components {
+  .nib-tooltip {
+    position: fixed;
+    z-index: 2;
+    top: var(--nib-y, 0);
+    /* stylelint-disable-next-line nib/no-physical-direction -- physical viewport pixels from place() */
+    left: var(--nib-x, 0);
+    box-sizing: border-box;
+    max-inline-size: min(32ch, var(--nib-max-width, 32ch));
+    padding: var(--nib-space-xs) var(--nib-space-sm);
+    border: var(--nib-space-hairline) solid var(--nib-line);
+    background: var(--nib-surface-overlay);
+    color: var(--nib-on-surface);
+    font: var(--nib-meta-sm-font-weight) var(--nib-meta-sm-font-size) / var(--nib-meta-sm-line-height)
+      var(--nib-font-mono);
+  }
+
+  .nib-tooltip:not([data-side]) {
+    visibility: hidden;
+  }
+}

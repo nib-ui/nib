@@ -45,6 +45,11 @@
       "@nib-ui/source": "./src/popover.ts",
       "types": "./dist/popover.d.ts",
       "default": "./dist/popover.js"
+    },
+    "./tooltip": {
+      "@nib-ui/source": "./src/tooltip.ts",
+      "types": "./dist/tooltip.d.ts",
+      "default": "./dist/tooltip.js"
     }
   },
   "files": [
@@ -90,7 +95,9 @@
     "./dist/tabs.js",
     "./src/tabs.ts",
     "./dist/popover.js",
-    "./src/popover.ts"
+    "./src/popover.ts",
+    "./dist/tooltip.js",
+    "./src/tooltip.ts"
   ],
   "dependencies": {
     "@nib-ui/core": "workspace:*",

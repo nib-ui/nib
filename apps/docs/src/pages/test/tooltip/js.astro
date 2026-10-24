@@ -1,0 +1,20 @@
+---
+import FixtureLayout from '../../../layouts/fixture-layout.astro';
+---
+
+<FixtureLayout title="Tooltip · vanilla fixture">
+  <span data-nib="tooltip" id="tt" class="fixture-tooltip">
+    <button type="button" class="nib-button nib-button--outline" data-nib-trigger>
+      Copy
+    </button>
+    <span class="nib-tooltip" data-nib-tooltip>
+      Copies the order id
+    </span>
+  </span>
+</FixtureLayout>
+
+<script>
+  import '@nib-ui/js/tooltip';
+  import { init } from '@nib-ui/js';
+  init();
+</script>
