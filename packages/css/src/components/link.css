@@ -1,0 +1,33 @@
+/* Link: ink text with a line-coloured underline 3px below; accent text on hover. An external link
+   may end in ↗ (written in the text, not added by CSS). */
+@layer nib.components {
+  .nib-link {
+    color: var(--nib-on-surface);
+    text-decoration-line: underline;
+    text-decoration-color: var(--nib-line);
+    text-decoration-thickness: var(--nib-space-hairline);
+    text-underline-offset: 3px;
+    transition: color var(--nib-duration-hover) var(--nib-ease-out);
+  }
+
+  .nib-link:hover {
+    color: var(--nib-accent-text);
+    text-decoration-color: currentColor;
+  }
+
+  .nib-link:focus-visible {
+    outline: var(--nib-space-rule) solid var(--nib-accent);
+    outline-offset: var(--nib-space-rule);
+  }
+
+  .nib-link[aria-current='page'] {
+    text-decoration-color: var(--nib-accent);
+    text-decoration-thickness: var(--nib-space-rule);
+  }
+
+  @media (forced-colors: active) {
+    .nib-link:focus-visible {
+      outline-color: CanvasText;
+    }
+  }
+}

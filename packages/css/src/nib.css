@@ -12,3 +12,7 @@
 @import './components/choice.css';
 @import './components/switch.css';
 @import './components/field.css';
+@import './components/link.css';
+@import './components/tag.css';
+@import './components/callout.css';
+@import './components/code.css';

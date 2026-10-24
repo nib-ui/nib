@@ -1,0 +1,99 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<p>Beans ship the day after roasting. <a class="nib-link" href="#content">Read the roast schedule</a>.</p>
+
+<p class="text-tags">
+  <span class="nib-tag nib-tag--green">New</span>
+  <span class="nib-tag nib-tag--red">Sale</span>
+  <span class="nib-tag">Draft</span>
+  <span class="nib-tag nib-tag--yellow nib-tag--filled">Low stock</span>
+  <span class="nib-tag nib-tag--accent">Live</span>
+</p>
+
+<div class="nib-callout nib-callout--note">
+  <p class="nib-callout__label">Note</p>
+  <p>Grind just before brewing; ground coffee goes flat in a day.</p>
+</div>
+
+<div class="nib-callout nib-callout--error" role="alert">
+  <p class="nib-callout__label">Error</p>
+  <p>The card was declined. Nothing was charged.</p>
+  <div class="nib-callout__actions">
+    <button class="nib-button nib-button--outline" type="button">Try another card</button>
+  </div>
+</div>
+
+<figure class="nib-code">
+  <figcaption class="nib-code__header">
+    install.sh
+    <button class="nib-button nib-button--ghost" data-nib="copy" type="button">Copy</button>
+  </figcaption>
+  <pre tabindex="0"><code><span class="nib-syntax-keyword">pnpm</span> add @nib-ui/css <span class="nib-syntax-string">"@nib-ui/js"</span> <span class="nib-syntax-comment"># ${'-'}-save-exact</span></code></pre>
+</figure>`;
+
+const js = `<script type="module">
+  import '@nib-ui/js/copy';
+  import { init } from '@nib-ui/js';
+  init();
+</script>`;
+---
+
+<ComponentPage
+  title="Text"
+  lead="The inline and block pieces of running text: links, tags, callouts and code blocks with a COPY button."
+  kind="CSS"
+  code={{ html: `${html}\n\n${js}` }}
+>
+  <div slot="example" class="text-example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    <code>nib-link</code> is an ink link with a line-coloured underline; <code>aria-current="page"</code> gives it an
+    accent underline. <code>nib-tag</code> takes a hue modifier (<code>--blue</code> … <code>--red</code>,
+    <code>--accent</code> for current states only) and <code>--filled</code> for status chips. <code>nib-callout</code>
+    takes a tone (<code>--note</code>, <code>--warning</code>, <code>--error</code>, <code>--done</code>,
+    <code>--next</code>) that sets the hue and the glyph before its label.
+  </p>
+  <p>
+    <code>nib-code</code> wraps a <code>pre</code>; colour tokens with <code>nib-syntax-keyword</code>,
+    <code>-string</code>, <code>-number</code>, <code>-identifier</code> and <code>-comment</code> spans. Import
+    <code>@nib-ui/js/copy</code> and a <code>data-nib="copy"</code> button copies the block, reads
+    <code>Copied ✓</code> for two seconds and announces it. <code>data-copied-label</code> and
+    <code>data-failed-label</code> set the words in your language; <code>data-copy-target</code> copies another element
+    by id.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      A tag's hue never carries meaning alone: the word does. Callout glyphs are decoration; the label word is read.
+    </li>
+    <li>
+      Give an error callout <code>role="alert"</code> when it appears after an action, so it is announced; other tones
+      need no role.
+    </li>
+    <li>
+      A scrolling code block needs <code>tabindex="0"</code> so keyboard users can scroll it. COPY announces the result
+      in a polite live region (a failure, assertively); the tick is hidden from screen readers.
+    </li>
+    <li>Link text says where it goes; mark an external link with ↗ in its text.</li>
+  </ul>
+</ComponentPage>
+
+<script>
+  import '@nib-ui/js/copy';
+  import { init } from '@nib-ui/js';
+  init();
+</script>
+
+<style>
+  .text-example > :global(* + *) {
+    margin-block-start: var(--nib-space-lg);
+  }
+
+  .text-example :global(.text-tags) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--nib-space-md);
+  }
+</style>
