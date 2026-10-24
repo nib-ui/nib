@@ -3,24 +3,29 @@
 //
 // <section data-nib="toaster" class="nib-toaster"></section>
 //
-// The region renders its toasts itself; words come from `data-close-label` (default "Close").
+// The region renders its toasts itself; words come from `data-label` (the region's name, default
+// "Notifications") and `data-close-label` (default "Close").
 import { createToaster, type ToastInput } from '@nib-ui/core/toaster';
 import { runIntents } from '@nib-ui/dom';
 import { bind } from './bind.ts';
 import { define } from './registry.ts';
 
-let active: ((toast: ToastInput) => void) | null = null;
+// Every toaster set up, newest last; `toast()` uses the newest one still alive.
+const toasters: ((toast: ToastInput) => void)[] = [];
 
-/** Pushes a toast to the page's toaster; does nothing before one is set up. */
+/** Pushes a toast to the page's toaster; warns when none is set up. */
 export function toast(input: ToastInput): void {
-  active?.(input);
+  const push = toasters.at(-1);
+  if (push) push(input);
+  else console.warn('[nib] toast() before a data-nib="toaster" was set up:', input.title);
 }
 
 define('toaster', (root, { id, host }) => {
   const doc = root.ownerDocument;
   const closeLabel = root.dataset['closeLabel'] ?? 'Close';
   const max = Number(root.dataset['max']) || undefined;
-  const instance = createToaster({ id, ...(max && { max }) }, host);
+  const label = root.dataset['label'];
+  const instance = createToaster({ id, ...(max && { max }), ...(label && { label }) }, host);
   const el = (tag: string, className: string, text?: string) =>
     Object.assign(doc.createElement(tag), { className, ...(text !== undefined && { textContent: text }) });
 
@@ -73,10 +78,10 @@ define('toaster', (root, { id, host }) => {
   // Pushing announces the toast: its intents run here, since no DOM event is involved.
   const push = (input: ToastInput) =>
     void runIntents(instance.send({ type: 'push', toast: input }), { document: doc, clock: host.clock });
-  active = push;
+  toasters.push(push);
   // The render above subscribed first, so bind sees the new toast elements on every change.
   return () => {
-    if (active === push) active = null;
+    toasters.splice(toasters.indexOf(push), 1);
     unbind();
     unsubscribe();
     for (const node of nodes.values()) node.remove();

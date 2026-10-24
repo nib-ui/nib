@@ -90,7 +90,8 @@ export function controller<S, P extends string, O extends BaseOptions, E = never
       };
     },
     send(event) {
-      queue(instance().send(event));
+      // Only to a live controller: one created here would have no subscriber to ever destroy it.
+      if (current) queue(current.instance.send(event));
     },
     update(next) {
       options = { ...options, ...next };

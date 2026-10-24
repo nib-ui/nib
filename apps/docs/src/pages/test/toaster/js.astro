@@ -6,6 +6,9 @@ import FixtureLayout from '../../../layouts/fixture-layout.astro';
   <button type="button" class="nib-button nib-button--outline" id="notify">
     Notify
   </button>
+  <button type="button" class="nib-button nib-button--outline" id="save">
+    Save
+  </button>
   <section data-nib="toaster" class="nib-toaster" id="tr"></section>
 </FixtureLayout>
 
@@ -21,4 +24,5 @@ import FixtureLayout from '../../../layouts/fixture-layout.astro';
       action: { label: 'Undo', onAction: () => undefined },
     }),
   );
+  document.getElementById('save')?.addEventListener('click', () => toast({ title: 'Saved' }));
 </script>

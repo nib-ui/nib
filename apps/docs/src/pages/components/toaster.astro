@@ -81,8 +81,10 @@ const toaster = useToaster();
     One toaster per page (<code>createToaster</code>), near the root; push toasts with <code>toast()</code>(
     <code>title</code>, <code>body</code>, <code>tone</code>: info, success, warning or error, an optional
     <code>action</code> such as UNDO, and <code>duration</code>). It keeps at most three, closes each after five
-    seconds, and waits while the pointer or focus is in it. A toast reports what happened; anything the user must act on
-    belongs in a dialog or on the page.
+    seconds, and waits while the pointer or focus is in it; a toast with an action stays until it is closed. Name the
+    region in the page's language with <code>label</code>. A toast reports what happened; anything the user must act on
+    belongs in a dialog or on the page. The toaster is not in the top layer: while a modal dialog is open, give feedback
+    inside the dialog.
   </p>
   <p>
     For a small deletion that can be taken back (a row, a draft), delete at once and offer UNDO in a toast instead of
@@ -93,8 +95,8 @@ const toaster = useToaster();
     <li>Each toast is announced through a live region (an error assertively); the region is a named landmark.</li>
     <li>Timers wait while the pointer or focus is in the region, so a toast can be read and its buttons reached.</li>
     <li>
-      Use <code>duration: Infinity</code> for a toast whose action matters, and never put the only copy of information
-      in one.
+      A toast with an action (UNDO) stays until closed, so keyboard users can reach the button (WCAG 2.2.1); never put
+      the only copy of information in a toast.
     </li>
   </ul>
 </ComponentPage>

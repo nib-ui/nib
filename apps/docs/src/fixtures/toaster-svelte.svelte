@@ -9,9 +9,11 @@
       tone: 'success',
       action: { label: 'Undo', onAction: () => undefined },
     });
+  const save = () => toaster.toast({ title: 'Saved' });
 </script>
 
 <button type="button" class="nib-button nib-button--outline" onclick={notify}>Notify</button>
+<button type="button" class="nib-button nib-button--outline" onclick={save}>Save</button>
 <section class="nib-toaster" {...$toaster.part('region')}>
   {#each $toaster.state.toasts as t (t.key)}
     <div class="nib-toast" {...$toaster.part('toast', t.key)}>

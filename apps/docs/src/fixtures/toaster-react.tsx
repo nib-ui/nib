@@ -9,10 +9,14 @@ export default function ToasterReact() {
       tone: 'success',
       action: { label: 'Undo', onAction: () => undefined },
     });
+  const save = () => toaster.toast({ title: 'Saved' });
   return (
     <>
       <button type="button" className="nib-button nib-button--outline" onClick={notify}>
         Notify
+      </button>
+      <button type="button" className="nib-button nib-button--outline" onClick={save}>
+        Save
       </button>
       <section className="nib-toaster" {...toaster.part('region')}>
         {toaster.state.toasts.map((t) => (

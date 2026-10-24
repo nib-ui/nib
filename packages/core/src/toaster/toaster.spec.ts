@@ -50,6 +50,46 @@ describe('createToaster', () => {
     expect(toaster.state.toasts.map((x) => x.title)).toEqual(['b', 'c']);
   });
 
+  it('keeps running while focus is in the region even when the pointer leaves, and the other way round', () => {
+    const { t, toaster } = setup({ duration: 1000 });
+    toaster.send({ type: 'push', toast: { title: 'Saved' } });
+    t.fire(toaster.part('region'), 'focusin');
+    t.fire(toaster.part('region'), 'pointerenter');
+    t.fire(toaster.part('region'), 'pointerleave');
+    t.clock.advance(5000);
+    expect(toaster.state.toasts).toHaveLength(1);
+  });
+
+  it('lets the next toast close by itself after the last one was closed from inside the region', () => {
+    const { t, toaster } = setup({ duration: 1000 });
+    toaster.send({ type: 'push', toast: { title: 'Saved' } });
+    t.fire(toaster.part('region'), 'pointerenter');
+    t.fire(toaster.part('close', '1'), 'click');
+    toaster.send({ type: 'push', toast: { title: 'Saved again' } });
+    t.clock.advance(1000);
+    expect(toaster.state.toasts).toEqual([]);
+  });
+
+  it('keeps a toast with an action until it is closed, and closes it even if the action throws', () => {
+    const { t, toaster } = setup({ duration: 1000 });
+    toaster.send({
+      type: 'push',
+      toast: {
+        title: 'Row deleted',
+        action: {
+          label: 'Undo',
+          onAction: () => {
+            throw new Error('x');
+          },
+        },
+      },
+    });
+    t.clock.advance(10_000);
+    expect(toaster.state.toasts).toHaveLength(1);
+    expect(() => t.fire(toaster.part('action', '1'), 'click')).toThrow('x');
+    expect(toaster.state.toasts).toEqual([]);
+  });
+
   it('runs a toast action, then closes it; the close button closes it too', () => {
     const { t, toaster } = setup();
     const onAction = vi.fn();

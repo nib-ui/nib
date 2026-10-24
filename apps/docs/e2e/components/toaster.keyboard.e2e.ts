@@ -17,17 +17,19 @@ for (const binding of ['js', 'react', 'vue', 'svelte']) {
     await expect(region.getByText('Added to cart')).toHaveCount(0);
   });
 
-  test(`toaster · ${binding}: a toast waits while the pointer is on it`, async ({ page }) => {
+  test(`toaster · ${binding}: a toast waits while the pointer is on it; one with an action stays`, async ({ page }) => {
     await page.clock.install();
     await page.goto(`/test/toaster/${binding}/`);
     await page.getByRole('button', { name: 'Notify' }).click();
+    await page.getByRole('button', { name: 'Save' }).click();
     const region = page.getByRole('region', { name: 'Notifications' });
-    await region.getByText('Added to cart').hover();
+    await region.getByText('Saved').hover();
     await page.clock.runFor(8000);
-    await expect(region.getByText('Added to cart')).toBeVisible();
+    await expect(region.getByText('Saved')).toBeVisible();
     await page.mouse.move(5, 5, { steps: 5 });
     await page.clock.runFor(5100);
-    await expect(region.getByText('Added to cart')).toHaveCount(0);
+    await expect(region.getByText('Saved')).toHaveCount(0);
+    await expect(region.getByText('Added to cart')).toBeVisible();
   });
 }
 

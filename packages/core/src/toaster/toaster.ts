@@ -8,9 +8,12 @@ export interface ToastInput {
   title: string;
   body?: string;
   tone?: ToastTone;
-  /** One word button (UNDO); called when pressed, then the toast closes. */
+  /** One word button (UNDO); the toast closes, then this is called. */
   action?: { label: string; onAction: () => void };
-  /** Milliseconds before it closes by itself; Infinity keeps it until closed. */
+  /**
+   * Milliseconds before it closes by itself; Infinity keeps it until closed. A toast with an action
+   * stays by default (WCAG 2.2.1): a keyboard user needs time to reach the button.
+   */
   duration?: number;
 }
 
@@ -28,6 +31,8 @@ export interface ToasterOptions {
   max?: number;
   /** Default milliseconds before a toast closes by itself. */
   duration?: number;
+  /** The region's name, in the page's language. */
+  label?: string;
 }
 
 export interface ToasterState {
@@ -36,15 +41,25 @@ export interface ToasterState {
   paused: boolean;
 }
 
+// The pointer and focus each hold the timers; they run again only when neither does.
+interface Holds {
+  hover: boolean;
+  focus: boolean;
+}
+
 export type ToasterPart = 'region' | 'toast' | 'action' | 'close';
 
 export type ToasterEvent =
-  { type: 'push'; toast: ToastInput } | { type: 'dismiss'; key: string } | { type: 'pause'; on: boolean };
+  | { type: 'push'; toast: ToastInput }
+  | { type: 'dismiss'; key: string }
+  | { type: 'hold'; by: keyof Holds; on: boolean };
 
 /**
  * The one toaster of a page (ADR 12): a region that shows short messages, each announced through a
  * live region (polite; an error assertively), closing by itself after `duration` unless the pointer
- * or focus is in the region. Push one with `send({ type: 'push', toast })`.
+ * or focus is in the region; one with an action stays until closed. Push one with
+ * `send({ type: 'push', toast })`. It is not in the top layer: a toast pushed while a modal dialog is
+ * open waits behind it, so give feedback inside the dialog instead.
  */
 export function createToaster(
   options: ToasterOptions = {},
@@ -53,12 +68,13 @@ export function createToaster(
   let counter = 0;
   const timers = new Map<string, () => void>();
   const actions = new Map<string, () => void>();
+  const holds: Holds = { hover: false, focus: false };
   const stop = (key: string) => {
     timers.get(key)?.();
     timers.delete(key);
   };
   const start = (t: Toast, fallback: number) => {
-    const ms = t.duration ?? fallback;
+    const ms = t.duration ?? (actions.has(t.key) ? Infinity : fallback);
     if (Number.isFinite(ms))
       timers.set(
         t.key,
@@ -99,28 +115,37 @@ export function createToaster(
             if (!state.toasts.some((t) => t.key === event.key)) return { state };
             stop(event.key);
             actions.delete(event.key);
-            return { state: { ...state, toasts: state.toasts.filter((t) => t.key !== event.key) } };
+            const toasts = state.toasts.filter((t) => t.key !== event.key);
+            // The last toast gone: the region empties and hides, and no pointer or focus can stay in
+            // it to hold the next toast's timer.
+            if (toasts.length === 0) {
+              holds.hover = false;
+              holds.focus = false;
+            }
+            return { state: { toasts, paused: holds.hover || holds.focus } };
           }
-          case 'pause': {
-            if (event.on === state.paused) return { state };
-            // Paused timers start over on resume: a reader gets the full time again.
-            if (event.on) for (const key of [...timers.keys()]) stop(key);
+          case 'hold': {
+            holds[event.by] = event.on;
+            const paused = holds.hover || holds.focus;
+            if (paused === state.paused) return { state };
+            // Timers start over on resume: a reader gets the full time again.
+            if (paused) for (const key of [...timers.keys()]) stop(key);
             else for (const t of state.toasts) start(t, fallback);
-            return { state: { ...state, paused: event.on } };
+            return { state: { ...state, paused } };
           }
         }
       },
-      render: ({ state, id }, name, key = '', send): Part => {
+      render: ({ state, options: o, id }, name, key = '', send): Part => {
         const toastId = `${id}-toast-${key}`;
         switch (name) {
           case 'region':
             return {
-              attrs: { id: `${id}-region`, role: 'region', 'aria-label': 'Notifications', tabindex: -1 },
+              attrs: { id: `${id}-region`, role: 'region', 'aria-label': o.label ?? 'Notifications', tabindex: -1 },
               on: {
-                pointerenter: () => send({ type: 'pause', on: true }),
-                pointerleave: () => send({ type: 'pause', on: false }),
-                focusin: () => send({ type: 'pause', on: true }),
-                focusout: () => send({ type: 'pause', on: false }),
+                pointerenter: () => send({ type: 'hold', by: 'hover', on: true }),
+                pointerleave: () => send({ type: 'hold', by: 'hover', on: false }),
+                focusin: () => send({ type: 'hold', by: 'focus', on: true }),
+                focusout: () => send({ type: 'hold', by: 'focus', on: false }),
               },
             };
           case 'toast': {
@@ -132,8 +157,11 @@ export function createToaster(
               attrs: { id: `${toastId}-action`, type: 'button' },
               on: {
                 click: () => {
-                  actions.get(key)?.();
-                  return send({ type: 'dismiss', key });
+                  // Closed first, so an action that throws still closes its toast.
+                  const action = actions.get(key);
+                  const intents = send({ type: 'dismiss', key });
+                  action?.();
+                  return intents;
                 },
               },
             };
