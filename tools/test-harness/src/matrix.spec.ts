@@ -32,6 +32,12 @@ describe('matrix', () => {
 
 describe('budgets', () => {
   it('match the size budgets in the decision log (KB, gzip)', () => {
-    expect(BUDGETS).toEqual({ css: '35 kB', utilities: '10 kB', module: '3 kB', heavyModule: '12 kB' });
+    expect(BUDGETS).toEqual({
+      css: '35 kB',
+      utilities: '10 kB',
+      cssModule: '3 kB',
+      module: '3 kB',
+      heavyModule: '12 kB',
+    });
   });
 });

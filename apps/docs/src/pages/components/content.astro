@@ -1,6 +1,19 @@
 ---
 import ComponentPage from '../../layouts/component-page.astro';
 
+const hero = `<div class="nib-hero">
+  <div class="nib-hero__text">
+    <p class="nib-kicker">New · Spring 2026</p>
+    <h2 class="nib-text-hero">Coffee roasted the week you order it</h2>
+    <p class="nib-text-lead">Small batches from six farms, shipped the day after roasting.</p>
+    <div class="nib-hero__actions">
+      <a class="nib-button nib-button--primary" href="#content">Shop coffee</a>
+      <a class="nib-button nib-button--outline" href="#content">How we roast</a>
+    </div>
+  </div>
+  <figure class="nib-hero__visual"><span class="content-photo" role="img" aria-label="Roaster at work"></span></figure>
+</div>`;
+
 const tiles = `<section class="nib-section" aria-labelledby="c-shop">
   <header class="nib-section__header">
     <p class="nib-kicker">Shop</p>
@@ -29,15 +42,16 @@ const tiles = `<section class="nib-section" aria-labelledby="c-shop">
   </div>
 </section>`;
 
-const rows = `<div role="listbox" aria-label="Orders" tabindex="0">
-  <div class="nib-row" role="option" aria-selected="true">
+const rows = `<p class="nib-kicker" id="c-orders">Orders</p>
+<div data-nib="listbox" aria-labelledby="c-orders" data-value="1042">
+  <div class="nib-row" data-nib-option="1042">
     <span class="nib-row__id">#1042</span> Kenya Nyeri ×2 <span class="nib-row__meta">2 min ago</span>
     <span class="nib-row__end nib-tag">Paid</span>
   </div>
-  <div class="nib-row nib-row--new nib-hue-green" role="option" aria-selected="false">
+  <div class="nib-row nib-row--new nib-hue-green" data-nib-option="1043">
     <span class="nib-row__id">#1043</span> Decaf ×1 <span class="nib-row__end nib-tag nib-tag--green">New</span>
   </div>
-  <div class="nib-row nib-row--flagged nib-hue-yellow" role="option" aria-selected="false">
+  <div class="nib-row nib-row--flagged nib-hue-yellow" data-nib-option="0991">
     <span class="nib-row__id">#0991</span> Ethiopia ×3 <span class="nib-row__end nib-tag nib-tag--yellow">▲ Stale</span>
     <span class="nib-row__detail">unpaid for 14 days</span>
   </div>
@@ -47,22 +61,22 @@ const rows = `<div role="listbox" aria-label="Orders" tabindex="0">
 const dashboard = `<div class="nib-grid" style="--nib-grid-min: 12rem">
   <div class="nib-pane nib-hue-blue">
     <div class="nib-pane-header">
-      <span class="nib-pane__title"><span class="nib-mark"></span>Orders</span>
-      <span class="nib-pane__count">today</span>
+      <span class="nib-pane__title"><span class="nib-mark"></span>Orders <span class="nib-pane__count">128</span></span>
+      <span>Live</span>
     </div>
     <div class="nib-pane__body">
       <p class="nib-stat"><span class="nib-stat__label">Orders</span><span class="nib-stat__value">128</span>
-      <span class="nib-stat__delta" data-trend="up">12% vs last week</span></p>
+      <span class="nib-stat__delta" data-trend="up">+12% vs last week</span></p>
     </div>
   </div>
   <div class="nib-pane nib-pane--changed nib-hue-yellow">
     <div class="nib-pane-header">
-      <span class="nib-pane__title"><span class="nib-mark"></span>Stock</span>
+      <span class="nib-pane__title"><span class="nib-mark"></span>Stock <span class="nib-pane__count">41</span></span>
       <span>Changed</span>
     </div>
     <div class="nib-pane__body">
       <p class="nib-stat"><span class="nib-stat__label">Bags left</span><span class="nib-stat__value">41</span>
-      <span class="nib-stat__delta" data-trend="down">9 since noon</span></p>
+      <span class="nib-stat__delta" data-trend="down">−9 since noon</span></p>
     </div>
   </div>
 </div>`;
@@ -80,7 +94,7 @@ const table = `<div class="nib-bulk-bar" role="status">1 selected · <button cla
   </table>
 </div>`;
 
-const html = [tiles, rows, dashboard, table].join('\n\n');
+const html = [hero, tiles, rows, dashboard, table].join('\n\n');
 ---
 
 <ComponentPage
@@ -117,18 +131,33 @@ const html = [tiles, rows, dashboard, table].join('\n\n');
     <li>
       Wide tables scroll in a focusable region with a name; sort direction comes from <code>aria-sort</code>.
     </li>
-    <li>A tile that is a link has one accessible name (its title); keep buttons out of link tiles.</li>
+    <li>
+      A tile that is a link reads all its text as one name; keep it short, and keep buttons and other links out of link
+      tiles.
+    </li>
   </ul>
 </ComponentPage>
+
+<script>
+  import '@nib-ui/js/listbox';
+  import { init } from '@nib-ui/js';
+  init();
+</script>
 
 <style>
   .content-example > :global(* + *) {
     margin-block-start: var(--nib-space-2xl);
   }
 
+  .content-example :global(.nib-hero),
   .content-example :global(.nib-section) {
-    padding-block: 0;
-    border: 0;
+    padding-block: var(--nib-space-2xl);
+  }
+
+  .content-example :global(.content-photo) {
+    display: block;
+    aspect-ratio: 4 / 3;
+    background: var(--nib-surface-raised);
   }
 
   .content-example :global(.nib-tile__media) {

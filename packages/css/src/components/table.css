@@ -1,6 +1,6 @@
 /* Static table: mono header row in label (on-surface 3) with a 1px line under it, 1px line-soft
    between rows, item type in cells, numbers end-aligned and tabular (data-type="number"). Hovered
-   rows get the hover fill. Chosen row (aria-selected="true") is the cursor block; checked rows
+   rows get the hover fill. Chosen row (aria-selected="true", valid inside role="grid") is the cursor block; checked rows
    (a checked [x] inside) get the hover fill, never a block. Sorted headers show ↑ / ↓ from
    aria-sort. No zebra stripes, no outer box. The bulk action bar sits above a table with checked rows. */
 @layer nib.components {
@@ -11,7 +11,7 @@
       var(--nib-font-mono);
   }
 
-  .nib-table th {
+  .nib-table thead th {
     padding: var(--nib-space-xs-plus) var(--nib-space-sm-plus);
     border-block-end: var(--nib-space-hairline) solid var(--nib-line);
     color: var(--nib-on-surface-3);
@@ -42,7 +42,7 @@
   }
 
   .nib-table tbody tr:hover,
-  .nib-table tbody tr:has(input[type='checkbox']:checked) {
+  .nib-table tbody tr:where(:has(input[type='checkbox']:checked)) {
     background: var(--nib-hover);
   }
 
@@ -55,9 +55,12 @@
     color: var(--nib-on-cursor);
   }
 
-  /* Inside the cursor block every word takes the inverted ink, tags included. */
-  .nib-table tbody tr[aria-selected='true'] .nib-tag {
+  /* Inside the cursor block every word takes the inverted ink, tags and glyphs included. */
+  .nib-table tbody tr[aria-selected='true'] :is(th, td, .nib-tag, .nib-choice),
+  .nib-table tbody tr[aria-selected='true'] .nib-choice::before {
     --nib-tag-hue: currentColor;
+
+    color: inherit;
   }
 
   /* A wide table scrolls inside its own region, which takes focus so keyboards can scroll it. */

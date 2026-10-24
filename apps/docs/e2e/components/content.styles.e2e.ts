@@ -22,12 +22,13 @@ test.describe('content', () => {
     const plan = page.locator('.nib-tile--recommended');
     await expect(plan).toHaveCSS('border-top-width', '2px');
     await expect(plan).toHaveCSS('border-top-color', ACCENT);
-    const other = await page.locator('.nib-tile').first().boundingBox();
-    expect((await plan.boundingBox())?.height).toBe(other?.height);
+    // The rule's two pixels come out of the padding, so the content starts where the others' does.
+    await expect(plan).toHaveCSS('padding-top', '14px');
   });
 
   test('a chosen row is the cursor block; flagged and new rows tint with a word', async ({ page }) => {
     const chosen = page.getByRole('option', { selected: true });
+    await expect(chosen).toContainText('#1042');
     await expect(chosen).toHaveCSS('background-color', INK);
     await expect(chosen.locator('.nib-row__meta')).toHaveCSS('color', 'rgb(250, 249, 245)');
     const flagged = page.locator('.nib-row--flagged');
@@ -43,6 +44,38 @@ test.describe('content', () => {
     await expect(page.locator('.nib-stat__value').first()).toHaveCSS('font-variant-numeric', 'tabular-nums');
     const up = page.locator('[data-trend="up"]');
     expect(await up.evaluate((el) => getComputedStyle(el, '::before').content)).toMatch(/^"▲ " \/ ""$/);
+  });
+
+  test('a chosen row that is also checked stays the cursor block, its [x] in the inverted ink', async ({ page }) => {
+    await page.evaluate(() => {
+      const row = document.querySelector('.nib-row[aria-selected="true"]');
+      row?.insertAdjacentHTML(
+        'afterbegin',
+        '<label class="nib-choice"><input type="checkbox" checked aria-label="x" /></label>',
+      );
+    });
+    const chosen = page.locator('.nib-row[aria-selected="true"]');
+    await expect(chosen).toHaveCSS('background-color', INK);
+    expect(await chosen.locator('.nib-choice').evaluate((el) => getComputedStyle(el, '::before').color)).toBe(
+      'rgb(250, 249, 245)',
+    );
+  });
+
+  test('a pane keeps room for the changed rule, so a change does not shift it', async ({ page }) => {
+    const [still, changed] = [page.locator('.nib-pane').first(), page.locator('.nib-pane--changed')];
+    await expect(still).toHaveCSS('border-top-width', '2px');
+    const [a, b] = [
+      await still.locator('.nib-pane-header').boundingBox(),
+      await changed.locator('.nib-pane-header').boundingBox(),
+    ];
+    expect(a?.y).toBe(b?.y);
+  });
+
+  test('the hero is left-aligned with one primary and one outline action', async ({ page }) => {
+    const hero = page.locator('.nib-hero');
+    await expect(hero.locator('.nib-text-hero')).toHaveCSS('text-align', 'start');
+    await expect(hero.locator('.nib-button--primary')).toHaveCount(1);
+    await expect(hero.locator('.nib-button--outline')).toHaveCount(1);
   });
 
   test('the table: mono header, numbers end-aligned, checked rows tinted, sort arrow', async ({ page }) => {

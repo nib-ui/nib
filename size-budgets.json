@@ -1,7 +1,8 @@
 {
-  "$comment": "Size budgets that fail CI when exceeded, gzipped. JS: size-limit with esbuild (entry bundled, minified). CSS: scripts/css-size.ts on the built files, which esbuild cannot measure. css: all of @nib-ui/css (tokens, base, components); utilities: the opt-in utilities file; module: one JS module (a controller or a binding entry); heavyModule: combobox, date picker, data grid.",
+  "$comment": "Size budgets that fail CI when exceeded, gzipped. JS: size-limit with esbuild (entry bundled, minified). CSS: scripts/css-size.ts on the built files, which esbuild cannot measure. css: all of @nib-ui/css (tokens, base, components); utilities: the opt-in utilities file; cssModule: one component stylesheet built on its own; module: one JS module (a controller or a binding entry); heavyModule: combobox, date picker, data grid.",
   "css": "35 kB",
   "utilities": "10 kB",
+  "cssModule": "3 kB",
   "module": "3 kB",
   "heavyModule": "12 kB"
 }

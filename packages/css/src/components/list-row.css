@@ -43,14 +43,15 @@
     color: var(--nib-on-surface-2);
   }
 
-  .nib-row:has(input[type='checkbox']:checked),
-  .nib-row[aria-checked='true'] {
+  /* Checked (multi select) at zero extra weight, so a modifier's tint and the chosen block win. */
+  .nib-row:where(:has(input[type='checkbox']:checked), [aria-checked='true']) {
     background: var(--nib-hover);
   }
 
-  .nib-row--ruled {
-    padding-inline-start: calc(var(--nib-space-sm-plus) - var(--nib-space-hairline));
-    border-inline-start: var(--nib-space-rule) solid var(--nib-hue, var(--nib-on-surface-3));
+  .nib-row--ghost {
+    border: var(--nib-space-hairline) dashed var(--nib-line);
+    background: transparent;
+    color: var(--nib-on-surface-3);
   }
 
   .nib-row--new {
@@ -63,10 +64,15 @@
     background: var(--nib-hue-soft, var(--nib-hover));
   }
 
-  .nib-row--ghost {
-    border: var(--nib-space-hairline) dashed var(--nib-line);
-    background: transparent;
-    color: var(--nib-on-surface-3);
+  /* On a tint, on-surface 3 drops under 4.5:1: secondary words go a step up. */
+  :is(.nib-row--new, .nib-row--flagged) .nib-row__meta {
+    color: var(--nib-on-surface-2);
+  }
+
+  /* Last of the modifiers, so a ruled row that is also new or flagged keeps its full-hue rule. */
+  .nib-row--ruled {
+    padding-inline-start: calc(var(--nib-space-sm-plus) - var(--nib-space-hairline));
+    border-inline-start: var(--nib-space-rule) solid var(--nib-hue, var(--nib-on-surface-3));
   }
 
   /* Chosen: the cursor block; every part takes the inverted ink. */
@@ -76,7 +82,8 @@
     color: var(--nib-on-cursor);
   }
 
-  .nib-row[aria-selected='true'] :is(.nib-row__meta, .nib-row__detail, .nib-tag) {
+  .nib-row[aria-selected='true'] :is(.nib-row__meta, .nib-row__detail, .nib-tag, .nib-choice),
+  .nib-row[aria-selected='true'] .nib-choice::before {
     --nib-tag-hue: currentColor;
 
     color: inherit;

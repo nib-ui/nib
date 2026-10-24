@@ -1,11 +1,14 @@
 /* Pane and stat, for dashboards. A pane is a ruled cell under a 38px header (base nib-pane-header):
    8×8 mark · mono title · count in meta · state word on the end. `--changed` tints the pane in its
    hue with a 2px top rule; pair it with a CHANGED label. A stat is a mono label, a headline-xl
-   tabular number and a meta delta, ▲ green or ▼ red. */
+   tabular number and a meta delta, ▲ green or ▼ red; the glyph is decoration, so the delta's
+   words must carry the direction (+12%, −9). */
 @layer nib.components {
+  /* The top rule's room is kept on every pane, so a pane that changes does not shift its content. */
   .nib-pane {
     display: flex;
     flex-direction: column;
+    border-block-start: var(--nib-space-rule) solid transparent;
   }
 
   .nib-pane__title {
@@ -27,8 +30,13 @@
   }
 
   .nib-pane--changed {
-    border-block-start: var(--nib-space-rule) solid var(--nib-hue, var(--nib-accent));
+    border-block-start-color: var(--nib-hue, var(--nib-accent));
     background: var(--nib-hue-soft, var(--nib-hover));
+  }
+
+  /* On the tint, on-surface 3 drops under 4.5:1 (yellow, dark theme): secondary words go a step up. */
+  .nib-pane--changed :is(.nib-pane__count, .nib-stat__delta:not([data-trend])) {
+    color: var(--nib-on-surface-2);
   }
 
   .nib-stat {
@@ -76,6 +84,10 @@
   }
 
   @media (forced-colors: active) {
+    .nib-pane {
+      border-block-start-color: Canvas;
+    }
+
     .nib-pane--changed {
       border-block-start-color: CanvasText;
     }

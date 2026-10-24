@@ -5,6 +5,8 @@ interface Budgets {
   css: string;
   /** The opt-in utilities file. */
   utilities: string;
+  /** One component stylesheet built on its own. */
+  cssModule: string;
   /** One JS module: a controller or a binding entry. */
   module: string;
   /** Combobox, date picker and data grid. */
