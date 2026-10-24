@@ -17,6 +17,9 @@
       "path": "../../packages/js"
     },
     {
+      "path": "../../packages/icons"
+    },
+    {
       "path": "../../packages/fonts"
     },
     {

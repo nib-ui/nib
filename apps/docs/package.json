@@ -91,6 +91,7 @@
     "@nib-ui/core": "workspace:*",
     "@nib-ui/css": "workspace:*",
     "@nib-ui/fonts": "workspace:*",
+    "@nib-ui/icons": "workspace:*",
     "@nib-ui/js": "workspace:*",
     "@nib-ui/react": "workspace:*",
     "@nib-ui/svelte": "workspace:*",

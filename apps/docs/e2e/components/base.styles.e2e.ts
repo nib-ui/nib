@@ -61,6 +61,17 @@ test.describe('base', () => {
     await expect(grid.locator('> *').first()).toHaveCSS('outline-style', 'none');
   });
 
+  test('in a short last row the last cell runs to the end, so no ground shows', async ({ page }) => {
+    await page.evaluate(() => {
+      const grid = document.querySelector('.nib-grid');
+      grid?.append(grid.firstElementChild?.cloneNode(true) as Node);
+    });
+    const grid = await page.locator('.nib-grid').first().boundingBox();
+    const last = await page.locator('.nib-grid > :last-child').first().boundingBox();
+    // The ground's 1px padding is all that is left on the end side.
+    expect(Math.round((grid?.x ?? 0) + (grid?.width ?? 0) - ((last?.x ?? 0) + (last?.width ?? 0)))).toBe(1);
+  });
+
   test('the side column sits beside the main column, and wraps above it when space runs out', async ({ page }) => {
     const side = page.locator('.nib-with-side > *').first();
     const main = page.locator('.nib-with-side__main').first();
