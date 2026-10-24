@@ -1,7 +1,7 @@
-import { relative, resolve } from 'node:path';
+import { resolve } from 'node:path';
 import nibConfig from '@nib-ui/stylelint-plugin/config';
 import stylelint from 'stylelint';
-import { classNames, position } from './class-names.ts';
+import { classNames, positions } from './class-names.ts';
 import { classProblem } from './class-rules.ts';
 import { readConfig, readText, type Io } from './io.ts';
 import { lintFiles } from './lint-files.ts';
@@ -15,43 +15,48 @@ export interface Mark {
   message: string;
 }
 
-/** Stylesheets through Nib's Stylelint rules; the theme file may set colours, so it skips `nib/color-tokens`. */
-async function cssMarks(io: Io, files: readonly string[], theme: string | undefined): Promise<Mark[]> {
-  if (!files.length) return [];
+// The theme file is where colours are set, so it alone skips `nib/color-tokens`.
+const THEME_CONFIG = { ...nibConfig, rules: { ...nibConfig.rules, 'nib/color-tokens': null } };
+
+/**
+ * One stylesheet through Nib's Stylelint rules, passed as text: no globbing of its path, and
+ * neither the project's Stylelint config, its ignore files nor its disable comments apply.
+ */
+async function cssMarks(io: Io, file: string, text: string, isTheme: boolean): Promise<Mark[]> {
   const { results } = await stylelint.lint({
-    files: files.map((f) => resolve(io.cwd, f)),
-    cwd: io.cwd,
-    config: {
-      ...nibConfig,
-      ...(theme && { overrides: [{ files: [resolve(io.cwd, theme)], rules: { 'nib/color-tokens': null } }] }),
-    },
-    // Only Nib's laws: a project's own Stylelint config and its disable comments do not apply.
+    code: text,
+    codeFilename: resolve(io.cwd, file),
+    config: isTheme ? THEME_CONFIG : nibConfig,
     configBasedir: io.cwd,
+    ignorePath: [],
     ignoreDisables: true,
   });
-  return results.flatMap((r) =>
-    r.warnings.map((w) => ({
-      file: relative(io.cwd, r.source ?? ''),
+  return results.flatMap((r) => [
+    ...r.warnings.map((w) => ({
+      file,
       line: w.line,
       column: w.column,
       rule: w.rule,
       // Stylelint ends each message with the rule name in brackets; it is printed apart.
       message: w.text.replace(/\s*\([^)]*\)$/, ''),
     })),
-  );
+    ...r.parseErrors.map((w) => ({ file, line: w.line ?? 1, column: w.column ?? 1, rule: 'css', message: w.text })),
+  ]);
 }
 
 /** Class names in markup that break a law (Tailwind's arbitrary values bypass the tokens). */
-async function markupMarks(io: Io, files: readonly string[]): Promise<Mark[]> {
-  const marks: Mark[] = [];
-  for (const file of files) {
-    const text = (await readText(io, file)) ?? '';
-    for (const { name, offset } of classNames(text)) {
-      const problem = classProblem(name);
-      if (problem) marks.push({ file, ...position(text, offset), ...problem });
-    }
-  }
-  return marks;
+function markupMarks(file: string, text: string): Mark[] {
+  const at = positions(text);
+  return classNames(text).flatMap(({ name, offset }) => {
+    const problem = classProblem(name);
+    return problem ? [{ file, ...at(offset), ...problem }] : [];
+  });
+}
+
+/** A mark on a line holding `nib-lint-ignore`, or right below one, is waived. */
+function waived(text: string, line: number): boolean {
+  const lines = text.split('\n', line);
+  return [lines[line - 1], lines[line - 2]].some((l) => l?.includes('nib-lint-ignore'));
 }
 
 /**
@@ -62,9 +67,19 @@ async function markupMarks(io: Io, files: readonly string[]): Promise<Mark[]> {
 export async function lint(paths: readonly string[], io: Io): Promise<number> {
   const config = await readConfig(io);
   const files = await lintFiles(io.cwd, paths);
+  const theme = config.theme && resolve(io.cwd, config.theme);
   const total = files.css.length + files.markup.length;
   io.out(`Setting type: ${total} file${total === 1 ? '' : 's'}…`);
-  const marks = [...(await cssMarks(io, files.css, config.theme)), ...(await markupMarks(io, files.markup))];
+  const marks: Mark[] = [];
+  for (const [kind, list] of [['css', files.css] as const, ['markup', files.markup] as const]) {
+    for (const file of list) {
+      const text = (await readText(io, file)) ?? '';
+      const found =
+        kind === 'css' ? await cssMarks(io, file, text, resolve(io.cwd, file) === theme) : markupMarks(file, text);
+      marks.push(...found.filter((m) => !waived(text, m.line)));
+    }
+  }
+  marks.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line || a.column - b.column);
   for (const m of marks) io.err(`${m.file}:${m.line}:${m.column}  ${m.rule}  ${m.message}`);
   if (!marks.length) {
     io.out('Locked up: no proof marks.');

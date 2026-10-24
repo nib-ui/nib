@@ -84,6 +84,17 @@ describe('nib lint', () => {
     expect(run.out).toContain('Not locked up: 4 proof marks in 2 files.');
   });
 
+  it("ignores the project's .stylelintignore, and waives a line marked nib-lint-ignore", async () => {
+    const run = await nib(['lint'], {
+      '.stylelintignore': '*.css',
+      'a.css': '.a { border-radius: 2px; }',
+      'b.html': '<!-- nib-lint-ignore: a vendor widget -->\n<div class="rounded-lg"></div>',
+    });
+    expect(run.code).toBe(1);
+    expect(run.err).toMatch(/^a\.css:1:\d+ {2}nib\/no-radius/);
+    expect(run.err).not.toContain('b.html');
+  });
+
   it("lets the config's theme file set colours, and only that file", async () => {
     const run = await nib(['lint', 'src'], {
       'nib.config.json': JSON.stringify({ theme: 'src/theme.css' }),

@@ -11,8 +11,13 @@ const PALETTE =
 const COLOR_UTILITY =
   'bg|text|border(?:-[xytblrse])?|ring|ring-offset|outline|fill|stroke|from|via|to|divide|placeholder|caret|accent|decoration|shadow|inset-shadow|drop-shadow|text-shadow';
 const OFF_TOKEN = new RegExp(`^(?:${COLOR_UTILITY})-(?:(?:${PALETTE})-\\d{2,3}|black|white)(?:/[\\w.]+)?$`);
-// An arbitrary value holding a colour: `bg-[#f00]`, `text-[rgb(0_0_0)]`, `border-[color:red]`.
+// An arbitrary value holding a colour: `bg-[#f00]`, `text-[rgb(0_0_0)]`, `border-[color:red]`,
+// or a named colour on a colour utility (`text-[red]`); `transparent` and `currentColor` are fine.
 const ARBITRARY_COLOR = /-\[(?:color:)?(?:#[0-9a-f]{3,8}|(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\(.*)\]$/i;
+const NAMED_COLOR = new RegExp(
+  `^(?:${COLOR_UTILITY})-\\[(?:color:)?(?!transparent\\]|currentcolor\\]|inherit\\])[a-z]+\\]$`,
+  'i',
+);
 
 /** Utility stems of each law; `<stem>-none` (and `-0` for radius) keeps to the law. */
 const LAWS: { rule: string; stem: RegExp; law: string }[] = [
@@ -49,7 +54,7 @@ export function classProblem(name: string): ClassProblem | null {
     // A shadow's colour (`shadow-nib-line`) still draws a shadow; only `-none` is allowed.
     return { rule, message: `${name}: ${law}.` };
   }
-  if (OFF_TOKEN.test(utility) || ARBITRARY_COLOR.test(utility))
+  if (OFF_TOKEN.test(utility) || ARBITRARY_COLOR.test(utility) || NAMED_COLOR.test(utility))
     return { rule: 'nib/color-tokens', message: `${name}: colours come from the tokens (nib-*).` };
   return null;
 }

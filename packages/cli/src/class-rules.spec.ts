@@ -26,6 +26,8 @@ describe('classProblem', () => {
     expect(rule('border-x-white')).toBe('nib/color-tokens');
     expect(rule('text-[#ff0000]')).toBe('nib/color-tokens');
     expect(rule('bg-[oklch(60%_0.1_170)]')).toBe('nib/color-tokens');
+    expect(rule('text-[red]')).toBe('nib/color-tokens');
+    expect(rule('bg-[transparent]')).toBeNull();
     for (const name of ['text-nib-red', 'bg-nib-accent', 'text-sm', 'border-2', 'w-[120px]', 'p-4'])
       expect(rule(name)).toBeNull();
   });

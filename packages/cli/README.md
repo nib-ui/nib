@@ -60,4 +60,13 @@ src/card.vue:2:19  nib/no-shadow  shadow-lg: nothing casts a shadow.
 Not locked up: 1 proof mark in 1 file.
 ```
 
+Class names are found in class attributes (`:class`, `class:list` and `class:name` directives too),
+in JSX expressions and template literals, and in the strings passed to class helpers; strings that
+read as sentences are skipped. A line holding `nib-lint-ignore`, or the line below one, is waived:
+
+```html
+<!-- nib-lint-ignore: the vendor's widget draws its own corners -->
+<div class="rounded-lg"></div>
+```
+
 Placement rules (where the primary button goes) are not checkable; the docs model them.
