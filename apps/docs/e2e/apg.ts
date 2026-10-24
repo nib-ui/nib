@@ -1,6 +1,10 @@
 import type { ConformanceCase } from '@nib-ui/core/testing';
 import type { Page } from '@playwright/test';
 
+// Boolean HTML attributes: frameworks write them as present-and-empty, the DOM binding as "true";
+// only their presence counts.
+const BOOLEAN = new Set(['hidden', 'disabled', 'inert', 'open']);
+
 // The element of a part, by the id convention every controller follows: `<id>-<part>[-<key>]`.
 const selector = (id: string, part: string, key?: string) =>
   `[id="${id}-${part}${key === undefined ? '' : `-${key}`}"]`;
@@ -26,7 +30,7 @@ export async function runApgCase(page: Page, row: ConformanceCase): Promise<stri
     const el = page.locator(selector(id, expected.part, expected.key));
     for (const [name, want] of Object.entries(expected.attrs)) {
       const got = await el.getAttribute(name);
-      const ok = want === null ? got === null : got === String(want);
+      const ok = want === null ? got === null : BOOLEAN.has(name) ? got !== null : got === String(want);
       if (!ok)
         failures.push(
           `${expected.part}${expected.key ? `[${expected.key}]` : ''} ${name}: expected ${want}, got ${got}`,

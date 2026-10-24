@@ -127,32 +127,12 @@
   }
 
   .docs-tablist {
-    display: flex;
-    gap: var(--nib-space-sm);
-    padding-inline: var(--nib-space-sm);
-    border-block-end: 1px solid var(--nib-line);
-  }
-
-  .docs-tab {
-    min-block-size: var(--nib-space-touch-target);
-    min-inline-size: var(--nib-space-touch-target);
-    padding: 0 var(--nib-space-xs);
-    border: 0;
-    border-block-end: 2px solid transparent;
-    background: none;
-    color: var(--nib-on-surface-2);
-    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
-      var(--nib-font-mono);
-    cursor: pointer;
-  }
-
-  .docs-tab[aria-selected='true'] {
-    border-block-end-color: var(--nib-accent);
-    color: var(--nib-on-surface);
+    padding-inline: var(--nib-space-md);
   }
 
   /* The panel scrolls, not the <pre>: the panel is focusable, so keyboard users can scroll it. */
   .docs-tabpanel {
+    padding: 0;
     overflow-x: auto;
     background: var(--nib-surface-raised);
   }
@@ -161,11 +141,5 @@
     inline-size: max-content;
     margin: 0;
     padding: var(--nib-space-md);
-  }
-
-  @media (forced-colors: active) {
-    .docs-tab[aria-selected='true'] {
-      border-block-end-color: CanvasText;
-    }
   }
 }

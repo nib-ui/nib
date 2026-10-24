@@ -40,7 +40,7 @@ test.describe('docs shell', () => {
     await page.goto(TEMPLATE);
     await expect(page.getByRole('region', { name: 'Example' })).toBeVisible();
     const tabs = page.getByRole('tablist', { name: 'Code' }).getByRole('tab');
-    await expect(tabs).toHaveText(['HTML', 'REACT', 'VUE', 'SVELTE']);
+    await expect(tabs).toHaveText(['HTML', 'React', 'Vue', 'Svelte']);
     await tabs.first().focus();
     await page.keyboard.press('ArrowRight');
     await expect(tabs.nth(1)).toBeFocused();

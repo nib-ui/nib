@@ -1,0 +1,97 @@
+/* Tabs: mono label tabs on a 1px line; the selected one is on-surface with a 2px accent underline
+   (an inset border, so nothing shifts), the others on-surface 2. Vertical tabs carry the rule on
+   their inline-start edge instead. States come from aria-selected and aria-disabled. */
+@layer nib.components {
+  .nib-tabs__list {
+    display: flex;
+    gap: var(--nib-space-lg);
+    overflow-x: auto;
+    border-block-end: var(--nib-space-hairline) solid var(--nib-line);
+  }
+
+  .nib-tabs__list[aria-orientation='vertical'] {
+    flex-direction: column;
+    gap: 0;
+    overflow-x: visible;
+    border-block-end: 0;
+    border-inline-start: var(--nib-space-hairline) solid var(--nib-line);
+  }
+
+  .nib-tabs__tab {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    min-block-size: var(--nib-space-touch-target);
+    padding: 0;
+    border: 0;
+    border-block: var(--nib-space-rule) solid transparent;
+    background: none;
+    color: var(--nib-on-surface-2);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1));
+    text-transform: var(--nib-caps, uppercase);
+    cursor: pointer;
+  }
+
+  /* Inside the tab: the list scrolls, which would clip a ring drawn outside it. */
+  .nib-tabs__tab:focus-visible {
+    outline-offset: calc(-1 * var(--nib-space-rule));
+  }
+
+  .nib-tabs__tab:hover:not([aria-disabled='true']) {
+    color: var(--nib-on-surface);
+  }
+
+  .nib-tabs__tab[aria-selected='true'] {
+    border-block-end-color: var(--nib-accent);
+    color: var(--nib-on-surface);
+  }
+
+  .nib-tabs__tab[aria-disabled='true'] {
+    color: var(--nib-on-surface-3);
+    cursor: not-allowed;
+  }
+
+  .nib-tabs__list[aria-orientation='vertical'] > .nib-tabs__tab {
+    padding-inline: var(--nib-space-md);
+    border-block: 0;
+    border-inline-start: var(--nib-space-rule) solid transparent;
+    margin-inline-start: calc(-1 * var(--nib-space-hairline));
+  }
+
+  .nib-tabs__list[aria-orientation='vertical'] > .nib-tabs__tab[aria-selected='true'] {
+    border-inline-start-color: var(--nib-accent);
+  }
+
+  .nib-tabs__panel {
+    padding-block: var(--nib-space-lg);
+  }
+
+  .nib-tabs__panel[hidden] {
+    display: none;
+  }
+
+  @media (forced-colors: active) {
+    /* Forced colours paint transparent borders: unselected tabs get Canvas, so only one rule shows. */
+    .nib-tabs__tab {
+      border-block-color: Canvas;
+    }
+
+    .nib-tabs__list[aria-orientation='vertical'] > .nib-tabs__tab {
+      border-inline-start-color: Canvas;
+    }
+
+    .nib-tabs__tab[aria-selected='true'] {
+      border-block-end-color: CanvasText;
+    }
+
+    .nib-tabs__list[aria-orientation='vertical'] > .nib-tabs__tab[aria-selected='true'] {
+      border-inline-start-color: CanvasText;
+    }
+
+    .nib-tabs__tab[aria-disabled='true'] {
+      color: GrayText;
+    }
+  }
+}

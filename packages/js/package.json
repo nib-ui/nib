@@ -35,6 +35,11 @@
       "@nib-ui/source": "./src/disclosure.ts",
       "types": "./dist/disclosure.d.ts",
       "default": "./dist/disclosure.js"
+    },
+    "./tabs": {
+      "@nib-ui/source": "./src/tabs.ts",
+      "types": "./dist/tabs.d.ts",
+      "default": "./dist/tabs.js"
     }
   },
   "files": [
@@ -76,7 +81,9 @@
     "./dist/copy.js",
     "./src/copy.ts",
     "./dist/disclosure.js",
-    "./src/disclosure.ts"
+    "./src/disclosure.ts",
+    "./dist/tabs.js",
+    "./src/tabs.ts"
   ],
   "dependencies": {
     "@nib-ui/core": "workspace:*",
