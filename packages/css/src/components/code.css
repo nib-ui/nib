@@ -1,0 +1,88 @@
+/* Code block: code on the raised surface in mono with ligatures off, an optional header row
+   (file name in meta, COPY on the end) and syntax colours from the tokens. The highlighter (or the
+   author) wraps tokens in nib-syntax-* spans; `@nib-ui/js/copy` makes the COPY button work. */
+@layer nib.components {
+  .nib-code {
+    margin: 0;
+    border: var(--nib-space-hairline) solid var(--nib-line);
+    background: var(--nib-surface-raised);
+    color: var(--nib-syntax-identifier);
+  }
+
+  .nib-code__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--nib-space-sm);
+    min-block-size: var(--nib-space-pane-header-height);
+    padding-inline: var(--nib-space-md) var(--nib-space-xs);
+    border-block-end: var(--nib-space-hairline) solid var(--nib-line);
+    color: var(--nib-on-surface-3);
+    font: var(--nib-meta-sm-font-weight) var(--nib-meta-sm-font-size) / var(--nib-meta-sm-line-height)
+      var(--nib-font-mono);
+  }
+
+  .nib-code__header:only-child {
+    border-block-end: 0;
+  }
+
+  /* The block scrolls sideways rather than wrapping code; it takes focus so keyboards can scroll. */
+  /* Code reads left to right in every script. */
+  .nib-code pre {
+    direction: ltr;
+    text-align: start;
+    margin: 0;
+    padding: var(--nib-space-md);
+    overflow-x: auto;
+    font: var(--nib-code-md-font-weight) var(--nib-code-md-font-size) / var(--nib-code-md-line-height)
+      var(--nib-font-mono);
+    font-variant-ligatures: none;
+    tab-size: 2;
+  }
+
+  .nib-code pre:focus-visible {
+    outline: var(--nib-space-rule) solid var(--nib-accent);
+    outline-offset: calc(-1 * var(--nib-space-rule));
+  }
+
+  /* The tick @nib-ui/js/copy adds to a copied button. */
+  .nib-copy-tick {
+    color: var(--nib-green);
+  }
+
+  /* Inline code in running text. */
+  .nib-code-inline {
+    padding: 0 var(--nib-space-xs);
+    background: var(--nib-surface-raised);
+    font-family: var(--nib-font-mono);
+    font-size: 0.92em;
+    font-weight: var(--nib-code-md-font-weight);
+    font-variant-ligatures: none;
+  }
+
+  .nib-syntax-keyword {
+    color: var(--nib-syntax-keyword);
+  }
+
+  .nib-syntax-string {
+    color: var(--nib-syntax-string);
+  }
+
+  .nib-syntax-number {
+    color: var(--nib-syntax-number);
+  }
+
+  .nib-syntax-identifier {
+    color: var(--nib-syntax-identifier);
+  }
+
+  .nib-syntax-comment {
+    color: var(--nib-on-surface-3);
+  }
+
+  @media (forced-colors: active) {
+    .nib-code pre:focus-visible {
+      outline-color: CanvasText;
+    }
+  }
+}

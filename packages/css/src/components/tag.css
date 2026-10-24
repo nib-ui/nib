@@ -1,0 +1,70 @@
+/* Tag: a short mono word in caps (NEW, SALE, DRAFT, ×3) in a hue; `--filled` puts it on the hue's
+   -soft fill with a 1px -border for status chips. The accent tag is only for current states
+   (NOW, LIVE, CURRENT). Set the hue with a modifier; it defaults to on-surface 3. */
+@layer nib.components {
+  .nib-tag {
+    --nib-tag-hue: var(--nib-on-surface-3);
+
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nib-space-xs);
+    color: var(--nib-tag-hue);
+    font: var(--nib-label-sm-font-weight) var(--nib-label-sm-font-size) / var(--nib-label-sm-line-height)
+      var(--nib-font-mono);
+    text-transform: var(--nib-caps, uppercase);
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  .nib-tag--blue {
+    --nib-tag-hue: var(--nib-blue);
+    --nib-tag-soft: var(--nib-blue-soft);
+    --nib-tag-border: var(--nib-blue-border);
+  }
+
+  .nib-tag--cyan {
+    --nib-tag-hue: var(--nib-cyan);
+    --nib-tag-soft: var(--nib-cyan-soft);
+    --nib-tag-border: var(--nib-cyan-border);
+  }
+
+  .nib-tag--green {
+    --nib-tag-hue: var(--nib-green);
+    --nib-tag-soft: var(--nib-green-soft);
+    --nib-tag-border: var(--nib-green-border);
+  }
+
+  .nib-tag--magenta {
+    --nib-tag-hue: var(--nib-magenta);
+    --nib-tag-soft: var(--nib-magenta-soft);
+    --nib-tag-border: var(--nib-magenta-border);
+  }
+
+  .nib-tag--yellow {
+    --nib-tag-hue: var(--nib-yellow);
+    --nib-tag-soft: var(--nib-yellow-soft);
+    --nib-tag-border: var(--nib-yellow-border);
+  }
+
+  .nib-tag--red {
+    --nib-tag-hue: var(--nib-red);
+    --nib-tag-soft: var(--nib-red-soft);
+    --nib-tag-border: var(--nib-red-border);
+  }
+
+  .nib-tag--accent {
+    --nib-tag-hue: var(--nib-accent-text);
+  }
+
+  .nib-tag--filled {
+    padding: 0 var(--nib-space-xs-plus);
+    border: var(--nib-space-hairline) solid var(--nib-tag-border, var(--nib-line));
+    background: var(--nib-tag-soft, transparent);
+  }
+
+  @media (forced-colors: active) {
+    .nib-tag--filled {
+      border-color: CanvasText;
+    }
+  }
+}

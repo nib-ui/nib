@@ -1,0 +1,75 @@
+/* Callout: raised fill with a 2px hue rule on the inline-start edge. A mono caps label in the hue,
+   led by its glyph, sets the tone: ※ NOTE (blue) · ▲ WARNING (yellow) · ⚠ ERROR (red, give it
+   role="alert") · ✓ DONE (green) · ❯ NEXT STEP (accent). Body in body-md on-surface 2; actions in a
+   row of word buttons below. */
+@layer nib.components {
+  .nib-callout {
+    --nib-callout-hue: var(--nib-on-surface-3);
+    --nib-callout-glyph: '';
+
+    padding: var(--nib-space-sm-plus) var(--nib-space-md);
+    border-inline-start: var(--nib-space-rule) solid var(--nib-callout-hue);
+    background: var(--nib-surface-raised);
+    color: var(--nib-on-surface-2);
+    font: var(--nib-body-md-font-weight) var(--nib-body-md-font-size) / var(--nib-body-md-line-height)
+      var(--nib-font-sans);
+  }
+
+  .nib-callout__label {
+    margin: 0;
+    color: var(--nib-callout-hue);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1));
+    text-transform: var(--nib-caps, uppercase);
+  }
+
+  /* The glyph is decoration: the label word carries the tone. */
+  .nib-callout__label::before {
+    content: var(--nib-callout-glyph) / '';
+  }
+
+  .nib-callout > * + * {
+    margin-block-start: var(--nib-space-xs);
+  }
+
+  .nib-callout__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--nib-space-sm);
+    margin-block-start: var(--nib-space-sm);
+  }
+
+  .nib-callout--note {
+    --nib-callout-hue: var(--nib-blue);
+    --nib-callout-glyph: '※ ';
+  }
+
+  .nib-callout--warning {
+    --nib-callout-hue: var(--nib-yellow);
+    --nib-callout-glyph: '▲ ';
+  }
+
+  .nib-callout--error {
+    --nib-callout-hue: var(--nib-red);
+    --nib-callout-glyph: '⚠\FE0E  ';
+  }
+
+  .nib-callout--done {
+    --nib-callout-hue: var(--nib-green);
+    --nib-callout-glyph: '✓ ';
+  }
+
+  .nib-callout--next {
+    --nib-callout-hue: var(--nib-accent-text);
+    --nib-callout-glyph: '❯ ';
+  }
+
+  @media (forced-colors: active) {
+    /* The fill is dropped: the rule becomes a real CanvasText border, the box gets a hairline. */
+    .nib-callout {
+      border: var(--nib-space-hairline) solid CanvasText;
+      border-inline-start: var(--nib-space-rule) solid CanvasText;
+    }
+  }
+}

@@ -25,6 +25,11 @@
       "@nib-ui/source": "./src/listbox.ts",
       "types": "./dist/listbox.d.ts",
       "default": "./dist/listbox.js"
+    },
+    "./copy": {
+      "@nib-ui/source": "./src/copy.ts",
+      "types": "./dist/copy.d.ts",
+      "default": "./dist/copy.js"
     }
   },
   "files": [
@@ -62,7 +67,9 @@
     "./dist/auto.js",
     "./src/auto.ts",
     "./dist/listbox.js",
-    "./src/listbox.ts"
+    "./src/listbox.ts",
+    "./dist/copy.js",
+    "./src/copy.ts"
   ],
   "dependencies": {
     "@nib-ui/core": "workspace:*",
