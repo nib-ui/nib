@@ -15,6 +15,11 @@
       "@nib-ui/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./auto": {
+      "@nib-ui/source": "./src/auto.ts",
+      "types": "./dist/auto.d.ts",
+      "default": "./dist/auto.js"
     }
   },
   "files": [
@@ -29,6 +34,34 @@
     "tags": [
       "type:binding",
       "scope:public"
-    ]
+    ],
+    "targets": {
+      "size-limit": {
+        "command": "size-limit",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "build"
+        ],
+        "cache": true,
+        "inputs": [
+          "production",
+          "{projectRoot}/.size-limit.js",
+          "{workspaceRoot}/size-budgets.json"
+        ]
+      }
+    }
+  },
+  "sideEffects": [
+    "./dist/auto.js",
+    "./src/auto.ts"
+  ],
+  "dependencies": {
+    "@nib-ui/core": "workspace:*",
+    "@nib-ui/dom": "workspace:*"
+  },
+  "devDependencies": {
+    "@nib-ui/test-harness": "workspace:*"
   }
 }

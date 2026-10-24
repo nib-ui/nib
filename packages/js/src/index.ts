@@ -1,2 +1,2 @@
-// Public entry point. Exports land here as the package is built out.
-export {};
+export { bind, type Target } from './bind.ts';
+export { define, destroy, init, type Setup, type SetupContext } from './registry.ts';

@@ -9,3 +9,4 @@ export {
 export { fakeClock, type FakeClock } from './fake-clock.ts';
 export { fakeGeometry, type FakeGeometry } from './fake-geometry.ts';
 export { createTestHost, type TestHost } from './test-host.ts';
+export { createTestList, type TestListOptions } from './test-list.ts';

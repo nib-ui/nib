@@ -29,6 +29,33 @@
     "tags": [
       "type:binding",
       "scope:public"
-    ]
+    ],
+    "targets": {
+      "size-limit": {
+        "command": "size-limit",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "build"
+        ],
+        "cache": true,
+        "inputs": [
+          "production",
+          "{projectRoot}/.size-limit.js",
+          "{workspaceRoot}/size-budgets.json"
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "@nib-ui/core": "workspace:*",
+    "@nib-ui/dom": "workspace:*"
+  },
+  "peerDependencies": {
+    "svelte": "^5.0.0"
+  },
+  "devDependencies": {
+    "@nib-ui/test-harness": "workspace:*"
   }
 }
