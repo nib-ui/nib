@@ -68,7 +68,8 @@ export default [
     },
   },
   {
-    // The CLI bundles the private colour engine at build time (ADR 11), so it is a devDependency.
+    // The CLI bundles the private colour engine and Stylelint rules at build time (ADR 11), so they
+    // are devDependencies.
     files: ['packages/cli/package.json'],
     languageOptions: { parser: jsoncParser },
     rules: {
@@ -80,7 +81,7 @@ export default [
             '{projectRoot}/vite.config.mts',
             '{projectRoot}/**/*.spec.ts',
           ],
-          ignoredDependencies: ['@nib-ui/color-engine'],
+          ignoredDependencies: ['@nib-ui/color-engine', '@nib-ui/stylelint-plugin'],
         },
       ],
     },

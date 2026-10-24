@@ -51,9 +51,11 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@nib-ui/tokens": "workspace:*"
+    "@nib-ui/tokens": "workspace:*",
+    "stylelint": "^17.16.0"
   },
   "devDependencies": {
-    "@nib-ui/color-engine": "workspace:*"
+    "@nib-ui/color-engine": "workspace:*",
+    "@nib-ui/stylelint-plugin": "workspace:*"
   }
 }
