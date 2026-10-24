@@ -27,7 +27,10 @@
   }
 
   /* The block scrolls sideways rather than wrapping code; it takes focus so keyboards can scroll. */
+  /* Code reads left to right in every script. */
   .nib-code pre {
+    direction: ltr;
+    text-align: start;
     margin: 0;
     padding: var(--nib-space-md);
     overflow-x: auto;
@@ -42,8 +45,8 @@
     outline-offset: calc(-1 * var(--nib-space-rule));
   }
 
-  /* A copied button keeps its width-changing word but shows the tick in green. */
-  .nib-code [data-copied] [aria-hidden='true'] {
+  /* The tick @nib-ui/js/copy adds to a copied button. */
+  .nib-copy-tick {
     color: var(--nib-green);
   }
 
@@ -51,7 +54,9 @@
   .nib-code-inline {
     padding: 0 var(--nib-space-xs);
     background: var(--nib-surface-raised);
-    font: var(--nib-code-md-font-weight) 0.92em / inherit var(--nib-font-mono);
+    font-family: var(--nib-font-mono);
+    font-size: 0.92em;
+    font-weight: var(--nib-code-md-font-weight);
     font-variant-ligatures: none;
   }
 

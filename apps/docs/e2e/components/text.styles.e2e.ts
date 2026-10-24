@@ -26,11 +26,13 @@ test.describe('text', () => {
   });
 
   test('a callout has a 2px hue rule and its glyph, kept out of what is read', async ({ page }) => {
-    const error = page.getByRole('alert').filter({ hasText: 'declined' });
+    const error = page.locator('.nib-callout--error');
     await expect(error).toHaveCSS('border-left-width', '2px');
     await expect(error).toHaveCSS('border-left-color', 'rgb(160, 69, 69)');
     const label = error.locator('.nib-callout__label');
     expect(await label.evaluate((el) => getComputedStyle(el, '::before').content)).toMatch(/^"⚠.*" \/ ""$/);
+    await page.evaluate(() => document.documentElement.setAttribute('dir', 'rtl'));
+    await expect(error).toHaveCSS('border-right-width', '2px');
     const note = page.locator('.nib-callout--note .nib-callout__label');
     expect(await note.evaluate((el) => getComputedStyle(el, '::before').content)).toMatch(/^"※ " \/ ""$/);
   });
@@ -38,17 +40,20 @@ test.describe('text', () => {
   test('COPY copies the block, reads Copied ✓ and announces it', async ({ page, context, browserName }) => {
     test.skip(browserName !== 'chromium', 'Clipboard permissions can be granted in Chromium only');
     await context.grantPermissions(['clipboard-read', 'clipboard-write']);
-    const copy = page.getByRole('button', { name: 'Copy' });
+    const copy = page.getByRole('button', { name: 'Copy', exact: true });
     await copy.click();
-    await expect(page.getByRole('button', { name: 'Copied' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Copied', exact: true })).toBeVisible();
     await expect(page.locator('[data-nib-live="polite"]')).toHaveText('Copied');
     expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
       'pnpm add @nib-ui/css "@nib-ui/js" # --save-exact',
     );
   });
 
-  test('a code block keeps ligatures off and scrolls by keyboard', async ({ page }) => {
+  test('a code block keeps ligatures off, reads left to right and scrolls by keyboard', async ({ page }) => {
     const pre = page.locator('.nib-code pre');
+    await page.evaluate(() => document.documentElement.setAttribute('dir', 'rtl'));
+    await expect(pre).toHaveCSS('direction', 'ltr');
+    await expect(page.locator('.nib-code-inline')).toHaveCSS('font-family', /JetBrains Mono/);
     await expect(pre).toHaveCSS('font-variant-ligatures', 'none');
     await expect(pre).toHaveAttribute('tabindex', '0');
   });

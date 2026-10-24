@@ -4,28 +4,26 @@ import { destroy, init } from './index.ts';
 import './copy.ts';
 
 const button = () => document.querySelector<HTMLButtonElement>('[data-nib="copy"]') as HTMLButtonElement;
-const live = () => document.querySelector('[data-nib-live="polite"]')?.textContent;
+const live = (politeness: string) => document.querySelector(`[data-nib-live="${politeness}"]`)?.textContent;
+const BLOCK = `<figure class="nib-code"><button data-nib="copy" type="button">Copy</button><pre><code>pnpm add @nib-ui/css</code></pre></figure>`;
 
 afterEach(() => {
   destroy();
   document.body.innerHTML = '';
   vi.restoreAllMocks();
-  vi.useRealTimers();
 });
 
 describe('copy (vanilla)', () => {
-  it('copies the code of its block, says COPIED ✓, announces it, then goes back', async () => {
+  it('copies the code of its block, says Copied ✓, announces it, then goes back', async () => {
     const write = vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue();
-    document.body.innerHTML = `<figure class="nib-code">
-      <button data-nib="copy" type="button">Copy</button><pre><code>pnpm add @nib-ui/css</code></pre></figure>`;
+    document.body.innerHTML = BLOCK;
     init();
     await userEvent.click(button());
     expect(write).toHaveBeenCalledWith('pnpm add @nib-ui/css');
     await expect.poll(() => button().textContent).toBe('Copied ✓');
     expect(button().hasAttribute('data-copied')).toBe(true);
-    // The tick is decoration: the name is the word.
-    expect(button().querySelector('[aria-hidden="true"]')?.textContent).toBe(' ✓');
-    await expect.poll(live).toBe('Copied');
+    expect(button().querySelector('.nib-copy-tick')?.getAttribute('aria-hidden')).toBe('true');
+    await expect.poll(() => live('polite')).toBe('Copied');
     await expect.poll(() => button().textContent, { timeout: 4000 }).toBe('Copy');
     expect(button().hasAttribute('data-copied')).toBe(false);
   });
@@ -40,21 +38,62 @@ describe('copy (vanilla)', () => {
     await expect.poll(() => button().textContent).toBe('Đã chép ✓');
   });
 
-  it('announces a failure assertively when the clipboard refuses', async () => {
-    vi.spyOn(navigator.clipboard, 'writeText').mockRejectedValue(new Error('denied'));
-    document.body.innerHTML = `<figure class="nib-code"><button data-nib="copy" type="button">Copy</button><pre>x</pre></figure>`;
+  it('a second click while copied starts over and still restores the original words', async () => {
+    vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue();
+    document.body.innerHTML = BLOCK;
     init();
     await userEvent.click(button());
-    await expect.poll(() => document.querySelector('[data-nib-live="assertive"]')?.textContent).toBe('Copy failed');
-    expect(button().textContent).toBe('Copy');
+    await expect.poll(() => button().textContent).toBe('Copied ✓');
+    await userEvent.click(button());
+    await expect.poll(() => button().textContent).toBe('Copied ✓');
+    await expect.poll(() => button().textContent, { timeout: 4000 }).toBe('Copy');
   });
 
-  it('restores the button and stops listening on destroy', async () => {
+  it('shows and announces a failure when the clipboard refuses, replacing a shown success', async () => {
     const write = vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue();
-    document.body.innerHTML = `<figure class="nib-code"><button data-nib="copy" type="button">Copy</button><pre>x</pre></figure>`;
+    document.body.innerHTML = BLOCK;
     init();
-    destroy();
     await userEvent.click(button());
+    await expect.poll(() => button().textContent).toBe('Copied ✓');
+    write.mockRejectedValue(new Error('denied'));
+    await userEvent.click(button());
+    await expect.poll(() => button().textContent).toBe('Copy failed');
+    expect(button().hasAttribute('data-copied')).toBe(false);
+    expect(button().hasAttribute('data-failed')).toBe(true);
+    await expect.poll(() => live('assertive')).toBe('Copy failed');
+  });
+
+  it('fails without touching the clipboard when there is nothing to copy', async () => {
+    const write = vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue();
+    document.body.innerHTML = `<button data-nib="copy" data-copy-target="missing" type="button">Copy</button>`;
+    init();
+    await userEvent.click(button());
+    await expect.poll(() => button().textContent).toBe('Copy failed');
     expect(write).not.toHaveBeenCalled();
+  });
+
+  it('on destroy while copied, puts the words back and stops listening', async () => {
+    const write = vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue();
+    document.body.innerHTML = BLOCK;
+    init();
+    await userEvent.click(button());
+    await expect.poll(() => button().textContent).toBe('Copied ✓');
+    destroy();
+    expect(button().textContent).toBe('Copy');
+    expect(button().hasAttribute('data-copied')).toBe(false);
+    await userEvent.click(button());
+    expect(write).toHaveBeenCalledTimes(1);
+  });
+
+  it('does nothing when destroyed while the clipboard is still writing', async () => {
+    let resolve = () => undefined as void;
+    vi.spyOn(navigator.clipboard, 'writeText').mockReturnValue(new Promise<void>((r) => (resolve = r)));
+    document.body.innerHTML = BLOCK;
+    init();
+    await userEvent.click(button());
+    destroy();
+    resolve();
+    await new Promise((r) => setTimeout(r, 50));
+    expect(button().textContent).toBe('Copy');
   });
 });
