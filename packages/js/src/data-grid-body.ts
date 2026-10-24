@@ -41,5 +41,9 @@ export function renderGridBody(
     }
     return tr;
   });
+  // A rebuild while a cell has focus (scrolling a virtual grid) puts focus back on the same cell.
+  const active = doc.activeElement as HTMLElement | null;
+  const had = active && body.contains(active) ? active.dataset['nibTarget'] : undefined;
   body.replaceChildren(spacer('before'), ...trs, spacer('after'));
+  if (had) body.querySelector<HTMLElement>(`[data-nib-target="${CSS.escape(had)}"]`)?.focus({ preventScroll: true });
 }

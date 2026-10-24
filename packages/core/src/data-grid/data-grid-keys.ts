@@ -35,7 +35,8 @@ export function gridTarget(
     case 'End':
       return e.ctrlKey ? { row: size.rows - 1, col: size.cols - 1 } : { ...at, col: size.cols - 1 };
     case 'PageUp':
-      return { ...at, row: clampRow(Math.max(0, at.row - size.page)) };
+      // From the header row there is nothing above; otherwise Page Up stops at the first row.
+      return at.row < 0 ? at : { ...at, row: clampRow(Math.max(0, at.row - size.page)) };
     case 'PageDown':
       return { ...at, row: clampRow(at.row + size.page) };
     default:

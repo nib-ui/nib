@@ -42,6 +42,9 @@ define('data-grid', (root, { id, locale, host }) => {
     key: tr.dataset['row'] ?? '',
     ...Object.fromEntries(columns.map((c, i) => [c.key, (tr.cells[i]?.textContent ?? '').trim()])),
   }));
+  // The authored body comes back on destroy, so init can read it again.
+  const authored = [...(table.tBodies[0]?.childNodes ?? [])];
+  const scroller = root.querySelector<HTMLElement>('[data-nib-scroller]') ?? root;
   const emit = (type: string, detail: object) =>
     queueMicrotask(() => root.dispatchEvent(new CustomEvent(type, { detail, bubbles: true })));
   const selectable = root.hasAttribute('data-selectable');
@@ -56,6 +59,7 @@ define('data-grid', (root, { id, locale, host }) => {
       selectable,
       ...(pageSize && { pageSize }),
       ...(label && { label }),
+      viewportHeight: scroller.clientHeight || undefined,
       onSortChange: (sort) => emit('nib:sort', sort),
       onSelectionChange: (selected) => emit('nib:select', { selected }),
       onEdit: (row, column, value) => {
@@ -88,7 +92,7 @@ define('data-grid', (root, { id, locale, host }) => {
   render();
   const unsubscribe = instance.subscribe(render);
   const unbind = bind(instance, () => [
-    { el: root.querySelector<HTMLElement>('[data-nib-scroller]') ?? root, part: 'scroller' as const },
+    { el: scroller, part: 'scroller' as const },
     { el: table, part: 'grid' as const },
     ...(selectAll ? [{ el: selectAll, part: 'select-all' as const }] : []),
     ...heads.map((el, i) => ({ el, part: 'header' as const, key: columns[i]?.key })),
@@ -101,9 +105,17 @@ define('data-grid', (root, { id, locale, host }) => {
     ...own('[data-nib-prev-page]').map((el) => ({ el, part: 'prev-page' as const })),
     ...own('[data-nib-next-page]').map((el) => ({ el, part: 'next-page' as const })),
   ]);
+  // A virtual grid renders as many rows as its scroller shows, so it follows the scroller's size.
+  const resize = new ResizeObserver(() => {
+    if (scroller.clientHeight)
+      instance.send({ type: 'scrolled', top: scroller.scrollTop, height: scroller.clientHeight });
+  });
+  resize.observe(scroller);
   return () => {
+    resize.disconnect();
     unsubscribe();
     unbind();
+    body.replaceChildren(...authored);
     instance.destroy();
     selectAll?.remove();
     for (const handle of resizers) handle.remove();

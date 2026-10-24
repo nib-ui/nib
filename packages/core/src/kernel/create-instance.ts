@@ -53,8 +53,8 @@ export function createInstance<S, E, P extends string, O extends { id?: string }
   // Sends made by subscribers while they are being notified wait here, so every subscriber sees
   // every state in order; their intents join those of the outer send.
   let notifying = false;
-  // An update() from a callback that reduce calls (onEdit) waits until reduce's state is committed;
-  // syncing it at once would be overwritten by the state reduce returns.
+  // A send or update() from a callback that reduce calls (onSortChange, onEdit) waits until reduce's
+  // state is committed: run at once, its state would be overwritten by the state reduce returns.
   let reducing = false;
   let syncPending = false;
   const queue: E[] = [];
@@ -68,6 +68,8 @@ export function createInstance<S, E, P extends string, O extends { id?: string }
     if (Object.is(next, state)) return undefined;
     state = next;
     let error: unknown;
+    // An update() from a subscriber commits inside this loop; the outer loop still holds sends back.
+    const outer = notifying;
     notifying = true;
     for (const listener of [...listeners]) {
       try {
@@ -76,12 +78,12 @@ export function createInstance<S, E, P extends string, O extends { id?: string }
         error ??= e;
       }
     }
-    notifying = false;
+    notifying = outer;
     return error;
   };
   const send = (event: E): readonly Intent[] => {
     alive('send');
-    if (notifying) {
+    if (notifying || reducing) {
       queue.push(event);
       return [];
     }
@@ -93,6 +95,11 @@ export function createInstance<S, E, P extends string, O extends { id?: string }
       let result: ReturnType<typeof spec.reduce>;
       try {
         result = spec.reduce(ctx(), next);
+      } catch (e) {
+        // Nothing of a failed send carries over into the next one.
+        queue.length = 0;
+        syncPending = false;
+        throw e;
       } finally {
         reducing = false;
       }

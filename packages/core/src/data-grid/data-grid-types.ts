@@ -31,8 +31,13 @@ export interface DataGridOptions {
   onPageChange?: (page: number) => void;
   /** A finished cell edit; the caller updates `rows`. */
   onEdit?: (row: Key, column: string, value: string) => void;
-  /** Row height in px, which virtualisation counts on; default 36. */
+  /** Row height in px, which virtualisation counts on and the rows are drawn at; default 36. */
   rowHeight?: number;
+  /**
+   * Height in px of the scrolling element before it first scrolls, for virtualised rows; default
+   * 20 rows. The vanilla binding measures it; set it for a taller grid in a framework binding.
+   */
+  viewportHeight?: number;
   /** Render only the rows in view; default on from 1,000 rows on a page. */
   virtualize?: boolean;
   dir?: 'ltr' | 'rtl';

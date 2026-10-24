@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { NibError } from '../nib-error.ts';
+import { createInstance } from './create-instance.ts';
 import { createTestHost } from '../testing/test-host.ts';
 import { createTestList as createList } from '../testing/test-list.ts';
 
@@ -78,5 +79,43 @@ describe('kernel instance', () => {
     list.subscribe(() => second++);
     expect(() => list.send({ type: 'move', to: 'next' })).toThrow('boom');
     expect(second).toBe(1);
+  });
+
+  // A counter whose `add` calls back into the caller, as onEdit or onSortChange do.
+  type Ev = { type: 'add' } | { type: 'boom' };
+  const counter = (onAdd: (n: number) => void) =>
+    createInstance<{ n: number; base: number }, Ev, 'out', { id?: string; base: number }>(
+      {
+        name: 'counter',
+        parts: ['out'],
+        init: ({ options }) => ({ n: 0, base: options.base }),
+        sync: ({ state, options }) => (state.base === options.base ? state : { ...state, base: options.base }),
+        reduce: ({ state }, event) => {
+          if (event.type === 'boom') throw new Error('boom');
+          onAdd(state.n + 1);
+          return { state: { ...state, n: state.n + 1 } };
+        },
+        render: () => ({ attrs: {}, on: {} }),
+      },
+      { base: 0 },
+    );
+
+  it('applies a send or update() made inside reduce after reduce has committed its own state', () => {
+    let sent = false;
+    const c = counter((n) => {
+      c.update({ base: n * 10 });
+      if (sent) return;
+      sent = true;
+      c.send({ type: 'add' });
+    });
+    c.send({ type: 'add' });
+    expect(c.state).toEqual({ n: 2, base: 20 });
+  });
+
+  it('carries nothing of a send whose reduce threw into the next send', () => {
+    const c = counter(() => undefined);
+    expect(() => c.send({ type: 'boom' })).toThrow('boom');
+    c.send({ type: 'add' });
+    expect(c.state).toEqual({ n: 1, base: 0 });
   });
 });

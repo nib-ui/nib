@@ -2,7 +2,7 @@ import { nullHost, type Host } from '../host.ts';
 import { createInstance, type Instance } from '../kernel/create-instance.ts';
 import type { Intent } from '../types.ts';
 import type { GridPos } from './data-grid-keys.ts';
-import { sortRows, windowOf, type GridColumn, type GridRow, type GridSort } from './data-grid-model.ts';
+import { sortRows, windowOf, type GridRow, type GridSort } from './data-grid-model.ts';
 import { renderGridPart } from './data-grid-render.ts';
 import type { DataGridEvent, DataGridOptions, DataGridPart, DataGridState, Drag } from './data-grid-types.ts';
 
@@ -37,31 +37,38 @@ export function createDataGrid(
       return last.result;
     };
   };
-  // The sort is compared by its column and direction: an equal one passed fresh each time counts as the same.
+  // Keyed on what sorting reads, not on the sort and columns objects: an equal sort or column list
+  // passed fresh on every render (inline in JSX) still counts as the same.
   const sorted = memo(
-    (rows: readonly GridRow[], by: string, columns: readonly GridColumn[], locale: string, manual: boolean) => {
-      const [column = '', direction] = by.split(' ');
-      const sort = by ? { column, direction: direction as GridSort['direction'] } : null;
-      return manual ? rows : sortRows(rows, sort, columns, locale);
-    },
+    (
+      rows: readonly GridRow[],
+      column: string | undefined,
+      direction: GridSort['direction'] | undefined,
+      numeric: boolean,
+      locale: string,
+      manual: boolean,
+    ) =>
+      manual || column === undefined || direction === undefined
+        ? rows
+        : sortRows(rows, { column, direction }, [{ key: column, label: column, numeric }], locale),
   );
   const paged = memo((rows: readonly GridRow[], page: number, size: number | undefined) =>
     size ? rows.slice(page * size, (page + 1) * size) : rows,
   );
-  const windowed = memo((count: number, top: number, viewport: number, rowHeight: number, keep: number) =>
-    windowOf(count, { top, height: viewport, rowHeight, keep }),
+  const windowed = memo((count: number, top: number, viewport: number, rowHeight: number) =>
+    windowOf(count, { top, height: viewport, rowHeight }),
   );
 
   // Rows, page and window for the options and the scroll position: derived, never stored apart.
-  const derive = (o: DataGridOptions, state: Pick<DataGridState, 'viewport' | 'focus'>) => {
+  const derive = (o: DataGridOptions, state: Pick<DataGridState, 'viewport'>) => {
     const sort = sortOf(o);
     const page = pageOf(o);
-    const by = sort ? `${sort.column} ${sort.direction}` : '';
-    const all = sorted(o.rows, by, o.columns, o.locale ?? 'en-US', !!o.manualSort);
+    const numeric = !!o.columns.find((c) => c.key === sort?.column)?.numeric;
+    const all = sorted(o.rows, sort?.column, sort?.direction, numeric, o.locale ?? 'en-US', !!o.manualSort);
     const rows = paged(all, page, o.pageSize);
     const virtual = o.virtualize ?? rows.length >= VIRTUAL_FROM;
     const { top, height: viewport } = state.viewport;
-    const window = virtual ? windowed(rows.length, top, viewport, height(o), state.focus.row) : null;
+    const window = virtual ? windowed(rows.length, top, viewport, height(o)) : null;
     return { sort, page, pageCount: pageCountOf(o), rows, window, selected: selectedOf(o) };
   };
   const cols = (o: DataGridOptions) => o.columns.length + (o.selectable ? 1 : 0);
@@ -86,7 +93,7 @@ export function createDataGrid(
         'next-page',
       ],
       init: ({ options: o }) => {
-        const base = { focus: { row: -1, col: 0 }, viewport: { top: 0, height: 20 * height(o) } };
+        const base = { focus: { row: -1, col: 0 }, viewport: { top: 0, height: o.viewportHeight ?? 20 * height(o) } };
         return { ...base, ...derive(o, base), editing: null, widths: {} };
       },
       sync: ({ state, options: o }) => {
@@ -96,19 +103,22 @@ export function createDataGrid(
           next.sort = state.sort;
         if (next.selected.length === state.selected.length && next.selected.every((k, i) => k === state.selected[i]))
           next.selected = state.selected;
-        // Rows went away (a filter, a smaller page): keep focus inside the grid.
+        // Rows or columns went away (a filter, a smaller page): keep focus inside the grid.
         const row = Math.min(next.focus.row, next.rows.length - 1);
-        const focus = row === next.focus.row ? next.focus : { ...next.focus, row };
-        const same =
-          (Object.keys(next) as (keyof DataGridState)[]).every((k) => next[k] === state[k]) && focus === state.focus;
-        return same ? state : { ...next, focus, ...(focus === next.focus ? {} : derive(o, { ...next, focus })) };
+        const col = Math.min(next.focus.col, cols(o) - 1);
+        const focus = row === next.focus.row && col === next.focus.col ? next.focus : { row, col };
+        const same = (Object.keys(next) as (keyof DataGridState)[]).every((k) => next[k] === state[k]);
+        return same && focus === state.focus ? state : { ...next, focus };
       },
       reduce: ({ state, options: o, id }, event) => {
         const focusIntent = (pos: GridPos): Intent => ({ type: 'focus', ref: cellId(id, o, state.rows, pos) });
         switch (event.type) {
           case 'focus': {
             const focus = event.to;
-            const moved = { ...state, focus, ...derive(o, { ...state, focus }) };
+            // A row out of the rendered window (Page Down, Ctrl+End) is scrolled to: the window moves
+            // there first, so the row exists for focus; the scroll that follows confirms the position.
+            const viewport = followRow(state.viewport, focus.row, state.window ? height(o) : 0);
+            const moved = { ...state, focus, viewport, ...derive(o, { ...state, viewport }) };
             return {
               state: moved,
               intents: [
@@ -182,7 +192,9 @@ export function createDataGrid(
           case 'done': {
             if (!state.editing) return { state };
             const { row, column, draft } = state.editing;
-            if (event.commit) o.onEdit?.(row, column, draft);
+            const before = state.rows.find((r) => r.key === row)?.[column];
+            // Leaving an unchanged cell (a blur, Enter) is not an edit.
+            if (event.commit && draft !== String(before ?? '')) o.onEdit?.(row, column, draft);
             // Back to the cell, unless focus already left the grid (a blur).
             return { state: { ...state, editing: null }, intents: event.refocus ? [focusIntent(state.focus)] : [] };
           }
@@ -205,6 +217,15 @@ export function createDataGrid(
     options,
     host,
   );
+}
+
+/** The viewport moved just enough to show `row` (whole rows of `rowHeight`; 0 when nothing is virtual). */
+function followRow(viewport: DataGridState['viewport'], row: number, rowHeight: number): DataGridState['viewport'] {
+  if (!rowHeight || row < 0) return viewport;
+  if (row * rowHeight < viewport.top) return { ...viewport, top: row * rowHeight };
+  if ((row + 1) * rowHeight > viewport.top + viewport.height)
+    return { ...viewport, top: (row + 1) * rowHeight - viewport.height };
+  return viewport;
 }
 
 /** The id of the cell at a focus position: a header, the select column, or a data cell. */

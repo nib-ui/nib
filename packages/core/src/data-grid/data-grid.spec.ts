@@ -148,6 +148,48 @@ describe('createDataGrid', () => {
     key({ key: 'End', ctrlKey: true });
     expect(dg.state.window?.end).toBe(5000);
     expect(dg.part('cell', '4999::total').attrs['tabindex']).toBe(0);
+    // Scrolling away from the focused row moves the window with the scroll, not back to focus; the
+    // tab stop waits on the column's header meanwhile.
+    t.fire(dg.part('scroller'), 'scroll', { scrollTop: 0, clientHeight: 600 });
+    expect(dg.state.window).toMatchObject({ start: 0, end: 30 });
+    expect(dg.part('header', 'total').attrs['tabindex']).toBe(0);
+  });
+
+  it('measures the viewport from viewportHeight before the first scroll', () => {
+    const many = Array.from({ length: 2000 }, (_, i) => ({ key: String(i), item: `Row ${i}`, total: i }));
+    const { dg } = setup({ rows: many, rowHeight: 30, viewportHeight: 1500 });
+    expect(dg.state.window).toMatchObject({ start: 0, end: 60 });
+    expect(dg.part('grid').attrs['style']).toBe('--nib-data-grid-row: 30px');
+  });
+
+  it('counts rows across pages, and Page Up on the header row stays there', () => {
+    const { t, dg, key } = setup({ pageSize: 2 });
+    expect(dg.part('grid').attrs['aria-rowcount']).toBe(4);
+    t.fire(dg.part('next-page'), 'click');
+    expect(dg.part('row', 'c').attrs['aria-rowindex']).toBe(4);
+    key({ key: 'PageUp' });
+    expect(dg.state.focus.row).toBe(-1);
+  });
+
+  it('does not report an edit when the cell is left unchanged', () => {
+    const onEdit = vi.fn();
+    const { t, dg, key } = setup({ onEdit });
+    key({ key: 'ArrowDown' });
+    key({ key: 'Enter' });
+    t.fire(dg.part('editor'), 'blur');
+    expect(dg.state.editing).toBeNull();
+    expect(onEdit).not.toHaveBeenCalled();
+  });
+
+  it('sorts by a column whose key has a space in it', () => {
+    const rows = [
+      { key: 'a', 'unit price': 9 },
+      { key: 'b', 'unit price': 3 },
+    ];
+    const columns = [{ key: 'unit price', label: 'Unit price', numeric: true, sortable: true }];
+    const { t, dg } = setup({ rows, columns });
+    t.fire(dg.part('header', 'unit price'), 'click');
+    expect(dg.state.rows.map((r) => r.key)).toEqual(['b', 'a']);
   });
 
   it('passes every row of its APG table', () => {
@@ -183,7 +225,13 @@ describe('createDataGrid updates', () => {
     const base = { id: 'dg', columns: COLUMNS, rows: ROWS, pageSize: 2 };
     const dg = createDataGrid({ ...base, sort: { column: 'total', direction: 'ascending' }, selected: ['a'] }, t.host);
     const before = dg.state;
-    dg.update({ ...base, sort: { column: 'total', direction: 'ascending' }, selected: ['a'], onEdit: () => undefined });
+    dg.update({
+      ...base,
+      columns: COLUMNS.map((c) => ({ ...c })),
+      sort: { column: 'total', direction: 'ascending' },
+      selected: ['a'],
+      onEdit: () => undefined,
+    });
     expect(dg.state).toBe(before);
   });
 });

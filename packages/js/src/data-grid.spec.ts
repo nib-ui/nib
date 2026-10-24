@@ -42,4 +42,14 @@ describe('data grid (vanilla)', () => {
     await expect.poll(() => document.activeElement?.textContent).toBe('Decaf Colombia');
     expect(edits).toEqual([{ row: '1041', column: 'item', value: 'Decaf Colombia' }]);
   });
+
+  it('puts the authored markup back on destroy, so init reads the same rows again', () => {
+    document.body.innerHTML = MARKUP;
+    const authored = document.querySelector('tbody')?.innerHTML;
+    init();
+    destroy();
+    expect(document.querySelector('tbody')?.innerHTML).toBe(authored);
+    init();
+    expect(cell('Decaf')?.id).toBe('dg-cell-1041::item');
+  });
 });

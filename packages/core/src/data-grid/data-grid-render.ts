@@ -22,7 +22,14 @@ export function renderGridPart(
   const offset = o.selectable ? 1 : 0;
   const labels = o.labels ?? {};
   const focusedId = cellId(id, o, state.rows, state.focus);
-  const roving = (cell: string) => (cell === focusedId ? 0 : -1);
+  // The tab stop is the focused cell, or its column's header while that row is scrolled out of the
+  // rendered window, so Tab always has a way into the grid.
+  const w = state.window;
+  const shown = !w || state.focus.row < 0 || (state.focus.row >= w.start && state.focus.row < w.end);
+  const tabStop = shown ? focusedId : cellId(id, o, state.rows, { row: -1, col: state.focus.col });
+  const roving = (cell: string) => (cell === tabStop ? 0 : -1);
+  // Rows count across pages, so a screen reader hears "row 52 of 120" on page 2.
+  const pageStart = o.pageSize ? state.page * o.pageSize : 0;
   const gridKey = (e: NibEvent) => gridKeydown(e, { state, options: o, id, host }, send, { cols, focusedId });
   // Every focusable cell follows focus and takes the grid's keys (they bubble up from an editor too).
   const follow = (to: GridPos) => ({ focus: () => send({ type: 'focused', to }), keydown: gridKey });
@@ -40,9 +47,11 @@ export function renderGridPart(
           id: `${id}-grid`,
           role: 'grid',
           'aria-label': o.label,
-          'aria-rowcount': state.rows.length + 1,
+          'aria-rowcount': o.rows.length + 1,
           'aria-colcount': cols,
           'aria-multiselectable': o.selectable || undefined,
+          // The rows are drawn at the height virtualisation counts on, whatever the root font size.
+          style: `--nib-data-grid-row: ${o.rowHeight ?? 36}px`,
         },
         on: {},
       };
@@ -108,7 +117,13 @@ export function renderGridPart(
             const rtl = (o.dir ?? host.geometry.direction?.(`${id}-grid`)) === 'rtl';
             return send({ type: 'width', column: key, width: d.width + ((e.clientX ?? d.x) - d.x) * (rtl ? -1 : 1) });
           },
-          pointerup: () => ((drag.ended = !!drag.current), (drag.current = null), []),
+          pointerup: () => {
+            // The click that follows a drag must not sort; a release with no click clears it anyway.
+            drag.ended = !!drag.current;
+            drag.current = null;
+            host.clock.after(0, () => (drag.ended = false));
+            return [];
+          },
           pointercancel: () => ((drag.current = null), []),
         },
       };
@@ -118,7 +133,7 @@ export function renderGridPart(
       return {
         attrs: {
           id: `${id}-row-${key}`,
-          'aria-rowindex': index + 2,
+          'aria-rowindex': pageStart + index + 2,
           'aria-selected': o.selectable ? state.selected.includes(key) : undefined,
         },
         on: {},

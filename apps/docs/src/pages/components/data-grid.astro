@@ -154,7 +154,9 @@ const dg = useDataGrid(() => ({ label: 'Orders', columns: props.columns, rows: p
     gives the page's sorted <code>rows</code>. Sorting is stable and follows the page's language (numbers in text by
     value); with <code>manualSort</code> a server sorts. <code>pageSize</code> pages the rows. From 1,000 rows on a
     page, only the rows in view are rendered (<code>window</code>, with spacer rows keeping the scroll height); give
-    every row the same height (<code>rowHeight</code>).
+    every row the same height (<code>rowHeight</code>). The vanilla binding measures its scroller; in React, Vue and
+    Svelte pass <code>viewportHeight</code> for a grid taller than 20 rows. Keep <code>rows</code> the same array
+    between renders unless the data changed, or the grid sorts again each time.
   </p>
   <p>
     <code>selectable</code> adds a select column: checked rows take the hover fill, never the cursor block, and the

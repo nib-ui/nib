@@ -51,25 +51,13 @@ export function sortRows(
     .map(({ row }) => row);
 }
 
-/**
- * The slice of `count` rows of `rowHeight` px to render for a scroll position, with `overscan`
- * rows either side; always includes `keep` (the focused row) so focus never lands on nothing.
- */
+/** The slice of `count` rows of `rowHeight` px to render for a scroll position, with `overscan` rows either side. */
 export function windowOf(
   count: number,
-  {
-    top,
-    height,
-    rowHeight,
-    overscan = 10,
-    keep,
-  }: { top: number; height: number; rowHeight: number; overscan?: number; keep?: number },
+  { top, height, rowHeight, overscan = 10 }: { top: number; height: number; rowHeight: number; overscan?: number },
 ): GridWindow {
   const rows = Math.ceil(height / rowHeight);
-  let first = Math.floor(top / rowHeight);
-  // Focus moved off screen (Page Down, Ctrl+End): render around it; scrolling there follows.
-  if (keep !== undefined && keep >= 0 && keep < count && (keep < first - overscan || keep >= first + rows + overscan))
-    first = keep;
+  const first = Math.floor(top / rowHeight);
   const start = Math.max(0, first - overscan);
   const end = Math.min(count, first + rows + overscan);
   return { start, end, before: start * rowHeight, after: (count - end) * rowHeight };
