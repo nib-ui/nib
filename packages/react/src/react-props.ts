@@ -93,7 +93,9 @@ export function reactProps(part: Part, queue: (intents: readonly Intent[]) => vo
     props[ATTRS[name] ?? name] = name === 'style' ? styleObject(value) : value;
   }
   for (const [type, handler] of Object.entries(part.on)) {
-    const prop = EVENTS[type];
+    // A field whose value Nib controls is a controlled React input: React wants onChange for it,
+    // which it fires on every input anyway.
+    const prop = type === 'input' && 'value' in part.attrs ? 'onChange' : EVENTS[type];
     if (!prop) throw new Error(`[nib] @nib-ui/react has no prop for the "${type}" event`);
     props[prop] = (event: { nativeEvent: Event }) => queue(handler(toNibEvent(event.nativeEvent)));
   }

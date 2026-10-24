@@ -1,0 +1,115 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const cities = ['Hà Nội', 'Hải Phòng', 'Huế', 'Đà Nẵng', 'Nha Trang', 'Đà Lạt', 'Thành phố Hồ Chí Minh', 'Cần Thơ'];
+const key = (label: string) => label.normalize('NFD').replace(/[^\w]/g, '').toLowerCase();
+const html = `<div data-nib="combobox" lang="vi" class="combobox-example">
+  <label class="nib-field__label" for="city">Thành phố</label>
+  <input class="nib-input" id="city" data-nib-input />
+  <ul class="nib-listbox nib-combobox__list" data-nib-listbox>
+${cities.map((c) => `    <li class="nib-listbox__option" data-nib-option="${key(c)}">${c}</li>`).join('\n')}
+  </ul>
+</div>`;
+
+const code = {
+  html: `${html}
+
+<script type="module">
+  import '@nib-ui/js/combobox';
+  import { init } from '@nib-ui/js';
+  init();
+</script>`,
+  react: `import { useCombobox } from '@nib-ui/react/combobox';
+
+function City({ cities }) {
+  const combobox = useCombobox({ items: cities, locale: 'vi' });
+  return (
+    <>
+      <label className="nib-field__label" htmlFor={combobox.part('input').id}>Thành phố</label>
+      <input className="nib-input" {...combobox.part('input')} />
+      <ul className="nib-listbox nib-combobox__list" {...combobox.part('listbox')}>
+        {cities.map((c) => <li key={c.key} className="nib-listbox__option" {...combobox.part('option', c.key)}>{c.label}</li>)}
+      </ul>
+    </>
+  );
+}`,
+  vue: `<script setup>
+import { useCombobox } from '@nib-ui/vue/combobox';
+
+const props = defineProps(['cities']);
+const combobox = useCombobox(() => ({ items: props.cities, locale: 'vi' }));
+</script>
+
+<template>
+  <input class="nib-input" aria-label="Thành phố" v-bind="combobox.part('input')" />
+  <ul class="nib-listbox nib-combobox__list" v-bind="combobox.part('listbox')">
+    <li v-for="c in cities" :key="c.key" class="nib-listbox__option" v-bind="combobox.part('option', c.key)">{{ c.label }}</li>
+  </ul>
+</template>`,
+  svelte: `<script>
+  import { createComboboxStore } from '@nib-ui/svelte/combobox';
+
+  let { cities } = $props();
+  const combobox = createComboboxStore({ id: $props.id(), items: cities, locale: 'vi' });
+</script>
+
+<input class="nib-input" aria-label="Thành phố" {...$combobox.part('input')} />
+<ul class="nib-listbox nib-combobox__list" {...$combobox.part('listbox')}>
+  {#each cities as c (c.key)}
+    <li class="nib-listbox__option" {...$combobox.part('option', c.key)}>{c.label}</li>
+  {/each}
+</ul>`,
+};
+---
+
+<ComponentPage
+  title="Combobox"
+  lead="A field that narrows a list as you type, in any language: 'da nang' finds Đà Nẵng, and a Telex word waits until it is finished."
+  kind="INTERACTIVE"
+  code={code}
+>
+  <div slot="example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    <code>createCombobox</code> renders an <code>input</code>, a <code>listbox</code> (a native popover placed below the
+    field) and an <code>option</code> per key. Typing narrows the options with <code>Intl.Collator</code> in the page's
+    language, ignoring case and diacritics (<code>filter: 'contains'</code>, <code>'startsWith'</code>, or
+    <code>'none'</code> when you search on a server from <code>onQueryChange</code>). While an input method composes,
+    nothing filters and no key acts, so Vietnamese Telex and Japanese IMEs work; Android keyboards that compose a whole
+    word narrow the list when the word ends. Choosing writes the label into the field; leaving the field puts the chosen
+    label back, and emptying it clears the value. Matching folds each label once, so a few thousand options filter
+    within a frame; past that, filter on a server with <code>'none'</code>.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      Follows the APG combobox pattern with list autocomplete: <code>role="combobox"</code>, <code>aria-expanded</code>,
+      <code>aria-controls</code> and the current option as <code>aria-activedescendant</code>; focus stays in the field.
+    </li>
+    <li>
+      Up and Down open the list and move (on the chosen option when the field shows it); Alt+Down opens without moving,
+      Alt+Up closes; Enter chooses; Escape closes the list or, when closed, clears the field and the value; Tab leaves.
+    </li>
+    <li>Give the field a visible label.</li>
+  </ul>
+</ComponentPage>
+
+<script>
+  import '@nib-ui/js/combobox';
+  import { init } from '@nib-ui/js';
+  init();
+</script>
+
+<style>
+  :global(.combobox-example) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--nib-space-xs);
+    max-inline-size: 20rem;
+  }
+
+  :global(.combobox-example .nib-combobox__list) {
+    min-block-size: 0;
+  }
+</style>

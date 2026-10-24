@@ -1,0 +1,33 @@
+---
+import FixtureLayout from '../../../layouts/fixture-layout.astro';
+---
+
+<FixtureLayout title="Combobox · vanilla fixture">
+  <div id="mount"></div>
+</FixtureLayout>
+
+<script>
+  import { comboboxApg } from '@nib-ui/core/combobox/apg';
+  import type { ComboboxOptions } from '@nib-ui/core/combobox';
+  import '@nib-ui/js/combobox';
+  import { init } from '@nib-ui/js';
+  import { caseOptions } from '../../../fixtures/apg-case.ts';
+
+  // The vanilla binding reads its options from markup, so the row is written out as markup.
+  const o = caseOptions(comboboxApg) as unknown as ComboboxOptions & { id: string };
+  const root = Object.assign(document.createElement('div'), { id: o.id, lang: o.locale ?? '' });
+  root.dataset['nib'] = 'combobox';
+  root.innerHTML = `<label class="nib-field__label" for="cb-field">City</label><input class="nib-input" id="cb-field" data-nib-input /><ul class="nib-listbox nib-combobox__list" data-nib-listbox></ul>`;
+  const list = root.querySelector('ul');
+  for (const item of o.items) {
+    const li = Object.assign(document.createElement('li'), {
+      className: 'nib-listbox__option',
+      textContent: item.label,
+    });
+    li.dataset['nibOption'] = item.key;
+    if (item.disabled) li.dataset['disabled'] = '';
+    list?.append(li);
+  }
+  document.getElementById('mount')?.append(root);
+  init();
+</script>

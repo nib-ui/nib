@@ -22,6 +22,8 @@ export interface NibEvent {
   isComposing?: boolean;
   /** Text of an input or composition event. */
   data?: string;
+  /** Input and composition events: the field's whole value after the change. */
+  value?: string;
   /** The state a popover or details element moves to, on `toggle` and `beforetoggle`. */
   newState?: 'open' | 'closed';
   /** Pointer events: the kind of pointer, so hover-only behaviour can skip touch. */

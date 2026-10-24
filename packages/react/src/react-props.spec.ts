@@ -10,4 +10,10 @@ describe('reactProps', () => {
     expect(props['style']).toEqual({ '--nib-x': '10px', maxBlockSize: '20px' });
     expect(props['popoverTarget']).toBe('p');
   });
+
+  it('gives a field whose value Nib controls onChange, as a controlled React input needs', () => {
+    const props = reactProps({ attrs: { value: 'x' }, on: { input: () => [] } }, () => undefined);
+    expect(props['onChange']).toBeTypeOf('function');
+    expect(props['onInput']).toBeUndefined();
+  });
 });

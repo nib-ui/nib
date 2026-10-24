@@ -65,6 +65,11 @@
       "@nib-ui/source": "./src/toaster.ts",
       "types": "./dist/toaster.d.ts",
       "default": "./dist/toaster.js"
+    },
+    "./combobox": {
+      "@nib-ui/source": "./src/combobox.ts",
+      "types": "./dist/combobox.d.ts",
+      "default": "./dist/combobox.js"
     }
   },
   "files": [
@@ -118,7 +123,9 @@
     "./dist/dialog.js",
     "./src/dialog.ts",
     "./dist/toaster.js",
-    "./src/toaster.ts"
+    "./src/toaster.ts",
+    "./dist/combobox.js",
+    "./src/combobox.ts"
   ],
   "dependencies": {
     "@nib-ui/core": "workspace:*",
