@@ -5,7 +5,10 @@ import { strings } from '../i18n/ui.ts';
 
 const t = strings(Astro.currentLocale);
 const path = Astro.url.pathname;
-const links = [{ href: '/components/', label: t.components }];
+const links = [
+  { href: '/components/', label: t.components },
+  { href: '/play/', label: t.play },
+];
 ---
 
 <header class="nib-header">

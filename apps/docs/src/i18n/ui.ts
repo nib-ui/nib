@@ -9,6 +9,7 @@ export const ui = {
     themeAfter: 'theme',
     home: 'Nib',
     components: 'Components',
+    play: 'Proof press',
     siteNav: 'Site',
     docsNav: 'Docs',
     menu: 'Menu',
