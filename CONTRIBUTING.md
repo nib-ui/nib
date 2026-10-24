@@ -60,6 +60,10 @@ pnpm nx release plan
 Pick the bump (`patch` for fixes, `minor` for features, `major` for breaking changes) and write
 one or two sentences for the changelog, in the words a user of the package would use.
 
+Before each minor release, record the browser floor (ADR 5): `pnpm browser-support` resolves the
+`browserslist` query in `package.json` and writes it as a version plan, so the release's changelog
+lists the exact browser versions under "Browser support". Patches never raise the floor.
+
 ## The five laws
 
 Nib's look is fixed by five laws (see [`spec/DESIGN.md`](spec/DESIGN.md)). No change, option or

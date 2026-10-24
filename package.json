@@ -14,7 +14,8 @@
     "update-snapshots": "scripts/playwright-docker.sh --update-snapshots",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "browser-support": "node scripts/browser-support.ts"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.12",
@@ -37,6 +38,7 @@
     "@types/react-dom": "19.3.0",
     "@vitest/browser-playwright": "5.0.5",
     "astro": "7.4.2",
+    "browserslist": "4.29.4",
     "eslint": "10.13.0",
     "husky": "9.1.7",
     "jsonc-eslint-parser": "3.3.0",
@@ -70,5 +72,10 @@
       "prettier --write"
     ],
     "*.{json,css,md,yml,yaml,svelte,vue,html,astro}": "prettier --write"
-  }
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions"
+  ]
 }

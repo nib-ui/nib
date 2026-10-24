@@ -226,6 +226,9 @@ importers:
       astro:
         specifier: 7.4.2
         version: 7.4.2(@types/node@24.19.2)(esbuild@0.28.2)(yaml@2.9.1)
+      browserslist:
+        specifier: 4.29.4
+        version: 4.29.4
       eslint:
         specifier: 10.13.0
         version: 10.13.0(supports-color@7.2.0)
