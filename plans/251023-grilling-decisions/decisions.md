@@ -105,6 +105,6 @@ None on design. Remaining items are actions, gated on the owner's final confirma
 - Claude (authorised in Q23, after confirmation): transfer the repo to `nib-ui`, merge the `design` repo via `git subtree` into `spec/` + `brand/`, rewrite DESIGN.md / README for Nib + jade/ink-inversion accent, record key decisions as ADRs in `docs/adr/`.
 
 ## Follow-ups found while writing the spec (2026-10-24)
-- **Open:** the primary button is an ink fill, which looks like the ink-inverted cursor block that the accent decision reserves for selection. A primary-button treatment that is not a plain ink fill needs its own decision (see `docs/adr/0002-*.md`).
+- **Resolved (ADR 9):** primary button = 2px ink border, transparent ground; hierarchy primary 2px → outline 1px → ghost; ink inversion means *chosen* and never makes an action stand out (pressed toggles and selected options may use it); destructive confirm = 2px red border; no filled-button exception for landing CTAs.
 - Syntax colors retuned off teal: keyword `#a98fc0` / `#6e4f8a` (mauve), number `#c2a26f` / `#7d5f2c` (ochre); ≥ 4.5:1 on surface raised in both themes.
 - Label line-heights raised for Vietnamese diacritics: `label-md` 12/18, `label-sm` 11/16.

@@ -1,6 +1,6 @@
 # 2. Jade accent plus an ink-inverted cursor block for "current"
 
-Date: 2026-10-24 · Status: accepted (primary-button treatment open)
+Date: 2026-10-24 · Status: accepted (primary button settled in ADR 9)
 
 ## Context
 
@@ -17,7 +17,7 @@ color-vision deficiency (see `plans/reports/researcher-251023-accent-candidates.
 - Two forms of "current": a **jade rule** (active-nav underline, focus ring, progress, playhead,
   `NOW` text) says *where*; an **ink-inverted cursor block** (ink fill, surface text, 17.5:1) says
   *which one is chosen* (selected row, highlighted option, selected date, text selection).
-- Ink inversion is never a button.
+- Ink inversion means "chosen" and is never used to make an action stand out (see ADR 9).
 - Syntax keyword and number colors move off teal: keyword mauve (`#a98fc0` / `#6e4f8a`), number
   ochre (`#c2a26f` / `#7d5f2c`).
 - `nib theme check` tests custom accents for contrast, CVD distance to red/green/yellow, and
@@ -27,6 +27,5 @@ color-vision deficiency (see `plans/reports/researcher-251023-accent-candidates.
 
 - Dark jade vs red under protanopia is only ΔE ≈ 5, so the cursor block and law 5 (hue never
   alone) carry meaning, not jade alone.
-- The primary button is currently an ink fill, which looks like a cursor block. A primary-button
-  treatment that is not a plain ink fill must be decided in a follow-up ADR.
+- The primary button can no longer be an ink fill; ADR 9 makes it a 2px ink stroke.
 - Forced-colors mode removes fills: cursor blocks map to `Highlight` / `HighlightText`.

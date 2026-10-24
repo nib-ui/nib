@@ -16,7 +16,6 @@ colors:
   hover: "#faf9f50b"
   scrim: "#141413b3"
   primary: "#faf9f5"
-  on-primary: "#141413"
   accent: "#00967d"
   accent-text: "#009e84"
   cursor: "#faf9f5"
@@ -46,7 +45,6 @@ colors:
   hover-light: "#1414130d"
   scrim-light: "#14141359"
   primary-light: "#141413"
-  on-primary-light: "#faf9f5"
   accent-light: "#02806c"
   accent-text-light: "#007561"
   cursor-light: "#141413"
@@ -202,8 +200,9 @@ components:
   button-hover:
     backgroundColor: "{colors.hover}"
   button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
+    borderColor: "{colors.primary}"
+    borderWidth: 2px
+    textColor: "{colors.on-surface}"
     typography: "{typography.label-md}"
     height: 28px
     padding: 0 8px
@@ -327,26 +326,25 @@ role. Lines and hover fills are alpha over ink, so they work on any of the three
 
 ### Primary, accent and cursor
 
-- **Primary** is ink, not a color. The main call to action (`SUBSCRIBE`, `GET STARTED`, `RUN`) is
-  an ink fill with surface-colored text.
+- **Primary** is ink, not a color, and it is a stroke, not a fill. The main call to action
+  (`SUBSCRIBE`, `GET STARTED`, `RUN`) is a 2px ink border on a transparent ground with on-surface
+  text: the one 2px ink frame in the view.
 - **Accent** (jade #00967d / #02806c, story name *Verdigris*): non-text marks for the current
   thing: active-nav underline, focus ring, progress bar, playhead, slider thumb, the current step.
   ≥ 3:1 on all three surfaces of its theme.
 - **Accent text** (#009e84 / #007561): the accent as text: link hover, the current step label,
   a `NOW` / `LIVE` tag. ≥ 4.5:1 on all three surfaces of its theme.
-- **Cursor** (ink inversion: on-surface fill with surface-colored text, 17.5:1): the selected or
-  current *block*: the selected list row, the highlighted option in a listbox or command palette,
-  the selected date, the selected table row, the active cell in a grid, text selection. It is the
-  block cursor of the page.
+- **Cursor** (ink inversion: on-surface fill with surface-colored text, 17.5:1): a *chosen value*:
+  the selected list row, the highlighted option in a listbox or command palette, the selected
+  date, the selected table row, the selected option in an option picker, a toggle that is on
+  (`aria-pressed="true"`), text selection. It is the block cursor of the page.
 
 The two forms work together: a jade rule says *where* the current thing is; an ink-inverted block
-says *which* one is chosen. The cursor block keeps working under color-vision deficiency and in
+says *which* value is chosen. The cursor block keeps working under color-vision deficiency and in
 grayscale, where jade alone can be hard to tell from red or green.
 
-> **Open decision.** The primary button is also an ink fill, so it looks like a cursor block. The
-> rule "ink inversion is never a button" needs a primary-button treatment that is not a plain ink
-> fill. Until an ADR settles it, keep at most one primary button per view and never place it inside
-> a list or grid where cursor blocks appear.
+Ink inversion means *chosen*. It is never used to make an action stand out: emphasis on an action
+is a 2px stroke, so a primary button can never be mistaken for a selected item.
 
 ### Semantic hues
 
@@ -553,9 +551,18 @@ detail.
 Mono label, 28px tall (36px `lg` for page-level CTAs, 44px on touch), 1px transparent border.
 
 - **hover**: hover fill only. Never a lift, scale or shadow.
-- **primary**: see the open decision under *Primary, accent and cursor*. One primary per view.
-- **outline**: 1px line border. Pressed toggle (`aria-pressed="true"`): ink border + hover fill.
-- **destructive**: red border + red text.
+- **primary**: 2px ink border, transparent ground, on-surface text; hover adds the hover fill.
+  One primary per view: it is the only 2px ink frame on screen.
+- **outline**: 1px line border. Pressed toggle (`aria-pressed="true"`): cursor block.
+- **ghost**: no border; hover fill only. Used for low-priority actions in dense rows.
+- **destructive**: 1px red border + red text.
+- **destructive primary** (the confirm button of a destructive dialog, e.g. `DELETE PROJECT`):
+  2px red border + red text. It takes the primary's place, so the view still has one 2px frame.
+
+Hierarchy is stroke weight: primary 2px → outline 1px → ghost none. Size and position do the
+rest: a landing-page CTA is `lg` (36px, 48–52px when pinned on phones), sits next to the headline,
+and is the only 2px frame in the viewport. There is no filled-button exception, on landings or
+anywhere else.
 - **disabled**: 45% opacity.
 
 Text is a verb: `ADD TO CART`, `SUBSCRIBE`, `READ MORE →`, `RUN`. An icon may sit before the word;
@@ -719,7 +726,8 @@ stepped `steps(1, end)`.
 - Touch targets ≥ 44px; primary touch controls 48–52px.
 - Selection is a cursor block: on-surface fill with surface-colored text.
 - Forced colors (`@media (forced-colors: active)`): backgrounds disappear, so cursor blocks use
-  `Highlight` / `HighlightText`, 2px rules become real borders, and focus uses `CanvasText`.
+  `Highlight` / `HighlightText`, 2px rules become real borders, the primary button keeps its 2px
+  border in `ButtonText`, and focus uses `CanvasText`.
 - Custom accents and hue mappings are checked by `nib theme check`: contrast on 3 surfaces × 2
   themes, color-vision-deficiency distance to red / green / yellow, and collisions with the fixed
   hues.
@@ -779,7 +787,8 @@ names; the story names live in docs and marketing only.
 - Don't float cards on the page; don't box content inside more boxes.
 - Don't use pill buttons, colored button fills, or icon-only controls outside dense component controls.
 - Don't use jade for brand washes, sale badges, buttons or large fills.
-- Don't use ink inversion for buttons; it means *selected*.
+- Don't use ink inversion to make an action stand out; it means *chosen*. Primary buttons are a
+  2px ink stroke, never a fill.
 - Don't write Title Case headings, type uppercase into content, or enable mono ligatures.
 - Don't add hover lifts, scale, parallax, bouncy easing or perpetual animation beyond the spinner.
 - Don't use illustrations, stock 3D art or lorem ipsum.
