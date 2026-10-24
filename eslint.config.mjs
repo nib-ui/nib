@@ -47,12 +47,7 @@ export default [
     files: TEST_FILES,
     rules: {
       '@nx/enforce-module-boundaries': boundaries(
-        // They may also use the shared test harness (type:tool), which no runtime code may import.
-        constraints.map((c) => ({
-          ...c,
-          onlyDependOnLibsWithTags: [...c.onlyDependOnLibsWithTags, 'type:tool'],
-          allowedExternalImports: undefined,
-        })),
+        constraints.map((c) => ({ ...c, allowedExternalImports: undefined })),
       ),
     },
   },

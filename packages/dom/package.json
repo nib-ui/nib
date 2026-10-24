@@ -50,8 +50,5 @@
   },
   "dependencies": {
     "@nib-ui/core": "workspace:*"
-  },
-  "devDependencies": {
-    "@nib-ui/test-harness": "workspace:*"
   }
 }

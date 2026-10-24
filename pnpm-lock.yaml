@@ -261,10 +261,6 @@ importers:
       '@nib-ui/core':
         specifier: workspace:*
         version: link:../core
-    devDependencies:
-      '@nib-ui/test-harness':
-        specifier: workspace:*
-        version: link:../../tools/test-harness
 
   packages/fonts: {}
 
