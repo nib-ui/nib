@@ -67,9 +67,11 @@ import '@nib-ui/css/presets/blog.css';
   const bar = document.querySelector<HTMLElement>('.nib-broadsheet__progress');
   const update = () => {
     const room = document.documentElement.scrollHeight - innerHeight;
-    bar?.style.setProperty('--nib-progress', String(room > 0 ? Math.min(1, scrollY / room) : 1));
+    // A page with nothing to scroll (yet: fonts may still be loading) shows no progress.
+    bar?.style.setProperty('--nib-progress', String(room > 0 ? Math.min(1, scrollY / room) : 0));
   };
   addEventListener('scroll', update, { passive: true });
   addEventListener('resize', update);
+  addEventListener('load', update);
   update();
 </script>
