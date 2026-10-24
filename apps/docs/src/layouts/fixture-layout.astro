@@ -1,0 +1,22 @@
+---
+import '@nib-ui/css/nib.css';
+
+// A bare page for the keyboard specs: no site chrome, never linked, kept out of search.
+interface Props {
+  title: string;
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>{Astro.props.title}</title>
+  </head>
+  <body>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>

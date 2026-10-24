@@ -5,10 +5,10 @@ const { exports } = JSON.parse(readFileSync(new URL('package.json', import.meta.
 // These may grow to the heavy budget (ADR 6); every other controller gets the module budget.
 const HEAVY = ['combobox', 'command-palette', 'date-picker', 'data-grid'];
 
-// One entry per controller subpath, bundled with the kernel it pulls in. The test helpers ship
-// separately and do not count.
+// One entry per controller subpath, bundled with the kernel it pulls in. The test helpers and the
+// APG tables (data for the keyboard specs) ship separately and do not count.
 export default Object.entries(exports)
-  .filter(([path]) => path !== './package.json' && path !== './testing')
+  .filter(([path]) => path !== './package.json' && path !== './testing' && !path.endsWith('/apg'))
   .map(([path, target]) => ({
     name: `@nib-ui/core${path.slice(1)}`,
     path: target.default,

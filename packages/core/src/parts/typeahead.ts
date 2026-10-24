@@ -8,6 +8,8 @@ export interface Labelled extends Navigable {
 export interface Typeahead {
   /** Adds one typed character; returns the key to move to, or null when nothing matches. */
   type(char: string, items: readonly Labelled[], current: Key | null): Key | null;
+  /** True while a search is running, so a Space belongs to it rather than to the key's action. */
+  active(): boolean;
   reset(): void;
 }
 
@@ -48,6 +50,9 @@ export function createTypeahead({ clock, locale }: { clock: Clock; locale: strin
         if (item && !item.disabled && startsWith(item.label, text)) return item.key;
       }
       return null;
+    },
+    active() {
+      return buffer !== '';
     },
     reset() {
       cancel();

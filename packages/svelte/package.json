@@ -15,6 +15,11 @@
       "@nib-ui/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./listbox": {
+      "@nib-ui/source": "./src/listbox.ts",
+      "types": "./dist/listbox.d.ts",
+      "default": "./dist/listbox.js"
     }
   },
   "files": [

@@ -113,4 +113,43 @@ describe('runConformance', () => {
     });
     expect(runConformance(t, create)[0]?.failures).toEqual([]);
   });
+
+  it('focuses the target first when it has a focus handler, as a browser does before any key', () => {
+    const focusable = (options: Record<string, unknown>, host: Parameters<typeof createList>[1]) => {
+      const list = createList(options as never, host);
+      return {
+        ...list,
+        part: (name: 'list' | 'item', key?: string) => {
+          const part = list.part(name, key);
+          return name === 'list'
+            ? {
+                ...part,
+                on: {
+                  ...part.on,
+                  focus: () =>
+                    part.on['keydown']?.({ type: 'keydown', key: 'End', preventDefault: () => undefined }) ?? [],
+                },
+              }
+            : part;
+        },
+        destroy: list.destroy,
+      };
+    };
+    const [result] = runConformance(
+      {
+        pattern: 'focus first',
+        cases: [
+          {
+            name: 'focus then ArrowUp',
+            options: { id: 'l', items },
+            target: { part: 'list' },
+            keys: ['ArrowUp'],
+            expect: { attrs: [{ part: 'list', attrs: { 'aria-activedescendant': 'l-item-a' } }] },
+          },
+        ],
+      },
+      focusable,
+    );
+    expect(result?.failures).toEqual([]);
+  });
 });

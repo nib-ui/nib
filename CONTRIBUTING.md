@@ -42,7 +42,12 @@ with an Accessibility section, and an axe + visual-regression spec over the whol
 `--kind=interactive` adds the core controller with its APG conformance table, the React, Vue, Svelte
 and vanilla bindings, their package exports, and a Playwright keyboard spec. Size budgets pick new
 files up by themselves. The output passes lint, typecheck, test and build untouched; record its
-screenshot baselines with `pnpm update-snapshots` (Docker) before you open the pull request.
+screenshot baselines with `pnpm update-snapshots` (Docker) before you open the pull request, and
+run `pnpm nx sync` after an interactive component, which adds a workspace dependency to the docs.
+
+Interactive components prove their keyboard behaviour once, as data: the rows of
+`packages/core/src/<name>/<name>.apg.ts` run in core and, through fixture pages in
+`apps/docs/src/pages/test/<name>/`, against all four bindings (`e2e/components/<name>.keyboard.e2e.ts`).
 
 ## Version plans
 

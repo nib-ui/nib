@@ -22,9 +22,13 @@ interface Bound {
  * Keeps elements in step with a controller: writes each part's attributes now and after every
  * state change, routes DOM events to the part's handlers, and runs the returned intents once the
  * DOM is updated. `targets` is read again on every change, so items may come and go.
- * Returns a function that removes the listeners and restores the original attributes.
+ * Returns a function that removes the listeners and restores the original attributes; its
+ * `refresh()` re-reads `targets` and rewrites them, for markup that changed with no state change.
  */
-export function bind<P extends string>(instance: Bindable<P>, targets: () => Target<P>[]): () => void {
+export function bind<P extends string>(
+  instance: Bindable<P>,
+  targets: () => Target<P>[],
+): (() => void) & { refresh(): void } {
   const bound = new Map<Element, Bound>();
 
   const apply = () => {
@@ -65,10 +69,11 @@ export function bind<P extends string>(instance: Bindable<P>, targets: () => Tar
 
   apply();
   const unsubscribe = instance.subscribe(apply);
-  return () => {
+  const unbind = () => {
     unsubscribe();
     for (const el of [...bound.keys()]) release(el);
   };
+  return Object.assign(unbind, { refresh: apply });
 }
 
 function write(el: Element, entry: Bound, attrs: Record<string, string>) {

@@ -20,6 +20,16 @@
       "@nib-ui/source": "./src/testing/index.ts",
       "types": "./dist/testing/index.d.ts",
       "default": "./dist/testing/index.js"
+    },
+    "./listbox": {
+      "@nib-ui/source": "./src/listbox/index.ts",
+      "types": "./dist/listbox/index.d.ts",
+      "default": "./dist/listbox/index.js"
+    },
+    "./listbox/apg": {
+      "@nib-ui/source": "./src/listbox/listbox.apg.ts",
+      "types": "./dist/listbox/listbox.apg.d.ts",
+      "default": "./dist/listbox/listbox.apg.js"
     }
   },
   "files": [

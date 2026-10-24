@@ -2,10 +2,25 @@
   "files": [],
   "references": [
     {
+      "path": "../../packages/vue"
+    },
+    {
       "path": "../../packages/tokens"
     },
     {
+      "path": "../../packages/svelte"
+    },
+    {
+      "path": "../../packages/react"
+    },
+    {
+      "path": "../../packages/js"
+    },
+    {
       "path": "../../packages/css"
+    },
+    {
+      "path": "../../packages/core"
     },
     {
       "path": "../../tools/test-harness"

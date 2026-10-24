@@ -71,6 +71,8 @@ export async function componentGenerator(tree: Tree, options: ComponentOptions):
   generateFiles(tree, `${FILES}/interactive`, '.', vars);
   updateJson(tree, 'packages/core/package.json', (pkg) => {
     pkg.exports[`./${name}`] = subpath(`${name}/index`, `${name}/index`);
+    // The APG table is data for the keyboard specs of every binding, so it is importable too.
+    pkg.exports[`./${name}/apg`] = subpath(`${name}/${name}.apg`, `${name}/${name}.apg`);
     return pkg;
   });
   for (const binding of BINDINGS) {
