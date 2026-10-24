@@ -1,0 +1,189 @@
+/* Site chrome for the docs app. Component styles come from @nib-ui/css; this file only lays out the
+   docs shell, in its own layer so component CSS keeps priority over it. */
+@layer nib.base {
+  html {
+    /* Keep focused elements clear of the sticky header (WCAG 2.4.11). */
+    scroll-padding-block-start: calc(var(--nib-space-header-height) + var(--nib-space-sm));
+  }
+
+  body {
+    margin: 0;
+    background: var(--nib-surface);
+    color: var(--nib-on-surface);
+    font: var(--nib-body-md-font-weight) var(--nib-body-md-font-size) / var(--nib-body-md-line-height)
+      var(--nib-font-sans);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--nib-accent);
+    outline-offset: 2px;
+  }
+
+  a {
+    color: var(--nib-on-surface);
+    text-underline-offset: 0.2em;
+  }
+
+  code,
+  pre {
+    font-family: var(--nib-font-mono);
+    font-size: var(--nib-code-md-font-size);
+    line-height: var(--nib-code-md-line-height);
+  }
+}
+
+@layer nib.components {
+  .docs-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* The toggle offers the theme that is not showing. */
+  .docs-theme-light,
+  :root[data-theme='dark'] .docs-theme-dark {
+    display: none;
+  }
+
+  :root[data-theme='dark'] .docs-theme-light {
+    display: inline;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) .docs-theme-dark {
+      display: none;
+    }
+
+    :root:not([data-theme='light']) .docs-theme-light {
+      display: inline;
+    }
+  }
+
+  .docs-skip {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--nib-space-touch-target);
+    inset-block-start: var(--nib-space-sm);
+    inset-inline-start: var(--nib-space-sm);
+    padding: var(--nib-space-xs) var(--nib-space-sm);
+    background: var(--nib-cursor);
+    color: var(--nib-on-cursor);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: var(--nib-label-md-letter-spacing);
+    text-decoration: none;
+    transform: translateY(-200%);
+  }
+
+  .docs-skip:focus-visible {
+    transform: none;
+  }
+
+  .docs-header {
+    position: sticky;
+    inset-block-start: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    block-size: var(--nib-space-header-height);
+    padding-inline: var(--nib-space-md);
+    border-block-end: 1px solid var(--nib-line);
+    background: var(--nib-surface);
+  }
+
+  .docs-wordmark,
+  .docs-word {
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: var(--nib-label-md-letter-spacing);
+    color: var(--nib-on-surface);
+    text-decoration: none;
+  }
+
+  .docs-word {
+    min-block-size: var(--nib-space-touch-target);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--nib-on-surface-2);
+    cursor: pointer;
+  }
+
+  .docs-word:hover {
+    color: var(--nib-on-surface);
+  }
+
+  main {
+    max-inline-size: var(--nib-space-reading-width);
+    margin-inline: auto;
+    padding: var(--nib-space-xl) var(--nib-space-md);
+  }
+
+  main:focus {
+    outline: none;
+  }
+
+  .docs-kicker {
+    margin: 0;
+    color: var(--nib-on-surface-2);
+    font: var(--nib-label-sm-font-weight) var(--nib-label-sm-font-size) / var(--nib-label-sm-line-height)
+      var(--nib-font-mono);
+    text-transform: uppercase;
+  }
+
+  .docs-example {
+    margin-block: var(--nib-space-lg) 0;
+    padding: var(--nib-space-lg);
+    border: 1px solid var(--nib-line);
+  }
+
+  .docs-tabs {
+    border: 1px solid var(--nib-line);
+    border-block-start: 0;
+  }
+
+  .docs-tablist {
+    display: flex;
+    gap: var(--nib-space-sm);
+    padding-inline: var(--nib-space-sm);
+    border-block-end: 1px solid var(--nib-line);
+  }
+
+  .docs-tab {
+    min-block-size: var(--nib-space-touch-target);
+    min-inline-size: var(--nib-space-touch-target);
+    padding: 0 var(--nib-space-xs);
+    border: 0;
+    border-block-end: 2px solid transparent;
+    background: none;
+    color: var(--nib-on-surface-2);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    cursor: pointer;
+  }
+
+  .docs-tab[aria-selected='true'] {
+    border-block-end-color: var(--nib-accent);
+    color: var(--nib-on-surface);
+  }
+
+  .docs-tabpanel pre {
+    margin: 0;
+    padding: var(--nib-space-md);
+    overflow-x: auto;
+    background: var(--nib-surface-raised);
+  }
+
+  @media (forced-colors: active) {
+    .docs-tab[aria-selected='true'] {
+      border-block-end-color: CanvasText;
+    }
+  }
+}

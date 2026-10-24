@@ -1,0 +1,20 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "../../packages/tokens"
+    },
+    {
+      "path": "../../packages/css"
+    },
+    {
+      "path": "../../tools/test-harness"
+    },
+    {
+      "path": "./tsconfig.astro.json"
+    },
+    {
+      "path": "./tsconfig.e2e.json"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+---
+import '@nib-ui/css/nib.css';
+import '../styles/docs.css';
+import SiteHeader from '../components/site-header.astro';
+import { strings } from '../i18n/ui.ts';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const lang = Astro.currentLocale ?? 'en';
+const t = strings(lang);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <!-- First stylesheet of the page: bundlers drop a bare layer statement from CSS files, and it
+         alone fixes the order of the layers for everything after it. -->
+    <style is:inline>
+      @layer nib.theme, nib.base, nib.components, nib.utilities;
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title === 'Nib' ? title : `${title} · Nib`}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>
+      // Apply a stored theme before first paint; without one the page follows the OS.
+      try {
+        const theme = localStorage.getItem('nib-theme');
+        if (theme === 'dark' || theme === 'light') document.documentElement.dataset.theme = theme;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="docs-skip" href="#content">
+      {t.skip}
+    </a>
+    <SiteHeader />
+    <main id="content" tabindex="-1">
+      <slot />
+    </main>
+  </body>
+</html>

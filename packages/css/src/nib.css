@@ -1,0 +1,4 @@
+/* Nib CSS: every layer in one file. Layer order first, so later rules and user styles can rely on it. */
+@layer nib.theme, nib.base, nib.components, nib.utilities;
+
+@import '@nib-ui/tokens/tokens.css';

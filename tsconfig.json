@@ -38,6 +38,9 @@
     },
     {
       "path": "./tools/test-harness"
+    },
+    {
+      "path": "./packages/css"
     }
   ]
 }

@@ -33,10 +33,54 @@
           "{projectRoot}/stylelint.config.mjs",
           "^production"
         ]
+      },
+      "build": {
+        "command": "node scripts/build-css.ts",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "^build"
+        ],
+        "cache": true,
+        "inputs": [
+          "{projectRoot}/src/**/*.css",
+          "{projectRoot}/scripts/build-css.ts",
+          "^production"
+        ],
+        "outputs": [
+          "{projectRoot}/dist"
+        ]
+      },
+      "size-limit": {
+        "command": "size-limit",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "build"
+        ],
+        "cache": true,
+        "inputs": [
+          "{projectRoot}/dist/nib.css",
+          "{projectRoot}/.size-limit.js",
+          "{workspaceRoot}/size-budgets.json"
+        ]
       }
     }
   },
   "devDependencies": {
-    "@nib-ui/stylelint-plugin": "workspace:*"
-  }
+    "@nib-ui/stylelint-plugin": "workspace:*",
+    "@nib-ui/tokens": "workspace:*"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./nib.css": "./dist/nib.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "*.css"
+  ]
 }
