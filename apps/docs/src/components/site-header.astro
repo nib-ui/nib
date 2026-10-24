@@ -1,0 +1,15 @@
+---
+import ThemeToggle from './theme-toggle.astro';
+import { strings } from '../i18n/ui.ts';
+
+const t = strings(Astro.currentLocale);
+---
+
+<header class="docs-header">
+  <a class="docs-wordmark" href="/">
+    {t.home.toLowerCase()}
+  </a>
+  <nav class="docs-utilities" aria-label="Site">
+    <ThemeToggle />
+  </nav>
+</header>

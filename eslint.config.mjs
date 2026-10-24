@@ -37,7 +37,7 @@ export default [
   ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
-  { ignores: ['**/dist', '**/out-tsc', '**/test-output', '**/vitest.config.*.timestamp*'] },
+  { ignores: ['**/dist', '**/.astro', '**/out-tsc', '**/test-output', '**/vitest.config.*.timestamp*'] },
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.mjs'],
     rules: { '@nx/enforce-module-boundaries': boundaries(constraints) },

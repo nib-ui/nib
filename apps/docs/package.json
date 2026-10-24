@@ -9,6 +9,88 @@
     "tags": [
       "type:app",
       "scope:private"
-    ]
+    ],
+    "targets": {
+      "build": {
+        "command": "astro build",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "^build"
+        ],
+        "cache": true,
+        "inputs": [
+          "default",
+          "^production"
+        ],
+        "outputs": [
+          "{projectRoot}/dist"
+        ]
+      },
+      "dev": {
+        "command": "astro dev",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "^build"
+        ],
+        "continuous": true
+      },
+      "typecheck": {
+        "command": "astro check --tsconfig tsconfig.astro.json && tsc -p tsconfig.e2e.json",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "^build"
+        ],
+        "cache": true,
+        "inputs": [
+          "default",
+          "^production"
+        ]
+      },
+      "e2e": {
+        "command": "playwright test",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "build"
+        ],
+        "cache": true,
+        "inputs": [
+          "default",
+          "^production",
+          {
+            "externalDependencies": [
+              "@playwright/test",
+              "playwright",
+              "@axe-core/playwright"
+            ]
+          },
+          "{workspaceRoot}/scripts/playwright-docker.sh"
+        ],
+        "outputs": [
+          "{projectRoot}/test-results",
+          "{projectRoot}/playwright-report"
+        ]
+      }
+    }
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@nib-ui/css": "workspace:*",
+    "@nib-ui/tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "@nib-ui/test-harness": "workspace:*",
+    "@playwright/test": "1.64.1"
   }
 }

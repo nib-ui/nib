@@ -1,0 +1,29 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+// The template every component page follows, shown with a native element until the first
+// component lands. Each page passes the same four samples.
+const code = {
+  html: `<button type="button">SAVE</button>`,
+  react: `import { useController } from '@nib-ui/react';`,
+  vue: `import { useController } from '@nib-ui/vue';`,
+  svelte: `import { controller } from '@nib-ui/svelte';`,
+};
+---
+
+<ComponentPage
+  title="Component page"
+  lead="The shape of every component page: a live example, the code for each binding, then accessibility."
+  kind="CSS"
+  code={code}
+>
+  <button slot="example" type="button" class="docs-word">
+    SAVE
+  </button>
+  <h2>Usage</h2>
+  <p>Sections specific to the component go here, between the code and the accessibility notes.</p>
+  <ul slot="accessibility">
+    <li>Which WAI-ARIA pattern it follows, and its keyboard keys.</li>
+    <li>What screen readers announce, and what to label.</li>
+  </ul>
+</ComponentPage>

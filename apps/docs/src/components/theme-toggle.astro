@@ -1,0 +1,21 @@
+---
+import { strings } from '../i18n/ui.ts';
+
+const t = strings(Astro.currentLocale);
+---
+
+<button
+  type="button"
+  class="docs-word"
+  data-theme-toggle
+  data-dark={t.themeDark}
+  data-light={t.themeLight}
+  aria-keyshortcuts="T"
+>
+  <span aria-hidden="true">[T]</span>
+  <span data-theme-word>{t.themeDark}</span>
+</button>
+
+<script>
+  import '../scripts/theme-toggle.ts';
+</script>

@@ -1,0 +1,32 @@
+---
+import BaseLayout from './base-layout.astro';
+import CodeTabs from '../components/code-tabs.astro';
+import { strings } from '../i18n/ui.ts';
+
+/**
+ * Every component page has the same shape: kicker, title, lead, a live example, the code for each
+ * binding, then the page's own sections. The Accessibility section is required (slot "accessibility").
+ */
+interface Props {
+  title: string;
+  lead: string;
+  kind: 'CSS' | 'INTERACTIVE';
+  code: { html?: string; react?: string; vue?: string; svelte?: string };
+}
+
+const { title, lead, kind, code } = Astro.props;
+const t = strings(Astro.currentLocale);
+---
+
+<BaseLayout title={title} description={lead}>
+  <p class="docs-kicker">{`COMPONENT · ${kind}`}</p>
+  <h1>{title}</h1>
+  <p>{lead}</p>
+  <section class="docs-example" aria-label={t.example}>
+    <slot name="example" />
+  </section>
+  <CodeTabs {...code} />
+  <slot />
+  <h2>{t.accessibility}</h2>
+  <slot name="accessibility" />
+</BaseLayout>
