@@ -7,8 +7,10 @@ test.describe('docs shell', () => {
   test('SKIP TO CONTENT is the first stop and moves focus to the main region', async ({ page }) => {
     await page.goto('/');
     await page.keyboard.press('Tab');
-    const skip = page.getByRole('link', { name: 'SKIP TO CONTENT' });
+    const skip = page.getByRole('link', { name: 'Skip to content' });
     await expect(skip).toBeFocused();
+    // Written in sentence case, shown in caps.
+    await expect(skip).toHaveCSS('text-transform', 'uppercase');
     await expect(skip).toBeInViewport();
     await page.keyboard.press('Enter');
     await expect(page.locator('main')).toBeFocused();

@@ -1,0 +1,87 @@
+---
+import ComponentPage from '../../layouts/component-page.astro';
+
+const html = `<p class="nib-kicker">Journal · 6 min read</p>
+<h2 class="nib-text-xl">Coffee roasted the week you order it</h2>
+<p class="nib-text-lead">Small batches, shipped the day after roasting.</p>
+<div class="nib-grid" style="--nib-grid-min: 10rem">
+  <div>
+    <div class="nib-pane-header">Orders</div>
+    <p class="nib-text-display nib-num">1,284</p>
+  </div>
+  <div>
+    <div class="nib-pane-header">Returns</div>
+    <p class="nib-text-display nib-num">12</p>
+  </div>
+  <div>
+    <div class="nib-pane-header">Rating</div>
+    <p class="nib-text-display nib-num">4.8</p>
+  </div>
+</div>
+<div class="nib-with-side" style="--nib-side-width: 10rem">
+  <nav aria-label="Sections"><div class="nib-pane-header">Sections</div></nav>
+  <div class="nib-with-side__main nib-prose">
+    <p>Prose sits at a 68ch reading width, with <a href="#content">ink links</a> and <code>code</code>.</p>
+    <ul>
+      <li>Mono markers for lists</li>
+      <li>Tiếng Việt with stacked marks: Ầ Ỗ</li>
+    </ul>
+    <blockquote>A ruled quote.</blockquote>
+  </div>
+</div>
+<p class="nib-text-meta">Updated 24 Oct 2026 · 3 authors</p>`;
+
+const code = { html };
+---
+
+<ComponentPage
+  title="Base"
+  lead="The ground every component sits on: reset, type roles, the ruled grid, focus, themes and density."
+  kind="CSS"
+  code={code}
+>
+  <div slot="example" class="base-example" set:html={html} />
+
+  <h2>Usage</h2>
+  <p>
+    <code>nib.css</code> includes the base. Type roles are classes: <code>nib-text-hero</code>, <code>-xl</code>,
+    <code>-display</code>, <code>-lead</code>, <code>-heading</code>, <code>-reading</code>, <code>-body</code>,
+    <code>-small</code>, <code>-label</code>, <code>-micro</code>, <code>-code</code>, <code>-item</code> and
+    <code>-meta</code>, plus <code>nib-kicker</code> and <code>nib-num</code> for tabular numbers. <code>h1</code> to
+    <code>h3</code> default to xl, display and heading.
+  </p>
+  <p>
+    Layout: <code>nib-container</code> (1200px, centred), <code>nib-grid</code> (ruled cells, minimum width from
+    <code>--nib-grid-min</code>), <code>nib-with-side</code> with a <code>nib-with-side__main</code> child (the side
+    column wraps onto its own row when space runs out; DOM order decides above or below), <code>nib-pane-header</code>{' '}
+    and <code>nib-prose</code>. Set
+    <code>data-theme="dark|light"</code> or <code>data-density="compact|comfortable"</code> on the root or on any
+    region.
+  </p>
+
+  <ul slot="accessibility">
+    <li>
+      Caps come from <code>text-transform</code>: write labels in normal case so screen readers read words, not letters.
+      Scripts without case turn caps and tracking off through <code>:lang()</code>.
+    </li>
+    <li>
+      Every focusable element gets one square 2px accent ring, 2px away; <code>CanvasText</code> in forced colours.
+    </li>
+    <li>
+      Put <code>&lt;a class="nib-skip" href="#content"&gt;Skip to content&lt;/a&gt;</code> first in the page; it appears
+      on focus.
+    </li>
+    <li>Ruled grid lines stay visible in forced colours.</li>
+  </ul>
+</ComponentPage>
+
+<style>
+  .base-example > :global(* + *) {
+    margin-block-start: var(--nib-space-lg);
+  }
+
+  .base-example :global(.nib-grid p),
+  .base-example :global(.nib-with-side__main) {
+    padding: var(--nib-space-md);
+  }
+</style>

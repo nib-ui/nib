@@ -15,8 +15,8 @@
     color: var(--nib-on-surface);
     font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
       var(--nib-font-mono);
-    letter-spacing: var(--nib-label-md-letter-spacing);
-    text-transform: uppercase;
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing, 1));
+    text-transform: var(--nib-caps, uppercase);
     text-decoration: none;
     white-space: nowrap;
     cursor: pointer;

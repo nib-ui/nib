@@ -1,0 +1,109 @@
+/* Layout: the page container, a side column beside the main one, the ruled grid, the pane header
+   row, the skip link and the focus ring. */
+@layer nib.base {
+  .nib-container {
+    inline-size: 100%;
+    max-inline-size: var(--nib-space-page-max-width);
+    margin-inline: auto;
+    padding-inline: var(--nib-space-lg);
+  }
+
+  /* The ruled grid: cells over a line-coloured ground, so the 1px gaps draw the rules, each once
+     (the line colour is translucent; per-cell outlines would paint shared rules twice). */
+  .nib-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--nib-grid-min, 16rem)), 1fr));
+  }
+
+  /* A side column beside one flexible main column (.nib-with-side__main). It wraps onto its own
+     row when the main column would get narrower than 60%, keeping DOM order: put it first to land
+     above, last to land below. */
+  .nib-with-side {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .nib-with-side > * {
+    flex: 1 1 var(--nib-side-width, 280px);
+  }
+
+  .nib-with-side > .nib-with-side__main {
+    flex: 999 1 0;
+    min-inline-size: 60%;
+  }
+
+  .nib-grid,
+  .nib-with-side {
+    gap: var(--nib-space-hairline);
+    padding: var(--nib-space-hairline);
+    background: var(--nib-line);
+  }
+
+  :is(.nib-grid, .nib-with-side) > * {
+    min-inline-size: 0;
+    background: var(--nib-surface);
+  }
+
+  /* The label row on top of a pane: PANE NAME on the start, actions on the end. */
+  .nib-pane-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--nib-space-sm);
+    min-block-size: var(--nib-space-pane-header-height);
+    padding-inline: var(--nib-space-md);
+    border-block-end: var(--nib-space-hairline) solid var(--nib-line);
+    color: var(--nib-on-surface-2);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing));
+    text-transform: var(--nib-caps);
+  }
+
+  /* The first focusable element of every page; it appears on focus. */
+  .nib-skip {
+    position: absolute;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--nib-space-touch-target);
+    inset-block-start: var(--nib-space-sm);
+    inset-inline-start: var(--nib-space-sm);
+    padding: var(--nib-space-xs) var(--nib-space-sm);
+    background: var(--nib-cursor);
+    color: var(--nib-on-cursor);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing));
+    text-decoration: none;
+    text-transform: var(--nib-caps);
+  }
+
+  .nib-skip:not(:focus) {
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* Last, so it wins over the ruled cells' forced-colours outline: one square 2px accent ring, 2px away. */
+  :focus-visible {
+    outline: var(--nib-space-rule) solid var(--nib-accent);
+    outline-offset: var(--nib-space-rule);
+  }
+
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline-color: CanvasText;
+    }
+
+    /* Backgrounds are dropped, and the ground with them: each cell draws its own rule. */
+    :is(.nib-grid, .nib-with-side) > * {
+      outline: var(--nib-space-hairline) solid CanvasText;
+    }
+
+    .nib-skip {
+      forced-color-adjust: none;
+      background: Highlight;
+      color: HighlightText;
+    }
+  }
+}

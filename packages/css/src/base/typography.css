@@ -1,0 +1,150 @@
+/* Typography roles from spec/DESIGN.md. Headlines are Inter 500 in sentence case; labels are mono
+   in caps, applied with text-transform so content stays in normal case for screen readers. */
+@layer nib.base {
+  /* Caps and their tracking, switched off for scripts without case (and cursive ones, where
+     letter-spacing breaks joining). Any [lang] restores them for an embedded cased language. */
+  :root,
+  [lang] {
+    --nib-caps: uppercase;
+    --nib-caps-spacing: 1;
+  }
+
+  :is(
+    :lang(am),
+    :lang(ar),
+    :lang(bn),
+    :lang(ckb),
+    :lang(fa),
+    :lang(gu),
+    :lang(he),
+    :lang(hi),
+    :lang(ja),
+    :lang(km),
+    :lang(kn),
+    :lang(ko),
+    :lang(lo),
+    :lang(ml),
+    :lang(mr),
+    :lang(my),
+    :lang(ne),
+    :lang(pa),
+    :lang(ps),
+    :lang(sd),
+    :lang(si),
+    :lang(ta),
+    :lang(te),
+    :lang(th),
+    :lang(ug),
+    :lang(ur),
+    :lang(yi),
+    :lang(zh)
+  ) {
+    --nib-caps: none;
+    --nib-caps-spacing: 0;
+  }
+
+  :where(h1),
+  .nib-text-xl {
+    font: var(--nib-headline-xl-font-weight) var(--nib-headline-xl-font-size) / var(--nib-headline-xl-line-height)
+      var(--nib-font-sans);
+    letter-spacing: var(--nib-headline-xl-letter-spacing);
+  }
+
+  :where(h2),
+  .nib-text-display {
+    font: var(--nib-headline-display-font-weight) var(--nib-headline-display-font-size) /
+      var(--nib-headline-display-line-height) var(--nib-font-sans);
+    letter-spacing: var(--nib-headline-display-letter-spacing);
+  }
+
+  :where(h3),
+  .nib-text-heading {
+    font: var(--nib-headline-md-font-weight) var(--nib-headline-md-font-size) / var(--nib-headline-md-line-height)
+      var(--nib-font-sans);
+    letter-spacing: var(--nib-headline-md-letter-spacing);
+  }
+
+  .nib-text-hero {
+    font: var(--nib-headline-hero-font-weight) var(--nib-headline-hero-font-size) / var(--nib-headline-hero-line-height)
+      var(--nib-font-sans);
+    letter-spacing: var(--nib-headline-hero-letter-spacing);
+  }
+
+  /* The hero headline drops to 32px on phones. */
+  @media (width < 40rem) {
+    .nib-text-hero {
+      font-size: var(--nib-headline-xl-font-size);
+      line-height: var(--nib-headline-xl-line-height);
+    }
+  }
+
+  .nib-text-lead {
+    font: var(--nib-headline-lead-font-weight) var(--nib-headline-lead-font-size) / var(--nib-headline-lead-line-height)
+      var(--nib-font-sans);
+    letter-spacing: var(--nib-headline-lead-letter-spacing);
+  }
+
+  .nib-text-reading {
+    color: var(--nib-on-surface-2);
+    font: var(--nib-body-lg-font-weight) var(--nib-body-lg-font-size) / var(--nib-body-lg-line-height)
+      var(--nib-font-sans);
+  }
+
+  .nib-text-body {
+    color: var(--nib-on-surface-2);
+    font: var(--nib-body-md-font-weight) var(--nib-body-md-font-size) / var(--nib-body-md-line-height)
+      var(--nib-font-sans);
+  }
+
+  .nib-text-small {
+    color: var(--nib-on-surface-2);
+    font: var(--nib-body-sm-font-weight) var(--nib-body-sm-font-size) / var(--nib-body-sm-line-height)
+      var(--nib-font-sans);
+  }
+
+  .nib-text-label,
+  .nib-kicker {
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: calc(var(--nib-label-md-letter-spacing) * var(--nib-caps-spacing));
+    text-transform: var(--nib-caps);
+  }
+
+  /* A mono kicker above a headline: JOURNAL · 6 MIN READ. */
+  .nib-kicker {
+    margin-block-end: var(--nib-space-sm);
+    color: var(--nib-on-surface-2);
+  }
+
+  .nib-text-micro {
+    color: var(--nib-on-surface-3);
+    font: var(--nib-label-sm-font-weight) var(--nib-label-sm-font-size) / var(--nib-label-sm-line-height)
+      var(--nib-font-mono);
+    text-transform: var(--nib-caps);
+  }
+
+  .nib-text-code {
+    font: var(--nib-code-md-font-weight) var(--nib-code-md-font-size) / var(--nib-code-md-line-height)
+      var(--nib-font-mono);
+  }
+
+  .nib-text-item {
+    font: var(--nib-item-md-font-weight) var(--nib-item-md-font-size) / var(--nib-item-md-line-height)
+      var(--nib-font-mono);
+  }
+
+  .nib-text-meta {
+    color: var(--nib-on-surface-3);
+    font: var(--nib-meta-sm-font-weight) var(--nib-meta-sm-font-size) / var(--nib-meta-sm-line-height)
+      var(--nib-font-mono);
+  }
+
+  :is(.nib-text-label, .nib-kicker, .nib-text-micro, .nib-text-code, .nib-text-item, .nib-text-meta) {
+    font-variant-ligatures: none;
+  }
+
+  /* Inter numbers that change or line up (stats, totals, clocks). Mono figures are fixed already. */
+  .nib-num {
+    font-variant-numeric: tabular-nums;
+  }
+}

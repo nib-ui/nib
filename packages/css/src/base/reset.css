@@ -1,0 +1,72 @@
+/* Reset and page ground. Everything sits in nib.base, so components and author styles win over it.
+   Element selectors are wrapped in :where() to keep them at zero specificity. */
+@layer nib.base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  /* The page tone sits on the root, so overscroll and gaps never flash another colour. */
+  html {
+    background: var(--nib-surface);
+    color: var(--nib-on-surface);
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    font: var(--nib-body-md-font-weight) var(--nib-body-md-font-size) / var(--nib-body-md-line-height)
+      var(--nib-font-sans);
+  }
+
+  /* Any region may switch theme on its own (data-theme sets its color-scheme); it repaints its ground. */
+  [data-theme] {
+    background: var(--nib-surface);
+    color: var(--nib-on-surface);
+  }
+
+  :where(h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd, pre) {
+    margin: 0;
+  }
+
+  /* SVG stays inline: icons sit in a line of text. */
+  :where(img, video, canvas, picture) {
+    display: block;
+    max-inline-size: 100%;
+  }
+
+  :where(img, video) {
+    block-size: auto;
+  }
+
+  :where(button, input, select, textarea) {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+  }
+
+  /* Lists marked role="list" are layout, not prose: no markers or indent. */
+  :where(ul, ol)[role='list'] {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Mono reads as typed: no ligatures, so => and !== stay two and three characters. */
+  :where(code, kbd, samp, pre) {
+    font-family: var(--nib-font-mono);
+    font-size: var(--nib-code-md-font-size);
+    font-variant-ligatures: none;
+  }
+
+  :where(hr) {
+    margin: 0;
+    border: 0;
+    border-block-start: var(--nib-space-hairline) solid var(--nib-line);
+  }
+
+  :where(table) {
+    border-collapse: collapse;
+  }
+}

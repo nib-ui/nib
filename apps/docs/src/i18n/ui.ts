@@ -1,7 +1,7 @@
 /** Every string the site chrome prints, per locale. Page content lives in the pages themselves. */
 export const ui = {
   en: {
-    skip: 'SKIP TO CONTENT',
+    skip: 'Skip to content',
     themeDark: 'DARK',
     themeLight: 'LIGHT',
     /** Visually hidden around the word, so the button says what it does: "Switch to dark theme". */
