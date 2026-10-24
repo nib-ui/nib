@@ -22,6 +22,8 @@
 @import './components/list-row.css';
 @import './components/pane.css';
 @import './components/table.css';
+@import './components/empty.css';
+@import './components/loading.css';
 @import './components/header.css';
 @import './components/side-nav.css';
 @import './components/footer.css';
