@@ -1,0 +1,59 @@
+{
+  "name": "@nib-ui/test-harness",
+  "version": "0.0.0",
+  "description": "Shared test harness: theme \u00d7 density \u00d7 language matrix, axe, Playwright and Vitest browser presets, size budgets",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@nib-ui/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "nx": {
+    "tags": [
+      "type:tool",
+      "scope:private"
+    ],
+    "targets": {
+      "e2e": {
+        "command": "playwright test",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "^build"
+        ],
+        "cache": true,
+        "inputs": [
+          "default",
+          "^production",
+          {
+            "externalDependencies": [
+              "@playwright/test",
+              "playwright",
+              "@axe-core/playwright"
+            ]
+          },
+          "{workspaceRoot}/scripts/playwright-docker.sh"
+        ],
+        "outputs": [
+          "{projectRoot}/test-results",
+          "{projectRoot}/playwright-report"
+        ]
+      }
+    }
+  },
+  "devDependencies": {
+    "@nib-ui/tokens": "workspace:*"
+  },
+  "dependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
+    "@vitest/browser-playwright": "5.0.5",
+    "vitest": "5.0.5"
+  }
+}
