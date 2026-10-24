@@ -15,7 +15,10 @@
       "@nib-ui/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    }
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./tailwind.css": "./dist/tailwind.css",
+    "./tokens.json": "./dist/tokens.json"
   },
   "files": [
     "dist",
@@ -29,6 +32,36 @@
     "tags": [
       "type:tokens",
       "scope:public"
-    ]
-  }
+    ],
+    "targets": {
+      "emit": {
+        "command": "node scripts/emit-tokens.ts",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [],
+        "inputs": [
+          "{projectRoot}/source/**/*",
+          "{projectRoot}/scripts/**/*",
+          "{projectRoot}/src/**/*.ts",
+          "!{projectRoot}/src/**/*.spec.ts"
+        ],
+        "outputs": [
+          "{projectRoot}/dist/tokens.css",
+          "{projectRoot}/dist/tailwind.css",
+          "{projectRoot}/dist/tokens.json"
+        ],
+        "cache": true
+      },
+      "build": {
+        "dependsOn": [
+          "^build",
+          "emit"
+        ]
+      }
+    }
+  },
+  "sideEffects": [
+    "*.css"
+  ]
 }

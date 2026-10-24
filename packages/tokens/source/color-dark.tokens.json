@@ -1,0 +1,326 @@
+{
+  "$description": "Dark theme (story name: Ink).",
+  "color": {
+    "surface": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.0784,
+          0.0784,
+          0.0745
+        ],
+        "hex": "#141413"
+      }
+    },
+    "surface-raised": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.102,
+          0.102,
+          0.0941
+        ],
+        "hex": "#1a1a18"
+      }
+    },
+    "surface-overlay": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.1176,
+          0.1137,
+          0.1059
+        ],
+        "hex": "#1e1d1b"
+      }
+    },
+    "on-surface": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9804,
+          0.9765,
+          0.9608
+        ],
+        "hex": "#faf9f5"
+      }
+    },
+    "on-surface-2": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.6902,
+          0.6824,
+          0.6471
+        ],
+        "hex": "#b0aea5"
+      }
+    },
+    "on-surface-3": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.5294,
+          0.5255,
+          0.498
+        ],
+        "hex": "#87867f"
+      }
+    },
+    "on-surface-4": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.3686,
+          0.3647,
+          0.349
+        ],
+        "hex": "#5e5d59"
+      }
+    },
+    "line": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9804,
+          0.9765,
+          0.9608
+        ],
+        "hex": "#faf9f5",
+        "alpha": 0.1608
+      }
+    },
+    "line-soft": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9804,
+          0.9765,
+          0.9608
+        ],
+        "hex": "#faf9f5",
+        "alpha": 0.0902
+      }
+    },
+    "hover": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9804,
+          0.9765,
+          0.9608
+        ],
+        "hex": "#faf9f5",
+        "alpha": 0.0431
+      }
+    },
+    "scrim": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.0784,
+          0.0784,
+          0.0745
+        ],
+        "hex": "#141413",
+        "alpha": 0.702
+      }
+    },
+    "accent": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.5882,
+          0.4902
+        ],
+        "hex": "#00967d"
+      }
+    },
+    "accent-text": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0.6196,
+          0.5176
+        ],
+        "hex": "#009e84"
+      }
+    },
+    "cursor": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.9804,
+          0.9765,
+          0.9608
+        ],
+        "hex": "#faf9f5"
+      }
+    },
+    "on-cursor": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.0784,
+          0.0784,
+          0.0745
+        ],
+        "hex": "#141413"
+      }
+    },
+    "blue": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.5098,
+          0.6667,
+          1
+        ],
+        "hex": "#82aaff"
+      }
+    },
+    "cyan": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.5373,
+          0.8667,
+          1
+        ],
+        "hex": "#89ddff"
+      }
+    },
+    "green": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.7647,
+          0.9098,
+          0.5529
+        ],
+        "hex": "#c3e88d"
+      }
+    },
+    "magenta": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.7804,
+          0.5725,
+          0.9176
+        ],
+        "hex": "#c792ea"
+      }
+    },
+    "yellow": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.898,
+          0.7529,
+          0.4824
+        ],
+        "hex": "#e5c07b"
+      }
+    },
+    "red": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.8784,
+          0.5608,
+          0.5608
+        ],
+        "hex": "#e08f8f"
+      }
+    },
+    "error": {
+      "$type": "color",
+      "$value": "{color.red}",
+      "$description": "Same hue as {color.red}"
+    },
+    "on-hue": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.0784,
+          0.0784,
+          0.0745
+        ],
+        "hex": "#141413"
+      }
+    },
+    "syntax-keyword": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.6627,
+          0.5608,
+          0.7529
+        ],
+        "hex": "#a98fc0"
+      }
+    },
+    "syntax-string": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.7882,
+          0.5412,
+          0.4902
+        ],
+        "hex": "#c98a7d"
+      }
+    },
+    "syntax-number": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.7608,
+          0.6353,
+          0.4353
+        ],
+        "hex": "#c2a26f"
+      }
+    },
+    "syntax-identifier": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0.8588,
+          0.8431,
+          0.7922
+        ],
+        "hex": "#dbd7ca"
+      }
+    }
+  }
+}
