@@ -60,6 +60,11 @@
       "@nib-ui/source": "./src/combobox.ts",
       "types": "./dist/combobox.d.ts",
       "default": "./dist/combobox.js"
+    },
+    "./date-picker": {
+      "@nib-ui/source": "./src/date-picker.ts",
+      "types": "./dist/date-picker.d.ts",
+      "default": "./dist/date-picker.js"
     }
   },
   "files": [

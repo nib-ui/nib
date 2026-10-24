@@ -91,6 +91,16 @@
       "types": "./dist/dialog/index.d.ts",
       "default": "./dist/dialog/index.js"
     },
+    "./date-picker": {
+      "@nib-ui/source": "./src/date-picker/index.ts",
+      "types": "./dist/date-picker/index.d.ts",
+      "default": "./dist/date-picker/index.js"
+    },
+    "./date-picker/apg": {
+      "@nib-ui/source": "./src/date-picker/date-picker.apg.ts",
+      "types": "./dist/date-picker/date-picker.apg.d.ts",
+      "default": "./dist/date-picker/date-picker.apg.js"
+    },
     "./dialog/apg": {
       "@nib-ui/source": "./src/dialog/dialog.apg.ts",
       "types": "./dist/dialog/dialog.apg.d.ts",

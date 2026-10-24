@@ -1,0 +1,113 @@
+/* Calendar (date picker): a header with the month and its ‹ › buttons, then a ruled 7-column grid
+   of mono day numbers. Today: accent-text number with a 2px accent underline. Chosen day: the
+   cursor block. A range: cursor blocks at both ends, the hover fill between. A disabled day:
+   on-surface 3 struck through, never only fainter. Every state comes from the controller's
+   attributes (aria-current, aria-selected, aria-disabled, data-range). */
+@layer nib.components {
+  .nib-calendar {
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--nib-space-sm);
+    color: var(--nib-on-surface);
+  }
+
+  .nib-calendar__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--nib-space-sm);
+  }
+
+  .nib-calendar__title {
+    margin: 0;
+    font: var(--nib-item-md-font-weight) var(--nib-item-md-font-size) / var(--nib-item-md-line-height)
+      var(--nib-font-sans);
+  }
+
+  .nib-calendar__grid {
+    border-collapse: collapse;
+    font: var(--nib-item-md-font-weight) var(--nib-item-md-font-size) / var(--nib-item-md-line-height)
+      var(--nib-font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .nib-calendar__grid th {
+    padding-block-end: var(--nib-space-xs);
+    color: var(--nib-on-surface-3);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    text-align: center;
+  }
+
+  .nib-calendar__grid td {
+    box-sizing: border-box;
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    padding: 0;
+    border: var(--nib-space-hairline) solid var(--nib-line);
+    text-align: center;
+  }
+
+  .nib-calendar__grid td[role='gridcell'] {
+    cursor: default;
+  }
+
+  .nib-calendar__grid td[role='gridcell']:hover {
+    background: var(--nib-hover);
+  }
+
+  .nib-calendar__grid td:focus-visible {
+    outline: var(--nib-space-rule) solid var(--nib-accent);
+    outline-offset: calc(-1 * var(--nib-space-rule) - var(--nib-space-hairline));
+  }
+
+  .nib-calendar__grid td[aria-current='date'] {
+    color: var(--nib-accent-text);
+    text-decoration: underline var(--nib-space-rule) var(--nib-accent);
+    text-underline-offset: 0.3em;
+  }
+
+  .nib-calendar__grid td[aria-disabled='true'] {
+    color: var(--nib-on-surface-3);
+    text-decoration: line-through;
+    cursor: not-allowed;
+  }
+
+  /* The days between a range's ends (chosen, or previewed from its first press). */
+  .nib-calendar__grid td[data-range='middle'] {
+    background: var(--nib-hover);
+  }
+
+  .nib-calendar__grid
+    td:is([aria-selected='true']:not([data-range='middle']), [data-range='start'], [data-range='end']) {
+    background: var(--nib-cursor);
+    color: var(--nib-on-cursor);
+    text-decoration-color: currentcolor;
+  }
+
+  @media (forced-colors: active) {
+    .nib-calendar__grid
+      td:is([aria-selected='true']:not([data-range='middle']), [data-range='start'], [data-range='end']) {
+      forced-color-adjust: none;
+      background: Highlight;
+      color: HighlightText;
+    }
+
+    .nib-calendar__grid td[data-range='middle'] {
+      outline: var(--nib-space-hairline) dashed Highlight;
+      outline-offset: -0.25rem;
+    }
+
+    .nib-calendar__grid td[aria-current='date'] {
+      text-decoration-color: CanvasText;
+    }
+
+    .nib-calendar__grid td[aria-disabled='true'] {
+      color: GrayText;
+    }
+
+    .nib-calendar__grid td:focus-visible {
+      outline-color: CanvasText;
+    }
+  }
+}
