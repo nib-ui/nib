@@ -1,5 +1,5 @@
 {
-  "$comment": "Size budgets (gzip) that fail CI when exceeded. css: all of @nib-ui/css (tokens, base, components); utilities: the opt-in utilities file; module: one JS module (a controller or a binding entry); heavyModule: combobox, date picker, data grid.",
+  "$comment": "Size budgets that fail CI when exceeded, measured by size-limit with esbuild: bundled with dependencies, minified, gzipped. css: all of @nib-ui/css (tokens, base, components); utilities: the opt-in utilities file; module: one JS module (a controller or a binding entry); heavyModule: combobox, date picker, data grid.",
   "css": "35 kB",
   "utilities": "10 kB",
   "module": "3 kB",

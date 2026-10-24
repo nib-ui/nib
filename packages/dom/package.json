@@ -29,6 +29,26 @@
     "tags": [
       "type:dom",
       "scope:public"
-    ]
+    ],
+    "targets": {
+      "size-limit": {
+        "command": "size-limit",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "build"
+        ],
+        "cache": true,
+        "inputs": [
+          "production",
+          "{projectRoot}/.size-limit.js",
+          "{workspaceRoot}/size-budgets.json"
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "@nib-ui/core": "workspace:*"
   }
 }
