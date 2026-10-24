@@ -80,6 +80,11 @@
       "@nib-ui/source": "./src/command-palette.ts",
       "types": "./dist/command-palette.d.ts",
       "default": "./dist/command-palette.js"
+    },
+    "./data-grid": {
+      "@nib-ui/source": "./src/data-grid.ts",
+      "types": "./dist/data-grid.d.ts",
+      "default": "./dist/data-grid.js"
     }
   },
   "files": [
@@ -139,7 +144,9 @@
     "./dist/date-picker.js",
     "./src/date-picker.ts",
     "./dist/command-palette.js",
-    "./src/command-palette.ts"
+    "./src/command-palette.ts",
+    "./dist/data-grid.js",
+    "./src/data-grid.ts"
   ],
   "dependencies": {
     "@nib-ui/core": "workspace:*",

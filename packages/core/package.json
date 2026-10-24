@@ -135,6 +135,16 @@
       "@nib-ui/source": "./src/command-palette/command-palette.apg.ts",
       "types": "./dist/command-palette/command-palette.apg.d.ts",
       "default": "./dist/command-palette/command-palette.apg.js"
+    },
+    "./data-grid": {
+      "@nib-ui/source": "./src/data-grid/index.ts",
+      "types": "./dist/data-grid/index.d.ts",
+      "default": "./dist/data-grid/index.js"
+    },
+    "./data-grid/apg": {
+      "@nib-ui/source": "./src/data-grid/data-grid.apg.ts",
+      "types": "./dist/data-grid/data-grid.apg.d.ts",
+      "default": "./dist/data-grid/data-grid.apg.js"
     }
   },
   "files": [

@@ -53,6 +53,10 @@ export function createInstance<S, E, P extends string, O extends { id?: string }
   // Sends made by subscribers while they are being notified wait here, so every subscriber sees
   // every state in order; their intents join those of the outer send.
   let notifying = false;
+  // An update() from a callback that reduce calls (onEdit) waits until reduce's state is committed;
+  // syncing it at once would be overwritten by the state reduce returns.
+  let reducing = false;
+  let syncPending = false;
   const queue: E[] = [];
 
   const alive = (method: string) => {
@@ -85,8 +89,16 @@ export function createInstance<S, E, P extends string, O extends { id?: string }
     let error: unknown;
     queue.push(event);
     for (let next = queue.shift(); next !== undefined; next = queue.shift()) {
-      const result = spec.reduce(ctx(), next);
+      reducing = true;
+      let result: ReturnType<typeof spec.reduce>;
+      try {
+        result = spec.reduce(ctx(), next);
+      } finally {
+        reducing = false;
+      }
       error ??= commit(result.state);
+      if (syncPending && spec.sync) error ??= commit(spec.sync(ctx()));
+      syncPending = false;
       intents.push(...(result.intents ?? []));
     }
     if (error !== undefined) throw error;
@@ -107,6 +119,7 @@ export function createInstance<S, E, P extends string, O extends { id?: string }
       alive('update');
       options = { ...options, ...next };
       if (!spec.sync) return;
+      if (reducing) return void (syncPending = true);
       const error = commit(spec.sync(ctx()));
       if (error !== undefined) throw error;
     },

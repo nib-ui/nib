@@ -1,0 +1,134 @@
+/* Data grid: a nib-table inside a scrolling region, with a sticky header row. The focused cell gets
+   the 2px accent ring. Checked rows (aria-selected inside a multiselectable grid) take the hover
+   fill, never the cursor block, and their select cell prints [x]; the header's prints [x], [-] or
+   [ ] for all, some or none. A column edge is a resize handle; an edited cell holds a bare field.
+   Spacer rows keep the scroll height of rows a virtualised body does not render. */
+@layer nib.components {
+  .nib-data-grid {
+    max-block-size: var(--nib-data-grid-height, 30rem);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  .nib-data-grid .nib-table {
+    table-layout: fixed;
+  }
+
+  .nib-data-grid .nib-table thead th {
+    position: sticky;
+    z-index: 1;
+    inset-block-start: 0;
+    background: var(--nib-surface);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nib-data-grid .nib-table :is(th, td) {
+    box-sizing: border-box;
+    block-size: var(--nib-data-grid-row, 2.25rem);
+    padding-block: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nib-data-grid .nib-table :is(th, td):focus-visible {
+    outline: var(--nib-space-rule) solid var(--nib-accent);
+    outline-offset: calc(-1 * var(--nib-space-rule));
+  }
+
+  .nib-data-grid .nib-table :is(th, td)[data-numeric] {
+    font-variant-numeric: tabular-nums;
+    text-align: end;
+  }
+
+  .nib-data-grid .nib-table th[aria-sort] {
+    cursor: pointer;
+  }
+
+  /* Checked, not chosen: the hover fill, so many checked rows never turn into a black slab. */
+  .nib-data-grid [role='grid'][aria-multiselectable='true'] tbody tr[aria-selected='true'] {
+    background: var(--nib-hover);
+    color: inherit;
+  }
+
+  .nib-data-grid :is(th, td)[data-checked] {
+    inline-size: 3rem;
+    cursor: pointer;
+  }
+
+  .nib-data-grid :is(th, td)[data-checked]::before {
+    content: '[ ]' / '';
+    color: var(--nib-on-surface-2);
+    font-family: var(--nib-font-mono);
+    white-space: pre;
+  }
+
+  .nib-data-grid :is(th, td)[data-checked='true']::before {
+    content: '[x]' / '';
+    color: var(--nib-on-surface);
+  }
+
+  .nib-data-grid :is(th, td)[data-checked='mixed']::before {
+    content: '[-]' / '';
+    color: var(--nib-on-surface);
+  }
+
+  .nib-data-grid__resizer {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    inline-size: 0.5rem;
+    cursor: col-resize;
+    touch-action: none;
+  }
+
+  .nib-data-grid__resizer:hover {
+    border-inline-end: var(--nib-space-rule) solid var(--nib-accent);
+  }
+
+  .nib-data-grid__editor {
+    box-sizing: border-box;
+    inline-size: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    outline: none;
+  }
+
+  .nib-data-grid .nib-table tr[aria-hidden='true'] {
+    background: none;
+  }
+
+  .nib-data-grid__pager {
+    display: flex;
+    align-items: center;
+    gap: var(--nib-space-sm);
+    padding-block-start: var(--nib-space-sm);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+  }
+
+  /* "2 / 5" reads left to right in every script; bidi would turn it into "5 / 2" under RTL. */
+  .nib-data-grid__page {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  @media (forced-colors: active) {
+    .nib-data-grid .nib-table :is(th, td):focus-visible {
+      outline-color: CanvasText;
+    }
+
+    .nib-data-grid [role='grid'][aria-multiselectable='true'] tbody tr[aria-selected='true'] :is(th, td) {
+      border-block-end: var(--nib-space-hairline) solid CanvasText;
+    }
+
+    .nib-data-grid__resizer:hover {
+      border-inline-end-color: Highlight;
+    }
+  }
+}

@@ -29,6 +29,7 @@ const GROUPS: NavGroup[] = [
       { slug: 'listbox', title: 'Listbox', lead: 'Options with a current rule and a chosen block.' },
       { slug: 'combobox', title: 'Combobox', lead: 'A field that narrows a list as you type.' },
       { slug: 'command-palette', title: 'Command palette', lead: 'Every command, a shortcut away.' },
+      { slug: 'data-grid', title: 'Data grid', lead: 'Sort, check, edit and page a table of records.' },
       { slug: 'disclosure', title: 'Disclosure and accordion', lead: 'Buttons that show and hide what follows.' },
       { slug: 'tabs', title: 'Tabs', lead: 'Panels of one place, one at a time.' },
       { slug: 'popover', title: 'Popover', lead: 'A box of content beside its trigger.' },
