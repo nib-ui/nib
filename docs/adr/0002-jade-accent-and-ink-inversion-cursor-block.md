@@ -16,7 +16,8 @@ color-vision deficiency (see `plans/reports/researcher-251023-accent-candidates.
   Marks ≥ 3:1 and text ≥ 4.5:1 on all three surfaces of each theme.
 - Two forms of "current": a **jade rule** (active-nav underline, focus ring, progress, playhead,
   `NOW` text) says *where*; an **ink-inverted cursor block** (ink fill, surface text, 17.5:1) says
-  *which one is chosen* (selected row, highlighted option, selected date, text selection).
+  *which one is chosen* (selected row, selected option, selected date, text selection). The option under the
+  keyboard in a listbox or command palette is *current*, so it gets the jade rule, not the block.
 - Ink inversion means "chosen" and is never used to make an action stand out (see ADR 9).
 - Syntax keyword and number colors move off teal: keyword mauve (`#a98fc0` / `#6e4f8a`), number
   ochre (`#c2a26f` / `#7d5f2c`).

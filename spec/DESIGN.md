@@ -6,7 +6,7 @@ colors:
   # Dark theme ("Ink")
   surface: "#141413"
   surface-raised: "#1a1a18"
-  surface-panel: "#1e1d1b"
+  surface-overlay: "#1e1d1b"
   on-surface: "#faf9f5"
   on-surface-2: "#b0aea5"
   on-surface-3: "#87867f"
@@ -15,7 +15,6 @@ colors:
   line-soft: "#faf9f517"
   hover: "#faf9f50b"
   scrim: "#141413b3"
-  primary: "#faf9f5"
   accent: "#00967d"
   accent-text: "#009e84"
   cursor: "#faf9f5"
@@ -35,7 +34,7 @@ colors:
   # Light theme ("Paper")
   surface-light: "#faf9f5"
   surface-raised-light: "#f1efe8"
-  surface-panel-light: "#ece9e0"
+  surface-overlay-light: "#ece9e0"
   on-surface-light: "#141413"
   on-surface-2-light: "#4c4b45"
   on-surface-3-light: "#65645e"
@@ -44,7 +43,6 @@ colors:
   line-soft-light: "#1414131c"
   hover-light: "#1414130d"
   scrim-light: "#14141359"
-  primary-light: "#141413"
   accent-light: "#02806c"
   accent-text-light: "#007561"
   cursor-light: "#141413"
@@ -200,7 +198,7 @@ components:
   button-hover:
     backgroundColor: "{colors.hover}"
   button-primary:
-    borderColor: "{colors.primary}"
+    borderColor: "{colors.on-surface}"
     borderWidth: 2px
     textColor: "{colors.on-surface}"
     typography: "{typography.label-md}"
@@ -237,7 +235,7 @@ components:
     typography: "{typography.label-md}"
     textColor: "{colors.on-surface-2}"
   dialog:
-    backgroundColor: "{colors.surface-panel}"
+    backgroundColor: "{colors.surface-overlay}"
     textColor: "{colors.on-surface}"
     width: 500px
     rounded: "{rounded.none}"
@@ -284,7 +282,7 @@ tokens disagree, fix whichever is wrong and keep them in step.
 The five laws. A screen that breaks one is not Nib, in any domain:
 
 1. **Flat.** Radius 0 everywhere. No shadows, glow, gradients or blur. Depth is a tone step
-   (surface → raised → panel) plus 1px lines.
+   (surface → raised → overlay) plus 1px lines.
 2. **Ruled, not boxed.** Content sits in cells of a 1px line grid. No cards floating on the page
    with margins and shadows around them.
 3. **Mono labels, sans text.** Every label, nav item, button word, tag, price, date, id, number
@@ -312,7 +310,7 @@ role. Lines and hover fills are alpha over ink, so they work on any of the three
 - **Surface** (#141413 / #faf9f5): page background, grid cells, tiles.
 - **Surface raised** (#1a1a18 / #f1efe8): list rows, callouts, inputs, code blocks, alternate
   page sections, image placeholders.
-- **Surface panel** (#1e1d1b / #ece9e0): menus, popovers, dialogs, drawers, sheets.
+- **Surface overlay** (#1e1d1b / #ece9e0): menus, popovers, dialogs, drawers, sheets: everything that sits over content.
 - **On-surface** (#faf9f5 / #141413): headlines, values, prices, active nav.
 - **On-surface 2** (#b0aea5 / #4c4b45): body prose, inactive nav, field labels.
 - **On-surface 3** (#87867f / #65645e): meta (dates, counts, authors), printed hotkeys, old prices,
@@ -321,10 +319,10 @@ role. Lines and hover fills are alpha over ink, so they work on any of the three
   for text.
 - **Line** (ink at 16% / 22% alpha): borders, grid lines, outline buttons, input borders.
 - **Line soft** (ink at 9% / 11% alpha): dividers inside a cell, row separators.
-- **Hover** (ink at 4% / 5% alpha): hover fill, pressed fill, highlighted row.
+- **Hover** (ink at 4% / 5% alpha): hover fill, pressed fill.
 - **Scrim** (surface at 70% / 35% alpha): behind dialogs, drawers and sheets.
 
-### Primary, accent and cursor
+### Ink, accent and cursor
 
 - **Primary** is ink, not a color, and it is a stroke, not a fill. The main call to action
   (`SUBSCRIBE`, `GET STARTED`, `RUN`) is a 2px ink border on a transparent ground with on-surface
@@ -335,7 +333,7 @@ role. Lines and hover fills are alpha over ink, so they work on any of the three
 - **Accent text** (#009e84 / #007561): the accent as text: link hover, the current step label,
   a `NOW` / `LIVE` tag. ≥ 4.5:1 on all three surfaces of its theme.
 - **Cursor** (ink inversion: on-surface fill with surface-colored text, 17.5:1): a *chosen value*:
-  the selected list row, the highlighted option in a listbox or command palette, the selected
+  the selected list row, the selected option in a listbox or select, the selected
   date, the selected table row, the selected option in an option picker, a toggle that is on
   (`aria-pressed="true"`), text selection. It is the block cursor of the page.
 
@@ -376,9 +374,9 @@ or two hues; using none is fine.
 A hue appears only in these forms:
 
 - **text** in the full hue (tags, state words, ids);
-- a **2px rule** (left edge of a row or callout, top edge of a highlighted cell);
+- a **2px rule** (left edge of a row or callout, top edge of a flagged cell);
 - an **8×8px square** before a label, a legend entry or a category name;
-- a **`-soft` fill** for a highlighted / new / warning row or cell;
+- a **`-soft` fill** for a flagged / new / warning row or cell;
 - a **1px full-hue border** for "new", a `-border` outline for a quieter status.
 
 Never a solid hue behind a whole section. Solid hue fills are allowed only on small marks (a
@@ -391,7 +389,8 @@ color-vision deficiency. That is why law 5 exists: the word carries the meaning,
 
 Syntax colors are muted and warm and stay clear of the jade accent: keyword muted mauve, string
 clay, number ochre, identifier warm gray, punctuation on-surface 3. Code blocks sit on surface
-raised with square corners. The highlighted line gets the hover fill plus a 2px accent left rule.
+raised with square corners. The current line (e.g. the step a tutorial is on) gets the hover fill
+plus a 2px accent rule on its inline-start edge.
 
 ## Typography
 
@@ -446,7 +445,7 @@ Writing style:
 - **The ruled grid.** Group siblings in a grid with a 1px gap over a line-colored ground, so the
   gaps draw the rules. Use it for product grids, post lists, feature lists, pricing plans, stats,
   footer columns and app panes alike.
-- **One focal point per screen.** One hero headline, one primary action, one highlighted item.
+- **One focal point per screen.** One hero headline, one primary action, one current item.
   The supporting reason sits right next to it.
 - **Reading width** 68ch for any long prose, whatever the page width.
 - **Page width** up to 1200px for content pages, centered, with the line grid running edge to
@@ -458,14 +457,14 @@ Writing style:
   mirror under `dir="rtl"`.
 - Order regions by the order the reader needs them.
 - Phone (design at 390px, support ≥ 360px): one column, 16px side gutter, header collapses to
-  title + `MENU`, grids drop to one or two columns, side panels and filters become bottom sheets,
+  title + `MENU`, grids drop to one or two columns, side columns and filters become bottom sheets,
   primary actions pin to the bottom with 48–52px targets. No horizontal scroll.
-- A side panel *replaces* a column; nothing floats over content except menus, popovers and dialogs.
+- A side column *replaces* a main column; nothing floats over content except menus, popovers and dialogs.
 
 ## Elevation & Depth
 
-There is no elevation. Hierarchy comes from three tonal layers (surface → raised → panel), 1px
-hairlines and 2px rules. Menus, dialogs, drawers and sheets use the panel surface, a 1px line
+There is no elevation. Hierarchy comes from three tonal layers (surface → raised → overlay), 1px
+hairlines and 2px rules. Menus, dialogs, drawers and sheets use the overlay surface, a 1px line
 border and a scrim behind, never a shadow. Sticky headers get a 1px line under them, not a shadow.
 
 Strokes come in exactly two weights:
@@ -543,7 +542,7 @@ detail.
 
 - **selected** (`aria-selected`): cursor block (ink inversion).
 - **new**: `-soft` fill + 1px full-hue border + `NEW` tag.
-- **highlighted**: `-soft` fill + `-border` outline.
+- **flagged** (drawn to attention in a hue: a warning, a search match): `-soft` fill + `-border` outline.
 - **ghost**: transparent, 1px dashed line border, on-surface 3 text.
 
 ### Button: words first
@@ -612,8 +611,10 @@ pivot, column drag, spreadsheet-style range selection.
 
 ### Listbox, combobox and command palette
 
-Panel surface, 1px line border, positioned next to its trigger (flip and shift to stay in the
-viewport). The highlighted option is a cursor block; the selected value carries `✓`. Typed
+Overlay surface, 1px line border, positioned next to its trigger (flip and shift to stay in the
+viewport). The option under the keyboard or pointer is *current*: a 2px accent rule on its
+inline-start edge. The selected value is a cursor block. A command palette has no selected value,
+so only the accent rule moves. Typed
 characters filter; matched characters are on-surface, the rest on-surface 2. The command palette is
 a dialog holding a combobox, opened with `[⌘K]`.
 
@@ -633,7 +634,7 @@ current one on-surface with a 2px accent underline.
 
 ### Dialog / drawer / sheet
 
-Native `<dialog>`; panel surface, 1px line border, no shadow, scrim behind. Dialogs about 500px
+Native `<dialog>`; overlay surface, 1px line border, no shadow, scrim behind. Dialogs about 500px
 wide; drawers 380–420px from the inline-end side. On phones both become bottom sheets.
 
 ### Footer

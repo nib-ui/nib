@@ -22,7 +22,7 @@ JSON in the `tokens` package; keep the two in step.
 
 | Role | Dark (Ink) | Light (Paper) |
 |---|---|---|
-| surface · raised · panel | `#141413` · `#1a1a18` · `#1e1d1b` | `#faf9f5` · `#f1efe8` · `#ece9e0` |
+| surface · raised · overlay | `#141413` · `#1a1a18` · `#1e1d1b` | `#faf9f5` · `#f1efe8` · `#ece9e0` |
 | ink | `#faf9f5` | `#141413` |
 | accent (jade) | `#00967d` (text `#009e84`) | `#02806c` (text `#007561`) |
 | cursor block | ink fill, surface text | ink fill, surface text |
