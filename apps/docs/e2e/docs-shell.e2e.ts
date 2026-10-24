@@ -61,6 +61,25 @@ test.describe('docs shell', () => {
     await expect(page.getByRole('heading', { name: 'Accessibility', level: 2 })).toBeVisible();
   });
 
+  test('renders in the self-hosted Inter and JetBrains Mono, with Vietnamese, never from Google Fonts', async ({
+    page,
+  }) => {
+    const hosts = new Set<string>();
+    page.on('request', (request) => hosts.add(new URL(request.url()).host));
+    await page.goto('/components/base/');
+    // Faces that actually loaded: document.fonts.check() is true when no face is declared at all.
+    const loaded = await page.evaluate(async () => {
+      await document.fonts.load('500 16px Inter', 'Tiếng Việt');
+      await document.fonts.load('400 16px "JetBrains Mono"', 'Tiếng Việt');
+      return ['Inter', 'JetBrains Mono'].map(
+        (family) =>
+          [...document.fonts].filter((f) => f.family.replace(/["']/g, '') === family && f.status === 'loaded').length,
+      );
+    });
+    expect(loaded.every((n) => n >= 2)).toBe(true);
+    expect([...hosts].filter((h) => /google/.test(h))).toEqual([]);
+  });
+
   test('declares the layer order before any other style', async ({ page }) => {
     await page.goto('/');
     const first = await page.evaluate(() => document.styleSheets[0]?.cssRules[0]?.cssText);
