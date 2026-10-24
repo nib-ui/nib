@@ -71,8 +71,13 @@ test.describe('docs navigation', () => {
       await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'reduce' });
       await page.setViewportSize({ width, height: 900 });
       await page.goto('/components/base/');
-      // The list of pages grows with every component, so it is masked; the links have their own test.
-      await expect(page).toHaveScreenshot(`shell-${width}.png`, { mask: [page.locator('.docs-contents nav')] });
+      // The list of pages grows with every component, so it stays out of the picture (folded on a
+      // phone, left out on a desktop); its links have their own test.
+      if (width < 768) await expect(page).toHaveScreenshot(`shell-${width}.png`);
+      else {
+        await expect(page.locator('header')).toHaveScreenshot(`shell-${width}-header.png`);
+        await expect(page.getByRole('main')).toHaveScreenshot(`shell-${width}-main.png`);
+      }
     });
   }
 
