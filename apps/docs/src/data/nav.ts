@@ -27,6 +27,8 @@ const GROUPS: NavGroup[] = [
       { slug: 'button', title: 'Button', lead: 'A mono verb; hierarchy by stroke weight.' },
       { slug: 'forms', title: 'Forms', lead: 'Fields, glyph checkboxes, switches and the error summary.' },
       { slug: 'listbox', title: 'Listbox', lead: 'Options with a current rule and a chosen block.' },
+      { slug: 'disclosure', title: 'Disclosure and accordion', lead: 'Buttons that show and hide what follows.' },
+      { slug: 'tabs', title: 'Tabs', lead: 'Panels of one place, one at a time.' },
       { slug: 'text', title: 'Text', lead: 'Links, tags, callouts and code with COPY.' },
       { slug: 'content', title: 'Content', lead: 'Sections, tiles, list rows, panes and tables.' },
       { slug: 'empty-loading', title: 'Empty state and loading', lead: 'Ghosts, the stepping ✻ and progress.' },
