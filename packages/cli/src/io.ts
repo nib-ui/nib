@@ -67,8 +67,12 @@ export async function readConfig(io: Io): Promise<NibConfig> {
   }
   if (!config || typeof config !== 'object' || Array.isArray(config))
     throw new Error(`${CONFIG_FILE} is not a JSON object.`);
-  const { theme } = config as Record<string, unknown>;
-  if (theme !== undefined && typeof theme !== 'string')
-    throw new Error(`"theme" in ${CONFIG_FILE} must be the path of a stylesheet.`);
+  for (const key of ['preset', 'css', 'entry', 'theme']) {
+    const value = (config as Record<string, unknown>)[key];
+    if (value !== undefined && typeof value !== 'string')
+      throw new Error(
+        `"${key}" in ${CONFIG_FILE} must be ${key === 'entry' || key === 'theme' ? 'the path of a stylesheet' : 'a string'}.`,
+      );
+  }
   return config as NibConfig;
 }
