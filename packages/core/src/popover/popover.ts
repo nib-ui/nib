@@ -1,5 +1,6 @@
 import { nullHost, type Host } from '../host.ts';
 import { createInstance, type Instance } from '../kernel/create-instance.ts';
+import type { Size } from '../host.ts';
 import { place, type Align, type Placement, type Side } from '../place/place.ts';
 import type { Part } from '../types.ts';
 
@@ -12,6 +13,7 @@ export interface PopoverOptions {
   align?: Align;
   /** Gap between trigger and popover, in pixels. */
   offset?: number;
+  /** Writing direction; by default it is read from the trigger. */
   dir?: 'ltr' | 'rtl';
   onOpenChange?: (open: boolean) => void;
 }
@@ -37,6 +39,11 @@ export function createPopover(
   host: Host = nullHost,
 ): Instance<PopoverState, PopoverEvent, PopoverPart, PopoverOptions> {
   let stop = () => undefined as void;
+  // The size the content has before any cap: measured once per opening, since a capped box would
+  // never look too big for its side again and so never flip.
+  let natural: Size | null = null;
+  const same = (a: Placement | null, b: Placement | null) =>
+    a === b || (!!a && !!b && (Object.keys(a) as (keyof Placement)[]).every((k) => a[k] === b[k]));
   const instance = createInstance<PopoverState, PopoverEvent, PopoverPart, PopoverOptions>(
     {
       name: 'popover',
@@ -45,15 +52,22 @@ export function createPopover(
       reduce: ({ state, options: o, id, host: h }, event) => {
         const measure = (): Placement | null => {
           const anchor = h.geometry.measure(`${id}-trigger`);
-          const box = h.geometry.measure(`${id}-content`);
-          if (!anchor || !box) return null;
-          const { side, align, offset, dir } = o;
-          return place({ anchor, floating: box, viewport: h.geometry.viewport(), side, align, offset, dir });
+          natural ??= h.geometry.measure(`${id}-content`);
+          if (!anchor || !natural) return null;
+          const { side, align, offset } = o;
+          const dir = o.dir ?? h.geometry.direction?.(`${id}-trigger`) ?? 'ltr';
+          return place({ anchor, floating: natural, viewport: h.geometry.viewport(), side, align, offset, dir });
         };
-        if (event.type === 'place') return state.open ? { state: { ...state, placement: measure() } } : { state };
+        if (event.type === 'place') {
+          if (!state.open) return { state };
+          const placement = measure();
+          // Scrolling asks every frame; only a real move is a new state worth rendering.
+          return { state: same(placement, state.placement) ? state : { ...state, placement } };
+        }
         if (event.open === state.open) return { state };
         o.onOpenChange?.(event.open);
         stop();
+        natural = null;
         if (!event.open) return { state: { open: false, placement: null } };
         stop = h.geometry.watch(() => instance.send({ type: 'place' }));
         return { state: { open: true, placement: measure() } };
@@ -75,6 +89,10 @@ export function createPopover(
           attrs: {
             id: `${id}-content`,
             popover: 'auto',
+            // Marks a controlled popover: until its first placement CSS keeps it unseen. Without
+            // JavaScript the mark is absent and the browser's own centred popover shows.
+            'data-nib-popover': true,
+            'data-placed': state.open || undefined,
             'data-side': p?.side,
             // Viewport pixels as custom properties; the stylesheet decides how to use them.
             style: p

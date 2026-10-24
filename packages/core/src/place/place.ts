@@ -75,7 +75,8 @@ export function place({
     const maxHeight = Math.max(0, room[at as 'top' | 'bottom']);
     return {
       x: clamp(x, floating.width, viewport.width),
-      y: at === 'top' ? Math.max(padding, y) : y,
+      // An anchor scrolled out of view leaves the box at the viewport's edge, never outside it.
+      y: clamp(y, Math.min(floating.height, maxHeight), viewport.height),
       side: chosen,
       align,
       maxWidth: viewport.width - 2 * padding,
@@ -89,12 +90,13 @@ export function place({
         ? anchor.y
         : anchor.y + anchor.height - floating.height;
   const x = at === 'left' ? anchor.x - offset - floating.width : anchor.x + anchor.width + offset;
+  const maxWidth = Math.max(0, room[at as 'left' | 'right']);
   return {
-    x: at === 'left' ? Math.max(padding, x) : x,
+    x: clamp(x, Math.min(floating.width, maxWidth), viewport.width),
     y: clamp(y, floating.height, viewport.height),
     side: chosen,
     align,
-    maxWidth: Math.max(0, room[at as 'left' | 'right']),
+    maxWidth,
     maxHeight: viewport.height - 2 * padding,
   };
 }

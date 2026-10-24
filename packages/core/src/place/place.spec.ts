@@ -39,6 +39,19 @@ describe('place', () => {
     expect(place(input({ anchor: { x: -30, y: 100, width: 40, height: 20 } })).x).toBe(8);
   });
 
+  it('keeps the box inside the viewport when the anchor has scrolled out of it', () => {
+    expect(place(input({ anchor: { x: 100, y: 400, width: 80, height: 20 } })).y).toBeLessThanOrEqual(300 - 8);
+    expect(place(input({ anchor: { x: 500, y: 100, width: 80, height: 20 }, side: 'end' })).x).toBeLessThanOrEqual(
+      400 - 8,
+    );
+  });
+
+  it('places on the start side with each alignment', () => {
+    expect(
+      place(input({ side: 'start', align: 'center', anchor: { x: 200, y: 100, width: 80, height: 20 } })),
+    ).toMatchObject({ side: 'start', x: 200 - 4 - 120, y: 80 });
+  });
+
   it('caps the size to the room on its side', () => {
     expect(place(input())).toMatchObject({ maxHeight: 300 - 124 - 8, maxWidth: 400 - 16 });
   });

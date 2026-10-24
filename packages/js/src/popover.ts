@@ -5,13 +5,18 @@
 //   <div data-nib-content class="nib-popover">…</div>
 // </div>
 //
-// The browser opens and closes it (native popover); this places it beside the trigger. The writing
-// direction is read from the root each time it opens. Opening and closing dispatch `nib:change`
+// The browser opens and closes it (native popover); this places it beside the trigger, in the
+// writing direction of the trigger. Opening and closing dispatch `nib:change`
 // (`detail.open`).
 import { createPopover } from '@nib-ui/core/popover';
 import type { Align, Side } from '@nib-ui/core/place';
 import { bind } from './bind.ts';
 import { define } from './registry.ts';
+
+const SIDES: readonly Side[] = ['top', 'bottom', 'start', 'end'];
+const ALIGNS: readonly Align[] = ['start', 'center', 'end'];
+const pick = <T extends string>(value: string | undefined, allowed: readonly T[], fallback: T): T =>
+  allowed.includes(value as T) ? (value as T) : fallback;
 
 define('popover', (root, { id, host }) => {
   const own = (selector: string) =>
@@ -19,8 +24,8 @@ define('popover', (root, { id, host }) => {
   const instance = createPopover(
     {
       id,
-      side: (root.dataset['side'] as Side | undefined) ?? 'bottom',
-      align: (root.dataset['align'] as Align | undefined) ?? 'start',
+      side: pick(root.dataset['side'], SIDES, 'bottom'),
+      align: pick(root.dataset['align'], ALIGNS, 'start'),
       onOpenChange: (open) =>
         queueMicrotask(() => root.dispatchEvent(new CustomEvent('nib:change', { detail: { open }, bubbles: true }))),
     },
@@ -34,11 +39,7 @@ define('popover', (root, { id, host }) => {
       ...(content ? [{ el: content, part: 'content' as const }] : []),
     ];
   });
-  // Placement depends on the direction, so read it again just before each opening.
-  const direction = () => instance.update({ dir: root.matches(':dir(rtl)') ? 'rtl' : 'ltr' });
-  root.addEventListener('toggle', direction, { capture: true });
   return () => {
-    root.removeEventListener('toggle', direction, { capture: true });
     unbind();
     instance.destroy();
   };

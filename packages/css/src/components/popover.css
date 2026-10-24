@@ -3,12 +3,16 @@
    --nib-x / --nib-y (viewport pixels) and the room it has as --nib-max-width / --nib-max-height,
    in its style attribute. Until it is placed it stays invisible, so it never flashes elsewhere. */
 @layer nib.components {
-  .nib-popover {
+  /* place() works in physical viewport pixels, so the box is placed with top and left. */
+  .nib-popover[style] {
     position: fixed;
     inset: auto;
-    inset-block-start: var(--nib-y, 0);
-    /* stylelint-disable-next-line nib/no-physical-direction -- place() works in physical viewport pixels */
-    left: var(--nib-x, 0);
+    top: var(--nib-y);
+    /* stylelint-disable-next-line nib/no-physical-direction -- physical viewport pixels from place() */
+    left: var(--nib-x);
+  }
+
+  .nib-popover {
     box-sizing: border-box;
     max-inline-size: min(var(--nib-max-width, 100vw), 32rem);
     max-block-size: var(--nib-max-height, none);
@@ -26,7 +30,8 @@
     animation: nib-reveal var(--nib-duration-reveal) var(--nib-ease-out);
   }
 
-  .nib-popover:not([data-side]) {
+  /* Opened but not placed yet (the moment before the controller hears it opened). */
+  .nib-popover[data-nib-popover]:popover-open:not([data-placed]) {
     visibility: hidden;
   }
 

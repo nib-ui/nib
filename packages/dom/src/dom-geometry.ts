@@ -14,6 +14,10 @@ export function domGeometry(doc: Document = document): Geometry {
       const { x, y, width, height } = el.getBoundingClientRect();
       return { x, y, width, height };
     },
+    direction(ref) {
+      const el = doc.getElementById(ref);
+      return el && doc.defaultView?.getComputedStyle(el).direction === 'rtl' ? 'rtl' : 'ltr';
+    },
     viewport() {
       const view = doc.defaultView;
       // The visual viewport shrinks when a virtual keyboard or pinch zoom covers part of the page.

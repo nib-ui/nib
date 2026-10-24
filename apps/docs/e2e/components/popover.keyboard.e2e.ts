@@ -29,4 +29,22 @@ for (const binding of ['js', 'react', 'vue', 'svelte']) {
     await page.mouse.click(5, 5);
     await expect(page.locator('#pp-content')).toBeHidden();
   });
+
+  test(`popover · ${binding}: in right-to-left it lines up with the trigger's right edge`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto(`/test/popover/${binding}/`);
+    // Away from the edge, so the viewport padding does not shift the box (once the island mounted).
+    await page.getByRole('button', { name: 'Filters' }).waitFor();
+    await page.evaluate(() => {
+      document.documentElement.setAttribute('dir', 'rtl');
+      document.querySelector<HTMLElement>('.fixture-popover')?.style.setProperty('margin-inline', '200px');
+    });
+    const trigger = page.getByRole('button', { name: 'Filters' });
+    await trigger.click();
+    const content = page.locator('#pp-content');
+    await expect(content).toHaveAttribute('data-side', 'bottom');
+    const [t, c] = [await trigger.boundingBox(), await content.boundingBox()];
+    const right = (b: typeof t) => (b?.x ?? 0) + (b?.width ?? 0);
+    expect(Math.abs(right(c) - right(t))).toBeLessThanOrEqual(1);
+  });
 }

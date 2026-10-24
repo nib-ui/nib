@@ -50,10 +50,50 @@ describe('createPopover', () => {
     expect(popover.state.placement).toBeNull();
   });
 
-  it('stops following layout when destroyed', () => {
+  it('flips once there is room, judging by the size it had before it was capped', () => {
+    const { t, popover, toggle } = setup();
+    t.geometry.setRect('pp-content', { x: 0, y: 0, width: 120, height: 200 });
+    toggle('open');
+    expect(popover.state.placement).toMatchObject({ side: 'bottom', maxHeight: 168 });
+    // The page now shows the capped box; the anchor moves down where the top has room.
+    t.geometry.setRect('pp-content', { x: 0, y: 0, width: 120, height: 168 });
+    t.geometry.setRect('pp-trigger', { x: 100, y: 240, width: 80, height: 20 });
+    t.geometry.changed();
+    expect(popover.state.placement?.side).toBe('top');
+  });
+
+  it('does not render again while scrolling changes nothing', () => {
     const { t, popover, toggle } = setup();
     toggle('open');
+    const listener = vi.fn();
+    popover.subscribe(listener);
+    t.geometry.changed();
+    expect(listener).not.toHaveBeenCalled();
+  });
+
+  it('reads the writing direction from the trigger', () => {
+    const { t, popover, toggle } = setup();
+    t.geometry.setDirection('rtl');
+    toggle('open');
+    expect(popover.state.placement?.x).toBe(60);
+  });
+
+  it('marks itself placed when opened, even when it cannot be measured, so it never stays hidden', () => {
+    const t = createTestHost();
+    const popover = createPopover({ id: 'lost' }, t.host);
+    t.fire(popover.part('content'), 'toggle', { newState: 'open' });
+    expect(popover.part('content').attrs).toMatchObject({ 'data-nib-popover': true, 'data-placed': true });
+    expect(popover.state.placement).toBeNull();
+  });
+
+  it('stops following layout when destroyed', () => {
+    const t = createTestHost();
+    const watch = vi.spyOn(t.geometry, 'watch');
+    const popover = createPopover({ id: 'pp' }, t.host);
+    t.fire(popover.part('content'), 'toggle', { newState: 'open' });
+    const stop = watch.mock.results[0]?.value as () => boolean;
     popover.destroy();
-    expect(() => t.geometry.changed()).not.toThrow();
+    // The watcher is gone: stopping it again finds nothing to remove.
+    expect(stop()).toBe(false);
   });
 });
