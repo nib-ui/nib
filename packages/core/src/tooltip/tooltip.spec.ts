@@ -34,7 +34,8 @@ describe('createTooltip', () => {
 
   it('stays while the pointer moves onto it, and hides after leaving both', () => {
     const { t, tooltip, fire } = setup();
-    fire('trigger', 'focus');
+    fire('trigger', 'pointerenter');
+    t.clock.advance(500);
     fire('trigger', 'pointerleave');
     fire('tooltip', 'pointerenter');
     t.clock.advance(200);
@@ -60,13 +61,53 @@ describe('createTooltip', () => {
     expect(tooltip.state.open).toBe(false);
     fire('trigger', 'keydown', { key: 'Escape' });
     expect(t.prevented).toBe(false);
+    fire('trigger', 'focus');
+    fire('trigger', 'keydown', { key: 'Escape' });
+    expect(t.prevented).toBe(true);
+    expect(tooltip.state.open).toBe(false);
   });
 
-  it('stops its timer and layout watch when destroyed', () => {
+  it('keeps showing while focus holds it, whatever the pointer does, and the other way round', () => {
     const { t, tooltip, fire } = setup();
+    fire('trigger', 'focus', { focusVisible: true });
     fire('trigger', 'pointerenter');
+    fire('trigger', 'pointerleave');
+    t.clock.advance(200);
+    expect(tooltip.state.open).toBe(true);
+    fire('trigger', 'pointerenter');
+    t.clock.advance(500);
+    fire('trigger', 'blur');
+    expect(tooltip.state.open).toBe(true);
+  });
+
+  it('ignores touch, focus from a click, and hides when the trigger is pressed', () => {
+    const { t, tooltip, fire } = setup();
+    fire('trigger', 'pointerenter', { pointerType: 'touch' });
+    t.clock.advance(1000);
+    expect(tooltip.state.open).toBe(false);
+    fire('trigger', 'focus', { focusVisible: false });
+    expect(tooltip.state.open).toBe(false);
+    fire('trigger', 'focus', { focusVisible: true });
+    fire('trigger', 'pointerdown');
+    expect(tooltip.state.open).toBe(false);
+  });
+
+  it('places itself a frame after showing even when no layout pass comes', () => {
+    const { t, tooltip, fire } = setup();
+    fire('trigger', 'focus');
+    t.clock.advance(16);
+    expect(tooltip.state.placement?.side).toBe('top');
+  });
+
+  it('stops its timers and layout watch when destroyed', () => {
+    const { t, tooltip, fire } = setup();
+    fire('trigger', 'focus');
+    fire('trigger', 'pointerleave');
     tooltip.destroy();
-    expect(() => t.clock.advance(1000)).not.toThrow();
+    expect(() => {
+      t.clock.advance(1000);
+      t.geometry.changed();
+    }).not.toThrow();
   });
 
   it('passes every row of its APG table', () => {

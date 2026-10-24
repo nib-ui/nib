@@ -3,7 +3,8 @@ import type { NibEvent } from '@nib-ui/core';
 const IME_KEY_CODE = 229;
 
 // Read by shape, not instanceof: an event from an iframe has that window's constructors.
-type AnyEvent = Event & Partial<Omit<KeyboardEvent, keyof Event>> & { data?: string | null; newState?: string };
+type AnyEvent = Event &
+  Partial<Omit<KeyboardEvent, keyof Event>> & { data?: string | null; newState?: string; pointerType?: string };
 
 /**
  * The structural copy of a DOM event that core reads. `preventDefault` reaches the real event.
@@ -24,6 +25,11 @@ export function toNibEvent(event: Event): NibEvent {
   } else if (e.type.startsWith('composition')) {
     nib.data = e.data ?? '';
     nib.isComposing = e.type !== 'compositionend';
+  } else if (typeof e.pointerType === 'string') {
+    nib.pointerType = e.pointerType;
+  } else if (e.type === 'focus' || e.type === 'focusin') {
+    const target = e.target as Element | null;
+    if (target && 'matches' in target) nib.focusVisible = target.matches(':focus-visible');
   } else if (e.newState === 'open' || e.newState === 'closed') {
     // ToggleEvent: a popover or details opening or closing.
     nib.newState = e.newState;

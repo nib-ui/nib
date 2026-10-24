@@ -34,7 +34,13 @@ define('tooltip', (root, { id, host }) => {
       ...(tooltip ? [{ el: tooltip, part: 'tooltip' as const }] : []),
     ];
   });
+  // Escape dismisses a tooltip shown by hover alone too (WCAG 1.4.13), wherever focus is.
+  const escape = (event: KeyboardEvent) => {
+    if (event.key === 'Escape' && instance.state.open) instance.send({ type: 'hide' });
+  };
+  root.ownerDocument.addEventListener('keydown', escape);
   return () => {
+    root.ownerDocument.removeEventListener('keydown', escape);
     unbind();
     instance.destroy();
   };

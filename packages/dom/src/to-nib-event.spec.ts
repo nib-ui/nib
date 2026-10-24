@@ -77,4 +77,16 @@ describe('toNibEvent', () => {
     const nib = toNibEvent(new ToggleEvent('toggle', { oldState: 'closed', newState: 'open' }));
     expect(nib).toMatchObject({ type: 'toggle', newState: 'open' });
   });
+
+  it('reads the pointer type, and whether focus shows a ring', () => {
+    expect(toNibEvent(new PointerEvent('pointerenter', { pointerType: 'touch' }))).toMatchObject({
+      pointerType: 'touch',
+    });
+    const button = document.body.appendChild(document.createElement('button'));
+    let seen: unknown;
+    button.addEventListener('focus', (e) => (seen = toNibEvent(e)));
+    button.focus();
+    expect(seen).toMatchObject({ type: 'focus', focusVisible: expect.any(Boolean) });
+    button.remove();
+  });
 });

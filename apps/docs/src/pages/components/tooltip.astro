@@ -3,10 +3,10 @@ import '@nib-ui/icons/icons.css';
 import ComponentPage from '../../layouts/component-page.astro';
 
 const html = `<span data-nib="tooltip">
-  <button type="button" class="nib-button nib-button--outline" data-nib-trigger aria-label="Copy order id">
+  <button type="button" class="nib-button nib-button--outline" data-nib-trigger aria-label="Copy">
     <span class="nib-icon nib-icon-copy" aria-hidden="true"></span>
   </button>
-  <span class="nib-tooltip" data-nib-tooltip>Copy order id</span>
+  <span class="nib-tooltip" data-nib-tooltip>Copies the order id to the clipboard</span>
 </span>`;
 
 const code = {
@@ -74,7 +74,10 @@ const tooltip = useTooltip();
       It stays while the pointer moves onto it and closes with Escape while the trigger has focus (WCAG 1.4.13); keep it
       to text, never links or buttons.
     </li>
-    <li>Do not put anything only in a tooltip that touch users need: they cannot hover.</li>
+    <li>
+      The tooltip is a description, read after the name: say something the name does not (the name here is "Copy").
+    </li>
+    <li>Do not put anything only in a tooltip that touch users need: they cannot hover, and touch never opens it.</li>
   </ul>
 </ComponentPage>
 
