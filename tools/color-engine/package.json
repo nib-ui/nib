@@ -18,5 +18,8 @@
       "type:tool",
       "scope:private"
     ]
+  },
+  "devDependencies": {
+    "@nib-ui/tokens": "workspace:*"
   }
 }
