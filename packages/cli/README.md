@@ -6,6 +6,32 @@ The `nib` command. Collects no telemetry.
 npx @nib-ui/cli theme check
 ```
 
+## nib init
+
+Sets a project up for Nib. It asks two questions at a terminal and takes the first answer in CI
+or with flags:
+
+- `--preset docs|dashboard|blog|landing`: the page defaults (dashboard is dark and compact, blog
+  is light; the others follow the OS), printed as the attributes to put on `<html>`;
+- `--css plain|tailwind`: Nib alone, or Tailwind v4 with Nib's tokens as its theme, layered so
+  Nib's reset follows Tailwind's preflight and Tailwind utilities still win;
+- `--dir <folder>`: where the stylesheets go (default `src`).
+
+It writes `nib.config.json`, the CSS entry (`src/nib.css`, imported once by the app: Nib, then the
+preset's stylesheet, then the theme) and an empty
+theme file (`src/nib-theme.css`) for the open tokens. Files already there are kept. It installs
+nothing and sends nothing anywhere.
+
+```
+Setting type…
+Set       nib.config.json
+Set       src/nib.css
+Set       src/nib-theme.css
+
+Next: install @nib-ui/css @nib-ui/tokens, then import src/nib.css once in your app.
+Pulled a proof → nib.config.json. Locked up.
+```
+
 ## nib theme check [file.css …]
 
 Proofs a theme's colours. It reads every `--nib-<role>` colour the files set, lays them over Nib's
