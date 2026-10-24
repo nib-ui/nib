@@ -1,5 +1,6 @@
 /* Pagination: `← PREV · 2 / 9 · NEXT →` in mono labels. Prev and next are links (rel="prev" /
-   "next"); on the first or last page render them without href and with aria-disabled="true".
+   "next"); on the first or last page render the step as <a role="link" aria-disabled="true">
+   without href, so it is announced as a dimmed link and the row keeps its shape.
    The arrows point the reading way and swap under right-to-left; arrows and dots are decoration.
    Give the status words for screen readers in `nib-pagination__label` (Page 2 of 9) and hide the
    short form with aria-hidden. */
@@ -77,5 +78,11 @@
     overflow: hidden;
     clip-path: inset(50%);
     white-space: nowrap;
+  }
+
+  @media (forced-colors: active) {
+    .nib-pagination [aria-disabled='true'] {
+      color: GrayText;
+    }
   }
 }

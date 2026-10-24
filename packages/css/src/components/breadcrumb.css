@@ -18,12 +18,16 @@
     content: '/' / '';
   }
 
+  /* At least 24px tall, the WCAG 2.2 minimum target. */
   .nib-breadcrumb a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 24px;
     color: inherit;
     text-decoration: none;
   }
 
-  .nib-breadcrumb a:hover {
+  .nib-breadcrumb a:not([aria-current='page']):hover {
     color: var(--nib-on-surface);
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -31,5 +35,16 @@
 
   .nib-breadcrumb [aria-current='page'] {
     color: var(--nib-on-surface);
+  }
+
+  @media (forced-colors: active) {
+    /* Colour is gone: links are underlined, the current page carries a 2px rule under it. */
+    .nib-breadcrumb a {
+      text-decoration: underline;
+    }
+
+    .nib-breadcrumb [aria-current='page'] {
+      text-decoration-thickness: var(--nib-space-rule);
+    }
   }
 }
