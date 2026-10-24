@@ -174,11 +174,16 @@
     color: var(--nib-on-surface);
   }
 
-  .docs-tabpanel pre {
-    margin: 0;
-    padding: var(--nib-space-md);
+  /* The panel scrolls, not the <pre>: the panel is focusable, so keyboard users can scroll it. */
+  .docs-tabpanel {
     overflow-x: auto;
     background: var(--nib-surface-raised);
+  }
+
+  .docs-tabpanel pre {
+    inline-size: max-content;
+    margin: 0;
+    padding: var(--nib-space-md);
   }
 
   @media (forced-colors: active) {

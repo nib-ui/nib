@@ -53,7 +53,7 @@
         ]
       },
       "size-limit": {
-        "command": "size-limit",
+        "command": "node ../../scripts/css-size.ts css=dist/nib.css $(for f in dist/components/*.css; do [ -e \"$f\" ] && printf \" module=%s\" \"$f\"; done)",
         "options": {
           "cwd": "{projectRoot}"
         },
@@ -63,8 +63,8 @@
         "cache": true,
         "inputs": [
           "{projectRoot}/dist/nib.css",
-          "{projectRoot}/.size-limit.js",
-          "{workspaceRoot}/size-budgets.json"
+          "{workspaceRoot}/size-budgets.json",
+          "{workspaceRoot}/scripts/css-size.ts"
         ]
       }
     }

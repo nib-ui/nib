@@ -2,3 +2,4 @@
 @layer nib.theme, nib.base, nib.components, nib.utilities;
 
 @import '@nib-ui/tokens/tokens.css';
+@import './components/button.css';

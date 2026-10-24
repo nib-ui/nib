@@ -60,7 +60,7 @@
         ]
       },
       "size-limit": {
-        "command": "size-limit",
+        "command": "node ../../scripts/css-size.ts css=dist/tokens.css",
         "options": {
           "cwd": "{projectRoot}"
         },
@@ -70,8 +70,8 @@
         "cache": true,
         "inputs": [
           "production",
-          "{projectRoot}/.size-limit.js",
-          "{workspaceRoot}/size-budgets.json"
+          "{workspaceRoot}/size-budgets.json",
+          "{workspaceRoot}/scripts/css-size.ts"
         ]
       }
     }

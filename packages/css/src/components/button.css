@@ -1,0 +1,138 @@
+/* Button: words first. A mono verb; hierarchy is stroke weight (primary 2px, outline 1px, ghost
+   none), never fill or size. States come from attributes: aria-pressed, disabled, aria-disabled. */
+@layer nib.components {
+  .nib-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--nib-space-xs);
+    box-sizing: border-box;
+    block-size: var(--nib-space-control-height);
+    padding-block: 0;
+    padding-inline: var(--nib-space-sm);
+    border: var(--nib-space-hairline) solid transparent;
+    background: transparent;
+    color: var(--nib-on-surface);
+    font: var(--nib-label-md-font-weight) var(--nib-label-md-font-size) / var(--nib-label-md-line-height)
+      var(--nib-font-mono);
+    letter-spacing: var(--nib-label-md-letter-spacing);
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color var(--nib-duration-hover) var(--nib-ease-out);
+  }
+
+  .nib-button:hover {
+    background: var(--nib-hover);
+  }
+
+  .nib-button:focus-visible {
+    outline: var(--nib-space-rule) solid var(--nib-accent);
+    outline-offset: var(--nib-space-rule);
+  }
+
+  /* A shortcut reads as written in every script: right-to-left text must not mirror [⌘↵]. */
+  .nib-button__key {
+    color: var(--nib-on-surface-3);
+    font-weight: 400;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .nib-button--outline {
+    border-color: var(--nib-line);
+  }
+
+  /* A 2px frame; the padding gives back the extra pixel so every kind is the same size. */
+  .nib-button--primary {
+    border-width: var(--nib-space-rule);
+    border-color: var(--nib-on-surface);
+    padding-inline: calc(var(--nib-space-sm) - var(--nib-space-hairline));
+  }
+
+  .nib-button--destructive {
+    border-color: var(--nib-red);
+    color: var(--nib-red);
+  }
+
+  /* Chosen, not emphasised: a pressed toggle is the cursor block. */
+  .nib-button[aria-pressed='true'] {
+    border-color: var(--nib-cursor);
+    background: var(--nib-cursor);
+    color: var(--nib-on-cursor);
+  }
+
+  .nib-button[aria-pressed='true'] .nib-button__key {
+    color: inherit;
+  }
+
+  .nib-button:disabled,
+  .nib-button[aria-disabled='true'] {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .nib-button:disabled:hover,
+  .nib-button[aria-disabled='true']:hover {
+    background: transparent;
+  }
+
+  .nib-button--lg {
+    block-size: var(--nib-space-control-height-lg);
+    padding-inline: calc(var(--nib-space-md) + var(--nib-space-hairline));
+  }
+
+  .nib-button--lg.nib-button--primary {
+    padding-inline: var(--nib-space-md);
+  }
+
+  /* Touch screens: every button is a 44px target. */
+  @media (pointer: coarse) {
+    .nib-button {
+      min-block-size: var(--nib-space-touch-target);
+      min-inline-size: var(--nib-space-touch-target);
+    }
+  }
+
+  /* The region's footer row of actions; the primary goes last, at the inline end. */
+  .nib-action-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--nib-space-sm);
+  }
+
+  @media (forced-colors: active) {
+    .nib-button {
+      border-color: ButtonBorder;
+      color: ButtonText;
+    }
+
+    .nib-button--ghost {
+      border-color: transparent;
+    }
+
+    .nib-button--primary {
+      border-color: ButtonText;
+    }
+
+    .nib-button:focus-visible {
+      outline-color: CanvasText;
+    }
+
+    .nib-button[aria-pressed='true'] {
+      forced-color-adjust: none;
+      border-color: Highlight;
+      background: Highlight;
+      color: HighlightText;
+    }
+
+    .nib-button:disabled,
+    .nib-button[aria-disabled='true'] {
+      opacity: 1;
+      border-color: GrayText;
+      color: GrayText;
+    }
+  }
+}
