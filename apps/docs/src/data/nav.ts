@@ -32,6 +32,7 @@ const GROUPS: NavGroup[] = [
       { slug: 'popover', title: 'Popover', lead: 'A box of content beside its trigger.' },
       { slug: 'tooltip', title: 'Tooltip', lead: 'A short line that names its trigger.' },
       { slug: 'menu', title: 'Menu', lead: 'A list of actions behind a button.' },
+      { slug: 'dialog', title: 'Dialog, drawer and sheet', lead: 'A native dialog with a scrim behind.' },
       { slug: 'text', title: 'Text', lead: 'Links, tags, callouts and code with COPY.' },
       { slug: 'content', title: 'Content', lead: 'Sections, tiles, list rows, panes and tables.' },
       { slug: 'empty-loading', title: 'Empty state and loading', lead: 'Ghosts, the stepping ✻ and progress.' },

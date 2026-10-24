@@ -45,6 +45,11 @@
       "@nib-ui/source": "./src/menu.ts",
       "types": "./dist/menu.d.ts",
       "default": "./dist/menu.js"
+    },
+    "./dialog": {
+      "@nib-ui/source": "./src/dialog.ts",
+      "types": "./dist/dialog.d.ts",
+      "default": "./dist/dialog.js"
     }
   },
   "files": [

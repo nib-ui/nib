@@ -137,7 +137,10 @@
     background: var(--nib-surface-raised);
   }
 
+  /* Code reads left to right on every page. */
   .docs-tabpanel pre {
+    direction: ltr;
+    text-align: start;
     inline-size: max-content;
     margin: 0;
     padding: var(--nib-space-md);
