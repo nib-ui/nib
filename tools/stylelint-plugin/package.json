@@ -11,6 +11,11 @@
       "@nib-ui/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./config": {
+      "@nib-ui/source": "./src/config.ts",
+      "types": "./dist/config.d.ts",
+      "default": "./dist/config.js"
     }
   },
   "nx": {
@@ -18,5 +23,12 @@
       "type:tool",
       "scope:private"
     ]
+  },
+  "peerDependencies": {
+    "postcss": "^8.5.0",
+    "stylelint": "^17.0.0"
+  },
+  "devDependencies": {
+    "postcss": "8.5.31"
   }
 }
