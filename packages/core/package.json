@@ -105,6 +105,16 @@
       "@nib-ui/source": "./src/toaster/toaster.apg.ts",
       "types": "./dist/toaster/toaster.apg.d.ts",
       "default": "./dist/toaster/toaster.apg.js"
+    },
+    "./combobox": {
+      "@nib-ui/source": "./src/combobox/index.ts",
+      "types": "./dist/combobox/index.d.ts",
+      "default": "./dist/combobox/index.js"
+    },
+    "./combobox/apg": {
+      "@nib-ui/source": "./src/combobox/combobox.apg.ts",
+      "types": "./dist/combobox/combobox.apg.d.ts",
+      "default": "./dist/combobox/combobox.apg.js"
     }
   },
   "files": [

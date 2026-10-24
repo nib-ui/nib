@@ -14,6 +14,10 @@ type AnyEvent = Event &
 export function toNibEvent(event: Event): NibEvent {
   const e = event as AnyEvent;
   const nib: NibEvent = { type: e.type, preventDefault: () => e.preventDefault() };
+  // The field's value, for input and composition events on a text field.
+  const field = e.target as { value?: unknown } | null;
+  const readsValue = e.type === 'input' || e.type === 'beforeinput' || e.type.startsWith('composition');
+  if (readsValue && field && typeof field.value === 'string') nib.value = field.value;
   if (typeof e.key === 'string') {
     nib.key = e.key;
     nib.shiftKey = !!e.shiftKey;

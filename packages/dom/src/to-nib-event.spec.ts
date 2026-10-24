@@ -89,4 +89,14 @@ describe('toNibEvent', () => {
     expect(seen).toMatchObject({ type: 'focus', focusVisible: expect.any(Boolean) });
     button.remove();
   });
+
+  it("reads a text field's whole value on input", () => {
+    const input = document.body.appendChild(document.createElement('input'));
+    input.value = 'tiếng';
+    let seen: unknown;
+    input.addEventListener('input', (e) => (seen = toNibEvent(e)));
+    input.dispatchEvent(new InputEvent('input', { data: 'g' }));
+    expect(seen).toMatchObject({ type: 'input', value: 'tiếng', data: 'g' });
+    input.remove();
+  });
 });

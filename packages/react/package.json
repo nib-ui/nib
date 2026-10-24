@@ -55,6 +55,11 @@
       "@nib-ui/source": "./src/toaster.ts",
       "types": "./dist/toaster.d.ts",
       "default": "./dist/toaster.js"
+    },
+    "./combobox": {
+      "@nib-ui/source": "./src/combobox.ts",
+      "types": "./dist/combobox.d.ts",
+      "default": "./dist/combobox.js"
     }
   },
   "files": [

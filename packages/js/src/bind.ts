@@ -81,5 +81,8 @@ function write(el: Element, entry: Bound, attrs: Record<string, string>) {
   for (const [name, value] of Object.entries(attrs)) {
     if (!entry.original.has(name)) entry.original.set(name, el.getAttribute(name));
     if (el.getAttribute(name) !== value) el.setAttribute(name, value);
+    // A field's value attribute is only its default: what shows is the property.
+    if (name === 'value' && 'value' in el && (el as HTMLInputElement).value !== value)
+      (el as HTMLInputElement).value = value;
   }
 }
