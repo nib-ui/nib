@@ -1,3 +1,13 @@
+## 1.0.0-rc.0 (2026-10-25)
+
+### 🩹 Fixes
+
+- Release candidate: docs complete (getting-started guides for plain CSS, Tailwind, vanilla JS, React, Vue and Svelte, theming and the CLI), presets, the full icon set and the `nib` CLI. The manual VoiceOver and NVDA pass (#63) was not run for this candidate; its checklist is in `docs/screen-reader-checklist.md`. ([#118](https://github.com/nib-ui/nib/pull/118))
+
+### ❤️ Thank You
+
+- Sang Nguyen
+
 ## 1.0.0-beta.0 (2026-10-25)
 
 ### 🩹 Fixes

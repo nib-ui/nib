@@ -1,6 +1,6 @@
 {
   "name": "@nib-ui/dom",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-rc.0",
   "description": "Nib DOM adapters: geometry, intent runner, live region, ids",
   "license": "MIT",
   "repository": {
