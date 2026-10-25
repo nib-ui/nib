@@ -77,5 +77,6 @@
       "commitMessage": "chore(release): publish {version}"
     }
   },
-  "analytics": false
+  "analytics": false,
+  "nxCloudId": "6add8ae88f02d3c6cbb5388e"
 }
