@@ -44,9 +44,11 @@ module boundaries and self-hosted caching (Oct 2026); Nx 23 was released 2026-06
 - `release.version.adjustSemverBumpsForZeroMajorVersion` is `false`: the packages start at
   `0.0.0`, and the 1.0 line needs the `premajor` plan to give `1.0.0-alpha.0`, not the 0.x-softened
   `0.1.0-alpha.0`.
-- Publishing stays OIDC trusted publishing with provenance. Whether `nx release publish` produces
-  provenance through OIDC is unverified; the first `1.0.0-alpha.0` publish is the test. Fallback:
-  Nx Release versions and writes the changelog, and the workflow publishes with `npm publish`.
+- Publishing stays OIDC trusted publishing with provenance. Verified with `1.0.0-beta.0`
+  (2026-10-25): `nx release publish` in `release.yml` publishes through the trusted publisher and
+  every package carries a provenance attestation. npm accepts a trusted publisher only on an
+  existing package, so `1.0.0-alpha.0` was published once by the owner with 2FA, without
+  provenance, and trust was set up after it (#6).
 
 **Module boundaries** (`@nx/enforce-module-boundaries`, ESLint flat config)
 
