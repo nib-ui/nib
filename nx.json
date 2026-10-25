@@ -51,6 +51,9 @@
         "projectsRelationship": "fixed"
       }
     },
+    "version": {
+      "adjustSemverBumpsForZeroMajorVersion": false
+    },
     "versionPlans": {
       "ignorePatternsForPlanCheck": [
         "**/*.spec.ts",

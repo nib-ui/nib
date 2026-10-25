@@ -47,7 +47,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - name: Version and changelog from version plans
-        run: pnpm nx release $PREID $DRY_RUN --skip-publish --yes
+        # --skip-publish answers the publish prompt; with --yes as well, nx rejects the flags.
+        run: pnpm nx release $PREID $DRY_RUN --skip-publish
       - name: Clean build of every public package (no cache)
         run: pnpm nx run-many -t build --projects=tag:scope:public --skip-nx-cache
       - name: Publish with provenance
