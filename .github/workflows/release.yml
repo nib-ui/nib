@@ -7,7 +7,7 @@ on:
       preid:
         description: Prerelease id (empty for a stable release on `latest`)
         type: choice
-        options: ['', alpha, beta]
+        options: ['', alpha, beta, rc]
         default: ''
       dry-run:
         description: Preview versions, changelog and publish without writing anything
