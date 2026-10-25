@@ -1,6 +1,6 @@
 {
   "name": "@nib-ui/fonts",
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0",
   "description": "Nib fonts: Inter and JetBrains Mono, variable, self-hosted",
   "license": "MIT AND OFL-1.1",
   "repository": {
