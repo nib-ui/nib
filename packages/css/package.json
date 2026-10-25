@@ -1,6 +1,6 @@
 {
   "name": "@nib-ui/css",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-beta.0",
   "description": "Nib CSS: base, components and utilities in cascade layers",
   "license": "MIT",
   "repository": {

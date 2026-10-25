@@ -1,3 +1,13 @@
+## 1.0.0-beta.0 (2026-10-25)
+
+### 🩹 Fixes
+
+- Beta: all 30 components meet the definition of done (18 CSS-only, 12 interactive on the headless core with vanilla, React, Vue and Svelte bindings), every size budget passes, and the APG keyboard table is green on core and all four bindings. From this release on, packages are published from CI with npm provenance. ([#116](https://github.com/nib-ui/nib/pull/116))
+
+### ❤️ Thank You
+
+- Sang Nguyen
+
 ## 1.0.0-alpha.0 (2026-10-25)
 
 ### 🚀 Features
