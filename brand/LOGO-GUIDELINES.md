@@ -72,6 +72,8 @@ photos or busy content, place the symbol on a square `#141413` tile, as the app 
 
 ## Open items
 
-- Trademark search for "Nib" (classes 9 and 42) before public use. A grid of squares is a common
-  motif; check that no registered mark in those classes is too close.
+- Trademark search for "Nib" (classes 9 and 42): done in #9, go. There is no live "NIB" mark in
+  9 or 42. In public use, pair the word with the grid mark or "UI" ("Nib UI", `nib-ui`), never a
+  bare lowercase "nib" wordmark; keep naming away from finance, insurance and health. Still open:
+  run the grid logo through WIPO's image search (Vienna 26.4) before any filing.
 - Pantone and final CMYK values need a print proof.
