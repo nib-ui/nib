@@ -41,6 +41,9 @@ module boundaries and self-hosted caching (Oct 2026); Nx 23 was released 2026-06
 - Bumps come from **version plans** (`.nx/version-plans/*.md`) committed with each PR, not from
   commit messages. CI fails a PR that touches a public package without a version plan.
 - Prereleases with `--preid alpha|beta` on the `next` dist-tag (unchanged from ADR 6).
+- `release.version.adjustSemverBumpsForZeroMajorVersion` is `false`: the packages start at
+  `0.0.0`, and the 1.0 line needs the `premajor` plan to give `1.0.0-alpha.0`, not the 0.x-softened
+  `0.1.0-alpha.0`.
 - Publishing stays OIDC trusted publishing with provenance. Whether `nx release publish` produces
   provenance through OIDC is unverified; the first `1.0.0-alpha.0` publish is the test. Fallback:
   Nx Release versions and writes the changelog, and the workflow publishes with `npm publish`.
